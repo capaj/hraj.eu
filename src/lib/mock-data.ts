@@ -1,4 +1,5 @@
 import { Event, User, Notification } from '../types';
+import { mockVenues } from './mock-venues';
 
 export const mockUsers: User[] = [
   {
@@ -48,11 +49,7 @@ export const mockEvents: Event[] = [
     title: 'Sunday Football at Letná Park',
     description: 'Friendly match with good vibes. All levels welcome!',
     sport: 'football',
-    location: {
-      address: 'Letná Park, Prague, Czech Republic',
-      lat: 50.0983,
-      lng: 14.4172,
-    },
+    venueId: '1', // Letná Park Football Field
     date: new Date('2024-12-15'),
     startTime: '18:00',
     duration: 90,
@@ -77,11 +74,7 @@ export const mockEvents: Event[] = [
     title: 'Morning Basketball',
     description: 'Quick game before work starts',
     sport: 'basketball',
-    location: {
-      address: 'Wenceslas Square, Prague, Czech Republic',
-      lat: 50.0813,
-      lng: 14.4269,
-    },
+    venueId: '3', // Wenceslas Square Basketball Court
     date: new Date('2024-12-16'),
     startTime: '07:30',
     duration: 60,
@@ -104,11 +97,7 @@ export const mockEvents: Event[] = [
     title: 'Handball Training Session',
     description: 'Improve your handball skills with experienced players',
     sport: 'handball',
-    location: {
-      address: 'Sports Hall Karlín, Prague, Czech Republic',
-      lat: 50.0950,
-      lng: 14.4500,
-    },
+    venueId: '2', // Karlín Sports Hall
     date: new Date('2024-12-17'),
     startTime: '19:00',
     duration: 120,
@@ -131,11 +120,7 @@ export const mockEvents: Event[] = [
     title: 'Ice Hockey Pick-up Game',
     description: 'Casual ice hockey game, all skill levels welcome',
     sport: 'ice-hockey',
-    location: {
-      address: 'Winter Stadium Štvanice, Prague, Czech Republic',
-      lat: 50.0900,
-      lng: 14.4300,
-    },
+    venueId: '4', // Winter Stadium Štvanice
     date: new Date('2024-12-18'),
     startTime: '20:30',
     duration: 90,
@@ -220,3 +205,6 @@ export const mockNotifications: Notification[] = [
     createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
   },
 ];
+
+// Export venues for backward compatibility
+export { mockVenues };

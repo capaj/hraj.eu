@@ -13,16 +13,48 @@ export interface User {
   createdAt: Date;
 }
 
+export interface Venue {
+  id: string;
+  name: string;
+  address: string;
+  city: string;
+  country: string;
+  lat: number;
+  lng: number;
+  type: 'outdoor' | 'indoor' | 'mixed';
+  sports: string[]; // Array of sport IDs that can be played at this venue
+  facilities: string[]; // e.g., ['parking', 'changing_rooms', 'showers', 'equipment_rental']
+  images: string[]; // Array of image URLs
+  orientationPlan?: string; // URL to orientation/access plan image
+  description?: string;
+  accessInstructions?: string; // How to find/access the field/gym
+  openingHours?: {
+    [key: string]: { open: string; close: string } | null; // e.g., { monday: { open: '06:00', close: '22:00' }, sunday: null }
+  };
+  priceRange?: {
+    min: number;
+    max: number;
+    currency: string;
+  };
+  contactInfo?: {
+    phone?: string;
+    email?: string;
+    website?: string;
+  };
+  rating?: number; // Average rating from 1-5
+  totalRatings?: number;
+  createdBy: string; // User ID who added the venue
+  isVerified: boolean; // Whether the venue has been verified by admins
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface Event {
   id: string;
   title: string;
   description: string;
   sport: string;
-  location: {
-    address: string;
-    lat: number;
-    lng: number;
-  };
+  venueId: string; // Changed from location object to venue ID
   date: Date;
   startTime: string;
   duration: number;
@@ -39,8 +71,8 @@ export interface Event {
   participants: string[];
   waitlist: string[];
   status: 'draft' | 'open' | 'confirmed' | 'cancelled' | 'completed';
-  allowedSkillLevels?: string[]; // New field for skill level restrictions
-  requireSkillLevel?: boolean; // New field to enforce skill level restrictions
+  allowedSkillLevels?: string[];
+  requireSkillLevel?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
