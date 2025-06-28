@@ -25,7 +25,6 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit, onCa
 
   const [formData, setFormData] = useState({
     title: '',
-    description: '',
     sport: '',
     venueId: '', // Changed from address to venueId
     date: getDefaultDate(),
@@ -215,16 +214,18 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit, onCa
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Description
-              </label>
+            {/* Game Rules - Moved to replace Description */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                <FileText size={20} className="mr-2" />
+                Game Rules (Optional)
+              </h3>
               <textarea
-                value={formData.description}
-                onChange={(e) => handleChange('description', e.target.value)}
+                value={formData.gameRules}
+                onChange={(e) => handleChange('gameRules', e.target.value)}
                 rows={3}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                placeholder="Brief description of the event..."
+                placeholder="No slide tackles, bring light/dark shirt, call your own fouls..."
               />
             </div>
 
@@ -539,21 +540,6 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit, onCa
                   />
                 </div>
               </div>
-            </div>
-
-            {/* Game Rules */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-                <FileText size={20} className="mr-2" />
-                Game Rules (Optional)
-              </h3>
-              <textarea
-                value={formData.gameRules}
-                onChange={(e) => handleChange('gameRules', e.target.value)}
-                rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                placeholder="No slide tackles, bring light/dark shirt, call your own fouls..."
-              />
             </div>
 
             {/* Visibility */}
