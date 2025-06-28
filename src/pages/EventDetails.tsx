@@ -5,7 +5,7 @@ import { Button } from '../components/ui/Button';
 import { WeatherWidget } from '../components/weather/WeatherWidget';
 import { Event } from '../types';
 import { SPORTS } from '../lib/constants';
-import { mockUsers } from '../lib/mock-data';
+import { mockUsers, mockVenues } from '../lib/mock-data';
 import { generateICalEvent, downloadICalFile, CalendarEvent } from '../utils/calendar';
 import { 
   Calendar, 
@@ -55,6 +55,7 @@ export const EventDetailsPage: React.FC<EventDetailsPageProps> = ({ event, onBac
 
   const sport = SPORTS.find(s => s.id === event.sport);
   const organizer = mockUsers.find(u => u.id === event.organizerId);
+  const venue = mockVenues.find(v => v.id === event.venueId);
   const isSpotAvailable = event.participants.length < event.maxParticipants;
   const spotsLeft = event.maxParticipants - event.participants.length;
   const isMinimumReached = event.participants.length >= event.minParticipants;
@@ -139,7 +140,7 @@ export const EventDetailsPage: React.FC<EventDetailsPageProps> = ({ event, onBac
         '',
         'Event created via hraj.eu'
       ].join('\n'),
-      location: event.location.address,
+      location: venue?.address || 'Location TBD',
       startDate,
       endDate,
       organizer: organizer?.name
@@ -331,7 +332,7 @@ export const EventDetailsPage: React.FC<EventDetailsPageProps> = ({ event, onBac
                     <div className="ml-6">
                       <div className="flex items-start text-gray-700">
                         <MapPin size={16} className="mr-2 mt-0.5 text-gray-500 flex-shrink-0" />
-                        <span>{event.location.address}</span>
+                        <span>{venue?.address || 'Location TBD'}</span>
                       </div>
                     </div>
                   </div>
@@ -411,7 +412,7 @@ export const EventDetailsPage: React.FC<EventDetailsPageProps> = ({ event, onBac
             {/* Weather Widget */}
             <WeatherWidget 
               date={event.date}
-              location={event.location.address}
+              location={venue?.address || 'Location TBD'}
               sport={event.sport}
             />
           </div>
