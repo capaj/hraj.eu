@@ -4,7 +4,7 @@ import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { Calendar, Clock, MapPin, Users, Euro, Target } from 'lucide-react';
 import { Event, User } from '../../types';
-import { mockUsers } from '../../lib/mock-data';
+import { mockUsers, mockVenues } from '../../lib/mock-data';
 import { SPORTS } from '../../lib/constants';
 import { format } from 'date-fns';
 
@@ -17,6 +17,7 @@ interface EventCardProps {
 export const EventCard: React.FC<EventCardProps> = ({ event, onJoin, onView }) => {
   const sport = SPORTS.find(s => s.id === event.sport);
   const organizer = mockUsers.find(u => u.id === event.organizerId);
+  const venue = mockVenues.find(v => v.id === event.venueId);
   const isSpotAvailable = event.participants.length < event.maxParticipants;
   const spotsLeft = event.maxParticipants - event.participants.length;
   const isIdealReached = event.idealParticipants && event.participants.length >= event.idealParticipants;
@@ -77,7 +78,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onJoin, onView }) =
           </div>
           <div className="flex items-center text-sm text-gray-600">
             <MapPin size={16} className="mr-2" />
-            {event.location.address}
+            {venue?.address || 'Location TBD'}
           </div>
           <div className="flex items-center text-sm text-gray-600">
             <Users size={16} className="mr-2" />

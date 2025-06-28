@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Event } from '../../types';
 import { SPORTS } from '../../lib/constants';
+import { mockVenues } from '../../lib/mock-data';
 import { Card, CardContent } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
@@ -119,11 +120,14 @@ export const EventMap: React.FC<EventMapProps> = ({ events, onEventSelect, onJoi
     // Add event markers
     events.forEach((event, index) => {
       const sport = SPORTS.find(s => s.id === event.sport);
+      const venue = mockVenues.find(v => v.id === event.venueId);
+      
+      if (!venue) return; // Skip events without valid venues
       
       // Calculate position relative to user location (simplified)
       // In production, you'd use proper map projection
-      const offsetX = (event.location.lng - userLocation.lng) * 1000; // Simplified scaling
-      const offsetY = (userLocation.lat - event.location.lat) * 1000; // Simplified scaling
+      const offsetX = (venue.lng - userLocation.lng) * 1000; // Simplified scaling
+      const offsetY = (userLocation.lat - venue.lat) * 1000; // Simplified scaling
       
       const x = Math.max(40, Math.min(mapWidth - 40, mapWidth / 2 + offsetX));
       const y = Math.max(40, Math.min(mapHeight - 40, mapHeight / 2 + offsetY));
@@ -157,6 +161,8 @@ export const EventMap: React.FC<EventMapProps> = ({ events, onEventSelect, onJoi
       setSelectedEvent(null);
     }
   };
+
+  const selectedVenue = selectedEvent ? mockVenues.find(v => v.id === selectedEvent.venueId) : null;
 
   return (
     <div className="relative w-full h-full">

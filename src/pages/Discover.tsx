@@ -3,7 +3,7 @@ import { EventCard } from '../components/events/EventCard';
 import { EventFilters } from '../components/events/EventFilters';
 import { EventMap } from '../components/map/EventMap';
 import { Button } from '../components/ui/Button';
-import { mockEvents } from '../lib/mock-data';
+import { mockEvents, mockVenues } from '../lib/mock-data';
 import { Map, List, ArrowUpDown } from 'lucide-react';
 import { Event } from '../types';
 
@@ -75,17 +75,21 @@ export const Discover: React.FC<DiscoverProps> = ({ onViewEvent }) => {
         
         case 'distance':
           if (!userLocation) return 0;
+          const venueA = mockVenues.find(v => v.id === a.venueId);
+          const venueB = mockVenues.find(v => v.id === b.venueId);
+          if (!venueA || !venueB) return 0;
+          
           const distanceA = calculateDistance(
             userLocation.lat, 
             userLocation.lng, 
-            a.location.lat, 
-            a.location.lng
+            venueA.lat, 
+            venueA.lng
           );
           const distanceB = calculateDistance(
             userLocation.lat, 
             userLocation.lng, 
-            b.location.lat, 
-            b.location.lng
+            venueB.lat, 
+            venueB.lng
           );
           return distanceA - distanceB;
         
@@ -132,11 +136,14 @@ export const Discover: React.FC<DiscoverProps> = ({ onViewEvent }) => {
 
   const getEventDistance = (event: Event): string => {
     if (!userLocation) return '';
+    const venue = mockVenues.find(v => v.id === event.venueId);
+    if (!venue) return '';
+    
     const distance = calculateDistance(
       userLocation.lat,
       userLocation.lng,
-      event.location.lat,
-      event.location.lng
+      venue.lat,
+      venue.lng
     );
     return distance < 1 ? `${Math.round(distance * 1000)}m` : `${distance.toFixed(1)}km`;
   };
