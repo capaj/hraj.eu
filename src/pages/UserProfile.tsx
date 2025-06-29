@@ -386,58 +386,11 @@ export const UserProfile: React.FC = () => {
                 </div>
               </CardContent>
             </Card>
-
-            {/* Currency Preference */}
-            <Card>
-              <CardHeader>
-                <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                  <Globe size={20} className="mr-2" />
-                  Currency Preference
-                </h3>
-                <p className="text-gray-600 text-sm mt-1">
-                  Choose your preferred currency for event pricing
-                </p>
-              </CardHeader>
-              <CardContent className="p-6">
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 gap-3">
-                    {EU_CURRENCIES.map((currency) => (
-                      <label
-                        key={currency.code}
-                        className={`flex items-center p-4 border rounded-lg cursor-pointer transition-colors ${
-                          editedUser.preferredCurrency === currency.code
-                            ? 'border-primary-500 bg-primary-50'
-                            : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                      >
-                        <input
-                          type="radio"
-                          name="currency"
-                          value={currency.code}
-                          checked={editedUser.preferredCurrency === currency.code}
-                          onChange={(e) => handleCurrencyChange(e.target.value)}
-                          className="text-primary-600 focus:ring-primary-500"
-                        />
-                        <div className="ml-3">
-                          <div className="font-medium text-gray-900">
-                            {currency.symbol} {currency.name} ({currency.code})
-                          </div>
-                          <div className="text-sm text-gray-500">
-                            {currency.countries.slice(0, 2).join(', ')}
-                            {currency.countries.length > 2 && ` +${currency.countries.length - 2} more`}
-                          </div>
-                        </div>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
 
           {/* Right Column */}
           <div className="space-y-8">
-            {/* Payment Information */}
+            {/* Payment Information with Currency Preference */}
             <Card>
               <CardHeader>
                 <h3 className="text-xl font-semibold text-gray-900 flex items-center">
@@ -445,11 +398,56 @@ export const UserProfile: React.FC = () => {
                   Payment Information
                 </h3>
                 <p className="text-gray-600 text-sm mt-1">
-                  Add your payment details for easy event transactions
+                  Add your payment details and currency preference for easy event transactions
                 </p>
               </CardHeader>
               <CardContent className="p-6">
-                <div className="space-y-6">
+                <div className="space-y-8">
+                  {/* Currency Preference Section */}
+                  <div>
+                    <h4 className="text-md font-semibold text-gray-900 flex items-center mb-4">
+                      <Globe size={18} className="mr-2 text-primary-600" />
+                      Currency Preference
+                    </h4>
+                    <p className="text-sm text-gray-600 mb-4">
+                      Choose your preferred currency for event pricing
+                    </p>
+                    
+                    <div className="space-y-3">
+                      {EU_CURRENCIES.map((currency) => (
+                        <label
+                          key={currency.code}
+                          className={`flex items-center p-3 border rounded-lg cursor-pointer transition-colors ${
+                            editedUser.preferredCurrency === currency.code
+                              ? 'border-primary-500 bg-primary-50'
+                              : 'border-gray-200 hover:border-gray-300'
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name="currency"
+                            value={currency.code}
+                            checked={editedUser.preferredCurrency === currency.code}
+                            onChange={(e) => handleCurrencyChange(e.target.value)}
+                            className="text-primary-600 focus:ring-primary-500"
+                          />
+                          <div className="ml-3">
+                            <div className="font-medium text-gray-900">
+                              {currency.symbol} {currency.name} ({currency.code})
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              {currency.countries.slice(0, 2).join(', ')}
+                              {currency.countries.length > 2 && ` +${currency.countries.length - 2} more`}
+                            </div>
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="border-t border-gray-200"></div>
+
                   {/* Revolut Tag Section */}
                   <div className="border border-gray-200 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-3">
