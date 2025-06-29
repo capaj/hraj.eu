@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from '../components/ui/Card';
-import { Button } from '../components/ui/Button';
-import { EventCard } from '../components/events/EventCard';
-import { mockEvents } from '../lib/mock-data';
-import { Plus, MapPin, Users, Trophy, Search } from 'lucide-react';
+import React, { useState, useEffect } from 'react'
+import { Card, CardContent } from '../components/ui/Card'
+import { Button } from '../components/ui/Button'
+import { EventCard } from '../components/events/EventCard'
+import { mockEvents } from '../lib/mock-data'
+import { Plus, MapPin, Users, Trophy, Search } from 'lucide-react'
+import { getNearestCity } from 'offline-geocode-city'
 
 interface HomeProps {
-  onViewEvent: (eventId: string) => void;
+  onViewEvent: (eventId: string) => void
 }
 
 export const Home: React.FC<HomeProps> = ({ onViewEvent }) => {
-  const [userLocation, setUserLocation] = useState<string>('');
-  const [isLoadingLocation, setIsLoadingLocation] = useState(true);
-  const upcomingEvents = mockEvents.slice(0, 3);
+  const [userLocation, setUserLocation] = useState<string>('')
+  const [isLoadingLocation, setIsLoadingLocation] = useState(true)
+  const upcomingEvents = mockEvents.slice(0, 3)
 
   useEffect(() => {
     // Get user's current location
@@ -22,49 +23,40 @@ export const Home: React.FC<HomeProps> = ({ onViewEvent }) => {
           try {
             // In a real app, you'd use a reverse geocoding service
             // For demo purposes, we'll simulate getting the city name
-            const { latitude, longitude } = position.coords;
-            
-            // Simulate reverse geocoding API call
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            // Mock city based on approximate coordinates
-            let city = 'Prague'; // Default
-            if (latitude > 52 && latitude < 53 && longitude > 13 && longitude < 14) {
-              city = 'Berlin';
-            } else if (latitude > 48 && latitude < 49 && longitude > 16 && longitude < 17) {
-              city = 'Vienna';
-            } else if (latitude > 47 && latitude < 48 && longitude > 19 && longitude < 20) {
-              city = 'Budapest';
-            }
-            
-            setUserLocation(city);
+            const { latitude, longitude } = position.coords
+
+            // Use offline geocoding to get the nearest city
+            const nearestCity = getNearestCity(latitude, longitude)
+            const city = nearestCity ? nearestCity.cityName : 'your area'
+
+            setUserLocation(city)
           } catch (error) {
-            console.error('Error getting location name:', error);
-            setUserLocation('your area');
+            console.error('Error getting location name:', error)
+            setUserLocation('your area')
           } finally {
-            setIsLoadingLocation(false);
+            setIsLoadingLocation(false)
           }
         },
         (error) => {
-          console.error('Error getting location:', error);
-          setUserLocation('your area');
-          setIsLoadingLocation(false);
+          console.error('Error getting location:', error)
+          setUserLocation('your area')
+          setIsLoadingLocation(false)
         },
         {
           timeout: 30000,
           enableHighAccuracy: false,
           maximumAge: 300000 // 5 minutes
         }
-      );
+      )
     } else {
-      setUserLocation('your area');
-      setIsLoadingLocation(false);
+      setUserLocation('your area')
+      setIsLoadingLocation(false)
     }
-  }, []);
+  }, [])
 
   const handleJoinEvent = (eventId: string) => {
-    console.log('Join event:', eventId);
-  };
+    console.log('Join event:', eventId)
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-600 to-secondary-600">
@@ -76,15 +68,20 @@ export const Home: React.FC<HomeProps> = ({ onViewEvent }) => {
               Let's Play Together
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-primary-100 max-w-3xl mx-auto animate-slide-up">
-              Join the largest community of amateur sports enthusiasts across Europe. 
-              Organize games, discover events, and make new friends through sport.
+              Join the largest community of amateur sports enthusiasts across
+              Europe. Organize games, discover events, and make new friends
+              through sport.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-bounce-gentle">
               <Button size="lg" variant="secondary" className="text-lg">
                 <Plus size={20} className="mr-2" />
                 Create Event
               </Button>
-              <Button size="lg" variant="outline" className="text-lg bg-white/10 border-white/20 text-white hover:bg-white/20">
+              <Button
+                size="lg"
+                variant="outline"
+                className="text-lg bg-white/10 border-white/20 text-white hover:bg-white/20"
+              >
                 <Search size={20} className="mr-2" />
                 Discover Games
               </Button>
@@ -113,7 +110,10 @@ export const Home: React.FC<HomeProps> = ({ onViewEvent }) => {
                 </p>
               )}
             </div>
-            <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
+            <Button
+              variant="outline"
+              className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+            >
               View All Events
             </Button>
           </div>
@@ -159,9 +159,12 @@ export const Home: React.FC<HomeProps> = ({ onViewEvent }) => {
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-4">Why Choose hraj.eu?</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Why Choose hraj.eu?
+            </h2>
             <p className="text-lg text-white/80 max-w-2xl mx-auto">
-              We make organizing and joining sports events simple, social, and secure.
+              We make organizing and joining sports events simple, social, and
+              secure.
             </p>
           </div>
 
@@ -171,9 +174,12 @@ export const Home: React.FC<HomeProps> = ({ onViewEvent }) => {
                 <div className="bg-primary-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                   <MapPin size={24} className="text-primary-600" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">Find Local Games</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  Find Local Games
+                </h3>
                 <p className="text-gray-600">
-                  Discover sports events near you with advanced filtering by sport, skill level, and location.
+                  Discover sports events near you with advanced filtering by
+                  sport, skill level, and location.
                 </p>
               </CardContent>
             </Card>
@@ -183,9 +189,12 @@ export const Home: React.FC<HomeProps> = ({ onViewEvent }) => {
                 <div className="bg-secondary-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                   <Users size={24} className="text-secondary-600" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">Build Community</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  Build Community
+                </h3>
                 <p className="text-gray-600">
-                  Connect with like-minded players, earn karma points, and climb the leaderboards.
+                  Connect with like-minded players, earn karma points, and climb
+                  the leaderboards.
                 </p>
               </CardContent>
             </Card>
@@ -195,9 +204,12 @@ export const Home: React.FC<HomeProps> = ({ onViewEvent }) => {
                 <div className="bg-accent-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                   <Trophy size={24} className="text-accent-600" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">Easy Organization</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  Easy Organization
+                </h3>
                 <p className="text-gray-600">
-                  Create events with payment integration, team balancing, and automated notifications.
+                  Create events with payment integration, team balancing, and
+                  automated notifications.
                 </p>
               </CardContent>
             </Card>
@@ -205,5 +217,5 @@ export const Home: React.FC<HomeProps> = ({ onViewEvent }) => {
         </div>
       </section>
     </div>
-  );
-};
+  )
+}
