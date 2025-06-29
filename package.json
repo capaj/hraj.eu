@@ -10,10 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@libsql/client": "^0.15.9",
+    "@paralleldrive/cuid2": "^2.2.2",
     "@tanstack/react-router": "^1.122.0",
     "@tanstack/router-devtools": "^1.122.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "drizzle-orm": "^0.44.2",
     "lucide-react": "^0.525.0",
     "lz-ts": "^1.1.2",
     "offline-geocode-city": "^1.0.2",
