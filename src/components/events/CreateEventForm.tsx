@@ -300,20 +300,6 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit, onCa
                 <Users size={20} className="mr-2" />
                 Participants
               </h3>
-              
-              {/* Cancellation Warning */}
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                <div className="flex items-start">
-                  <AlertTriangle size={20} className="text-amber-600 mr-3 mt-0.5 flex-shrink-0" />
-                  <div className="text-sm">
-                    <p className="text-amber-800 font-medium mb-1">Event Cancellation Policy</p>
-                    <p className="text-amber-700">
-                      If fewer than the minimum number of players join by the cancellation deadline, 
-                      the event will be automatically cancelled and all participants will be notified.
-                    </p>
-                  </div>
-                </div>
-              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
@@ -329,6 +315,10 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit, onCa
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   />
                   <p className="text-xs text-gray-500 mt-1">Required to confirm event</p>
+                  <p className="text-xs text-amber-700 mt-2">
+                    If fewer than the minimum number of players join by the cancellation deadline, 
+                    the event will be automatically cancelled and all participants will be notified.
+                  </p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -357,6 +347,9 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ onSubmit, onCa
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   />
                   <p className="text-xs text-gray-500 mt-1">Maximum capacity</p>
+                  <p className="text-xs text-blue-700 mt-2">
+                    Any extra players will be put on a waitlist
+                  </p>
                 </div>
               </div>
 
