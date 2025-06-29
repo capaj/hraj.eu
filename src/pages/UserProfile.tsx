@@ -555,7 +555,7 @@ export const UserProfile: React.FC = () => {
           </div>
         </div>
 
-        {/* Sports & Skill Levels - Full Width */}
+        {/* Sports & Skill Levels - Full Width with Two-Column Grid */}
         <Card className="mt-8">
           <CardHeader>
             <h3 className="text-xl font-semibold text-gray-900 flex items-center">
@@ -567,7 +567,7 @@ export const UserProfile: React.FC = () => {
             </p>
           </CardHeader>
           <CardContent className="p-6">
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {SPORTS.map((sport) => {
                 const currentLevel = editedUser.skillLevels[sport.id];
                 const hasRecentChange = skillLevelChanges[sport.id] !== undefined;
@@ -581,10 +581,10 @@ export const UserProfile: React.FC = () => {
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
-                    <div className="flex items-center space-x-3">
-                      <span className="text-2xl">{sport.icon}</span>
-                      <div>
-                        <div className="font-medium text-gray-900">{sport.name}</div>
+                    <div className="flex items-center space-x-3 min-w-0 flex-1">
+                      <span className="text-2xl flex-shrink-0">{sport.icon}</span>
+                      <div className="min-w-0 flex-1">
+                        <div className="font-medium text-gray-900 truncate">{sport.name}</div>
                         {hasRecentChange && (
                           <div className="flex items-center text-sm text-green-600 mt-1">
                             <Check size={14} className="mr-1" />
@@ -594,7 +594,7 @@ export const UserProfile: React.FC = () => {
                       </div>
                     </div>
                     
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 flex-shrink-0">
                       {/* Skill Level Buttons */}
                       <div className="flex items-center space-x-1">
                         {SKILL_LEVELS.map((level) => {
@@ -606,7 +606,7 @@ export const UserProfile: React.FC = () => {
                               key={level.id}
                               onClick={() => handleSkillLevelChange(sport.id, isSelected ? null : level.id)}
                               disabled={hasRecentChange}
-                              className={`px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 ${
+                              className={`px-2 py-1 text-xs font-medium rounded-full transition-all duration-200 ${
                                 isSelected
                                   ? level.id === 'beginner'
                                     ? 'bg-green-500 text-white'
@@ -623,10 +623,10 @@ export const UserProfile: React.FC = () => {
                               {isChanging ? (
                                 <div className="flex items-center">
                                   <div className="animate-spin rounded-full h-3 w-3 border-b border-white mr-1"></div>
-                                  {level.name}
+                                  {level.name.charAt(0)}
                                 </div>
                               ) : (
-                                level.name
+                                level.name.charAt(0).toUpperCase()
                               )}
                             </button>
                           );
@@ -639,7 +639,7 @@ export const UserProfile: React.FC = () => {
                             className="px-2 py-1 text-xs text-gray-500 hover:text-red-600 transition-colors"
                             title="Remove skill level"
                           >
-                            <X size={14} />
+                            <X size={12} />
                           </button>
                         )}
                       </div>
@@ -665,7 +665,7 @@ export const UserProfile: React.FC = () => {
                   <p className="font-medium mb-1">Quick Tip</p>
                   <p>
                     Setting accurate skill levels helps you find games with players of similar abilities. 
-                    You can change these anytime by clicking the skill level buttons.
+                    You can change these anytime by clicking the skill level buttons. <strong>B</strong> = Beginner, <strong>I</strong> = Intermediate, <strong>A</strong> = Advanced.
                   </p>
                 </div>
               </div>
