@@ -228,7 +228,7 @@ export const UserProfile: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-600 to-secondary-600 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white flex items-center">
@@ -238,92 +238,94 @@ export const UserProfile: React.FC = () => {
           <p className="text-white/80 mt-2">Manage your account settings and sports preferences</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Profile Overview */}
-          <div className="lg:col-span-1">
-            <Card>
-              <CardContent className="p-6 text-center">
-                {/* Avatar Section */}
-                <div className="relative mb-6">
-                  <img
-                    src={editedUser.avatar}
-                    alt={editedUser.name}
-                    className="w-32 h-32 rounded-full object-cover mx-auto border-4 border-white shadow-lg"
-                  />
-                  {isEditing && (
-                    <button
-                      onClick={() => setShowAvatarUpload(true)}
-                      className="absolute bottom-2 right-1/2 transform translate-x-1/2 translate-y-1/2 bg-primary-600 text-white rounded-full p-2 hover:bg-primary-700 transition-colors shadow-lg"
-                    >
-                      <Camera size={16} />
-                    </button>
-                  )}
-                </div>
+        {/* Profile Overview Card - Full Width */}
+        <Card className="mb-8">
+          <CardContent className="p-8">
+            <div className="flex flex-col lg:flex-row items-center lg:items-start space-y-6 lg:space-y-0 lg:space-x-8">
+              {/* Avatar Section */}
+              <div className="relative flex-shrink-0">
+                <img
+                  src={editedUser.avatar}
+                  alt={editedUser.name}
+                  className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
+                />
+                {isEditing && (
+                  <button
+                    onClick={() => setShowAvatarUpload(true)}
+                    className="absolute bottom-2 right-2 bg-primary-600 text-white rounded-full p-2 hover:bg-primary-700 transition-colors shadow-lg"
+                  >
+                    <Camera size={16} />
+                  </button>
+                )}
+              </div>
 
-                {/* Basic Info */}
-                <div className="space-y-3">
-                  <h2 className="text-2xl font-bold text-gray-900">{editedUser.name}</h2>
-                  <div className="flex items-center justify-center text-gray-600">
+              {/* Basic Info */}
+              <div className="flex-1 text-center lg:text-left">
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">{editedUser.name}</h2>
+                <div className="flex flex-col lg:flex-row lg:items-center lg:space-x-6 space-y-2 lg:space-y-0 text-gray-600 mb-4">
+                  <div className="flex items-center justify-center lg:justify-start">
                     <Mail size={16} className="mr-2" />
                     {editedUser.email}
                   </div>
                   {editedUser.location && (
-                    <div className="flex items-center justify-center text-gray-600">
+                    <div className="flex items-center justify-center lg:justify-start">
                       <MapPin size={16} className="mr-2" />
                       {editedUser.location}
                     </div>
                   )}
-                  <div className="flex items-center justify-center text-gray-600">
+                  <div className="flex items-center justify-center lg:justify-start">
                     <Calendar size={16} className="mr-2" />
                     Member since {editedUser.createdAt.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
                   </div>
                 </div>
 
                 {/* Karma Points */}
-                <div className="mt-6 pt-6 border-t border-gray-200">
-                  <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4">
-                    <div className="flex items-center justify-center mb-2">
-                      <Trophy className="text-yellow-500 mr-2" size={24} />
-                      <span className="text-lg font-semibold text-gray-900">Karma Points</span>
-                    </div>
-                    <div className="text-3xl font-bold text-yellow-600">{editedUser.karmaPoints}</div>
-                    <div className="text-sm text-gray-600 mt-1">Community reputation</div>
+                <div className="inline-flex items-center bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg px-6 py-3">
+                  <Trophy className="text-yellow-500 mr-3" size={24} />
+                  <div>
+                    <div className="text-2xl font-bold text-yellow-600">{editedUser.karmaPoints}</div>
+                    <div className="text-sm text-gray-600">Karma Points</div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+              </div>
 
-          {/* Profile Settings */}
-          <div className="lg:col-span-2 space-y-6">
+              {/* Edit Button */}
+              <div className="flex-shrink-0">
+                {!isEditing ? (
+                  <Button variant="primary" onClick={() => setIsEditing(true)} size="lg">
+                    <Edit3 size={16} className="mr-2" />
+                    Edit Profile
+                  </Button>
+                ) : (
+                  <div className="flex space-x-3">
+                    <Button variant="outline" onClick={handleCancel}>
+                      Cancel
+                    </Button>
+                    <Button variant="primary" onClick={handleSave}>
+                      <Save size={16} className="mr-2" />
+                      Save Changes
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Two Column Layout for Settings */}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+          {/* Left Column */}
+          <div className="space-y-8">
             {/* Personal Information */}
             <Card>
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                    <Settings size={20} className="mr-2" />
-                    Personal Information
-                  </h3>
-                  {!isEditing ? (
-                    <Button variant="primary" onClick={() => setIsEditing(true)}>
-                      <Edit3 size={16} className="mr-2" />
-                      Edit Profile
-                    </Button>
-                  ) : (
-                    <div className="flex space-x-3">
-                      <Button variant="outline" onClick={handleCancel}>
-                        Cancel
-                      </Button>
-                      <Button variant="primary" onClick={handleSave}>
-                        <Save size={16} className="mr-2" />
-                        Save Changes
-                      </Button>
-                    </div>
-                  )}
-                </div>
+                <h3 className="text-xl font-semibold text-gray-900 flex items-center">
+                  <Settings size={20} className="mr-2" />
+                  Personal Information
+                </h3>
               </CardHeader>
               <CardContent className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Full Name
@@ -348,7 +350,7 @@ export const UserProfile: React.FC = () => {
                     <div className="text-xs text-gray-500">Contact support to change email</div>
                   </div>
 
-                  <div className="md:col-span-2">
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Location
                     </label>
@@ -365,7 +367,7 @@ export const UserProfile: React.FC = () => {
                     )}
                   </div>
 
-                  <div className="md:col-span-2">
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Bio
                     </label>
@@ -385,6 +387,56 @@ export const UserProfile: React.FC = () => {
               </CardContent>
             </Card>
 
+            {/* Currency Preference */}
+            <Card>
+              <CardHeader>
+                <h3 className="text-xl font-semibold text-gray-900 flex items-center">
+                  <Globe size={20} className="mr-2" />
+                  Currency Preference
+                </h3>
+                <p className="text-gray-600 text-sm mt-1">
+                  Choose your preferred currency for event pricing
+                </p>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 gap-3">
+                    {EU_CURRENCIES.map((currency) => (
+                      <label
+                        key={currency.code}
+                        className={`flex items-center p-4 border rounded-lg cursor-pointer transition-colors ${
+                          editedUser.preferredCurrency === currency.code
+                            ? 'border-primary-500 bg-primary-50'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="currency"
+                          value={currency.code}
+                          checked={editedUser.preferredCurrency === currency.code}
+                          onChange={(e) => handleCurrencyChange(e.target.value)}
+                          className="text-primary-600 focus:ring-primary-500"
+                        />
+                        <div className="ml-3">
+                          <div className="font-medium text-gray-900">
+                            {currency.symbol} {currency.name} ({currency.code})
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            {currency.countries.slice(0, 2).join(', ')}
+                            {currency.countries.length > 2 && ` +${currency.countries.length - 2} more`}
+                          </div>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Right Column */}
+          <div className="space-y-8">
             {/* Payment Information */}
             <Card>
               <CardHeader>
@@ -505,173 +557,126 @@ export const UserProfile: React.FC = () => {
                 </div>
               </CardContent>
             </Card>
-
-            {/* Currency Preference */}
-            <Card>
-              <CardHeader>
-                <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                  <Globe size={20} className="mr-2" />
-                  Currency Preference
-                </h3>
-                <p className="text-gray-600 text-sm mt-1">
-                  Choose your preferred currency for event pricing
-                </p>
-              </CardHeader>
-              <CardContent className="p-6">
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {EU_CURRENCIES.map((currency) => (
-                      <label
-                        key={currency.code}
-                        className={`flex items-center p-4 border rounded-lg cursor-pointer transition-colors ${
-                          editedUser.preferredCurrency === currency.code
-                            ? 'border-primary-500 bg-primary-50'
-                            : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                      >
-                        <input
-                          type="radio"
-                          name="currency"
-                          value={currency.code}
-                          checked={editedUser.preferredCurrency === currency.code}
-                          onChange={(e) => handleCurrencyChange(e.target.value)}
-                          className="text-primary-600 focus:ring-primary-500"
-                        />
-                        <div className="ml-3">
-                          <div className="font-medium text-gray-900">
-                            {currency.symbol} {currency.name} ({currency.code})
-                          </div>
-                          <div className="text-sm text-gray-500">
-                            {currency.countries.slice(0, 3).join(', ')}
-                            {currency.countries.length > 3 && ` +${currency.countries.length - 3} more`}
-                          </div>
-                        </div>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Sports & Skill Levels */}
-            <Card>
-              <CardHeader>
-                <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                  <Star size={20} className="mr-2" />
-                  Sports & Skill Levels
-                </h3>
-                <p className="text-gray-600 text-sm mt-1">
-                  Click on any sport to set or change your skill level
-                </p>
-              </CardHeader>
-              <CardContent className="p-6">
-                <div className="space-y-4">
-                  {SPORTS.map((sport) => {
-                    const currentLevel = editedUser.skillLevels[sport.id];
-                    const hasRecentChange = skillLevelChanges[sport.id] !== undefined;
-                    
-                    return (
-                      <div 
-                        key={sport.id} 
-                        className={`flex items-center justify-between p-4 border rounded-lg transition-all duration-300 ${
-                          hasRecentChange 
-                            ? 'border-green-300 bg-green-50' 
-                            : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-3">
-                          <span className="text-2xl">{sport.icon}</span>
-                          <div>
-                            <div className="font-medium text-gray-900">{sport.name}</div>
-                            {hasRecentChange && (
-                              <div className="flex items-center text-sm text-green-600 mt-1">
-                                <Check size={14} className="mr-1" />
-                                Updated!
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center space-x-2">
-                          {/* Skill Level Buttons */}
-                          <div className="flex items-center space-x-1">
-                            {SKILL_LEVELS.map((level) => {
-                              const isSelected = currentLevel === level.id;
-                              const isChanging = hasRecentChange && skillLevelChanges[sport.id] === level.id;
-                              
-                              return (
-                                <button
-                                  key={level.id}
-                                  onClick={() => handleSkillLevelChange(sport.id, isSelected ? null : level.id)}
-                                  disabled={hasRecentChange}
-                                  className={`px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 ${
-                                    isSelected
-                                      ? level.id === 'beginner'
-                                        ? 'bg-green-500 text-white'
-                                        : level.id === 'intermediate'
-                                        ? 'bg-yellow-500 text-white'
-                                        : 'bg-red-500 text-white'
-                                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                                  } ${
-                                    hasRecentChange ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
-                                  } ${
-                                    isChanging ? 'ring-2 ring-green-400' : ''
-                                  }`}
-                                >
-                                  {isChanging ? (
-                                    <div className="flex items-center">
-                                      <div className="animate-spin rounded-full h-3 w-3 border-b border-white mr-1"></div>
-                                      {level.name}
-                                    </div>
-                                  ) : (
-                                    level.name
-                                  )}
-                                </button>
-                              );
-                            })}
-                            
-                            {/* Clear button */}
-                            {currentLevel && !hasRecentChange && (
-                              <button
-                                onClick={() => handleSkillLevelChange(sport.id, null)}
-                                className="px-2 py-1 text-xs text-gray-500 hover:text-red-600 transition-colors"
-                                title="Remove skill level"
-                              >
-                                <X size={14} />
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                
-                {Object.keys(user.skillLevels).length === 0 && Object.keys(skillLevelChanges).length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
-                    <Star size={48} className="mx-auto mb-4 text-gray-400" />
-                    <p className="text-lg font-medium">No skill levels set</p>
-                    <p className="text-sm">Click on any sport above to set your skill level!</p>
-                  </div>
-                )}
-
-                {/* Quick tip */}
-                <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <div className="flex items-start">
-                    <Star size={16} className="text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
-                    <div className="text-sm text-blue-800">
-                      <p className="font-medium mb-1">Quick Tip</p>
-                      <p>
-                        Setting accurate skill levels helps you find games with players of similar abilities. 
-                        You can change these anytime by clicking the skill level buttons.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </div>
+
+        {/* Sports & Skill Levels - Full Width */}
+        <Card className="mt-8">
+          <CardHeader>
+            <h3 className="text-xl font-semibold text-gray-900 flex items-center">
+              <Star size={20} className="mr-2" />
+              Sports & Skill Levels
+            </h3>
+            <p className="text-gray-600 text-sm mt-1">
+              Click on any sport to set or change your skill level
+            </p>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="space-y-4">
+              {SPORTS.map((sport) => {
+                const currentLevel = editedUser.skillLevels[sport.id];
+                const hasRecentChange = skillLevelChanges[sport.id] !== undefined;
+                
+                return (
+                  <div 
+                    key={sport.id} 
+                    className={`flex items-center justify-between p-4 border rounded-lg transition-all duration-300 ${
+                      hasRecentChange 
+                        ? 'border-green-300 bg-green-50' 
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <span className="text-2xl">{sport.icon}</span>
+                      <div>
+                        <div className="font-medium text-gray-900">{sport.name}</div>
+                        {hasRecentChange && (
+                          <div className="flex items-center text-sm text-green-600 mt-1">
+                            <Check size={14} className="mr-1" />
+                            Updated!
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-2">
+                      {/* Skill Level Buttons */}
+                      <div className="flex items-center space-x-1">
+                        {SKILL_LEVELS.map((level) => {
+                          const isSelected = currentLevel === level.id;
+                          const isChanging = hasRecentChange && skillLevelChanges[sport.id] === level.id;
+                          
+                          return (
+                            <button
+                              key={level.id}
+                              onClick={() => handleSkillLevelChange(sport.id, isSelected ? null : level.id)}
+                              disabled={hasRecentChange}
+                              className={`px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 ${
+                                isSelected
+                                  ? level.id === 'beginner'
+                                    ? 'bg-green-500 text-white'
+                                    : level.id === 'intermediate'
+                                    ? 'bg-yellow-500 text-white'
+                                    : 'bg-red-500 text-white'
+                                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                              } ${
+                                hasRecentChange ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+                              } ${
+                                isChanging ? 'ring-2 ring-green-400' : ''
+                              }`}
+                            >
+                              {isChanging ? (
+                                <div className="flex items-center">
+                                  <div className="animate-spin rounded-full h-3 w-3 border-b border-white mr-1"></div>
+                                  {level.name}
+                                </div>
+                              ) : (
+                                level.name
+                              )}
+                            </button>
+                          );
+                        })}
+                        
+                        {/* Clear button */}
+                        {currentLevel && !hasRecentChange && (
+                          <button
+                            onClick={() => handleSkillLevelChange(sport.id, null)}
+                            className="px-2 py-1 text-xs text-gray-500 hover:text-red-600 transition-colors"
+                            title="Remove skill level"
+                          >
+                            <X size={14} />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            
+            {Object.keys(user.skillLevels).length === 0 && Object.keys(skillLevelChanges).length === 0 && (
+              <div className="text-center py-8 text-gray-500">
+                <Star size={48} className="mx-auto mb-4 text-gray-400" />
+                <p className="text-lg font-medium">No skill levels set</p>
+                <p className="text-sm">Click on any sport above to set your skill level!</p>
+              </div>
+            )}
+
+            {/* Quick tip */}
+            <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-start">
+                <Star size={16} className="text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+                <div className="text-sm text-blue-800">
+                  <p className="font-medium mb-1">Quick Tip</p>
+                  <p>
+                    Setting accurate skill levels helps you find games with players of similar abilities. 
+                    You can change these anytime by clicking the skill level buttons.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Avatar Upload Modal */}
