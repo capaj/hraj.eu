@@ -23,7 +23,14 @@ import {
   Check,
   CreditCard,
   Building2,
-  ChevronDown
+  ChevronDown,
+  Lock,
+  Trash2,
+  AlertTriangle,
+  Shield,
+  Key,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 
 export const UserProfile: React.FC = () => {
@@ -37,6 +44,25 @@ export const UserProfile: React.FC = () => {
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [showAvatarUpload, setShowAvatarUpload] = useState(false);
   const [skillLevelChanges, setSkillLevelChanges] = useState<Record<string, string | null>>({});
+  
+  // Password change state
+  const [showPasswordChange, setShowPasswordChange] = useState(false);
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+  const [showPasswords, setShowPasswords] = useState({
+    current: false,
+    new: false,
+    confirm: false
+  });
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  
+  // Account deletion state
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
 
   const handleSave = async () => {
     // Simulate API call
@@ -216,6 +242,73 @@ export const UserProfile: React.FC = () => {
     }
   };
 
+  const handlePasswordChange = async () => {
+    // Validate passwords
+    if (!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword) {
+      alert('Please fill in all password fields.');
+      return;
+    }
+
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      alert('New passwords do not match.');
+      return;
+    }
+
+    if (passwordData.newPassword.length < 8) {
+      alert('New password must be at least 8 characters long.');
+      return;
+    }
+
+    setIsChangingPassword(true);
+
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Reset form
+      setPasswordData({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      });
+      setShowPasswordChange(false);
+      
+      console.log('Password changed successfully');
+      alert('Password changed successfully!');
+    } catch (error) {
+      console.error('Failed to change password:', error);
+      alert('Failed to change password. Please try again.');
+    } finally {
+      setIsChangingPassword(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (deleteConfirmText !== 'DELETE') {
+      alert('Please type "DELETE" to confirm account deletion.');
+      return;
+    }
+
+    setIsDeletingAccount(true);
+
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      console.log('Account deletion requested');
+      alert('Account deletion request submitted. You will receive an email with further instructions.');
+      
+      // Reset form
+      setShowDeleteConfirm(false);
+      setDeleteConfirmText('');
+    } catch (error) {
+      console.error('Failed to delete account:', error);
+      alert('Failed to process account deletion. Please try again.');
+    } finally {
+      setIsDeletingAccount(false);
+    }
+  };
+
   const getSkillLevelBadgeVariant = (level: string) => {
     switch (level) {
       case 'beginner': return 'success' as const;
@@ -382,6 +475,213 @@ export const UserProfile: React.FC = () => {
                       />
                     ) : (
                       <div className="py-2 text-gray-900">{user.bio || 'No bio provided'}</div>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Account Security */}
+            <Card>
+              <CardHeader>
+                <h3 className="text-xl font-semibold text-gray-900 flex items-center">
+                  <Shield size={20} className="mr-2" />
+                  Account Security
+                </h3>
+                <p className="text-gray-600 text-sm mt-1">
+                  Manage your password and account security settings
+                </p>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="space-y-6">
+                  {/* Change Password Section */}
+                  <div className="border border-gray-200 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <h4 className="text-sm font-medium text-gray-700">Password</h4>
+                        <p className="text-xs text-gray-500">Last changed 3 months ago</p>
+                      </div>
+                      {!showPasswordChange ? (
+                        <Button variant="outline" size="sm" onClick={() => setShowPasswordChange(true)}>
+                          <Key size={14} className="mr-1" />
+                          Change
+                        </Button>
+                      ) : (
+                        <Button variant="outline" size="sm" onClick={() => setShowPasswordChange(false)}>
+                          Cancel
+                        </Button>
+                      )}
+                    </div>
+
+                    {showPasswordChange && (
+                      <div className="space-y-4 mt-4 pt-4 border-t border-gray-200">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Current Password
+                          </label>
+                          <div className="relative">
+                            <input
+                              type={showPasswords.current ? 'text' : 'password'}
+                              value={passwordData.currentPassword}
+                              onChange={(e) => setPasswordData(prev => ({ ...prev, currentPassword: e.target.value }))}
+                              className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                              placeholder="Enter current password"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowPasswords(prev => ({ ...prev, current: !prev.current }))}
+                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                            >
+                              {showPasswords.current ? <EyeOff size={16} /> : <Eye size={16} />}
+                            </button>
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            New Password
+                          </label>
+                          <div className="relative">
+                            <input
+                              type={showPasswords.new ? 'text' : 'password'}
+                              value={passwordData.newPassword}
+                              onChange={(e) => setPasswordData(prev => ({ ...prev, newPassword: e.target.value }))}
+                              className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                              placeholder="Enter new password"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowPasswords(prev => ({ ...prev, new: !prev.new }))}
+                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                            >
+                              {showPasswords.new ? <EyeOff size={16} /> : <Eye size={16} />}
+                            </button>
+                          </div>
+                          <p className="text-xs text-gray-500 mt-1">Must be at least 8 characters long</p>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Confirm New Password
+                          </label>
+                          <div className="relative">
+                            <input
+                              type={showPasswords.confirm ? 'text' : 'password'}
+                              value={passwordData.confirmPassword}
+                              onChange={(e) => setPasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                              className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                              placeholder="Confirm new password"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowPasswords(prev => ({ ...prev, confirm: !prev.confirm }))}
+                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                            >
+                              {showPasswords.confirm ? <EyeOff size={16} /> : <Eye size={16} />}
+                            </button>
+                          </div>
+                        </div>
+
+                        <Button 
+                          variant="primary" 
+                          onClick={handlePasswordChange}
+                          disabled={isChangingPassword}
+                          className="w-full"
+                        >
+                          {isChangingPassword ? (
+                            <>
+                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                              Changing Password...
+                            </>
+                          ) : (
+                            <>
+                              <Lock size={16} className="mr-2" />
+                              Change Password
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Delete Account Section */}
+                  <div className="border border-red-200 rounded-lg p-4 bg-red-50">
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <h4 className="text-sm font-medium text-red-800">Delete Account</h4>
+                        <p className="text-xs text-red-600">Permanently delete your account and all data</p>
+                      </div>
+                      {!showDeleteConfirm ? (
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => setShowDeleteConfirm(true)}
+                          className="border-red-300 text-red-700 hover:bg-red-100"
+                        >
+                          <Trash2 size={14} className="mr-1" />
+                          Delete
+                        </Button>
+                      ) : (
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => setShowDeleteConfirm(false)}
+                          className="border-gray-300 text-gray-700"
+                        >
+                          Cancel
+                        </Button>
+                      )}
+                    </div>
+
+                    {showDeleteConfirm && (
+                      <div className="space-y-4 mt-4 pt-4 border-t border-red-200">
+                        <div className="bg-red-100 border border-red-200 rounded-lg p-3">
+                          <div className="flex items-start">
+                            <AlertTriangle size={16} className="text-red-600 mr-2 mt-0.5 flex-shrink-0" />
+                            <div className="text-sm text-red-800">
+                              <p className="font-medium mb-1">Warning: This action cannot be undone</p>
+                              <ul className="list-disc list-inside space-y-1 text-red-700">
+                                <li>Your profile and all personal data will be permanently deleted</li>
+                                <li>You will be removed from all events and waitlists</li>
+                                <li>Your karma points and achievements will be lost</li>
+                                <li>Any organized events will be transferred or cancelled</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-red-800 mb-2">
+                            Type "DELETE" to confirm account deletion
+                          </label>
+                          <input
+                            type="text"
+                            value={deleteConfirmText}
+                            onChange={(e) => setDeleteConfirmText(e.target.value)}
+                            className="w-full px-3 py-2 border border-red-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                            placeholder="DELETE"
+                          />
+                        </div>
+
+                        <Button 
+                          variant="outline"
+                          onClick={handleDeleteAccount}
+                          disabled={isDeletingAccount || deleteConfirmText !== 'DELETE'}
+                          className="w-full border-red-500 text-red-700 hover:bg-red-600 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {isDeletingAccount ? (
+                            <>
+                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
+                              Processing Deletion...
+                            </>
+                          ) : (
+                            <>
+                              <Trash2 size={16} className="mr-2" />
+                              Permanently Delete Account
+                            </>
+                          )}
+                        </Button>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -567,6 +867,40 @@ export const UserProfile: React.FC = () => {
             </p>
           </CardHeader>
           <CardContent className="p-6">
+            {/* Skill Level Legend */}
+            <div className="mb-6 bg-gray-50 border border-gray-200 rounded-lg p-4">
+              <h4 className="text-sm font-medium text-gray-900 mb-3">Skill Level Legend</h4>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                    B
+                  </div>
+                  <div>
+                    <div className="font-medium text-gray-900">Beginner</div>
+                    <div className="text-xs text-gray-600">New to the sport or casual players</div>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-yellow-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                    I
+                  </div>
+                  <div>
+                    <div className="font-medium text-gray-900">Intermediate</div>
+                    <div className="text-xs text-gray-600">Regular players with some experience</div>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                    A
+                  </div>
+                  <div>
+                    <div className="font-medium text-gray-900">Advanced</div>
+                    <div className="text-xs text-gray-600">Experienced competitive players</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {SPORTS.map((sport) => {
                 const currentLevel = editedUser.skillLevels[sport.id];
@@ -665,7 +999,7 @@ export const UserProfile: React.FC = () => {
                   <p className="font-medium mb-1">Quick Tip</p>
                   <p>
                     Setting accurate skill levels helps you find games with players of similar abilities. 
-                    You can change these anytime by clicking the skill level buttons. <strong>B</strong> = Beginner, <strong>I</strong> = Intermediate, <strong>A</strong> = Advanced.
+                    You can change these anytime by clicking the skill level buttons.
                   </p>
                 </div>
               </div>
