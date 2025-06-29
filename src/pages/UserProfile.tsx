@@ -22,7 +22,8 @@ import {
   Plus,
   Check,
   CreditCard,
-  Building2
+  Building2,
+  ChevronDown
 } from 'lucide-react';
 
 export const UserProfile: React.FC = () => {
@@ -413,36 +414,32 @@ export const UserProfile: React.FC = () => {
                       Choose your preferred currency for event pricing
                     </p>
                     
-                    <div className="space-y-3">
-                      {EU_CURRENCIES.map((currency) => (
-                        <label
-                          key={currency.code}
-                          className={`flex items-center p-3 border rounded-lg cursor-pointer transition-colors ${
-                            editedUser.preferredCurrency === currency.code
-                              ? 'border-primary-500 bg-primary-50'
-                              : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                        >
-                          <input
-                            type="radio"
-                            name="currency"
-                            value={currency.code}
-                            checked={editedUser.preferredCurrency === currency.code}
-                            onChange={(e) => handleCurrencyChange(e.target.value)}
-                            className="text-primary-600 focus:ring-primary-500"
-                          />
-                          <div className="ml-3">
-                            <div className="font-medium text-gray-900">
-                              {currency.symbol} {currency.name} ({currency.code})
-                            </div>
-                            <div className="text-sm text-gray-500">
-                              {currency.countries.slice(0, 2).join(', ')}
-                              {currency.countries.length > 2 && ` +${currency.countries.length - 2} more`}
-                            </div>
-                          </div>
-                        </label>
-                      ))}
+                    <div className="relative">
+                      <select
+                        value={editedUser.preferredCurrency}
+                        onChange={(e) => handleCurrencyChange(e.target.value)}
+                        className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent appearance-none bg-white pr-10"
+                      >
+                        {EU_CURRENCIES.map((currency) => (
+                          <option key={currency.code} value={currency.code}>
+                            {currency.symbol} {currency.name} ({currency.code}) - {currency.countries.slice(0, 2).join(', ')}{currency.countries.length > 2 && ` +${currency.countries.length - 2} more`}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
                     </div>
+                    
+                    {selectedCurrency && (
+                      <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div className="flex items-center text-sm text-blue-800">
+                          <Check size={16} className="mr-2 text-blue-600" />
+                          <span>
+                            Selected: <strong>{selectedCurrency.symbol} {selectedCurrency.name}</strong> - 
+                            Used in {selectedCurrency.countries.length} countries
+                          </span>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Divider */}
