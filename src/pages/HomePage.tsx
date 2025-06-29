@@ -60,36 +60,6 @@ export const Home: React.FC<HomeProps> = ({ onViewEvent }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-600 to-secondary-600">
-      {/* Hero Section */}
-      <section className="text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
-              Let's Play Together
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 text-primary-100 max-w-3xl mx-auto animate-slide-up">
-              Join the largest community of amateur sports enthusiasts across
-              Europe. Organize games, discover events, and make new friends
-              through sport.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-bounce-gentle">
-              <Button size="lg" variant="secondary" className="text-lg">
-                <Plus size={20} className="mr-2" />
-                Create Event
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="text-lg bg-white/10 border-white/20 text-white hover:bg-white/20"
-              >
-                <Search size={20} className="mr-2" />
-                Discover Games
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Popular Events in Your Area */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -155,19 +125,38 @@ export const Home: React.FC<HomeProps> = ({ onViewEvent }) => {
         </div>
       </section>
 
+      {/* Hero Section */}
+      <section className="text-white py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
+              Let's Play Together
+            </h1>
+            <p className="text-xl md:text-2xl mb-8 text-primary-100 max-w-3xl mx-auto animate-slide-up">
+              Join the largest community of amateur sports enthusiasts across
+              Europe. Organize games, discover events, and make new friends
+              through sport.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-bounce-gentle">
+              <Button size="lg" variant="secondary" className="text-lg">
+                <Plus size={20} className="mr-2" />
+                Create Event
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="text-lg bg-white/10 border-white/20 text-white hover:bg-white/20"
+              >
+                <Search size={20} className="mr-2" />
+                Discover Games
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
       {/* Features Section */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Why Choose hraj.eu?
-            </h2>
-            <p className="text-lg text-white/80 max-w-2xl mx-auto">
-              We make organizing and joining sports events simple, social, and
-              secure.
-            </p>
-          </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Card className="text-center">
               <CardContent className="p-8">
