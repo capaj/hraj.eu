@@ -12,11 +12,9 @@ export default defineConfig({
   ],
   optimizeDeps: {
     exclude: ['lucide-react'],
-    include: ['offline-geocode-city'],
+    include: ['offline-geocode-city', 's2-geometry', 'long'],
   },
-  resolve: {
-    alias: {
-      'offline-geocode-city': './node_modules/.pnpm/offline-geocode-city@1.0.2/node_modules/offline-geocode-city/dist/index.cjs.js'
-    }
+  ssr: {
+    noExternal: ['offline-geocode-city', 's2-geometry', 'long'],
   },
 });
