@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from 'react'
+import { Link, useLoaderData } from '@tanstack/react-router'
 import { Card, CardContent } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { EventCard } from '../components/events/EventCard'
-import { mockEvents } from '../lib/mock-data'
 import { Plus, MapPin, Users, Trophy, Search } from 'lucide-react'
 import { getNearestCity } from 'offline-geocode-city'
 
-interface HomeProps {
-  onViewEvent: (eventId: string) => void
-}
-
-export const Home: React.FC<HomeProps> = ({ onViewEvent }) => {
+export const Home: React.FC = () => {
+  const { upcomingEvents, stats } = useLoaderData({ from: '/' })
   const [userLocation, setUserLocation] = useState<string>('')
   const [isLoadingLocation, setIsLoadingLocation] = useState(true)
-  const upcomingEvents = mockEvents.slice(0, 3)
 
   useEffect(() => {
     // Get user's current location
@@ -80,12 +76,14 @@ export const Home: React.FC<HomeProps> = ({ onViewEvent }) => {
                 </p>
               )}
             </div>
-            <Button
-              variant="outline"
-              className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-            >
-              View All Events
-            </Button>
+            <Link to="/discover">
+              <Button
+                variant="outline"
+                className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+              >
+                View All Events
+              </Button>
+            </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -94,7 +92,6 @@ export const Home: React.FC<HomeProps> = ({ onViewEvent }) => {
                 key={event.id}
                 event={event}
                 onJoin={handleJoinEvent}
-                onView={onViewEvent}
               />
             ))}
           </div>
@@ -106,19 +103,27 @@ export const Home: React.FC<HomeProps> = ({ onViewEvent }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold text-white mb-2">2,547</div>
+              <div className="text-4xl font-bold text-white mb-2">
+                {stats.eventsCreated.toLocaleString()}
+              </div>
               <div className="text-white/80">Events Created</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-white mb-2">8,423</div>
+              <div className="text-4xl font-bold text-white mb-2">
+                {stats.activeUsers.toLocaleString()}
+              </div>
               <div className="text-white/80">Active Players</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-white mb-2">15</div>
+              <div className="text-4xl font-bold text-white mb-2">
+                {stats.countries}
+              </div>
               <div className="text-white/80">Countries</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-white mb-2">95%</div>
+              <div className="text-4xl font-bold text-white mb-2">
+                {stats.successRate}%
+              </div>
               <div className="text-white/80">Success Rate</div>
             </div>
           </div>
@@ -138,18 +143,22 @@ export const Home: React.FC<HomeProps> = ({ onViewEvent }) => {
               through sport.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-bounce-gentle">
-              <Button size="lg" variant="secondary" className="text-lg">
-                <Plus size={20} className="mr-2" />
-                Create Event
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="text-lg bg-white/10 border-white/20 text-white hover:bg-white/20"
-              >
-                <Search size={20} className="mr-2" />
-                Discover Games
-              </Button>
+              <Link to="/create">
+                <Button size="lg" variant="secondary" className="text-lg">
+                  <Plus size={20} className="mr-2" />
+                  Create Event
+                </Button>
+              </Link>
+              <Link to="/discover">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="text-lg bg-white/10 border-white/20 text-white hover:bg-white/20"
+                >
+                  <Search size={20} className="mr-2" />
+                  Discover Games
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

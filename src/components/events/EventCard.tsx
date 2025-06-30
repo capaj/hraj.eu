@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from '@tanstack/react-router';
 import { Card, CardContent } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
@@ -11,10 +12,9 @@ import { format } from 'date-fns';
 interface EventCardProps {
   event: Event;
   onJoin?: (eventId: string) => void;
-  onView?: (eventId: string) => void;
 }
 
-export const EventCard: React.FC<EventCardProps> = ({ event, onJoin, onView }) => {
+export const EventCard: React.FC<EventCardProps> = ({ event, onJoin }) => {
   const sport = SPORTS.find(s => s.id === event.sport);
   const organizer = mockUsers.find(u => u.id === event.organizerId);
   const venue = mockVenues.find(v => v.id === event.venueId);
@@ -106,13 +106,14 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onJoin, onView }) =
           >
             {isSpotAvailable ? 'Join Game' : 'Join Waitlist'}
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onView?.(event.id)}
-          >
-            View Details
-          </Button>
+          <Link to="/events/$eventId" params={{ eventId: event.id }}>
+            <Button
+              variant="outline"
+              size="sm"
+            >
+              View Details
+            </Button>
+          </Link>
         </div>
       </CardContent>
     </Card>

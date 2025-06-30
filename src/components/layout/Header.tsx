@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Link } from '@tanstack/react-router';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { Bell, User, Plus, Check, X, Calendar, Trophy, Users, Euro, AlertTriangle, CheckCircle } from 'lucide-react';
@@ -6,12 +7,7 @@ import { mockNotifications, mockUsers, mockEvents } from '../../lib/mock-data';
 import { Notification } from '../../types';
 import { formatDistanceToNow } from 'date-fns';
 
-interface HeaderProps {
-  currentPage: string;
-  onNavigate: (page: string) => void;
-}
-
-export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
+export const Header: React.FC = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
   const notificationRef = useRef<HTMLDivElement>(null);
@@ -90,58 +86,50 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <div className="flex-shrink-0 cursor-pointer" onClick={() => onNavigate('home')}>
+            <Link to="/" className="flex-shrink-0 cursor-pointer">
               <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
                 hraj.eu
               </h1>
-            </div>
+            </Link>
           </div>
 
           {/* Navigation */}
           <nav className="hidden md:flex space-x-8">
-            <button 
-              onClick={() => onNavigate('discover')}
-              className={`transition-colors ${
-                currentPage === 'discover' 
-                  ? 'text-primary-600 font-medium' 
-                  : 'text-gray-700 hover:text-primary-600'
-              }`}
+            <Link 
+              to="/discover"
+              className="transition-colors text-gray-700 hover:text-primary-600"
+              activeProps={{ className: 'text-primary-600 font-medium' }}
             >
               Discover
-            </button>
-            <button 
-              onClick={() => onNavigate('profile')}
-              className={`transition-colors ${
-                currentPage === 'profile' 
-                  ? 'text-primary-600 font-medium' 
-                  : 'text-gray-700 hover:text-primary-600'
-              }`}
+            </Link>
+            <Link 
+              to="/profile"
+              className="transition-colors text-gray-700 hover:text-primary-600"
+              activeProps={{ className: 'text-primary-600 font-medium' }}
             >
               My Events
-            </button>
-            <button 
-              onClick={() => onNavigate('leaderboard')}
-              className={`transition-colors ${
-                currentPage === 'leaderboard' 
-                  ? 'text-primary-600 font-medium' 
-                  : 'text-gray-700 hover:text-primary-600'
-              }`}
+            </Link>
+            <Link 
+              to="/leaderboard"
+              className="transition-colors text-gray-700 hover:text-primary-600"
+              activeProps={{ className: 'text-primary-600 font-medium' }}
             >
               Leaderboard
-            </button>
+            </Link>
           </nav>
 
           {/* Actions */}
           <div className="flex items-center space-x-4">
-            <Button 
-              variant="primary" 
-              size="sm" 
-              className="hidden sm:flex"
-              onClick={() => onNavigate('create')}
-            >
-              <Plus size={16} className="mr-2" />
-              Create Event
-            </Button>
+            <Link to="/create">
+              <Button 
+                variant="primary" 
+                size="sm" 
+                className="hidden sm:flex"
+              >
+                <Plus size={16} className="mr-2" />
+                Create Event
+              </Button>
+            </Link>
 
             {/* Notifications Dropdown */}
             <div className="relative" ref={notificationRef}>
@@ -272,12 +260,9 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
               )}
             </div>
 
-            <button 
-              onClick={() => onNavigate('user-profile')}
-              className="p-2 text-gray-600 hover:text-primary-600 transition-colors"
-            >
+            <Link to="/user-profile" className="p-2 text-gray-600 hover:text-primary-600 transition-colors">
               <User size={20} />
-            </button>
+            </Link>
           </div>
         </div>
       </div>

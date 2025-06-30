@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { Card, CardHeader, CardContent } from '../components/ui/Card';
-import { Badge } from '../components/ui/Badge';
-import { Button } from '../components/ui/Button';
-import { mockUsers } from '../lib/mock-data';
-import { SPORTS, SKILL_LEVELS, EU_CURRENCIES } from '../lib/constants';
-import { User } from '../types';
-import { 
-  User as UserIcon, 
-  Camera, 
-  Save, 
-  MapPin, 
-  Mail, 
+import React, { useState } from 'react'
+import { Card, CardHeader, CardContent } from '../components/ui/Card'
+import { Badge } from '../components/ui/Badge'
+import { Button } from '../components/ui/Button'
+import { mockUsers } from '../lib/mock-data'
+import { SPORTS, SKILL_LEVELS, EU_CURRENCIES } from '../lib/constants'
+import { User } from '../types'
+import {
+  User as UserIcon,
+  Camera,
+  Save,
+  MapPin,
+  Mail,
   Calendar,
   Trophy,
   Settings,
@@ -31,294 +31,328 @@ import {
   Key,
   Eye,
   EyeOff
-} from 'lucide-react';
+} from 'lucide-react'
 
 export const UserProfile: React.FC = () => {
-  const [user, setUser] = useState<User>(mockUsers[0]); // Current user
-  const [isEditing, setIsEditing] = useState(false);
-  const [isEditingRevTag, setIsEditingRevTag] = useState(false);
-  const [isEditingBankAccount, setIsEditingBankAccount] = useState(false);
-  const [editedUser, setEditedUser] = useState<User>({ ...user });
-  const [editedRevTag, setEditedRevTag] = useState(user.revTag || '');
-  const [editedBankAccount, setEditedBankAccount] = useState(user.bankAccount || '');
-  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
-  const [showAvatarUpload, setShowAvatarUpload] = useState(false);
-  const [skillLevelChanges, setSkillLevelChanges] = useState<Record<string, string | null>>({});
-  
+  const [user, setUser] = useState<User>(mockUsers[0]) // Current user
+  const [isEditing, setIsEditing] = useState(false)
+  const [isEditingRevTag, setIsEditingRevTag] = useState(false)
+  const [isEditingBankAccount, setIsEditingBankAccount] = useState(false)
+  const [editedUser, setEditedUser] = useState<User>({ ...user })
+  const [editedRevTag, setEditedRevTag] = useState(user.revTag || '')
+  const [editedBankAccount, setEditedBankAccount] = useState(
+    user.bankAccount || ''
+  )
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false)
+  const [showAvatarUpload, setShowAvatarUpload] = useState(false)
+  const [skillLevelChanges, setSkillLevelChanges] = useState<
+    Record<string, string | null>
+  >({})
+
   // Password change state
-  const [showPasswordChange, setShowPasswordChange] = useState(false);
+  const [showPasswordChange, setShowPasswordChange] = useState(false)
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
     newPassword: '',
     confirmPassword: ''
-  });
+  })
   const [showPasswords, setShowPasswords] = useState({
     current: false,
     new: false,
     confirm: false
-  });
-  const [isChangingPassword, setIsChangingPassword] = useState(false);
-  
+  })
+  const [isChangingPassword, setIsChangingPassword] = useState(false)
+
   // Account deletion state
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleteConfirmText, setDeleteConfirmText] = useState('');
-  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [deleteConfirmText, setDeleteConfirmText] = useState('')
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false)
 
   const handleSave = async () => {
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    setUser(editedUser);
-    setIsEditing(false);
-    setSkillLevelChanges({});
-    
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+
+    setUser(editedUser)
+    setIsEditing(false)
+    setSkillLevelChanges({})
+
     // In a real app, this would make an API call to update the user
-    console.log('User updated:', editedUser);
-    alert('Profile updated successfully!');
-  };
+    console.log('User updated:', editedUser)
+    alert('Profile updated successfully!')
+  }
 
   const handleCancel = () => {
-    setEditedUser({ ...user });
-    setIsEditing(false);
-    setSkillLevelChanges({});
-  };
+    setEditedUser({ ...user })
+    setIsEditing(false)
+    setSkillLevelChanges({})
+  }
 
   const handleSaveRevTag = async () => {
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      const updatedUser = { ...user, revTag: editedRevTag };
-      setUser(updatedUser);
-      setEditedUser(updatedUser);
-      setIsEditingRevTag(false);
-      
-      console.log('Revolut tag updated:', editedRevTag);
+      await new Promise((resolve) => setTimeout(resolve, 500))
+
+      const updatedUser = { ...user, revTag: editedRevTag }
+      setUser(updatedUser)
+      setEditedUser(updatedUser)
+      setIsEditingRevTag(false)
+
+      console.log('Revolut tag updated:', editedRevTag)
     } catch (error) {
-      console.error('Failed to update Revolut tag:', error);
-      alert('Failed to update Revolut tag. Please try again.');
+      console.error('Failed to update Revolut tag:', error)
+      alert('Failed to update Revolut tag. Please try again.')
     }
-  };
+  }
 
   const handleCancelRevTag = () => {
-    setEditedRevTag(user.revTag || '');
-    setIsEditingRevTag(false);
-  };
+    setEditedRevTag(user.revTag || '')
+    setIsEditingRevTag(false)
+  }
 
   const handleSaveBankAccount = async () => {
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      const updatedUser = { ...user, bankAccount: editedBankAccount };
-      setUser(updatedUser);
-      setEditedUser(updatedUser);
-      setIsEditingBankAccount(false);
-      
-      console.log('Bank account updated:', editedBankAccount);
+      await new Promise((resolve) => setTimeout(resolve, 500))
+
+      const updatedUser = { ...user, bankAccount: editedBankAccount }
+      setUser(updatedUser)
+      setEditedUser(updatedUser)
+      setIsEditingBankAccount(false)
+
+      console.log('Bank account updated:', editedBankAccount)
     } catch (error) {
-      console.error('Failed to update bank account:', error);
-      alert('Failed to update bank account. Please try again.');
+      console.error('Failed to update bank account:', error)
+      alert('Failed to update bank account. Please try again.')
     }
-  };
+  }
 
   const handleCancelBankAccount = () => {
-    setEditedBankAccount(user.bankAccount || '');
-    setIsEditingBankAccount(false);
-  };
+    setEditedBankAccount(user.bankAccount || '')
+    setIsEditingBankAccount(false)
+  }
 
-  const handleSkillLevelChange = async (sport: string, level: string | null) => {
+  const handleSkillLevelChange = async (
+    sport: string,
+    level: string | null
+  ) => {
     // Update the edited user state
-    setEditedUser(prev => {
-      const newSkillLevels = { ...prev.skillLevels };
+    setEditedUser((prev) => {
+      const newSkillLevels = { ...prev.skillLevels }
       if (level === null) {
-        delete newSkillLevels[sport];
+        delete newSkillLevels[sport]
       } else {
-        newSkillLevels[sport] = level as 'beginner' | 'intermediate' | 'advanced';
+        newSkillLevels[sport] = level as
+          | 'beginner'
+          | 'intermediate'
+          | 'advanced'
       }
-      return { ...prev, skillLevels: newSkillLevels };
-    });
+      return { ...prev, skillLevels: newSkillLevels }
+    })
 
     // Track the change for visual feedback
-    setSkillLevelChanges(prev => ({ ...prev, [sport]: level }));
+    setSkillLevelChanges((prev) => ({ ...prev, [sport]: level }))
 
     // Auto-save skill level changes (even when not in full edit mode)
     if (!isEditing) {
       try {
         // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
+        await new Promise((resolve) => setTimeout(resolve, 500))
+
         // Update the main user state
-        setUser(prev => {
-          const newSkillLevels = { ...prev.skillLevels };
+        setUser((prev) => {
+          const newSkillLevels = { ...prev.skillLevels }
           if (level === null) {
-            delete newSkillLevels[sport];
+            delete newSkillLevels[sport]
           } else {
-            newSkillLevels[sport] = level as 'beginner' | 'intermediate' | 'advanced';
+            newSkillLevels[sport] = level as
+              | 'beginner'
+              | 'intermediate'
+              | 'advanced'
           }
-          return { ...prev, skillLevels: newSkillLevels };
-        });
+          return { ...prev, skillLevels: newSkillLevels }
+        })
 
         // Clear the change indicator after a delay
         setTimeout(() => {
-          setSkillLevelChanges(prev => {
-            const newChanges = { ...prev };
-            delete newChanges[sport];
-            return newChanges;
-          });
-        }, 1500);
+          setSkillLevelChanges((prev) => {
+            const newChanges = { ...prev }
+            delete newChanges[sport]
+            return newChanges
+          })
+        }, 1500)
 
-        console.log(`Skill level updated for ${sport}: ${level}`);
+        console.log(`Skill level updated for ${sport}: ${level}`)
       } catch (error) {
-        console.error('Failed to update skill level:', error);
+        console.error('Failed to update skill level:', error)
         // Revert the change on error
-        setEditedUser(prev => ({ ...prev, skillLevels: user.skillLevels }));
-        setSkillLevelChanges(prev => {
-          const newChanges = { ...prev };
-          delete newChanges[sport];
-          return newChanges;
-        });
+        setEditedUser((prev) => ({ ...prev, skillLevels: user.skillLevels }))
+        setSkillLevelChanges((prev) => {
+          const newChanges = { ...prev }
+          delete newChanges[sport]
+          return newChanges
+        })
       }
     }
-  };
+  }
 
   const handleCurrencyChange = async (newCurrency: string) => {
     // Update the edited user state
-    setEditedUser(prev => ({ ...prev, preferredCurrency: newCurrency }));
+    setEditedUser((prev) => ({ ...prev, preferredCurrency: newCurrency }))
 
     // Auto-save currency changes (even when not in full edit mode)
     if (!isEditing) {
       try {
         // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 300));
-        
+        await new Promise((resolve) => setTimeout(resolve, 300))
+
         // Update the main user state
-        setUser(prev => ({ ...prev, preferredCurrency: newCurrency }));
-        
-        console.log(`Currency updated to: ${newCurrency}`);
+        setUser((prev) => ({ ...prev, preferredCurrency: newCurrency }))
+
+        console.log(`Currency updated to: ${newCurrency}`)
       } catch (error) {
-        console.error('Failed to update currency:', error);
+        console.error('Failed to update currency:', error)
         // Revert the change on error
-        setEditedUser(prev => ({ ...prev, preferredCurrency: user.preferredCurrency }));
+        setEditedUser((prev) => ({
+          ...prev,
+          preferredCurrency: user.preferredCurrency
+        }))
       }
     }
-  };
+  }
 
-  const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+  const handleAvatarUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0]
+    if (!file) return
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      alert('Please select an image file');
-      return;
+      alert('Please select an image file')
+      return
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      alert('Image must be smaller than 5MB');
-      return;
+      alert('Image must be smaller than 5MB')
+      return
     }
 
-    setIsUploadingAvatar(true);
+    setIsUploadingAvatar(true)
 
     try {
       // Simulate upload delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+
       // In a real app, you'd upload to a service like Cloudinary or AWS S3
       // For demo, we'll use a placeholder URL
-      const newAvatarUrl = `https://images.pexels.com/photos/${Math.floor(Math.random() * 1000000)}/pexels-photo-${Math.floor(Math.random() * 1000000)}.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop`;
-      
-      setEditedUser(prev => ({ ...prev, avatar: newAvatarUrl }));
-      setShowAvatarUpload(false);
-      
-      console.log('Avatar uploaded:', file.name);
+      const newAvatarUrl = `https://images.pexels.com/photos/${Math.floor(
+        Math.random() * 1000000
+      )}/pexels-photo-${Math.floor(
+        Math.random() * 1000000
+      )}.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop`
+
+      setEditedUser((prev) => ({ ...prev, avatar: newAvatarUrl }))
+      setShowAvatarUpload(false)
+
+      console.log('Avatar uploaded:', file.name)
     } catch (error) {
-      console.error('Upload failed:', error);
-      alert('Failed to upload image. Please try again.');
+      console.error('Upload failed:', error)
+      alert('Failed to upload image. Please try again.')
     } finally {
-      setIsUploadingAvatar(false);
+      setIsUploadingAvatar(false)
     }
-  };
+  }
 
   const handlePasswordChange = async () => {
     // Validate passwords
-    if (!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword) {
-      alert('Please fill in all password fields.');
-      return;
+    if (
+      !passwordData.currentPassword ||
+      !passwordData.newPassword ||
+      !passwordData.confirmPassword
+    ) {
+      alert('Please fill in all password fields.')
+      return
     }
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert('New passwords do not match.');
-      return;
+      alert('New passwords do not match.')
+      return
     }
 
     if (passwordData.newPassword.length < 8) {
-      alert('New password must be at least 8 characters long.');
-      return;
+      alert('New password must be at least 8 characters long.')
+      return
     }
 
-    setIsChangingPassword(true);
+    setIsChangingPassword(true)
 
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+
       // Reset form
       setPasswordData({
         currentPassword: '',
         newPassword: '',
         confirmPassword: ''
-      });
-      setShowPasswordChange(false);
-      
-      console.log('Password changed successfully');
-      alert('Password changed successfully!');
+      })
+      setShowPasswordChange(false)
+
+      console.log('Password changed successfully')
+      alert('Password changed successfully!')
     } catch (error) {
-      console.error('Failed to change password:', error);
-      alert('Failed to change password. Please try again.');
+      console.error('Failed to change password:', error)
+      alert('Failed to change password. Please try again.')
     } finally {
-      setIsChangingPassword(false);
+      setIsChangingPassword(false)
     }
-  };
+  }
 
   const handleDeleteAccount = async () => {
     if (deleteConfirmText !== 'DELETE') {
-      alert('Please type "DELETE" to confirm account deletion.');
-      return;
+      alert('Please type "DELETE" to confirm account deletion.')
+      return
     }
 
-    setIsDeletingAccount(true);
+    setIsDeletingAccount(true)
 
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      console.log('Account deletion requested');
-      alert('Account deletion request submitted. You will receive an email with further instructions.');
-      
+      await new Promise((resolve) => setTimeout(resolve, 3000))
+
+      console.log('Account deletion requested')
+      alert(
+        'Account deletion request submitted. You will receive an email with further instructions.'
+      )
+
       // Reset form
-      setShowDeleteConfirm(false);
-      setDeleteConfirmText('');
+      setShowDeleteConfirm(false)
+      setDeleteConfirmText('')
     } catch (error) {
-      console.error('Failed to delete account:', error);
-      alert('Failed to process account deletion. Please try again.');
+      console.error('Failed to delete account:', error)
+      alert('Failed to process account deletion. Please try again.')
     } finally {
-      setIsDeletingAccount(false);
+      setIsDeletingAccount(false)
     }
-  };
+  }
 
   const getSkillLevelBadgeVariant = (level: string) => {
     switch (level) {
-      case 'beginner': return 'success' as const;
-      case 'intermediate': return 'warning' as const;
-      case 'advanced': return 'error' as const;
-      default: return 'default' as const;
+      case 'beginner':
+        return 'success' as const
+      case 'intermediate':
+        return 'warning' as const
+      case 'advanced':
+        return 'error' as const
+      default:
+        return 'default' as const
     }
-  };
+  }
 
-  const selectedCurrency = EU_CURRENCIES.find(c => c.code === editedUser.preferredCurrency);
+  const selectedCurrency = EU_CURRENCIES.find(
+    (c) => c.code === editedUser.preferredCurrency
+  )
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-600 to-secondary-600 py-8">
@@ -329,7 +363,9 @@ export const UserProfile: React.FC = () => {
             <UserIcon className="mr-3 text-white" size={32} />
             My Profile
           </h1>
-          <p className="text-white/80 mt-2">Manage your account settings and sports preferences</p>
+          <p className="text-white/80 mt-2">
+            Manage your account settings and sports preferences
+          </p>
         </div>
 
         {/* Profile Overview Card - Full Width */}
@@ -355,7 +391,9 @@ export const UserProfile: React.FC = () => {
 
               {/* Basic Info */}
               <div className="flex-1 text-center lg:text-left">
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">{editedUser.name}</h2>
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                  {editedUser.name}
+                </h2>
                 <div className="flex flex-col lg:flex-row lg:items-center lg:space-x-6 space-y-2 lg:space-y-0 text-gray-600 mb-4">
                   <div className="flex items-center justify-center lg:justify-start">
                     <Mail size={16} className="mr-2" />
@@ -369,7 +407,11 @@ export const UserProfile: React.FC = () => {
                   )}
                   <div className="flex items-center justify-center lg:justify-start">
                     <Calendar size={16} className="mr-2" />
-                    Member since {editedUser.createdAt.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                    Member since{' '}
+                    {editedUser.createdAt.toLocaleDateString('en-US', {
+                      month: 'long',
+                      year: 'numeric'
+                    })}
                   </div>
                 </div>
 
@@ -377,30 +419,12 @@ export const UserProfile: React.FC = () => {
                 <div className="inline-flex items-center bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg px-6 py-3">
                   <Trophy className="text-yellow-500 mr-3" size={24} />
                   <div>
-                    <div className="text-2xl font-bold text-yellow-600">{editedUser.karmaPoints}</div>
+                    <div className="text-2xl font-bold text-yellow-600">
+                      {editedUser.karmaPoints}
+                    </div>
                     <div className="text-sm text-gray-600">Karma Points</div>
                   </div>
                 </div>
-              </div>
-
-              {/* Edit Button */}
-              <div className="flex-shrink-0">
-                {!isEditing ? (
-                  <Button variant="primary" onClick={() => setIsEditing(true)} size="lg">
-                    <Edit3 size={16} className="mr-2" />
-                    Edit Profile
-                  </Button>
-                ) : (
-                  <div className="flex space-x-3">
-                    <Button variant="outline" onClick={handleCancel}>
-                      Cancel
-                    </Button>
-                    <Button variant="primary" onClick={handleSave}>
-                      <Save size={16} className="mr-2" />
-                      Save Changes
-                    </Button>
-                  </div>
-                )}
               </div>
             </div>
           </CardContent>
@@ -413,10 +437,32 @@ export const UserProfile: React.FC = () => {
             {/* Personal Information */}
             <Card>
               <CardHeader>
-                <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                  <Settings size={20} className="mr-2" />
-                  Personal Information
-                </h3>
+                {/* Edit Button */}
+                <div className="flex-shrink-0 flex justify-between">
+                  <h3 className="text-xl font-semibold text-gray-900 flex items-center">
+                    <Settings size={20} className="mr-2" />
+                    Personal Information
+                  </h3>
+                  {!isEditing ? (
+                    <Button
+                      variant="primary"
+                      onClick={() => setIsEditing(true)}
+                    >
+                      <Edit3 size={16} className="mr-2" />
+                      Edit Profile
+                    </Button>
+                  ) : (
+                    <div className="flex space-x-3">
+                      <Button variant="outline" onClick={handleCancel}>
+                        Cancel
+                      </Button>
+                      <Button variant="primary" onClick={handleSave}>
+                        <Save size={16} className="mr-2" />
+                        Save Changes
+                      </Button>
+                    </div>
+                  )}
+                </div>
               </CardHeader>
               <CardContent className="p-6">
                 <div className="space-y-6">
@@ -428,7 +474,12 @@ export const UserProfile: React.FC = () => {
                       <input
                         type="text"
                         value={editedUser.name}
-                        onChange={(e) => setEditedUser(prev => ({ ...prev, name: e.target.value }))}
+                        onChange={(e) =>
+                          setEditedUser((prev) => ({
+                            ...prev,
+                            name: e.target.value
+                          }))
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       />
                     ) : (
@@ -441,7 +492,9 @@ export const UserProfile: React.FC = () => {
                       Email Address
                     </label>
                     <div className="py-2 text-gray-900">{user.email}</div>
-                    <div className="text-xs text-gray-500">Contact support to change email</div>
+                    <div className="text-xs text-gray-500">
+                      Contact support to change email
+                    </div>
                   </div>
 
                   <div>
@@ -452,12 +505,19 @@ export const UserProfile: React.FC = () => {
                       <input
                         type="text"
                         value={editedUser.location || ''}
-                        onChange={(e) => setEditedUser(prev => ({ ...prev, location: e.target.value }))}
+                        onChange={(e) =>
+                          setEditedUser((prev) => ({
+                            ...prev,
+                            location: e.target.value
+                          }))
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         placeholder="City, Country"
                       />
                     ) : (
-                      <div className="py-2 text-gray-900">{user.location || 'Not specified'}</div>
+                      <div className="py-2 text-gray-900">
+                        {user.location || 'Not specified'}
+                      </div>
                     )}
                   </div>
 
@@ -468,13 +528,20 @@ export const UserProfile: React.FC = () => {
                     {isEditing ? (
                       <textarea
                         value={editedUser.bio || ''}
-                        onChange={(e) => setEditedUser(prev => ({ ...prev, bio: e.target.value }))}
+                        onChange={(e) =>
+                          setEditedUser((prev) => ({
+                            ...prev,
+                            bio: e.target.value
+                          }))
+                        }
                         rows={3}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         placeholder="Tell us about yourself and your sports interests..."
                       />
                     ) : (
-                      <div className="py-2 text-gray-900">{user.bio || 'No bio provided'}</div>
+                      <div className="py-2 text-gray-900">
+                        {user.bio || 'No bio provided'}
+                      </div>
                     )}
                   </div>
                 </div>
@@ -498,16 +565,28 @@ export const UserProfile: React.FC = () => {
                   <div className="border border-gray-200 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-3">
                       <div>
-                        <h4 className="text-sm font-medium text-gray-700">Password</h4>
-                        <p className="text-xs text-gray-500">Last changed 3 months ago</p>
+                        <h4 className="text-sm font-medium text-gray-700">
+                          Password
+                        </h4>
+                        <p className="text-xs text-gray-500">
+                          Last changed 3 months ago
+                        </p>
                       </div>
                       {!showPasswordChange ? (
-                        <Button variant="outline" size="sm" onClick={() => setShowPasswordChange(true)}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setShowPasswordChange(true)}
+                        >
                           <Key size={14} className="mr-1" />
                           Change
                         </Button>
                       ) : (
-                        <Button variant="outline" size="sm" onClick={() => setShowPasswordChange(false)}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setShowPasswordChange(false)}
+                        >
                           Cancel
                         </Button>
                       )}
@@ -523,16 +602,30 @@ export const UserProfile: React.FC = () => {
                             <input
                               type={showPasswords.current ? 'text' : 'password'}
                               value={passwordData.currentPassword}
-                              onChange={(e) => setPasswordData(prev => ({ ...prev, currentPassword: e.target.value }))}
+                              onChange={(e) =>
+                                setPasswordData((prev) => ({
+                                  ...prev,
+                                  currentPassword: e.target.value
+                                }))
+                              }
                               className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                               placeholder="Enter current password"
                             />
                             <button
                               type="button"
-                              onClick={() => setShowPasswords(prev => ({ ...prev, current: !prev.current }))}
+                              onClick={() =>
+                                setShowPasswords((prev) => ({
+                                  ...prev,
+                                  current: !prev.current
+                                }))
+                              }
                               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                             >
-                              {showPasswords.current ? <EyeOff size={16} /> : <Eye size={16} />}
+                              {showPasswords.current ? (
+                                <EyeOff size={16} />
+                              ) : (
+                                <Eye size={16} />
+                              )}
                             </button>
                           </div>
                         </div>
@@ -545,19 +638,35 @@ export const UserProfile: React.FC = () => {
                             <input
                               type={showPasswords.new ? 'text' : 'password'}
                               value={passwordData.newPassword}
-                              onChange={(e) => setPasswordData(prev => ({ ...prev, newPassword: e.target.value }))}
+                              onChange={(e) =>
+                                setPasswordData((prev) => ({
+                                  ...prev,
+                                  newPassword: e.target.value
+                                }))
+                              }
                               className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                               placeholder="Enter new password"
                             />
                             <button
                               type="button"
-                              onClick={() => setShowPasswords(prev => ({ ...prev, new: !prev.new }))}
+                              onClick={() =>
+                                setShowPasswords((prev) => ({
+                                  ...prev,
+                                  new: !prev.new
+                                }))
+                              }
                               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                             >
-                              {showPasswords.new ? <EyeOff size={16} /> : <Eye size={16} />}
+                              {showPasswords.new ? (
+                                <EyeOff size={16} />
+                              ) : (
+                                <Eye size={16} />
+                              )}
                             </button>
                           </div>
-                          <p className="text-xs text-gray-500 mt-1">Must be at least 8 characters long</p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Must be at least 8 characters long
+                          </p>
                         </div>
 
                         <div>
@@ -568,22 +677,36 @@ export const UserProfile: React.FC = () => {
                             <input
                               type={showPasswords.confirm ? 'text' : 'password'}
                               value={passwordData.confirmPassword}
-                              onChange={(e) => setPasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                              onChange={(e) =>
+                                setPasswordData((prev) => ({
+                                  ...prev,
+                                  confirmPassword: e.target.value
+                                }))
+                              }
                               className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                               placeholder="Confirm new password"
                             />
                             <button
                               type="button"
-                              onClick={() => setShowPasswords(prev => ({ ...prev, confirm: !prev.confirm }))}
+                              onClick={() =>
+                                setShowPasswords((prev) => ({
+                                  ...prev,
+                                  confirm: !prev.confirm
+                                }))
+                              }
                               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                             >
-                              {showPasswords.confirm ? <EyeOff size={16} /> : <Eye size={16} />}
+                              {showPasswords.confirm ? (
+                                <EyeOff size={16} />
+                              ) : (
+                                <Eye size={16} />
+                              )}
                             </button>
                           </div>
                         </div>
 
-                        <Button 
-                          variant="primary" 
+                        <Button
+                          variant="primary"
                           onClick={handlePasswordChange}
                           disabled={isChangingPassword}
                           className="w-full"
@@ -608,13 +731,17 @@ export const UserProfile: React.FC = () => {
                   <div className="border border-red-200 rounded-lg p-4 bg-red-50">
                     <div className="flex items-center justify-between mb-3">
                       <div>
-                        <h4 className="text-sm font-medium text-red-800">Delete Account</h4>
-                        <p className="text-xs text-red-600">Permanently delete your account and all data</p>
+                        <h4 className="text-sm font-medium text-red-800">
+                          Delete Account
+                        </h4>
+                        <p className="text-xs text-red-600">
+                          Permanently delete your account and all data
+                        </p>
                       </div>
                       {!showDeleteConfirm ? (
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
+                        <Button
+                          variant="outline"
+                          size="sm"
                           onClick={() => setShowDeleteConfirm(true)}
                           className="border-red-300 text-red-700 hover:bg-red-100"
                         >
@@ -622,9 +749,9 @@ export const UserProfile: React.FC = () => {
                           Delete
                         </Button>
                       ) : (
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
+                        <Button
+                          variant="outline"
+                          size="sm"
                           onClick={() => setShowDeleteConfirm(false)}
                           className="border-gray-300 text-gray-700"
                         >
@@ -637,14 +764,31 @@ export const UserProfile: React.FC = () => {
                       <div className="space-y-4 mt-4 pt-4 border-t border-red-200">
                         <div className="bg-red-100 border border-red-200 rounded-lg p-3">
                           <div className="flex items-start">
-                            <AlertTriangle size={16} className="text-red-600 mr-2 mt-0.5 flex-shrink-0" />
+                            <AlertTriangle
+                              size={16}
+                              className="text-red-600 mr-2 mt-0.5 flex-shrink-0"
+                            />
                             <div className="text-sm text-red-800">
-                              <p className="font-medium mb-1">Warning: This action cannot be undone</p>
+                              <p className="font-medium mb-1">
+                                Warning: This action cannot be undone
+                              </p>
                               <ul className="list-disc list-inside space-y-1 text-red-700">
-                                <li>Your profile and all personal data will be permanently deleted</li>
-                                <li>You will be removed from all events and waitlists</li>
-                                <li>Your karma points and achievements will be lost</li>
-                                <li>Any organized events will be transferred or cancelled</li>
+                                <li>
+                                  Your profile and all personal data will be
+                                  permanently deleted
+                                </li>
+                                <li>
+                                  You will be removed from all events and
+                                  waitlists
+                                </li>
+                                <li>
+                                  Your karma points and achievements will be
+                                  lost
+                                </li>
+                                <li>
+                                  Any organized events will be transferred or
+                                  cancelled
+                                </li>
                               </ul>
                             </div>
                           </div>
@@ -657,16 +801,20 @@ export const UserProfile: React.FC = () => {
                           <input
                             type="text"
                             value={deleteConfirmText}
-                            onChange={(e) => setDeleteConfirmText(e.target.value)}
+                            onChange={(e) =>
+                              setDeleteConfirmText(e.target.value)
+                            }
                             className="w-full px-3 py-2 border border-red-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                             placeholder="DELETE"
                           />
                         </div>
 
-                        <Button 
+                        <Button
                           variant="outline"
                           onClick={handleDeleteAccount}
-                          disabled={isDeletingAccount || deleteConfirmText !== 'DELETE'}
+                          disabled={
+                            isDeletingAccount || deleteConfirmText !== 'DELETE'
+                          }
                           className="w-full border-red-500 text-red-700 hover:bg-red-600 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {isDeletingAccount ? (
@@ -699,7 +847,8 @@ export const UserProfile: React.FC = () => {
                   Payment Information
                 </h3>
                 <p className="text-gray-600 text-sm mt-1">
-                  Add your payment details and currency preference for easy event transactions
+                  Add your payment details and currency preference for easy
+                  event transactions
                 </p>
               </CardHeader>
               <CardContent className="p-6">
@@ -713,7 +862,7 @@ export const UserProfile: React.FC = () => {
                     <p className="text-sm text-gray-600 mb-4">
                       Choose your preferred currency for event pricing
                     </p>
-                    
+
                     <div className="relative">
                       <select
                         value={editedUser.preferredCurrency}
@@ -722,20 +871,30 @@ export const UserProfile: React.FC = () => {
                       >
                         {EU_CURRENCIES.map((currency) => (
                           <option key={currency.code} value={currency.code}>
-                            {currency.symbol} {currency.name} ({currency.code}) - {currency.countries.slice(0, 2).join(', ')}{currency.countries.length > 2 && ` +${currency.countries.length - 2} more`}
+                            {currency.symbol} {currency.name} ({currency.code})
+                            - {currency.countries.slice(0, 2).join(', ')}
+                            {currency.countries.length > 2 &&
+                              ` +${currency.countries.length - 2} more`}
                           </option>
                         ))}
                       </select>
-                      <ChevronDown size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+                      <ChevronDown
+                        size={16}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"
+                      />
                     </div>
-                    
+
                     {selectedCurrency && (
                       <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
                         <div className="flex items-center text-sm text-blue-800">
                           <Check size={16} className="mr-2 text-blue-600" />
                           <span>
-                            Selected: <strong>{selectedCurrency.symbol} {selectedCurrency.name}</strong> - 
-                            Used in {selectedCurrency.countries.length} countries
+                            Selected:{' '}
+                            <strong>
+                              {selectedCurrency.symbol} {selectedCurrency.name}
+                            </strong>{' '}
+                            - Used in {selectedCurrency.countries.length}{' '}
+                            countries
                           </span>
                         </div>
                       </div>
@@ -752,26 +911,40 @@ export const UserProfile: React.FC = () => {
                         Revolut Tag
                       </label>
                       {!isEditingRevTag ? (
-                        <Button variant="outline" size="sm" onClick={() => setIsEditingRevTag(true)}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setIsEditingRevTag(true)}
+                        >
                           <Edit3 size={14} className="mr-1" />
                           Edit
                         </Button>
                       ) : (
                         <div className="flex space-x-2">
-                          <Button variant="outline" size="sm" onClick={handleCancelRevTag}>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={handleCancelRevTag}
+                          >
                             Cancel
                           </Button>
-                          <Button variant="primary" size="sm" onClick={handleSaveRevTag}>
+                          <Button
+                            variant="primary"
+                            size="sm"
+                            onClick={handleSaveRevTag}
+                          >
                             <Save size={14} className="mr-1" />
                             Save
                           </Button>
                         </div>
                       )}
                     </div>
-                    
+
                     {isEditingRevTag ? (
                       <div className="relative">
-                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">@</span>
+                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                          @
+                        </span>
                         <input
                           type="text"
                           value={editedRevTag}
@@ -786,7 +959,7 @@ export const UserProfile: React.FC = () => {
                         {user.revTag ? `@${user.revTag}` : 'Not specified'}
                       </div>
                     )}
-                    
+
                     <div className="text-xs text-gray-500 mt-2">
                       Your Revolut username for quick payments
                     </div>
@@ -799,23 +972,35 @@ export const UserProfile: React.FC = () => {
                         Czech Bank Account
                       </label>
                       {!isEditingBankAccount ? (
-                        <Button variant="outline" size="sm" onClick={() => setIsEditingBankAccount(true)}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setIsEditingBankAccount(true)}
+                        >
                           <Edit3 size={14} className="mr-1" />
                           Edit
                         </Button>
                       ) : (
                         <div className="flex space-x-2">
-                          <Button variant="outline" size="sm" onClick={handleCancelBankAccount}>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={handleCancelBankAccount}
+                          >
                             Cancel
                           </Button>
-                          <Button variant="primary" size="sm" onClick={handleSaveBankAccount}>
+                          <Button
+                            variant="primary"
+                            size="sm"
+                            onClick={handleSaveBankAccount}
+                          >
                             <Save size={14} className="mr-1" />
                             Save
                           </Button>
                         </div>
                       )}
                     </div>
-                    
+
                     {isEditingBankAccount ? (
                       <input
                         type="text"
@@ -830,7 +1015,7 @@ export const UserProfile: React.FC = () => {
                         {user.bankAccount || 'Not specified'}
                       </div>
                     )}
-                    
+
                     <div className="text-xs text-gray-500 mt-2">
                       Czech bank account number (format: account/bank code)
                     </div>
@@ -839,12 +1024,16 @@ export const UserProfile: React.FC = () => {
                   {/* Security Notice */}
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                     <div className="flex items-start">
-                      <Building2 size={16} className="text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+                      <Building2
+                        size={16}
+                        className="text-blue-600 mr-2 mt-0.5 flex-shrink-0"
+                      />
                       <div className="text-sm text-blue-800">
                         <p className="font-medium mb-1">Payment Security</p>
                         <p>
-                          Your payment information is encrypted and only shared with event organizers when you join paid events. 
-                          You can always choose to pay in cash at the venue instead.
+                          Your payment information is encrypted and only shared
+                          with event organizers when you join paid events. You
+                          can always choose to pay in cash at the venue instead.
                         </p>
                       </div>
                     </div>
@@ -869,7 +1058,9 @@ export const UserProfile: React.FC = () => {
           <CardContent className="p-6">
             {/* Skill Level Legend */}
             <div className="mb-6 bg-gray-50 border border-gray-200 rounded-lg p-4">
-              <h4 className="text-sm font-medium text-gray-900 mb-3">Skill Level Legend</h4>
+              <h4 className="text-sm font-medium text-gray-900 mb-3">
+                Skill Level Legend
+              </h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
@@ -877,7 +1068,9 @@ export const UserProfile: React.FC = () => {
                   </div>
                   <div>
                     <div className="font-medium text-gray-900">Beginner</div>
-                    <div className="text-xs text-gray-600">New to the sport or casual players</div>
+                    <div className="text-xs text-gray-600">
+                      New to the sport or casual players
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
@@ -885,8 +1078,12 @@ export const UserProfile: React.FC = () => {
                     I
                   </div>
                   <div>
-                    <div className="font-medium text-gray-900">Intermediate</div>
-                    <div className="text-xs text-gray-600">Regular players with some experience</div>
+                    <div className="font-medium text-gray-900">
+                      Intermediate
+                    </div>
+                    <div className="text-xs text-gray-600">
+                      Regular players with some experience
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
@@ -895,7 +1092,9 @@ export const UserProfile: React.FC = () => {
                   </div>
                   <div>
                     <div className="font-medium text-gray-900">Advanced</div>
-                    <div className="text-xs text-gray-600">Experienced competitive players</div>
+                    <div className="text-xs text-gray-600">
+                      Experienced competitive players
+                    </div>
                   </div>
                 </div>
               </div>
@@ -903,22 +1102,27 @@ export const UserProfile: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {SPORTS.map((sport) => {
-                const currentLevel = editedUser.skillLevels[sport.id];
-                const hasRecentChange = skillLevelChanges[sport.id] !== undefined;
-                
+                const currentLevel = editedUser.skillLevels[sport.id]
+                const hasRecentChange =
+                  skillLevelChanges[sport.id] !== undefined
+
                 return (
-                  <div 
-                    key={sport.id} 
+                  <div
+                    key={sport.id}
                     className={`flex items-center justify-between p-4 border rounded-lg transition-all duration-300 ${
-                      hasRecentChange 
-                        ? 'border-green-300 bg-green-50' 
+                      hasRecentChange
+                        ? 'border-green-300 bg-green-50'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
                     <div className="flex items-center space-x-3 min-w-0 flex-1">
-                      <span className="text-2xl flex-shrink-0">{sport.icon}</span>
+                      <span className="text-2xl flex-shrink-0">
+                        {sport.icon}
+                      </span>
                       <div className="min-w-0 flex-1">
-                        <div className="font-medium text-gray-900 truncate">{sport.name}</div>
+                        <div className="font-medium text-gray-900 truncate">
+                          {sport.name}
+                        </div>
                         {hasRecentChange && (
                           <div className="flex items-center text-sm text-green-600 mt-1">
                             <Check size={14} className="mr-1" />
@@ -927,18 +1131,25 @@ export const UserProfile: React.FC = () => {
                         )}
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center space-x-2 flex-shrink-0">
                       {/* Skill Level Buttons */}
                       <div className="flex items-center space-x-1">
                         {SKILL_LEVELS.map((level) => {
-                          const isSelected = currentLevel === level.id;
-                          const isChanging = hasRecentChange && skillLevelChanges[sport.id] === level.id;
-                          
+                          const isSelected = currentLevel === level.id
+                          const isChanging =
+                            hasRecentChange &&
+                            skillLevelChanges[sport.id] === level.id
+
                           return (
                             <button
                               key={level.id}
-                              onClick={() => handleSkillLevelChange(sport.id, isSelected ? null : level.id)}
+                              onClick={() =>
+                                handleSkillLevelChange(
+                                  sport.id,
+                                  isSelected ? null : level.id
+                                )
+                              }
                               disabled={hasRecentChange}
                               className={`px-2 py-1 text-xs font-medium rounded-full transition-all duration-200 ${
                                 isSelected
@@ -949,10 +1160,10 @@ export const UserProfile: React.FC = () => {
                                     : 'bg-red-500 text-white'
                                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                               } ${
-                                hasRecentChange ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
-                              } ${
-                                isChanging ? 'ring-2 ring-green-400' : ''
-                              }`}
+                                hasRecentChange
+                                  ? 'opacity-50 cursor-not-allowed'
+                                  : 'cursor-pointer'
+                              } ${isChanging ? 'ring-2 ring-green-400' : ''}`}
                             >
                               {isChanging ? (
                                 <div className="flex items-center">
@@ -963,13 +1174,15 @@ export const UserProfile: React.FC = () => {
                                 level.name.charAt(0).toUpperCase()
                               )}
                             </button>
-                          );
+                          )
                         })}
-                        
+
                         {/* Clear button */}
                         {currentLevel && !hasRecentChange && (
                           <button
-                            onClick={() => handleSkillLevelChange(sport.id, null)}
+                            onClick={() =>
+                              handleSkillLevelChange(sport.id, null)
+                            }
                             className="px-2 py-1 text-xs text-gray-500 hover:text-red-600 transition-colors"
                             title="Remove skill level"
                           >
@@ -979,27 +1192,34 @@ export const UserProfile: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                );
+                )
               })}
             </div>
-            
-            {Object.keys(user.skillLevels).length === 0 && Object.keys(skillLevelChanges).length === 0 && (
-              <div className="text-center py-8 text-gray-500">
-                <Star size={48} className="mx-auto mb-4 text-gray-400" />
-                <p className="text-lg font-medium">No skill levels set</p>
-                <p className="text-sm">Click on any sport above to set your skill level!</p>
-              </div>
-            )}
+
+            {Object.keys(user.skillLevels).length === 0 &&
+              Object.keys(skillLevelChanges).length === 0 && (
+                <div className="text-center py-8 text-gray-500">
+                  <Star size={48} className="mx-auto mb-4 text-gray-400" />
+                  <p className="text-lg font-medium">No skill levels set</p>
+                  <p className="text-sm">
+                    Click on any sport above to set your skill level!
+                  </p>
+                </div>
+              )}
 
             {/* Quick tip */}
             <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
               <div className="flex items-start">
-                <Star size={16} className="text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+                <Star
+                  size={16}
+                  className="text-blue-600 mr-2 mt-0.5 flex-shrink-0"
+                />
                 <div className="text-sm text-blue-800">
                   <p className="font-medium mb-1">Quick Tip</p>
                   <p>
-                    Setting accurate skill levels helps you find games with players of similar abilities. 
-                    You can change these anytime by clicking the skill level buttons.
+                    Setting accurate skill levels helps you find games with
+                    players of similar abilities. You can change these anytime
+                    by clicking the skill level buttons.
                   </p>
                 </div>
               </div>
@@ -1014,7 +1234,9 @@ export const UserProfile: React.FC = () => {
           <div className="bg-white rounded-lg max-w-md w-full">
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Upload Profile Picture</h3>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Upload Profile Picture
+                </h3>
                 <button
                   onClick={() => setShowAvatarUpload(false)}
                   className="text-gray-400 hover:text-gray-600"
@@ -1031,7 +1253,7 @@ export const UserProfile: React.FC = () => {
                     <p className="font-medium">Choose a profile picture</p>
                     <p>JPG, PNG or GIF up to 5MB</p>
                   </div>
-                  
+
                   <input
                     type="file"
                     accept="image/*"
@@ -1071,5 +1293,5 @@ export const UserProfile: React.FC = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
