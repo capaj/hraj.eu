@@ -4,7 +4,6 @@ import { Card, CardContent } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { EventCard } from '../components/events/EventCard'
 import { Plus, MapPin, Users, Trophy, Search } from 'lucide-react'
-import { getNearestCity } from 'offline-geocode-city'
 
 export const Home: React.FC = () => {
   const { upcomingEvents, stats } = useLoaderData({ from: '/' })
@@ -12,42 +11,45 @@ export const Home: React.FC = () => {
   const [isLoadingLocation, setIsLoadingLocation] = useState(true)
 
   useEffect(() => {
-    // Get user's current location
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          try {
-            // In a real app, you'd use a reverse geocoding service
-            // For demo purposes, we'll simulate getting the city name
-            const { latitude, longitude } = position.coords
-
-            // Use offline geocoding to get the nearest city
-            const nearestCity = getNearestCity(latitude, longitude)
-            const city = nearestCity ? nearestCity.cityName : 'your area'
-
-            setUserLocation(city)
-          } catch (error) {
-            console.error('Error getting location name:', error)
-            setUserLocation('your area')
-          } finally {
-            setIsLoadingLocation(false)
-          }
-        },
-        (error) => {
-          console.error('Error getting location:', error)
-          setUserLocation('your area')
-          setIsLoadingLocation(false)
-        },
-        {
-          timeout: 30000,
-          enableHighAccuracy: false,
-          maximumAge: 300000 // 5 minutes
-        }
-      )
-    } else {
+    // Only run in browser environment
+    if (typeof window === 'undefined' || !navigator.geolocation) {
       setUserLocation('your area')
       setIsLoadingLocation(false)
+      return
     }
+
+    // Get user's current location
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          // In a real app, you'd use a reverse geocoding service
+          // For demo purposes, we'll simulate getting the city name
+          const { latitude, longitude } = position.coords
+
+          // Dynamically import offline geocoding to avoid SSR issues
+          const { getNearestCity } = await import('offline-geocode-city')
+          const nearestCity = getNearestCity(latitude, longitude)
+          const city = nearestCity ? nearestCity.cityName : 'your area'
+
+          setUserLocation(city)
+        } catch (error) {
+          console.error('Error getting location name:', error)
+          setUserLocation('your area')
+        } finally {
+          setIsLoadingLocation(false)
+        }
+      },
+      (error) => {
+        console.error('Error getting location:', error)
+        setUserLocation('your area')
+        setIsLoadingLocation(false)
+      },
+      {
+        timeout: 30000,
+        enableHighAccuracy: false,
+        maximumAge: 300000 // 5 minutes
+      }
+    )
   }, [])
 
   const handleJoinEvent = (eventId: string) => {

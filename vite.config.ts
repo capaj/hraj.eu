@@ -17,4 +17,9 @@ export default defineConfig({
   ssr: {
     noExternal: ['offline-geocode-city', 's2-geometry', 'long'],
   },
+  resolve: {
+    alias: process.env.NODE_ENV === 'development' ? {
+      'offline-geocode-city': './node_modules/.pnpm/offline-geocode-city@1.0.2/node_modules/offline-geocode-city/dist/index.cjs.js'
+    } : {}
+  },
 });

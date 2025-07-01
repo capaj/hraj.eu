@@ -20,7 +20,7 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1'
       },
       {
-        title: 'Zahrajeme.eu - Amateur Sports Events'
+        title: 'hraj.eu - Amateur Sports Events'
       }
     ]
   }),
@@ -34,7 +34,7 @@ function RootComponent() {
         <Header />
         <Outlet />
       </div>
-      <TanStackRouterDevtools />
+      {import.meta.env.DEV && <TanStackRouterDevtools />}
     </RootDocument>
   )
 }
