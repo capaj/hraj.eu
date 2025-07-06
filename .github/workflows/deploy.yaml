@@ -47,13 +47,13 @@ jobs:
 
       - name: Build app
         env:
-          VITE_GOOGLE_MAPS_API_KEY: ${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
-          VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+          VITE_GOOGLE_MAPS_API_KEY: ${{ vars.VITE_GOOGLE_MAPS_API_KEY }}
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
         run: |
           pnpm run lingui:extract
           pnpm run build
 
-      - name: Deploy API
+      - name: Deploy to Cloudflare
         uses: cloudflare/wrangler-action@v3
         env:
           TURSO_DATABASE_URL: ${{ vars.TURSO_DATABASE_URL }}
