@@ -9,7 +9,7 @@ import macrosPlugin from 'vite-plugin-babel-macros'
 export default defineConfig({
   plugins: [
     tanstackStart({
-      target: 'cloudflare-module',
+      // target: 'cloudflare-module', // TODO: uncomment when https://github.com/cloudflare/workers-sdk/issues/9622 is fixed
     }),
     tailwindcss(),
     macrosPlugin(),
