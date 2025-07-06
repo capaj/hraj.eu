@@ -3,7 +3,11 @@
   "ignorePaths": [],
   "dictionaryDefinitions": [],
   "dictionaries": [],
-  "words": ["Revolut", "waitlist"],
+  "words": [
+    "Revolut",
+    "waitlist",
+    "waitlisted"
+  ],
   "ignoreWords": [],
   "import": []
 }

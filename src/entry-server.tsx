@@ -6,6 +6,5 @@ import {
 import { createRouter } from './router'
 
 export default createStartHandler({
-  createRouter,
-  serverFn: defaultStreamHandler
-})
+  createRouter
+})(defaultStreamHandler)

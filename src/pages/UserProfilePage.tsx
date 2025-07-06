@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
+import { Toggle } from '../components/ui/Toggle'
 import { mockUsers } from '../lib/mock-data'
 import { SPORTS, SKILL_LEVELS, EU_CURRENCIES } from '../lib/constants'
 import { User } from '../types'
@@ -30,15 +31,17 @@ import {
   Shield,
   Key,
   Eye,
-  EyeOff
+  EyeOff,
+  Bell,
+  BellOff
 } from 'lucide-react'
 
 export const UserProfile: React.FC = () => {
-  const [user, setUser] = useState<User>(mockUsers[0]) // Current user
+  const [user, setUser] = useState<User>(() => mockUsers[0] || ({} as User)) // Current user
   const [isEditing, setIsEditing] = useState(false)
   const [isEditingRevTag, setIsEditingRevTag] = useState(false)
   const [isEditingBankAccount, setIsEditingBankAccount] = useState(false)
-  const [editedUser, setEditedUser] = useState<User>({ ...user })
+  const [editedUser, setEditedUser] = useState<User>(() => ({ ...user }))
   const [editedRevTag, setEditedRevTag] = useState(user.revTag || '')
   const [editedBankAccount, setEditedBankAccount] = useState(
     user.bankAccount || ''
@@ -47,6 +50,9 @@ export const UserProfile: React.FC = () => {
   const [showAvatarUpload, setShowAvatarUpload] = useState(false)
   const [skillLevelChanges, setSkillLevelChanges] = useState<
     Record<string, string | null>
+  >({})
+  const [notificationChanges, setNotificationChanges] = useState<
+    Record<string, boolean>
   >({})
 
   // Password change state
@@ -75,6 +81,7 @@ export const UserProfile: React.FC = () => {
     setUser(editedUser)
     setIsEditing(false)
     setSkillLevelChanges({})
+    setNotificationChanges({})
 
     // In a real app, this would make an API call to update the user
     console.log('User updated:', editedUser)
@@ -85,6 +92,7 @@ export const UserProfile: React.FC = () => {
     setEditedUser({ ...user })
     setIsEditing(false)
     setSkillLevelChanges({})
+    setNotificationChanges({})
   }
 
   const handleSaveRevTag = async () => {
@@ -187,6 +195,60 @@ export const UserProfile: React.FC = () => {
         // Revert the change on error
         setEditedUser((prev) => ({ ...prev, skillLevels: user.skillLevels }))
         setSkillLevelChanges((prev) => {
+          const newChanges = { ...prev }
+          delete newChanges[sport]
+          return newChanges
+        })
+      }
+    }
+  }
+
+  const handleNotificationChange = async (sport: string, enabled: boolean) => {
+    // Update the edited user state
+    setEditedUser((prev) => ({
+      ...prev,
+      notificationPreferences: {
+        ...prev.notificationPreferences,
+        [sport]: enabled
+      }
+    }))
+
+    // Track the change for visual feedback
+    setNotificationChanges((prev) => ({ ...prev, [sport]: enabled }))
+
+    // Auto-save notification changes (even when not in full edit mode)
+    if (!isEditing) {
+      try {
+        // Simulate API call
+        await new Promise((resolve) => setTimeout(resolve, 300))
+
+        // Update the main user state
+        setUser((prev) => ({
+          ...prev,
+          notificationPreferences: {
+            ...prev.notificationPreferences,
+            [sport]: enabled
+          }
+        }))
+
+        // Clear the change indicator after a delay
+        setTimeout(() => {
+          setNotificationChanges((prev) => {
+            const newChanges = { ...prev }
+            delete newChanges[sport]
+            return newChanges
+          })
+        }, 1500)
+
+        console.log(`Notification preference updated for ${sport}: ${enabled}`)
+      } catch (error) {
+        console.error('Failed to update notification preference:', error)
+        // Revert the change on error
+        setEditedUser((prev) => ({
+          ...prev,
+          notificationPreferences: user.notificationPreferences
+        }))
+        setNotificationChanges((prev) => {
           const newChanges = { ...prev }
           delete newChanges[sport]
           return newChanges
@@ -1052,7 +1114,8 @@ export const UserProfile: React.FC = () => {
               Sports & Skill Levels
             </h3>
             <p className="text-gray-600 text-sm mt-1">
-              Click on any sport to set or change your skill level
+              Set your skill level for each sport and enable notifications for
+              new events
             </p>
           </CardHeader>
           <CardContent className="p-6">
@@ -1105,12 +1168,16 @@ export const UserProfile: React.FC = () => {
                 const currentLevel = editedUser.skillLevels[sport.id]
                 const hasRecentChange =
                   skillLevelChanges[sport.id] !== undefined
+                const notificationEnabled =
+                  editedUser.notificationPreferences?.[sport.id] ?? false
+                const hasNotificationChange =
+                  notificationChanges[sport.id] !== undefined
 
                 return (
                   <div
                     key={sport.id}
                     className={`flex items-center justify-between p-4 border rounded-lg transition-all duration-300 ${
-                      hasRecentChange
+                      hasRecentChange || hasNotificationChange
                         ? 'border-green-300 bg-green-50'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
@@ -1123,7 +1190,7 @@ export const UserProfile: React.FC = () => {
                         <div className="font-medium text-gray-900 truncate">
                           {sport.name}
                         </div>
-                        {hasRecentChange && (
+                        {(hasRecentChange || hasNotificationChange) && (
                           <div className="flex items-center text-sm text-green-600 mt-1">
                             <Check size={14} className="mr-1" />
                             Updated!
@@ -1132,7 +1199,26 @@ export const UserProfile: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center space-x-2 flex-shrink-0">
+                    <div className="flex items-center space-x-3 flex-shrink-0">
+                      {/* Notification Toggle */}
+                      <div className="flex items-center space-x-2">
+                        <div className="flex items-center text-xs text-gray-500">
+                          {notificationEnabled ? (
+                            <Bell size={14} className="text-primary-600" />
+                          ) : (
+                            <BellOff size={14} className="text-gray-400" />
+                          )}
+                        </div>
+                        <Toggle
+                          checked={notificationEnabled}
+                          onChange={(enabled) =>
+                            handleNotificationChange(sport.id, enabled)
+                          }
+                          disabled={hasNotificationChange}
+                          size="sm"
+                        />
+                      </div>
+
                       {/* Skill Level Buttons */}
                       <div className="flex items-center space-x-1">
                         {SKILL_LEVELS.map((level) => {

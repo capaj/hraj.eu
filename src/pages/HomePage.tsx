@@ -73,8 +73,12 @@ export const Home: React.FC = () => {
                 </div>
               ) : (
                 <p className="text-white/80 mt-2 flex items-center">
-                  <MapPin size={16} className="mr-1" />
-                  Showing events near your location
+                  {upcomingEvents.length > 0 && (
+                    <p>
+                      <MapPin size={16} className="mr-1" />
+                      Showing events near your location
+                    </p>
+                  )}
                 </p>
               )}
             </div>
@@ -88,15 +92,36 @@ export const Home: React.FC = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {upcomingEvents.map((event) => (
-              <EventCard
-                key={event.id}
-                event={event}
-                onJoin={handleJoinEvent}
-              />
-            ))}
-          </div>
+          {upcomingEvents.length === 0 ? (
+            <div className="text-center py-16">
+              <div className="bg-white/10 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+                <Plus size={32} className="text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-4">
+                No Events Yet in Your Area
+              </h3>
+              <p className="text-white/80 mb-8 max-w-md mx-auto">
+                Be the first to bring your community together! Create an event
+                and start building connections through sport.
+              </p>
+              <Link to="/create">
+                <Button size="lg" variant="secondary" className="text-lg">
+                  <Plus size={20} className="mr-2" />
+                  Create new Event
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {upcomingEvents.map((event) => (
+                <EventCard
+                  key={event.id}
+                  event={event}
+                  onJoin={handleJoinEvent}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

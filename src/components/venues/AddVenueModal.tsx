@@ -1,30 +1,22 @@
-import React, { useState } from 'react';
-import { Card, CardHeader, CardContent } from '../ui/Card';
-import { Button } from '../ui/Button';
-import { Badge } from '../ui/Badge';
-import { SPORTS } from '../../lib/constants';
-import { Venue } from '../../types';
-import { 
-  X, 
-  MapPin, 
-  Upload, 
-  Image as ImageIcon, 
-  Clock, 
-  Euro, 
-  Phone, 
-  Mail, 
-  Globe,
+import React, { useState } from 'react'
+import { Card, CardHeader, CardContent } from '../ui/Card'
+import { Button } from '../ui/Button'
+import { SPORTS } from '../../lib/constants'
+import { Venue } from '../../types'
+import {
+  X,
+  MapPin,
+  Upload,
+  Image as ImageIcon,
+  Euro,
   Plus,
-  Trash2,
-  Check,
-  AlertTriangle,
   Info
-} from 'lucide-react';
+} from 'lucide-react'
 
 interface AddVenueModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (venueData: Partial<Venue>) => void;
+  isOpen: boolean
+  onClose: () => void
+  onSubmit: (venueData: Partial<Venue>) => void
 }
 
 export const AddVenueModal: React.FC<AddVenueModalProps> = ({
@@ -45,16 +37,15 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
     phone: '',
     email: '',
     website: '',
-    priceMin: '',
-    priceMax: '',
-    currency: 'EUR'
-  });
+    price: 0,
+    currency: 'CZK'
+  })
 
-  const [images, setImages] = useState<string[]>([]);
-  const [orientationPlan, setOrientationPlan] = useState<string>('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [uploadingImage, setUploadingImage] = useState(false);
-  const [uploadingPlan, setUploadingPlan] = useState(false);
+  const [images, setImages] = useState<string[]>([])
+  const [orientationPlan, setOrientationPlan] = useState<string>('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [uploadingImage, setUploadingImage] = useState(false)
+  const [uploadingPlan, setUploadingPlan] = useState(false)
 
   const availableFacilities = [
     { id: 'parking', name: 'Parking', icon: '🚗' },
@@ -65,93 +56,106 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
     { id: 'wifi', name: 'WiFi', icon: '📶' },
     { id: 'first_aid', name: 'First Aid', icon: '🏥' },
     { id: 'accessibility', name: 'Wheelchair Accessible', icon: '♿' }
-  ];
+  ]
 
   const handleChange = (field: string, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
+    setFormData((prev) => ({ ...prev, [field]: value }))
+  }
 
   const handleSportToggle = (sportId: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       sports: prev.sports.includes(sportId)
-        ? prev.sports.filter(id => id !== sportId)
+        ? prev.sports.filter((id) => id !== sportId)
         : [...prev.sports, sportId]
-    }));
-  };
+    }))
+  }
 
   const handleFacilityToggle = (facilityId: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       facilities: prev.facilities.includes(facilityId)
-        ? prev.facilities.filter(id => id !== facilityId)
+        ? prev.facilities.filter((id) => id !== facilityId)
         : [...prev.facilities, facilityId]
-    }));
-  };
+    }))
+  }
 
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (!files) return;
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const files = event.target.files
+    if (!files) return
 
-    setUploadingImage(true);
-    
+    setUploadingImage(true)
+
     try {
       // Simulate upload delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1500))
+
       // In a real app, you'd upload to a service like Cloudinary or AWS S3
-      const newImages = Array.from(files).map((file, index) => 
-        `https://images.pexels.com/photos/${Math.floor(Math.random() * 1000000)}/pexels-photo-${Math.floor(Math.random() * 1000000)}.jpeg?auto=compress&cs=tinysrgb&w=800`
-      );
-      
-      setImages(prev => [...prev, ...newImages]);
+      const newImages = Array.from(files).map(
+        (file, index) =>
+          `https://images.pexels.com/photos/${Math.floor(
+            Math.random() * 1000000
+          )}/pexels-photo-${Math.floor(
+            Math.random() * 1000000
+          )}.jpeg?auto=compress&cs=tinysrgb&w=800`
+      )
+
+      setImages((prev) => [...prev, ...newImages])
     } catch (error) {
-      console.error('Upload failed:', error);
-      alert('Failed to upload images. Please try again.');
+      console.error('Upload failed:', error)
+      alert('Failed to upload images. Please try again.')
     } finally {
-      setUploadingImage(false);
+      setUploadingImage(false)
     }
-  };
+  }
 
-  const handlePlanUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+  const handlePlanUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0]
+    if (!file) return
 
-    setUploadingPlan(true);
-    
+    setUploadingPlan(true)
+
     try {
       // Simulate upload delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+
       // In a real app, you'd upload to a service
-      const planUrl = `https://images.pexels.com/photos/590016/pexels-photo-590016.jpg?auto=compress&cs=tinysrgb&w=600`;
-      setOrientationPlan(planUrl);
+      const planUrl = `https://images.pexels.com/photos/590016/pexels-photo-590016.jpg?auto=compress&cs=tinysrgb&w=600`
+      setOrientationPlan(planUrl)
     } catch (error) {
-      console.error('Upload failed:', error);
-      alert('Failed to upload orientation plan. Please try again.');
+      console.error('Upload failed:', error)
+      alert('Failed to upload orientation plan. Please try again.')
     } finally {
-      setUploadingPlan(false);
+      setUploadingPlan(false)
     }
-  };
+  }
 
   const removeImage = (index: number) => {
-    setImages(prev => prev.filter((_, i) => i !== index));
-  };
+    setImages((prev) => prev.filter((_, i) => i !== index))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
+    e.preventDefault()
+
     // Basic validation
-    if (!formData.name.trim() || !formData.address.trim() || formData.sports.length === 0) {
-      alert('Please fill in all required fields and select at least one sport.');
-      return;
+    if (
+      !formData.name.trim() ||
+      !formData.address.trim() ||
+      formData.sports.length === 0
+    ) {
+      alert('Please fill in all required fields and select at least one sport.')
+      return
     }
 
-    setIsSubmitting(true);
+    setIsSubmitting(true)
 
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000))
 
       const venueData: Partial<Venue> = {
         name: formData.name.trim(),
@@ -166,26 +170,23 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
         images,
         orientationPlan: orientationPlan || undefined,
         contactInfo: {
-          phone: formData.phone.trim() || undefined,
-          email: formData.email.trim() || undefined,
-          website: formData.website.trim() || undefined
+          phone: formData.phone.trim() || '',
+          email: formData.email.trim() || '',
+          website: formData.website.trim() || ''
         },
-        priceRange: formData.priceMin || formData.priceMax ? {
-          min: parseFloat(formData.priceMin) || 0,
-          max: parseFloat(formData.priceMax) || parseFloat(formData.priceMin) || 0,
-          currency: formData.currency
-        } : undefined,
+        price: formData.price,
+        currency: formData.currency,
         // These would be set by the backend
         lat: 50.0755 + (Math.random() - 0.5) * 0.1, // Mock coordinates near Prague
         lng: 14.4378 + (Math.random() - 0.5) * 0.1,
         isVerified: false,
         rating: undefined,
         totalRatings: 0
-      };
+      }
 
-      onSubmit(venueData);
-      onClose();
-      
+      onSubmit(venueData)
+      onClose()
+
       // Reset form
       setFormData({
         name: '',
@@ -200,22 +201,20 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
         phone: '',
         email: '',
         website: '',
-        priceMin: '',
-        priceMax: '',
-        currency: 'EUR'
-      });
-      setImages([]);
-      setOrientationPlan('');
-      
+        price: 0,
+        currency: 'CZK'
+      })
+      setImages([])
+      setOrientationPlan('')
     } catch (error) {
-      console.error('Failed to create venue:', error);
-      alert('Failed to create venue. Please try again.');
+      console.error('Failed to create venue:', error)
+      alert('Failed to create venue. Please try again.')
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -224,8 +223,12 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">Add New Venue</h2>
-                <p className="text-gray-600 mt-1">Help grow our community by adding a new sports venue</p>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Add New Venue
+                </h2>
+                <p className="text-gray-600 mt-1">
+                  Help grow our community by adding a new sports venue
+                </p>
               </div>
               <button
                 onClick={onClose}
@@ -244,7 +247,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                   <MapPin size={20} className="mr-2 text-primary-600" />
                   Basic Information
                 </h3>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -259,7 +262,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                       placeholder="e.g., Central Park Football Field"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Venue Type *
@@ -305,7 +308,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                       placeholder="Prague"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Country *
@@ -326,8 +329,10 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                 <h3 className="text-lg font-semibold text-gray-900">
                   Supported Sports *
                 </h3>
-                <p className="text-sm text-gray-600">Select all sports that can be played at this venue</p>
-                
+                <p className="text-sm text-gray-600">
+                  Select all sports that can be played at this venue
+                </p>
+
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                   {SPORTS.map((sport) => (
                     <label
@@ -345,7 +350,9 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                         className="text-primary-600 focus:ring-primary-500 rounded"
                       />
                       <span className="ml-2 text-lg">{sport.icon}</span>
-                      <span className="ml-2 text-sm font-medium text-gray-900">{sport.name}</span>
+                      <span className="ml-2 text-sm font-medium text-gray-900">
+                        {sport.name}
+                      </span>
                     </label>
                   ))}
                 </div>
@@ -356,8 +363,10 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                 <h3 className="text-lg font-semibold text-gray-900">
                   Available Facilities
                 </h3>
-                <p className="text-sm text-gray-600">Select all facilities available at this venue</p>
-                
+                <p className="text-sm text-gray-600">
+                  Select all facilities available at this venue
+                </p>
+
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                   {availableFacilities.map((facility) => (
                     <label
@@ -375,7 +384,9 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                         className="text-primary-600 focus:ring-primary-500 rounded"
                       />
                       <span className="ml-2 text-lg">{facility.icon}</span>
-                      <span className="ml-2 text-sm font-medium text-gray-900">{facility.name}</span>
+                      <span className="ml-2 text-sm font-medium text-gray-900">
+                        {facility.name}
+                      </span>
                     </label>
                   ))}
                 </div>
@@ -387,8 +398,10 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                   <ImageIcon size={20} className="mr-2 text-primary-600" />
                   Venue Images
                 </h3>
-                <p className="text-sm text-gray-600">Add photos to help players find and recognize the venue</p>
-                
+                <p className="text-sm text-gray-600">
+                  Add photos to help players find and recognize the venue
+                </p>
+
                 {/* Image Upload */}
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
                   <div className="text-center">
@@ -397,7 +410,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                       <p className="font-medium">Upload venue photos</p>
                       <p>JPG, PNG up to 10MB each</p>
                     </div>
-                    
+
                     <input
                       type="file"
                       accept="image/*"
@@ -456,8 +469,10 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                 <h3 className="text-lg font-semibold text-gray-900">
                   Orientation Plan (Optional)
                 </h3>
-                <p className="text-sm text-gray-600">Upload a map or diagram showing how to access the playing area</p>
-                
+                <p className="text-sm text-gray-600">
+                  Upload a map or diagram showing how to access the playing area
+                </p>
+
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
                   <div className="text-center">
                     <input
@@ -486,7 +501,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                         </>
                       )}
                     </label>
-                    
+
                     {orientationPlan && (
                       <div className="mt-4">
                         <img
@@ -515,7 +530,9 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                   </label>
                   <textarea
                     value={formData.description}
-                    onChange={(e) => handleChange('description', e.target.value)}
+                    onChange={(e) =>
+                      handleChange('description', e.target.value)
+                    }
                     rows={3}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="Brief description of the venue..."
@@ -528,7 +545,9 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                   </label>
                   <textarea
                     value={formData.accessInstructions}
-                    onChange={(e) => handleChange('accessInstructions', e.target.value)}
+                    onChange={(e) =>
+                      handleChange('accessInstructions', e.target.value)
+                    }
                     rows={3}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="How to find and access the playing area..."
@@ -541,7 +560,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                 <h3 className="text-lg font-semibold text-gray-900">
                   Contact Information (Optional)
                 </h3>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -555,7 +574,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                       placeholder="+420 123 456 789"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Email
@@ -568,7 +587,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                       placeholder="info@venue.com"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Website
@@ -590,16 +609,18 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                   <Euro size={20} className="mr-2 text-primary-600" />
                   Pricing (Optional)
                 </h3>
-                <p className="text-sm text-gray-600">Typical hourly rates for this venue</p>
-                
+                <p className="text-sm text-gray-600">
+                  Typical hourly rates for this venue
+                </p>
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Min Price per Hour
+                      Price per Hour
                     </label>
                     <input
                       type="number"
-                      value={formData.priceMin}
+                      value={formData.price}
                       onChange={(e) => handleChange('priceMin', e.target.value)}
                       min="0"
                       step="0.5"
@@ -607,22 +628,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                       placeholder="0"
                     />
                   </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Max Price per Hour
-                    </label>
-                    <input
-                      type="number"
-                      value={formData.priceMax}
-                      onChange={(e) => handleChange('priceMax', e.target.value)}
-                      min="0"
-                      step="0.5"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                      placeholder="0"
-                    />
-                  </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Currency
@@ -643,12 +649,16 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
               {/* Verification Notice */}
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <div className="flex items-start">
-                  <Info size={16} className="text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+                  <Info
+                    size={16}
+                    className="text-blue-600 mr-2 mt-0.5 flex-shrink-0"
+                  />
                   <div className="text-sm text-blue-800">
                     <p className="font-medium mb-1">Venue Verification</p>
                     <p>
-                      New venues are reviewed by our team before being made available to all users. 
-                      This helps ensure accuracy and quality of venue information.
+                      New venues are reviewed by our team before being made
+                      available to all users. This helps ensure accuracy and
+                      quality of venue information.
                     </p>
                   </div>
                 </div>
@@ -656,16 +666,16 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
 
               {/* Submit Buttons */}
               <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
-                <Button 
-                  type="button" 
-                  variant="outline" 
+                <Button
+                  type="button"
+                  variant="outline"
                   onClick={onClose}
                   disabled={isSubmitting}
                 >
                   Cancel
                 </Button>
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   variant="primary"
                   disabled={isSubmitting || formData.sports.length === 0}
                 >
@@ -687,5 +697,5 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
         </Card>
       </div>
     </div>
-  );
-};
+  )
+}

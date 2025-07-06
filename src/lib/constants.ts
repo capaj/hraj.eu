@@ -1,5 +1,6 @@
 export const SPORTS = [
-  { id: 'football', name: 'Football (Soccer)', icon: '⚽' },
+  { id: 'soccer', name: 'Soccer', icon: '⚽' },
+  { id: 'futsal', name: 'Futsal', icon: '⚽' },
   { id: 'basketball', name: 'Basketball', icon: '🏀' },
   { id: 'volleyball', name: 'Volleyball', icon: '🏐' },
   { id: 'handball', name: 'Handball', icon: '🤾' },

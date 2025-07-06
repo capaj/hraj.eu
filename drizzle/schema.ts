@@ -19,7 +19,7 @@ export const users = sqliteTable(
     email: text("email").notNull(),
     name: text("name"),
     avatar: text("avatar"),
-    bio: text("bio"),
+    phone: text("phone"),
     karmaPoints: integer("karma_points").default(0).notNull(),
     preferredCurrency: text("preferred_currency"),
     location: text("location"),

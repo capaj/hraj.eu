@@ -137,7 +137,7 @@
 
 #### Real-Time Updates
 
-- **Event Notifications**: Joins, confirmations, cancellations, reminders
+- **Event Notifications**: Joins, confirmations, cancellations, reminders, new events in your area
 - **Karma Notifications**: Points received, feedback from other players
 - **System Notifications**: Moved from waitlist, payment confirmations
 - **Smart Timing**: Contextual notification timing

@@ -6,6 +6,7 @@ export interface User {
   bio?: string;
   karmaPoints: number;
   skillLevels: Record<string, 'beginner' | 'intermediate' | 'advanced'>;
+  notificationPreferences: Record<string, boolean>; // sportId -> enabled
   preferredCurrency: string;
   location?: string;
   revTag?: string;
@@ -31,11 +32,8 @@ export interface Venue {
   openingHours?: {
     [key: string]: { open: string; close: string } | null; // e.g., { monday: { open: '06:00', close: '22:00' }, sunday: null }
   };
-  priceRange?: {
-    min: number;
-    max: number;
-    currency: string;
-  };
+  price: number;
+  currency: string;
   contactInfo?: {
     phone?: string;
     email?: string;
