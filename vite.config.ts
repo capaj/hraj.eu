@@ -1,6 +1,9 @@
 import { defineConfig } from 'vite';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import tailwindcss from '@tailwindcss/vite';
+import tsconfigPaths from "vite-tsconfig-paths";
+import { lingui } from '@lingui/vite-plugin';
+import macrosPlugin from 'vite-plugin-babel-macros'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,6 +12,9 @@ export default defineConfig({
       target: 'cloudflare-module',
     }),
     tailwindcss(),
+    macrosPlugin(),
+    lingui(),
+    tsconfigPaths(),
   ],
   optimizeDeps: {
     exclude: ['lucide-react'],
