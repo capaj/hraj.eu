@@ -8,7 +8,7 @@
     "directory": ".output/public"
   },
   "build": {
-    "command": "echo 'Build already complete'"
+    "command": "pnpm run build"
   },
   "observability": {
     "enabled": true

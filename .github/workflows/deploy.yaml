@@ -40,7 +40,6 @@ jobs:
           VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
         run: |
           pnpm run lingui:extract
-          pnpm run build
 
       - name: Deploy to Cloudflare
         uses: cloudflare/wrangler-action@v3
