@@ -37,5 +37,12 @@ function tanstackVirtualModules(): Plugin {
 export default defineNitroConfig({
   rollupConfig: {
     plugins: [tanstackVirtualModules()],
+    external: [
+      '@libsql/client',
+      'uncrypto',
+      '@noble/ciphers/crypto',
+      '@noble/hashes/crypto',
+      'react-dom/server',
+    ],
   },
 }) 
