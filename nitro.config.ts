@@ -1,5 +1,7 @@
 import { defineNitroConfig } from 'nitropack/config'
 import type { Plugin } from 'rollup'
+import { cloudflare } from "@cloudflare/unenv-preset";
+import { defineEnv } from "unenv";
 
 /**
  * During Nitro's internal Rollup build the TanStack Start virtual modules that Vite
@@ -34,8 +36,15 @@ function tanstackVirtualModules(): Plugin {
   }
 }
 
+const { env } = defineEnv({
+  presets: [cloudflare],
+});
+
 export default defineNitroConfig({
+
   rollupConfig: {
     plugins: [tanstackVirtualModules()],
   },
+  // ...env,
+  preset: 'cloudflare_worker',
 }) 
