@@ -1,4 +1,4 @@
-import { createServerFn } from '@tanstack/start'
+import { createServerFn } from '@tanstack/react-start'
 import { mockEvents, mockUsers, mockNotifications, mockVenues } from './mock-data'
 import { Event, User, Notification } from '../types'
 

@@ -10,7 +10,6 @@
   "build": {
     "command": "pnpm run build"
   },
-  "no_bundle": true,
   "observability": {
     "enabled": true
   },

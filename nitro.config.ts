@@ -1,7 +1,7 @@
 import { defineNitroConfig } from 'nitropack/config'
 import type { Plugin } from 'rollup'
-import { cloudflare } from "@cloudflare/unenv-preset";
-import { defineEnv } from "unenv";
+import { cloudflare } from '@cloudflare/unenv-preset'
+import { defineEnv } from 'unenv'
 
 /**
  * During Nitro's internal Rollup build the TanStack Start virtual modules that Vite
@@ -14,7 +14,7 @@ function tanstackVirtualModules(): Plugin {
   const virtualIds = [
     'tanstack-start-route-tree:v',
     'tanstack-start-manifest:v',
-    'tanstack-start-server-fn-manifest:v',
+    'tanstack-start-server-fn-manifest:v'
   ]
 
   return {
@@ -32,13 +32,13 @@ function tanstackVirtualModules(): Plugin {
         return 'export default {}'
       }
       return null
-    },
+    }
   }
 }
 
 const { env } = defineEnv({
-  presets: [cloudflare],
-});
+  presets: [cloudflare]
+})
 
 export default defineNitroConfig({
 
