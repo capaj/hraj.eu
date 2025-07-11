@@ -16,6 +16,7 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true
   },
+  trustedOrigins: ['http://localhost:3000', 'https://hraj.eu'],
   plugins: [reactStartCookies()],
   socialProviders: {
     google: {

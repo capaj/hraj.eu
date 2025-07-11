@@ -35,8 +35,10 @@ import {
   Bell,
   BellOff
 } from 'lucide-react'
+import { useAuthenticate } from '@daveyplate/better-auth-ui'
 
 export const UserProfile: React.FC = () => {
+  useAuthenticate()
   const [user, setUser] = useState<User>(() => mockUsers[0] || ({} as User)) // Current user
   const [isEditing, setIsEditing] = useState(false)
   const [isEditingRevTag, setIsEditingRevTag] = useState(false)

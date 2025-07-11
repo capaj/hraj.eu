@@ -7,8 +7,8 @@ import {
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { Header } from '../components/layout/Header'
+import { Providers } from '~/lib/providers'
 import '../index.css'
-
 export const Route = createRootRoute({
   head: () => ({
     meta: [
@@ -46,7 +46,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {children}
+        <Providers>{children}</Providers>
         <Scripts />
       </body>
     </html>

@@ -20,6 +20,7 @@ import { Route as DiscoverRouteImport } from './routes/discover'
 import { Route as CreateRouteImport } from './routes/create'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EventsEventIdRouteImport } from './routes/events/$eventId'
+import { Route as AuthPathnameRouteImport } from './routes/auth/$pathname'
 import { ServerRoute as ApiAuthSplatServerRouteImport } from './routes/api/auth/$'
 
 const rootServerRouteImport = createServerRootRoute()
@@ -69,6 +70,11 @@ const EventsEventIdRoute = EventsEventIdRouteImport.update({
   path: '/events/$eventId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthPathnameRoute = AuthPathnameRouteImport.update({
+  id: '/auth/$pathname',
+  path: '/auth/$pathname',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -84,6 +90,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/terms': typeof TermsRoute
   '/user-profile': typeof UserProfileRoute
+  '/auth/$pathname': typeof AuthPathnameRoute
   '/events/$eventId': typeof EventsEventIdRoute
 }
 export interface FileRoutesByTo {
@@ -95,6 +102,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/terms': typeof TermsRoute
   '/user-profile': typeof UserProfileRoute
+  '/auth/$pathname': typeof AuthPathnameRoute
   '/events/$eventId': typeof EventsEventIdRoute
 }
 export interface FileRoutesById {
@@ -107,6 +115,7 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/terms': typeof TermsRoute
   '/user-profile': typeof UserProfileRoute
+  '/auth/$pathname': typeof AuthPathnameRoute
   '/events/$eventId': typeof EventsEventIdRoute
 }
 export interface FileRouteTypes {
@@ -120,6 +129,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/terms'
     | '/user-profile'
+    | '/auth/$pathname'
     | '/events/$eventId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -131,6 +141,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/terms'
     | '/user-profile'
+    | '/auth/$pathname'
     | '/events/$eventId'
   id:
     | '__root__'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/terms'
     | '/user-profile'
+    | '/auth/$pathname'
     | '/events/$eventId'
   fileRoutesById: FileRoutesById
 }
@@ -154,6 +166,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   TermsRoute: typeof TermsRoute
   UserProfileRoute: typeof UserProfileRoute
+  AuthPathnameRoute: typeof AuthPathnameRoute
   EventsEventIdRoute: typeof EventsEventIdRoute
 }
 export interface FileServerRoutesByFullPath {
@@ -243,6 +256,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsEventIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/$pathname': {
+      id: '/auth/$pathname'
+      path: '/auth/$pathname'
+      fullPath: '/auth/$pathname'
+      preLoaderRoute: typeof AuthPathnameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 declare module '@tanstack/react-start/server' {
@@ -266,6 +286,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   TermsRoute: TermsRoute,
   UserProfileRoute: UserProfileRoute,
+  AuthPathnameRoute: AuthPathnameRoute,
   EventsEventIdRoute: EventsEventIdRoute,
 }
 export const routeTree = rootRouteImport
