@@ -10,7 +10,7 @@
 
 #### User Profiles
 
-- **Personal Information**: Name, email, location, bio, avatar
+- **Personal Information**: Name, email, city, country, avatar
 - **Karma System**: Points-based reputation system (±5 to ±10 points per action)
 - **Skill Levels**: Sport-specific skill ratings (Beginner, Intermediate, Advanced)
 - **Payment Information**: Revolut tags, domestic bank accounts, preferred currency
