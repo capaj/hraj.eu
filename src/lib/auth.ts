@@ -4,6 +4,7 @@ import { db } from '../../drizzle/db'
 import { reactStartCookies } from 'better-auth/react-start'
 import { env } from './env'
 import * as schema from '../../drizzle/schema'
+import { SPORTS } from './constants'
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -13,8 +14,25 @@ export const auth = betterAuth({
       user: schema.user
     }
   }),
+  user: {
+    additionalFields: {
+      karmaPoints: {
+        type: 'number',
+        input: false,
+        default: 0
+      },
+      preferredCurrency: {
+        type: 'string',
+        default: 'EUR'
+      }
+    }
+  },
   emailAndPassword: {
     enabled: true
+  },
+  session: {
+    expiresIn: 60 * 60 * 24 * 365, // 1 year in seconds
+    updateAge: 60 * 60 * 24 * 14 // Update session every two weeks
   },
   trustedOrigins: ['http://localhost:3000', 'https://hraj.eu'],
   plugins: [reactStartCookies()],

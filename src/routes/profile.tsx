@@ -7,13 +7,13 @@ import {
   getVenues,
   getUsers
 } from '../lib/server-functions'
+import { ProtectedRoute } from '~/lib/auth-client'
 
 export const Route = createFileRoute('/profile')({
   loader: async () => {
     // For now, using a mock user ID - in real app this would come from auth
     const mockUserId = '1'
-    const [user, notifications, events, venues, users] = await Promise.all([
-      getUserById({ data: mockUserId }),
+    const [notifications, events, venues, users] = await Promise.all([
       getUserNotifications({ data: mockUserId }),
       getEvents(),
       getVenues(),
@@ -21,12 +21,17 @@ export const Route = createFileRoute('/profile')({
     ])
 
     return {
-      user,
       notifications,
       events,
       venues,
       users
     }
   },
-  component: Profile
+  component: () => {
+    return (
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    )
+  }
 })

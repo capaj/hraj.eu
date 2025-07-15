@@ -4,18 +4,21 @@ import tsConfigPaths from 'vite-tsconfig-paths'
 import tailwindcss from '@tailwindcss/vite'
 import { lingui } from '@lingui/vite-plugin'
 import macrosPlugin from 'vite-plugin-babel-macros'
+import viteReact from '@vitejs/plugin-react'
 
 export default defineConfig({
   server: {
-    port: 3000
+    port: 5173
   },
   plugins: [
     tsConfigPaths({
       projects: ['./tsconfig.json']
     }),
     tanstackStart({
-      target: 'cloudflare-module'
+      target: 'cloudflare-module',
+      customViteReactPlugin: true
     }),
+    viteReact(),
     macrosPlugin(),
     lingui(),
     tailwindcss()

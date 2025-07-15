@@ -9,6 +9,7 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { Header } from '../components/layout/Header'
 import { Providers } from '~/lib/providers'
 import '../index.css'
+
 export const Route = createRootRoute({
   head: () => ({
     meta: [

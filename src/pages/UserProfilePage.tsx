@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
-import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Toggle } from '../components/ui/Toggle'
-import { mockUsers } from '../lib/mock-data'
 import { SPORTS, SKILL_LEVELS, EU_CURRENCIES } from '../lib/constants'
 import { User } from '../types'
 import {
@@ -20,7 +18,6 @@ import {
   Edit3,
   Upload,
   X,
-  Plus,
   Check,
   CreditCard,
   Building2,
@@ -35,11 +32,24 @@ import {
   Bell,
   BellOff
 } from 'lucide-react'
-import { useAuthenticate } from '@daveyplate/better-auth-ui'
+
+import { useUser } from '~/lib/auth-client'
 
 export const UserProfile: React.FC = () => {
-  useAuthenticate()
-  const [user, setUser] = useState<User>(() => mockUsers[0] || ({} as User)) // Current user
+  const data = useUser()
+  console.log('data', data)
+  const [user, setUser] = useState<User>({
+    ...data,
+    karmaPoints: 0,
+    skillLevels: {},
+    notificationPreferences: {},
+    preferredCurrency: 'EUR',
+    location: '',
+    revTag: '',
+    bankAccount: '',
+    createdAt: new Date(),
+    updatedAt: new Date()
+  })
   const [isEditing, setIsEditing] = useState(false)
   const [isEditingRevTag, setIsEditingRevTag] = useState(false)
   const [isEditingBankAccount, setIsEditingBankAccount] = useState(false)
@@ -316,7 +326,7 @@ export const UserProfile: React.FC = () => {
         Math.random() * 1000000
       )}.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop`
 
-      setEditedUser((prev) => ({ ...prev, avatar: newAvatarUrl }))
+      setEditedUser((prev) => ({ ...prev, image: newAvatarUrl }))
       setShowAvatarUpload(false)
 
       console.log('Avatar uploaded:', file.name)
@@ -439,7 +449,7 @@ export const UserProfile: React.FC = () => {
               {/* Avatar Section */}
               <div className="relative flex-shrink-0">
                 <img
-                  src={editedUser.avatar}
+                  src={editedUser.image}
                   alt={editedUser.name}
                   className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
                 />

@@ -566,7 +566,7 @@ export const EventDetailsPage: React.FC = () => {
                     >
                       <div className="flex items-center space-x-3">
                         <img
-                          src={user?.avatar}
+                          src={user?.image}
                           alt={user?.name}
                           className="w-10 h-10 rounded-full object-cover"
                         />
@@ -658,7 +658,7 @@ export const EventDetailsPage: React.FC = () => {
               <CardContent className="p-6">
                 <div className="flex items-center space-x-3 mb-4">
                   <img
-                    src={organizer?.avatar}
+                    src={organizer?.image}
                     alt={organizer?.name}
                     className="w-12 h-12 rounded-full object-cover"
                   />

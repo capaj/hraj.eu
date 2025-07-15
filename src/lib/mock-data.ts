@@ -1,12 +1,13 @@
-import { Event, User, Notification } from '../types';
-import { mockVenues } from './mock-venues';
+import { Event, User, Notification } from '../types'
+import { mockVenues } from './mock-venues'
 
 export const mockUsers: User[] = [
   {
     id: '1',
     email: 'alex@example.com',
     name: 'Alex Novák',
-    avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
+    image:
+      'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
     bio: 'Passionate football organizer',
     karmaPoints: 42,
     skillLevels: { football: 'intermediate', basketball: 'beginner' },
@@ -15,13 +16,14 @@ export const mockUsers: User[] = [
     location: 'Prague, Czech Republic',
     revTag: 'alexnovak',
     bankAccount: '123456789/0100',
-    createdAt: new Date('2024-01-15'),
+    createdAt: new Date('2024-01-15')
   },
   {
     id: '2',
     email: 'ben@example.com',
     name: 'Ben König',
-    avatar: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
+    image:
+      'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
     bio: 'Weekend warrior',
     karmaPoints: 28,
     skillLevels: { football: 'advanced', volleyball: 'intermediate' },
@@ -29,22 +31,23 @@ export const mockUsers: User[] = [
     preferredCurrency: 'EUR',
     location: 'Vienna, Austria',
     revTag: 'benkoenig',
-    createdAt: new Date('2024-02-01'),
+    createdAt: new Date('2024-02-01')
   },
   {
     id: '3',
     email: 'chloe@example.com',
     name: 'Chloe Svoboda',
-    avatar: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
+    image:
+      'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
     bio: 'New in town, looking for games!',
     karmaPoints: 15,
     skillLevels: { handball: 'intermediate', 'water-polo': 'beginner' },
     notificationPreferences: { handball: true, 'water-polo': true },
     preferredCurrency: 'CZK',
     location: 'Prague, Czech Republic',
-    createdAt: new Date('2024-02-15'),
-  },
-];
+    createdAt: new Date('2024-02-15')
+  }
+]
 
 export const mockEvents: Event[] = [
   {
@@ -70,7 +73,7 @@ export const mockEvents: Event[] = [
     waitlist: [],
     status: 'open',
     createdAt: new Date('2024-12-10'),
-    updatedAt: new Date('2024-12-12'),
+    updatedAt: new Date('2024-12-12')
   },
   {
     id: '2',
@@ -93,7 +96,7 @@ export const mockEvents: Event[] = [
     waitlist: [],
     status: 'open',
     createdAt: new Date('2024-12-11'),
-    updatedAt: new Date('2024-12-11'),
+    updatedAt: new Date('2024-12-11')
   },
   {
     id: '3',
@@ -116,7 +119,7 @@ export const mockEvents: Event[] = [
     waitlist: [],
     status: 'open',
     createdAt: new Date('2024-12-12'),
-    updatedAt: new Date('2024-12-12'),
+    updatedAt: new Date('2024-12-12')
   },
   {
     id: '4',
@@ -140,9 +143,9 @@ export const mockEvents: Event[] = [
     waitlist: [],
     status: 'open',
     createdAt: new Date('2024-12-13'),
-    updatedAt: new Date('2024-12-13'),
-  },
-];
+    updatedAt: new Date('2024-12-13')
+  }
+]
 
 export const mockNotifications: Notification[] = [
   {
@@ -154,27 +157,29 @@ export const mockNotifications: Notification[] = [
     eventId: '1',
     fromUserId: '3',
     isRead: false,
-    createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
+    createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000) // 2 hours ago
   },
   {
     id: '2',
     userId: '1',
     type: 'event_confirmed',
     title: 'Event Confirmed',
-    message: 'Your event "Sunday Football at Letná Park" has reached minimum participants and is confirmed!',
+    message:
+      'Your event "Sunday Football at Letná Park" has reached minimum participants and is confirmed!',
     eventId: '1',
     isRead: false,
-    createdAt: new Date(Date.now() - 4 * 60 * 60 * 1000), // 4 hours ago
+    createdAt: new Date(Date.now() - 4 * 60 * 60 * 1000) // 4 hours ago
   },
   {
     id: '3',
     userId: '1',
     type: 'karma_received',
     title: 'Karma Received',
-    message: 'You received +5 karma points from Ben König for great sportsmanship',
+    message:
+      'You received +5 karma points from Ben König for great sportsmanship',
     fromUserId: '2',
     isRead: true,
-    createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000), // 1 day ago
+    createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000) // 1 day ago
   },
   {
     id: '4',
@@ -184,7 +189,7 @@ export const mockNotifications: Notification[] = [
     message: 'Your event "Sunday Football at Letná Park" starts in 2 hours',
     eventId: '1',
     isRead: true,
-    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000) // 2 days ago
   },
   {
     id: '5',
@@ -195,19 +200,20 @@ export const mockNotifications: Notification[] = [
     eventId: '1',
     fromUserId: '2',
     isRead: true,
-    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000) // 3 days ago
   },
   {
     id: '6',
     userId: '1',
     type: 'moved_from_waitlist',
     title: 'Moved from Waitlist',
-    message: 'You\'ve been moved from waitlist to confirmed for "Ice Hockey Pick-up Game"',
+    message:
+      'You\'ve been moved from waitlist to confirmed for "Ice Hockey Pick-up Game"',
     eventId: '4',
     isRead: true,
-    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
-  },
-];
+    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000) // 5 days ago
+  }
+]
 
 // Export venues for backward compatibility
-export { mockVenues };
+export { mockVenues }

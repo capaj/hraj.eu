@@ -8,12 +8,14 @@ import { Badge } from '../components/ui/Badge'
 import { Calendar, MapPin, Users, Clock, Heart, Trophy } from 'lucide-react'
 import { format, isPast, isFuture } from 'date-fns'
 import { useAuthenticate } from '@daveyplate/better-auth-ui'
+import { useUser } from '~/lib/auth-client'
 
 export const Profile: React.FC = () => {
-  useAuthenticate() // This is needed to make the auth work
-  const { user, notifications, events, venues, users } = useLoaderData({
+
+  const {  notifications, events, venues, users } = useLoaderData({
     from: '/profile'
   })
+  const user = useUser()
   const navigate = useNavigate()
 
   // Mock saved events (in a real app, this would come from user's saved events)

@@ -83,3 +83,14 @@
 .bg-popover {
   background-color: #ffffff !important;
 }
+
+
+.auth-card button svg {
+  max-height: 4rem ;
+}
+
+
+.auth-card input {
+  border: 1px solid var(--color-border);
+}
+

@@ -78,7 +78,15 @@ export const Header: React.FC = () => {
               to="/user-profile"
               className="p-2 text-gray-600 hover:text-primary-600 transition-colors"
             >
-              <UserButton />
+              <UserButton
+                classNames={{
+                  base: 'border-none',
+                  content: {
+                    base: 'border-none',
+                    menuItem: 'hover:bg-gray-100'
+                  }
+                }}
+              />
             </Link>
           </div>
         </div>

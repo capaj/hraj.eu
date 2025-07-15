@@ -165,9 +165,9 @@ export const Home: React.FC = () => {
               Let's Play Together
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-primary-100 max-w-3xl mx-auto animate-slide-up">
-              Join the largest community of amateur sports enthusiasts across
-              Europe. Organize games, discover events, and make new friends
-              through sport.
+              Join the largest community of sports enthusiasts across Europe.
+              Organize games, discover events, and make new friends through
+              sport.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-bounce-gentle">
               <Link to="/create">
