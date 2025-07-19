@@ -21,7 +21,9 @@ export const auth = betterAuth({
         input: false
       },
       preferredCurrency: {
-        type: 'string'
+        type: 'string',
+        input: true,
+        defaultValue: 'CZK'
       }
     }
   },

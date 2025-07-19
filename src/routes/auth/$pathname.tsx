@@ -1,17 +1,15 @@
-import { AuthCard } from '@daveyplate/better-auth-ui'
+import { AuthCard as AuthCardUI } from '@daveyplate/better-auth-ui'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/auth/$pathname')({
   component: AuthRouteComponent
 })
 
-export function AuthRouteComponent() {
-  const { pathname } = Route.useParams()
-
+export function AuthCard({ pathname }: { pathname: string }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-600 to-secondary-600 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <AuthCard
+        <AuthCardUI
           pathname={pathname}
           socialLayout="grid"
           className="auth-card"
@@ -35,4 +33,9 @@ export function AuthRouteComponent() {
       </div>
     </div>
   )
+}
+
+export function AuthRouteComponent() {
+  const { pathname } = Route.useParams()
+  return <AuthCard pathname={pathname} />
 }

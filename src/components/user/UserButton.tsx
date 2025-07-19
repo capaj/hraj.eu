@@ -29,6 +29,7 @@ import {
 import { cn } from '../../lib/utils'
 import { authClient } from '../../lib/auth-client'
 import { Link } from '@tanstack/react-router'
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
 
 export interface UserButtonProps {
   className?: string
@@ -156,14 +157,25 @@ export function UserButton({
         {trigger ||
           (size === 'icon' ? (
             <Button size="sm" className="p-1 rounded-full" variant="ghost">
-              <UserAvatar
-                key={user?.image}
-                isPending={isPending}
-                className={className}
-                user={user}
-                size="lg"
-                aria-label="Account"
-              />
+              {user ? (
+                <UserAvatar
+                  key={user?.image}
+                  isPending={isPending}
+                  className={className}
+                  user={user}
+                  size="lg"
+                  aria-label="Account"
+                />
+            ) : (
+                <Tooltip>
+                  <TooltipTrigger>
+                    <UserRoundPlus />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Sign in to your account</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
             </Button>
           ) : (
             <Button className={cn('!p-2 h-fit', className)} size="md">
