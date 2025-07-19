@@ -18,12 +18,10 @@ export const auth = betterAuth({
     additionalFields: {
       karmaPoints: {
         type: 'number',
-        input: false,
-        default: 0
+        input: false
       },
       preferredCurrency: {
-        type: 'string',
-        default: 'EUR'
+        type: 'string'
       }
     }
   },
@@ -39,7 +37,9 @@ export const auth = betterAuth({
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+      overrideUserInfoOnSignIn: true, // This will update user info on every sign-in
+      scopes: ['profile', 'email'] // Ensure we get profile and email scopes
     },
     facebook: {
       clientId: env.FACEBOOK_CLIENT_ID,

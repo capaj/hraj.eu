@@ -45,6 +45,13 @@
 - **Multiple Views**: List view and interactive map view
 - **Sorting Options**: By date/time, distance from user, available spots
 - **Real-time Updates**: Live participant counts and status changes
+- **Event links unfurling**: When sharing event links, the event detail card is displayed in the preview
+  - **Event title**: The title of the event
+  - **Event sport**: The sport of the event
+  - **Event date**: The date of the event
+  - **Event time**: The time of the event
+  - **Event location**: The location of the event
+  - **Event participant count bar**: displays graphically the number of participants and the number of available spots
 
 #### Event Participation
 
@@ -76,10 +83,7 @@
 
 #### Supported Sports
 
-- **Team Sports**: Football (Soccer), Basketball, Volleyball, Handball, Rugby (Union/League)
-- **Ice Sports**: Ice Hockey, Field Hockey
-- **Water Sports**: Water Polo
-- **Other Sports**: Cricket, Netball, Korfball, Floorball
+- refer to the SPORTS constant in the [constants.ts](./src/lib/constants.ts) file
 
 #### Skill Level System
 

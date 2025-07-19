@@ -22,6 +22,7 @@ export const ProtectedRoute = (props: { children: React.ReactNode }) => {
   if (!session.data?.user) {
     return <AuthRouteComponent />
   }
+  console.log('session.data?.user', session.data?.user)
   return (
     <AuthContext.Provider value={session.data?.user}>
       {props.children}

@@ -18,7 +18,7 @@ import {
 import { mockNotifications, mockUsers, mockEvents } from '../../lib/mock-data'
 import { Notification } from '../../types'
 import { formatDistanceToNow } from 'date-fns'
-import { UserButton } from '@daveyplate/better-auth-ui'
+import { UserButton } from '../user/UserButton'
 import { authClient } from '~/lib/auth-client'
 
 export const Header: React.FC = () => {
@@ -76,17 +76,9 @@ export const Header: React.FC = () => {
 
             <Link
               to="/user-profile"
-              className="p-2 text-gray-600 hover:text-primary-600 transition-colors"
+              className="text-gray-600 hover:text-primary-600 transition-colors"
             >
-              <UserButton
-                classNames={{
-                  base: 'border-none',
-                  content: {
-                    base: 'border-none',
-                    menuItem: 'hover:bg-gray-100'
-                  }
-                }}
-              />
+              <UserButton size="icon" />
             </Link>
           </div>
         </div>
