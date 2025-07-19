@@ -32,6 +32,12 @@ export const auth = betterAuth({
     expiresIn: 60 * 60 * 24 * 365, // 1 year in seconds
     updateAge: 60 * 60 * 24 * 14 // Update session every two weeks
   },
+  account: {
+    accountLinking: {
+      enabled: true,
+      trustedProviders: ['google', 'facebook']
+    }
+  },
   trustedOrigins: ['http://localhost:3000', 'https://hraj.eu'],
   plugins: [reactStartCookies()],
   socialProviders: {
