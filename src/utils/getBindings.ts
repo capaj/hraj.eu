@@ -3,7 +3,11 @@ let cachedEnv: CloudflareEnv | null = null
 // This gets called once at startup when running locally
 const initDevEnv = async () => {
   const { getPlatformProxy } = await import('wrangler')
-  const proxy = await getPlatformProxy()
+  const proxy = await getPlatformProxy({
+    experimental: {
+      remoteBindings: true
+    }
+  })
   cachedEnv = proxy.env as unknown as CloudflareEnv
 }
 
