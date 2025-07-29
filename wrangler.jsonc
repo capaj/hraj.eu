@@ -15,5 +15,11 @@
   },
   "vars": {
     "NODE_ENV": "production"
-  }
+  },
+  "r2_buckets": [
+    {
+      "bucket_name": "hraj-eu-uploads",
+      "binding": "hraj_eu_uploads"
+    }
+  ]
 }

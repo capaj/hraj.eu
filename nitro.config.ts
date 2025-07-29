@@ -35,9 +35,8 @@ function tanstackVirtualModules(): Plugin {
 }
 
 export default defineNitroConfig({
-
   rollupConfig: {
-    plugins: [tanstackVirtualModules()],
+    plugins: [tanstackVirtualModules()]
   },
-  preset: 'cloudflare_worker',
-}) 
+  preset: 'cloudflare-pages'
+})

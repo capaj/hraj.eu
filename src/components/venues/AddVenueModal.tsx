@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, CardHeader, CardContent } from '../ui/Card'
 import { Button } from '../ui/Button'
 import { SPORTS } from '../../lib/constants'
 import { Venue } from '../../types'
+import { uploadVenueImages, uploadVenuePlan } from '../../lib/server-functions'
 import {
   X,
   MapPin,
@@ -47,6 +48,22 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
   const [uploadingImage, setUploadingImage] = useState(false)
   const [uploadingPlan, setUploadingPlan] = useState(false)
 
+  useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen && !isSubmitting) {
+        onClose()
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscapeKey)
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey)
+    }
+  }, [isOpen, isSubmitting, onClose])
+
   const availableFacilities = [
     { id: 'parking', name: 'Parking', icon: '🚗' },
     { id: 'changing_rooms', name: 'Changing Rooms', icon: '👕' },
@@ -89,23 +106,20 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
     setUploadingImage(true)
 
     try {
-      // Simulate upload delay
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      const formData = new FormData()
+      Array.from(files).forEach((file) => {
+        formData.append('images', file)
+      })
 
-      // In a real app, you'd upload to a service like Cloudinary or AWS S3
-      const newImages = Array.from(files).map(
-        (file, index) =>
-          `https://images.pexels.com/photos/${Math.floor(
-            Math.random() * 1000000
-          )}/pexels-photo-${Math.floor(
-            Math.random() * 1000000
-          )}.jpeg?auto=compress&cs=tinysrgb&w=800`
-      )
-
-      setImages((prev) => [...prev, ...newImages])
+      const result = await uploadVenueImages({ data: formData })
+      setImages((prev) => [...prev, ...result.urls])
     } catch (error) {
       console.error('Upload failed:', error)
-      alert('Failed to upload images. Please try again.')
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Failed to upload images. Please try again.'
+      alert(errorMessage)
     } finally {
       setUploadingImage(false)
     }
@@ -120,15 +134,18 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
     setUploadingPlan(true)
 
     try {
-      // Simulate upload delay
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const formData = new FormData()
+      formData.append('plan', file)
 
-      // In a real app, you'd upload to a service
-      const planUrl = `https://images.pexels.com/photos/590016/pexels-photo-590016.jpg?auto=compress&cs=tinysrgb&w=600`
-      setOrientationPlan(planUrl)
+      const result = await uploadVenuePlan({ data: formData })
+      setOrientationPlan(result.url)
     } catch (error) {
       console.error('Upload failed:', error)
-      alert('Failed to upload orientation plan. Please try again.')
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Failed to upload orientation plan. Please try again.'
+      alert(errorMessage)
     } finally {
       setUploadingPlan(false)
     }
@@ -217,7 +234,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <Card>
           <CardHeader>
@@ -642,24 +659,6 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                       <option value="CZK">CZK (Kč)</option>
                       <option value="USD">USD ($)</option>
                     </select>
-                  </div>
-                </div>
-              </div>
-
-              {/* Verification Notice */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <div className="flex items-start">
-                  <Info
-                    size={16}
-                    className="text-blue-600 mr-2 mt-0.5 flex-shrink-0"
-                  />
-                  <div className="text-sm text-blue-800">
-                    <p className="font-medium mb-1">Venue Verification</p>
-                    <p>
-                      New venues are reviewed by our team before being made
-                      available to all users. This helps ensure accuracy and
-                      quality of venue information.
-                    </p>
                   </div>
                 </div>
               </div>
