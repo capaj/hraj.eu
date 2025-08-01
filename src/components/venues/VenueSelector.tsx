@@ -3,14 +3,12 @@ import { Card, CardContent } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { mockVenues } from '../../lib/mock-venues';
-import { Venue } from '../../types';
 import { SPORTS } from '../../lib/constants';
 import { 
   MapPin, 
   Plus, 
   Search, 
   Star, 
-  Clock, 
   Users, 
   Car, 
   Wifi, 
@@ -18,7 +16,6 @@ import {
   Droplets,
   ShoppingBag,
   Building,
-  ChevronDown,
   Check,
   X
 } from 'lucide-react';
@@ -37,7 +34,6 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
   sportFilter
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showAllVenues, setShowAllVenues] = useState(false);
 
   // Filter venues based on search term and sport
@@ -151,9 +147,9 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
             className={`cursor-pointer transition-all hover:shadow-md ${
               selectedVenueId === venue.id ? 'ring-2 ring-primary-500 bg-primary-50' : 'hover:bg-gray-50'
             }`}
-            onClick={() => onVenueSelect(venue.id)}
           >
             <CardContent className="p-4">
+              <div onClick={() => onVenueSelect(venue.id)} className="w-full">
               <div className="flex items-start space-x-4">
                 {/* Venue Image */}
                 <div className="flex-shrink-0">
@@ -167,9 +163,16 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
                 {/* Venue Info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between mb-2">
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2 mb-1">
-                        <h3 className="font-semibold text-gray-900 truncate">{venue.name}</h3>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1">
+                        <h3 className="font-semibold text-gray-900 truncate flex-1 mr-2">{venue.name}</h3>
+                        {selectedVenueId === venue.id && (
+                          <div className="flex-shrink-0">
+                            <Check size={20} className="text-primary-600" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex flex-wrap items-center gap-1 mb-2">
                         <Badge variant="default" size="sm" className={getVenueTypeColor(venue.type)}>
                           {venue.type}
                         </Badge>
@@ -185,32 +188,26 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
                         <span className="truncate">{venue.address}, {venue.city}</span>
                       </div>
                     </div>
-                    
-                    {selectedVenueId === venue.id && (
-                      <div className="ml-2">
-                        <Check size={20} className="text-primary-600" />
-                      </div>
-                    )}
                   </div>
 
                   {/* Sports and Rating */}
                   <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 flex-1 min-w-0">
                       {venue.sports.slice(0, 3).map(sportId => {
                         const sport = SPORTS.find(s => s.id === sportId);
                         return sport ? (
-                          <span key={sportId} className="text-lg" title={sport.name}>
+                          <span key={sportId} className="text-lg flex-shrink-0" title={sport.name}>
                             {sport.icon}
                           </span>
                         ) : null;
                       })}
                       {venue.sports.length > 3 && (
-                        <span className="text-sm text-gray-500">+{venue.sports.length - 3}</span>
+                        <span className="text-sm text-gray-500 flex-shrink-0">+{venue.sports.length - 3}</span>
                       )}
                     </div>
                     
                     {venue.rating && (
-                      <div className="flex items-center text-sm text-gray-600">
+                      <div className="flex items-center text-sm text-gray-600 flex-shrink-0 ml-2">
                         <Star size={14} className="mr-1 text-yellow-500 fill-current" />
                         {venue.rating}
                       </div>
@@ -218,27 +215,27 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
                   </div>
 
                   {/* Facilities */}
-                  <div className="flex items-center space-x-3 text-xs text-gray-500">
-                    {venue.facilities.slice(0, 4).map(facility => (
-                      <div key={facility} className="flex items-center space-x-1">
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500">
+                    {venue.facilities.slice(0, 3).map(facility => (
+                      <div key={facility} className="flex items-center space-x-1 flex-shrink-0">
                         {getFacilityIcon(facility)}
-                        <span>{getFacilityLabel(facility)}</span>
+                        <span className="hidden sm:inline">{getFacilityLabel(facility)}</span>
                       </div>
                     ))}
-                    {venue.facilities.length > 4 && (
-                      <span>+{venue.facilities.length - 4} more</span>
+                    {venue.facilities.length > 3 && (
+                      <span className="text-gray-400">+{venue.facilities.length - 3}</span>
                     )}
                   </div>
 
-                  {/* Price Range */}
-                  {venue.priceRange && venue.priceRange.max > 0 && (
+                  {/* Price */}
+                  {venue.price > 0 && (
                     <div className="mt-2 text-sm text-gray-600">
-                      €{venue.priceRange.min}
-                      {venue.priceRange.min !== venue.priceRange.max && `-€${venue.priceRange.max}`}
+                      €{venue.price}
                       <span className="text-gray-500"> per hour</span>
                     </div>
                   )}
                 </div>
+              </div>
               </div>
             </CardContent>
           </Card>
