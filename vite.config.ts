@@ -24,7 +24,6 @@ export default defineConfig({
     tailwindcss()
   ],
   optimizeDeps: {
-    exclude: ['lucide-react'],
     include: ['offline-geocode-city', 's2-geometry', 'long']
   },
   ssr: {
