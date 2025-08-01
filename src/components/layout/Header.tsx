@@ -13,7 +13,8 @@ import {
   Users,
   Euro,
   AlertTriangle,
-  CheckCircle
+  CheckCircle,
+  Menu
 } from 'lucide-react'
 import { mockNotifications, mockUsers, mockEvents } from '../../lib/mock-data'
 import { Notification } from '../../types'
@@ -23,11 +24,19 @@ import { authClient } from '~/lib/auth-client'
 
 export const Header: React.FC = () => {
   const session = authClient.useSession()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 text-gray-600 hover:text-primary-600 transition-colors"
+          >
+            <Menu size={20} />
+          </button>
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 cursor-pointer">
@@ -37,7 +46,7 @@ export const Header: React.FC = () => {
             </Link>
           </div>
 
-          {/* Navigation */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
             <Link
               to="/discover"
@@ -64,8 +73,8 @@ export const Header: React.FC = () => {
 
           {/* Actions */}
           <div className="flex items-center space-x-4">
-            <Link to="/create">
-              <Button variant="primary" size="sm" className="hidden sm:flex">
+            <Link to="/create" className="hidden sm:inline-flex">
+              <Button variant="primary" size="sm">
                 <Plus size={16} className="mr-2" />
                 Create Event
               </Button>
@@ -82,6 +91,48 @@ export const Header: React.FC = () => {
             </Link>
           </div>
         </div>
+
+        {/* Mobile Navigation */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden border-t border-gray-200 bg-white">
+            <nav className="px-4 py-4 space-y-4">
+              <Link
+                to="/discover"
+                className="block transition-colors text-gray-700 hover:text-primary-600 py-2"
+                activeProps={{ className: 'text-primary-600 font-medium' }}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Discover
+              </Link>
+              <Link
+                to="/profile"
+                className="block transition-colors text-gray-700 hover:text-primary-600 py-2"
+                activeProps={{ className: 'text-primary-600 font-medium' }}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                My Events
+              </Link>
+              <Link
+                to="/leaderboard"
+                className="block transition-colors text-gray-700 hover:text-primary-600 py-2"
+                activeProps={{ className: 'text-primary-600 font-medium' }}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Leaderboard
+              </Link>
+              <Link
+                to="/create"
+                className="block transition-colors text-gray-700 hover:text-primary-600 py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Button variant="primary" size="sm">
+                  <Plus size={16} className="mr-2" />
+                  Create Event
+                </Button>
+              </Link>
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   )
@@ -177,7 +228,7 @@ export const NotificationsDropdown = () => {
 
       {/* Notifications Dropdown */}
       {showNotifications && (
-        <div className="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50 max-h-96 overflow-hidden">
+        <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50 max-h-96 overflow-hidden max-w-[calc(100vw-2rem)]">
           {/* Header */}
           <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
             <div className="flex items-center justify-between">
