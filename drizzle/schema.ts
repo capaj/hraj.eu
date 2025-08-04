@@ -12,7 +12,7 @@ export * from './auth-schema'
 import { user } from './auth-schema'
 import { SPORTS } from '~/lib/constants'
 
-export const userSkill = sqliteTable(
+export const userSkillT = sqliteTable(
   'user_skill',
   {
     id: integer('id').primaryKey().notNull(),
@@ -36,14 +36,14 @@ export const userSkill = sqliteTable(
   })
 )
 
-export const userSkillRelations = relations(userSkill, ({ one }) => ({
+export const userSkillRelations = relations(userSkillT, ({ one }) => ({
   user: one(user, {
-    fields: [userSkill.userId],
+    fields: [userSkillT.userId],
     references: [user.id]
   })
 }))
 
-export const event = sqliteTable(
+export const eventT = sqliteTable(
   'event',
   {
     id: text('id')
@@ -53,7 +53,7 @@ export const event = sqliteTable(
     title: text('title').notNull(),
     description: text('description'),
     sport: text('sport').notNull(),
-    venueId: text('venue_id').references(() => venue.id, {
+    venueId: text('venue_id').references(() => venueT.id, {
       onDelete: 'set null'
     }),
     date: text('date').notNull(),
@@ -97,26 +97,26 @@ export const event = sqliteTable(
   })
 )
 
-export const eventRelations = relations(event, ({ one, many }) => ({
+export const eventRelations = relations(eventT, ({ one, many }) => ({
   organizer: one(user, {
-    fields: [event.organizerId],
+    fields: [eventT.organizerId],
     references: [user.id],
     relationName: 'organizer'
   }),
-  venue: one(venue, {
-    fields: [event.venueId],
-    references: [venue.id]
+  venue: one(venueT, {
+    fields: [eventT.venueId],
+    references: [venueT.id]
   }),
-  participants: many(participant)
+  participants: many(participantT)
 }))
 
-export const participant = sqliteTable(
+export const participantT = sqliteTable(
   'participant',
   {
     id: integer('id').primaryKey().notNull(),
     eventId: text('event_id')
       .notNull()
-      .references(() => event.id, { onDelete: 'cascade' }),
+      .references(() => eventT.id, { onDelete: 'cascade' }),
     userId: text('user_id')
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
@@ -137,18 +137,18 @@ export const participant = sqliteTable(
   })
 )
 
-export const participantRelations = relations(participant, ({ one }) => ({
-  event: one(event, {
-    fields: [participant.eventId],
-    references: [event.id]
+export const participantRelations = relations(participantT, ({ one }) => ({
+  event: one(eventT, {
+    fields: [participantT.eventId],
+    references: [eventT.id]
   }),
   user: one(user, {
-    fields: [participant.userId],
+    fields: [participantT.userId],
     references: [user.id]
   })
 }))
 
-export const venue = sqliteTable(
+export const venueT = sqliteTable(
   'venue',
   {
     id: text('id')
@@ -215,14 +215,14 @@ export const venue = sqliteTable(
   })
 )
 
-export const venueRelations = relations(venue, ({ one, many }) => ({
+export const venueRelations = relations(venueT, ({ one, many }) => ({
   creator: one(user, {
-    fields: [venue.createdBy],
+    fields: [venueT.createdBy],
     references: [user.id]
   })
 }))
 
-export const notification = sqliteTable(
+export const notificationT = sqliteTable(
   'notification',
   {
     id: text('id')
@@ -245,7 +245,7 @@ export const notification = sqliteTable(
     }).notNull(),
     title: text('title'),
     message: text('message'),
-    eventId: text('event_id').references(() => event.id, {
+    eventId: text('event_id').references(() => eventT.id, {
       onDelete: 'cascade'
     }),
     fromUserId: text('from_user_id').references(() => user.id, {
@@ -261,31 +261,31 @@ export const notification = sqliteTable(
   })
 )
 
-export const notificationRelations = relations(notification, ({ one }) => ({
+export const notificationRelations = relations(notificationT, ({ one }) => ({
   user: one(user, {
-    fields: [notification.userId],
+    fields: [notificationT.userId],
     references: [user.id]
   }),
-  event: one(event, {
-    fields: [notification.eventId],
-    references: [event.id]
+  event: one(eventT, {
+    fields: [notificationT.eventId],
+    references: [eventT.id]
   }),
   fromUser: one(user, {
-    fields: [notification.fromUserId],
+    fields: [notificationT.fromUserId],
     references: [user.id]
   })
 }))
 
 // User relations that reference the other tables
 export const userRelations = relations(user, ({ many }) => ({
-  skills: many(userSkill),
-  organizedEvents: many(event, { relationName: 'organizer' }),
-  participatedEvents: many(participant),
-  createdVenues: many(venue),
-  notifications: many(notification)
+  skills: many(userSkillT),
+  organizedEvents: many(eventT, { relationName: 'organizer' }),
+  participatedEvents: many(participantT),
+  createdVenues: many(venueT),
+  notifications: many(notificationT)
 }))
 
-export const eventFeedback = sqliteTable(
+export const eventFeedbackT = sqliteTable(
   'event_feedback',
   {
     id: text('id')
@@ -294,7 +294,7 @@ export const eventFeedback = sqliteTable(
       .notNull(),
     eventId: text('event_id')
       .notNull()
-      .references(() => event.id, { onDelete: 'cascade' }),
+      .references(() => eventT.id, { onDelete: 'cascade' }),
     fromUserId: text('from_user_id')
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
@@ -320,14 +320,17 @@ export const eventFeedback = sqliteTable(
   })
 )
 
-export const eventFeedbackRelations = relations(eventFeedback, ({ one }) => ({
-  event: one(event, {
-    fields: [eventFeedback.eventId],
-    references: [event.id]
+export const eventFeedbackRelations = relations(eventFeedbackT, ({ one }) => ({
+  event: one(eventT, {
+    fields: [eventFeedbackT.eventId],
+    references: [eventT.id]
   }),
   fromUser: one(user, {
-    fields: [eventFeedback.fromUserId],
+    fields: [eventFeedbackT.fromUserId],
     references: [user.id]
   }),
-  toUser: one(user, { fields: [eventFeedback.toUserId], references: [user.id] })
+  toUser: one(user, {
+    fields: [eventFeedbackT.toUserId],
+    references: [user.id]
+  })
 }))
