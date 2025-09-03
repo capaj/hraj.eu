@@ -21,6 +21,7 @@ export const user = sqliteTable('user', {
     .notNull(),
   updatedAt: integer('updated_at', { mode: 'timestamp' })
     .$defaultFn(() => /* @__PURE__ */ new Date())
+    .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull()
 })
 
@@ -34,7 +35,9 @@ export const session = sqliteTable('session', {
   expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull(),
   token: text('token').notNull().unique(),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
-  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp' })
+    .notNull()
+    .$onUpdate(() => /* @__PURE__ */ new Date()),
   ipAddress: text('ip_address'),
   userAgent: text('user_agent'),
   userId: text('user_id')
@@ -61,7 +64,9 @@ export const account = sqliteTable('account', {
   scope: text('scope'),
   password: text('password'),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
-  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
+  updatedAt: integer('updated_at', { mode: 'timestamp' })
+    .notNull()
+    .$onUpdate(() => /* @__PURE__ */ new Date())
 })
 
 export const verification = sqliteTable('verification', {
@@ -72,7 +77,7 @@ export const verification = sqliteTable('verification', {
   createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(
     () => /* @__PURE__ */ new Date()
   ),
-  updatedAt: integer('updated_at', { mode: 'timestamp' }).$defaultFn(
-    () => /* @__PURE__ */ new Date()
-  )
+  updatedAt: integer('updated_at', { mode: 'timestamp' })
+    .$defaultFn(() => /* @__PURE__ */ new Date())
+    .$onUpdate(() => /* @__PURE__ */ new Date())
 })
