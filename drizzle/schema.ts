@@ -24,11 +24,11 @@ export const userSkillT = sqliteTable(
       enum: ['beginner', 'intermediate', 'advanced']
     }).notNull(),
     createdAt: integer('created_at', { mode: 'timestamp' })
-      .default(sql`(current_timestamp)`)
+      .default(sql`unixepoch()`)
       .notNull(),
     updatedAt: integer('updated_at', { mode: 'timestamp' })
-      .default(sql`(current_timestamp)`)
-      .$onUpdate(() => sql`CURRENT_TIMESTAMP`)
+      .default(sql`unixepoch()`)
+      .$onUpdate(() => sql`unix`)
       .notNull()
   },
   (table) => ({
@@ -83,11 +83,11 @@ export const eventT = sqliteTable(
       .notNull(),
     cancellationReason: text('cancellation_reason'),
     createdAt: integer('created_at', { mode: 'timestamp' })
-      .default(sql`(current_timestamp)`)
+      .default(sql`unixepoch()`)
       .notNull(),
     updatedAt: integer('updated_at', { mode: 'timestamp' })
-      .default(sql`(current_timestamp)`)
-      .$onUpdate(() => sql`CURRENT_TIMESTAMP`)
+      .default(sql`unixepoch()`)
+      .$onUpdate(() => sql`unix`)
       .notNull()
   },
   (table) => ({
@@ -129,7 +129,7 @@ export const participantT = sqliteTable(
       'confirmed_participant_ordinal'
     ).notNull(), // 1 based index. We multiply karma points by event participation count - this. The first user who confirms gets 100% of the karma points.
     createdAt: integer('created_at', { mode: 'timestamp' })
-      .default(sql`(current_timestamp)`)
+      .default(sql`unixepoch()`)
       .notNull()
   },
   (table) => ({
@@ -203,11 +203,11 @@ export const venueT = sqliteTable(
       .default(false)
       .notNull(),
     createdAt: integer('created_at', { mode: 'timestamp' })
-      .default(sql`(current_timestamp)`)
+      .default(sql`unixepoch()`)
       .notNull(),
     updatedAt: integer('updated_at', { mode: 'timestamp' })
-      .default(sql`(current_timestamp)`)
-      .$onUpdate(() => sql`CURRENT_TIMESTAMP`)
+      .default(sql`unixepoch()`)
+      .$onUpdate(() => sql`unixepoch()`)
       .notNull()
   },
   (table) => ({
@@ -253,7 +253,7 @@ export const notificationT = sqliteTable(
     }),
     isRead: integer('is_read', { mode: 'boolean' }).default(false).notNull(),
     createdAt: integer('created_at', { mode: 'timestamp' })
-      .default(sql`(current_timestamp)`)
+      .default(sql`unixepoch()`)
       .notNull()
   },
   (table) => ({
@@ -308,7 +308,7 @@ export const eventFeedbackT = sqliteTable(
       .default(false)
       .notNull(),
     createdAt: integer('created_at', { mode: 'timestamp' })
-      .default(sql`(current_timestamp)`)
+      .default(sql`unixepoch()`)
       .notNull()
   },
   (table) => ({

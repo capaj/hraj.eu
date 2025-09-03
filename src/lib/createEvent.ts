@@ -1,0 +1,86 @@
+import { createServerFn } from '@tanstack/react-start'
+import { z } from 'zod'
+import { createInsertSchema } from 'drizzle-zod'
+import { eventT as eventTable } from '../../drizzle/schema'
+import { db } from 'drizzle/db'
+
+const ClientEventSchema = z.object({
+  title: z.string().min(1, 'Title is required'),
+  sport: z.string().min(1, 'Sport is required'),
+  venueId: z.string().min(1, 'Venue is required'),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  startTime: z.string().min(1, 'Start time is required'),
+  duration: z.number().int().positive(),
+  minParticipants: z.number().int().positive(),
+  idealParticipants: z.number().int().positive().optional(),
+  maxParticipants: z.number().int().positive(),
+  cancellationHours: z.number().int().min(0).max(72),
+  cancellationMinutes: z.number().int().min(0).max(59),
+  price: z.union([z.number(), z.string()]).optional(),
+  paymentDetails: z.string().optional(),
+  gameRules: z.string().optional(),
+  isPublic: z.boolean().default(true),
+  allowedSkillLevels: z
+    .array(z.enum(['beginner', 'intermediate', 'advanced']))
+    .default(['beginner', 'intermediate', 'advanced'])
+    .optional(),
+  requireSkillLevel: z.boolean().optional()
+})
+
+const EventInsertSchema = createInsertSchema(eventTable)
+
+type InsertedEvent = z.infer<typeof EventInsertSchema>
+
+export const createEvent = createServerFn({ method: 'POST' })
+  .validator((payload: unknown) => {
+    const parsed = ClientEventSchema.safeParse(payload)
+    if (!parsed.success) {
+      const issues = parsed.error.issues
+        .map((i) => `${i.path.join('.')}: ${i.message}`)
+        .join('; ')
+      throw new Error(`Invalid event data: ${issues}`)
+    }
+    return parsed.data
+  })
+  .handler(async ({ data }) => {
+    const organizerId = 'mock-user-id'
+
+    const cancellationDeadlineMinutes =
+      data.cancellationHours * 60 + data.cancellationMinutes
+
+    const numericPrice =
+      typeof data.price === 'string' && data.price !== ''
+        ? Number(data.price)
+        : typeof data.price === 'number'
+        ? data.price
+        : undefined
+
+    const requiredSkillLevel = data.requireSkillLevel
+      ? data.allowedSkillLevels && data.allowedSkillLevels.length === 1
+        ? data.allowedSkillLevels[0]
+        : undefined
+      : undefined
+
+    const insertData: Partial<InsertedEvent> = {
+      title: data.title,
+      sport: data.sport,
+      venueId: data.venueId,
+      date: data.date,
+      startTime: data.startTime,
+      duration: data.duration,
+      minParticipants: data.minParticipants,
+      idealParticipants: data.idealParticipants,
+      maxParticipants: data.maxParticipants,
+      cancellationDeadlineMinutes,
+      price: numericPrice,
+      paymentDetails: data.paymentDetails,
+      gameRules: data.gameRules,
+      isPublic: data.isPublic,
+      organizerId,
+      requiredSkillLevel
+    }
+
+    const validated = EventInsertSchema.parse(insertData)
+    const inserted = await db.insert(eventTable).values(validated).returning()
+    return inserted?.[0] ?? validated
+  })

@@ -4,6 +4,7 @@ import { Button } from '../ui/Button'
 import { SPORTS } from '../../lib/constants'
 import { Venue } from '../../types'
 import { uploadVenueImages, uploadVenuePlan } from '../../lib/server-functions'
+import { createVenue } from '~/lib/createVenue'
 import {
   X,
   MapPin,
@@ -171,10 +172,8 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
     setIsSubmitting(true)
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-
-      const venueData: Partial<Venue> = {
+      // Create venue data for the server function
+      const venueData = {
         name: formData.name.trim(),
         address: formData.address.trim(),
         city: formData.city.trim(),
@@ -193,7 +192,6 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
         },
         price: formData.price,
         currency: formData.currency,
-        // These would be set by the backend
         lat: 50.0755 + (Math.random() - 0.5) * 0.1, // Mock coordinates near Prague
         lng: 14.4378 + (Math.random() - 0.5) * 0.1,
         isVerified: false,
@@ -201,7 +199,42 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
         totalRatings: 0
       }
 
-      onSubmit(venueData)
+      // Call the server function to create the venue
+      const inserted = await createVenue({ data: venueData })
+      // inserted is a plain row; build the Venue for UI from inserted + form fallback
+      const v = inserted as any
+
+      const createdVenue: Partial<Venue> = {
+        id: v?.id,
+        name: v?.name ?? venueData.name,
+        address: v?.address ?? venueData.address ?? '',
+        city: v?.city ?? venueData.city ?? '',
+        country: v?.country ?? venueData.country ?? '',
+        type: (v?.type as 'outdoor' | 'indoor' | 'mixed') ?? venueData.type ?? 'outdoor',
+        sports: v?.sports ?? venueData.sports ?? [],
+        facilities: v?.facilities ?? venueData.facilities ?? [],
+        description: v?.description ?? venueData.description ?? undefined,
+        accessInstructions: v?.accessInstructions ?? venueData.accessInstructions ?? undefined,
+        images: v?.images ?? venueData.images ?? [],
+        orientationPlan: v?.orientationPlan ?? venueData.orientationPlan ?? undefined,
+        contactInfo: {
+          phone: v?.contactPhone ?? v?.contactInfo?.phone ?? venueData.contactInfo?.phone ?? '',
+          email: v?.contactEmail ?? v?.contactInfo?.email ?? venueData.contactInfo?.email ?? '',
+          website: v?.contactWebsite ?? v?.contactInfo?.website ?? venueData.contactInfo?.website ?? ''
+        },
+        price: v?.price ?? venueData.price ?? 0,
+        currency: v?.currency ?? venueData.currency ?? 'CZK',
+        lat: v?.lat ?? venueData.lat ?? 0,
+        lng: v?.lng ?? venueData.lng ?? 0,
+        isVerified: v?.isVerified ?? false,
+        rating: v?.rating ?? undefined,
+        totalRatings: v?.totalRatings ?? 0,
+        createdBy: v?.createdBy ?? '',
+        createdAt: v?.createdAt ? new Date(v.createdAt) : new Date(),
+        updatedAt: v?.updatedAt ? new Date(v.updatedAt) : new Date()
+      }
+
+      onSubmit(createdVenue)
       onClose()
 
       // Reset form

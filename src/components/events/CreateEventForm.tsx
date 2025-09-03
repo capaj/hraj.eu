@@ -7,21 +7,49 @@ import { VenueSelector } from '../venues/VenueSelector'
 import { AddVenueModal } from '../venues/AddVenueModal'
 import { SPORTS, SKILL_LEVELS } from '../../lib/constants'
 import { mockVenues } from '../../lib/mock-venues'
-import { Venue } from '../../types'
+import { Venue, type SkillLevel } from '../../types'
+import { eventT } from '../../../drizzle/schema'
 import {
   MapPin,
   Calendar,
-  Clock,
   Users,
   Euro,
   FileText,
-  AlertTriangle,
   Info,
   Shield
 } from 'lucide-react'
 
+export type CreateEventFormData = Omit<
+  typeof eventT.$inferInsert,
+  | 'cancellationDeadlineMinutes'
+  | 'organizerId'
+  | 'requiredSkillLevel'
+  | 'status'
+  | 'cancellationReason'
+  | 'createdAt'
+  | 'updatedAt'
+  | 'id'
+  | 'price'
+  | 'description'
+  | 'paymentDetails'
+  | 'gameRules'
+  | 'venueId'
+  | 'idealParticipants'
+> & {
+  cancellationHours: number
+  cancellationMinutes: number
+  allowedSkillLevels: SkillLevel[]
+  requireSkillLevel: boolean
+  price?: number | ''
+  description?: string
+  paymentDetails?: string
+  gameRules?: string
+  venueId: string
+  idealParticipants: number
+}
+
 interface CreateEventFormProps {
-  onSubmit: (eventData: any) => void
+  onSubmit: (eventData: CreateEventFormData) => Promise<void> | void
   onCancel: () => void
 }
 
@@ -36,7 +64,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     return date.toISOString().split('T')[0] // Format as YYYY-MM-DD
   }
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CreateEventFormData>({
     title: '',
     sport: '',
     venueId: '', // Changed from address to venueId
@@ -71,24 +99,26 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     onSubmit(formData)
   }
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: keyof CreateEventFormData, value: unknown) => {
     setFormData((prev) => {
-      const newData = { ...prev, [field]: value }
+      const newData: CreateEventFormData = { ...prev, [field]: value as any }
 
       // Auto-adjust ideal and max when min changes
       if (field === 'minParticipants') {
-        if (newData.idealParticipants < value) {
-          newData.idealParticipants = value
+        const v = value as number
+        if (newData.idealParticipants < v) {
+          newData.idealParticipants = v
         }
-        if (newData.maxParticipants < value) {
-          newData.maxParticipants = value
+        if (newData.maxParticipants < v) {
+          newData.maxParticipants = v
         }
       }
 
       // Auto-adjust max when ideal changes
       if (field === 'idealParticipants') {
-        if (newData.maxParticipants < value) {
-          newData.maxParticipants = value
+        const v = value as number
+        if (newData.maxParticipants < v) {
+          newData.maxParticipants = v
         }
       }
 
@@ -96,7 +126,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     })
   }
 
-  const handleSkillLevelToggle = (skillLevel: string) => {
+  const handleSkillLevelToggle = (skillLevel: SkillLevel) => {
     setFormData((prev) => {
       const currentLevels = prev.allowedSkillLevels
       const isCurrentlyAllowed = currentLevels.includes(skillLevel)
@@ -163,7 +193,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     }
   }
 
-  const getSkillLevelBadgeVariant = (level: string) => {
+  const getSkillLevelBadgeVariant = (level: SkillLevel) => {
     switch (level) {
       case 'beginner':
         return 'success' as const
@@ -176,7 +206,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     }
   }
 
-  const getSkillLevelDescription = (levels: string[]) => {
+  const getSkillLevelDescription = (levels: SkillLevel[]) => {
     if (levels.length === 3) {
       return 'All skill levels welcome'
     } else if (levels.length === 2) {
@@ -190,7 +220,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     }
   }
 
-  const selectedVenue = venues.find((v) => v.id === formData.venueId)
+  const _selectedVenue = venues.find((v) => v.id === formData.venueId)
 
   return (
     <>
@@ -495,9 +525,9 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     {SKILL_LEVELS.map((level) => {
-                      const isSelected = formData.allowedSkillLevels.includes(
-                        level.id
-                      )
+                      const lvl = level.id as SkillLevel
+                      const isSelected =
+                        formData.allowedSkillLevels.includes(lvl)
                       const isOnlySelected =
                         formData.allowedSkillLevels.length === 1 && isSelected
 
@@ -513,7 +543,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                           <input
                             type="checkbox"
                             checked={isSelected}
-                            onChange={() => handleSkillLevelToggle(level.id)}
+                            onChange={() => handleSkillLevelToggle(lvl)}
                             disabled={isOnlySelected}
                             className="text-primary-600 focus:ring-primary-500 rounded"
                           />

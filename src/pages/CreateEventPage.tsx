@@ -1,23 +1,50 @@
 import React, { useState } from 'react'
 import { CreateEventForm } from '../components/events/CreateEventForm'
+import type { CreateEventFormData } from '../components/events/CreateEventForm'
+// using CreateEventFormData from the form; no need to redeclare based on eventT here
 import { useAuthenticate } from '@daveyplate/better-auth-ui'
+import { createEvent } from '../lib/createEvent'
+import { toast } from 'sonner'
+
+// type provided by form
 
 export const CreateEvent: React.FC = () => {
   useAuthenticate() // This is needed to make the auth work
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = async (eventData: any) => {
+  const handleSubmit = async (eventData: CreateEventFormData) => {
     setIsSubmitting(true)
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    console.log('Event created:', eventData)
-
-    // In a real app, we'd redirect to the event page or show success message
-    alert('Event created successfully!')
-
-    setIsSubmitting(false)
+    try {
+      const created = await createEvent({
+        data: {
+          title: eventData.title,
+          sport: eventData.sport,
+          venueId: eventData.venueId,
+          date: eventData.date,
+          startTime: eventData.startTime,
+          duration: Number(eventData.duration),
+          minParticipants: Number(eventData.minParticipants),
+          idealParticipants: eventData.idealParticipants
+            ? Number(eventData.idealParticipants)
+            : undefined,
+          maxParticipants: Number(eventData.maxParticipants),
+          cancellationHours: Number(eventData.cancellationHours ?? 0),
+          cancellationMinutes: Number(eventData.cancellationMinutes ?? 0),
+          price: eventData.price,
+          paymentDetails: eventData.paymentDetails,
+          gameRules: eventData.gameRules,
+          isPublic: Boolean(eventData.isPublic),
+          allowedSkillLevels: eventData.allowedSkillLevels,
+          requireSkillLevel: Boolean(eventData.requireSkillLevel)
+        }
+      })
+      console.log('Event created:', created)
+      toast.success('Event created successfully!')
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to create event')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleCancel = () => {
