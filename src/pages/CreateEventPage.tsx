@@ -5,12 +5,14 @@ import type { CreateEventFormData } from '../components/events/CreateEventForm'
 import { useAuthenticate } from '@daveyplate/better-auth-ui'
 import { createEvent } from '../lib/createEvent'
 import { toast } from 'sonner'
+import { useLoaderData } from '@tanstack/react-router'
 
 // type provided by form
 
 export const CreateEvent: React.FC = () => {
   useAuthenticate() // This is needed to make the auth work
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const { venues } = useLoaderData({ from: '/create' }) as { venues: any[] }
 
   const handleSubmit = async (eventData: CreateEventFormData) => {
     setIsSubmitting(true)
@@ -55,7 +57,7 @@ export const CreateEvent: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-600 to-secondary-600 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <CreateEventForm onSubmit={handleSubmit} onCancel={handleCancel} />
+        <CreateEventForm venues={venues} onSubmit={handleSubmit} onCancel={handleCancel} />
       </div>
 
       {isSubmitting && (

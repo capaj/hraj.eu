@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { Card, CardContent } from '../ui/Card'
 import { Button } from '../ui/Button'
 import { Badge } from '../ui/Badge'
-import { mockVenues } from '../../lib/mock-venues'
 import { SPORTS } from '../../lib/constants'
+import type { Venue } from '../../types'
 import {
   MapPin,
   Plus,
@@ -25,20 +25,22 @@ interface VenueSelectorProps {
   onVenueSelect: (venueId: string) => void
   onAddVenue: () => void
   sportFilter?: string // Filter venues by sport
+  venues: Venue[]
 }
 
 export const VenueSelector: React.FC<VenueSelectorProps> = ({
   selectedVenueId,
   onVenueSelect,
   onAddVenue,
-  sportFilter
+  sportFilter,
+  venues
 }) => {
   const [searchTerm, setSearchTerm] = useState('')
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [_isDropdownOpen, _setIsDropdownOpen] = useState(false)
   const [showAllVenues, setShowAllVenues] = useState(false)
 
   // Filter venues based on search term and sport
-  const filteredVenues = mockVenues.filter((venue) => {
+  const filteredVenues = venues.filter((venue) => {
     const matchesSearch =
       venue.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       venue.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -53,7 +55,7 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
   const displayedVenues = showAllVenues
     ? filteredVenues
     : filteredVenues.slice(0, 3)
-  const selectedVenue = mockVenues.find((v) => v.id === selectedVenueId)
+  const selectedVenue = venues.find((v) => v.id === selectedVenueId)
 
   const getFacilityIcon = (facility: string) => {
     switch (facility) {
@@ -197,7 +199,7 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
                 {/* Venue Image */}
                 <div className="flex-shrink-0">
                   <img
-                    src={venue.images[0]}
+                    src={venue.images?.[0]}
                     alt={venue.name}
                     className="w-16 h-16 rounded-lg object-cover"
                   />

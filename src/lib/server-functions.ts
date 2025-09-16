@@ -1,11 +1,9 @@
 import { createServerFn } from '@tanstack/react-start'
-import {
-  mockEvents,
-  mockUsers,
-  mockNotifications,
-  mockVenues
-} from './mock-data'
-import { Event, User, Notification } from '../types'
+import { eq } from 'drizzle-orm'
+import { db } from 'drizzle/db'
+import { venueT } from '../../drizzle/schema'
+import { mockEvents, mockUsers, mockNotifications } from './mock-data'
+import { Event, User, Notification, Venue } from '../types'
 import { getBindings } from '~/utils/getBindings'
 
 // TODO: Replace with Turso database calls
@@ -122,26 +120,116 @@ export const getUserNotifications = createServerFn({ method: 'GET' })
   })
 
 export const getVenues = createServerFn({ method: 'GET' }).handler(async () => {
-  await new Promise((resolve) => setTimeout(resolve, 40))
+  const rows = await db.select().from(venueT)
 
-  // Future: Replace with Turso query
-  // const venues = await db.select().from(venuesTable)
-  return mockVenues
+  const venues: Venue[] = rows.map((v) => ({
+    id: v.id,
+    name: v.name,
+    address: v.address ?? '',
+    city: v.city ?? '',
+    country: v.country ?? '',
+    lat: typeof v.lat === 'number' ? v.lat : 0,
+    lng: typeof v.lng === 'number' ? v.lng : 0,
+    type: (v.type as Venue['type']) ?? 'outdoor',
+    sports: Array.isArray(v.sports) ? (v.sports as string[]) : [],
+    facilities: Array.isArray(v.facilities) ? (v.facilities as string[]) : [],
+    images: Array.isArray(v.photos) ? v.photos : [],
+    orientationPlan: v.orientationPlan ?? undefined,
+    description: v.description ?? undefined,
+    accessInstructions: v.accessInstructions ?? undefined,
+    openingHours: Array.isArray(v.openingHours)
+      ? v.openingHours.reduce<Record<string, { open: string; close: string } | null>>(
+          (acc, cur) => {
+            if (cur && (cur as any).day) {
+              acc[(cur as any).day] = { open: (cur as any).open, close: (cur as any).close }
+            }
+            return acc
+          },
+          {}
+        )
+      : undefined,
+    price: typeof v.priceRangeMin === 'number' ? v.priceRangeMin : 0,
+    currency: v.priceRangeCurrency ?? 'EUR',
+    priceRange:
+      typeof v.priceRangeMin === 'number' || typeof v.priceRangeMax === 'number'
+        ? {
+            min: typeof v.priceRangeMin === 'number' ? v.priceRangeMin : 0,
+            max: typeof v.priceRangeMax === 'number' ? v.priceRangeMax : (typeof v.priceRangeMin === 'number' ? v.priceRangeMin : 0),
+            currency: v.priceRangeCurrency ?? 'EUR'
+          }
+        : undefined,
+    contactInfo: {
+      phone: v.contactPhone ?? undefined,
+      email: v.contactEmail ?? undefined,
+      website: v.contactWebsite ?? undefined
+    },
+    rating: typeof v.rating === 'number' ? v.rating : undefined,
+    totalRatings: typeof v.totalRatings === 'number' ? v.totalRatings : undefined,
+    createdBy: v.createdBy ?? '',
+    isVerified: Boolean(v.isVerified),
+    createdAt: v.createdAt instanceof Date ? v.createdAt : new Date(),
+    updatedAt: v.updatedAt instanceof Date ? v.updatedAt : new Date()
+  }))
+
+  return venues
 })
 
 export const getVenueById = createServerFn({ method: 'GET' })
   .validator((venueId: string) => venueId)
   .handler(async ({ data: venueId }) => {
-    await new Promise((resolve) => setTimeout(resolve, 30))
-
-    // Future: Replace with Turso query
-    // const venue = await db.select().from(venuesTable).where(eq(venuesTable.id, venueId)).limit(1)
-    const venue = mockVenues.find((v) => v.id === venueId)
-
-    if (!venue) {
+    const rows = await db.select().from(venueT).where(eq(venueT.id, venueId))
+    const v = rows[0]
+    if (!v) {
       throw new Error(`Venue with id ${venueId} not found`)
     }
-
+    const venue: Venue = {
+      id: v.id,
+      name: v.name,
+      address: v.address ?? '',
+      city: v.city ?? '',
+      country: v.country ?? '',
+      lat: typeof v.lat === 'number' ? v.lat : 0,
+      lng: typeof v.lng === 'number' ? v.lng : 0,
+      type: (v.type as Venue['type']) ?? 'outdoor',
+      sports: Array.isArray(v.sports) ? (v.sports as string[]) : [],
+      facilities: Array.isArray(v.facilities) ? (v.facilities as string[]) : [],
+      images: Array.isArray(v.photos) ? v.photos : [],
+      orientationPlan: v.orientationPlan ?? undefined,
+      description: v.description ?? undefined,
+      accessInstructions: v.accessInstructions ?? undefined,
+      openingHours: Array.isArray(v.openingHours)
+        ? v.openingHours.reduce<Record<string, { open: string; close: string } | null>>(
+            (acc, cur) => {
+              if (cur && (cur as any).day) {
+                acc[(cur as any).day] = { open: (cur as any).open, close: (cur as any).close }
+              }
+              return acc
+            },
+            {}
+          )
+        : undefined,
+      price: typeof v.priceRangeMin === 'number' ? v.priceRangeMin : 0,
+      currency: v.priceRangeCurrency ?? 'EUR',
+      priceRange:
+        typeof v.priceRangeMin === 'number' || typeof v.priceRangeMax === 'number'
+          ? {
+              min: typeof v.priceRangeMin === 'number' ? v.priceRangeMin : 0,
+              max: typeof v.priceRangeMax === 'number' ? v.priceRangeMax : (typeof v.priceRangeMin === 'number' ? v.priceRangeMin : 0),
+              currency: v.priceRangeCurrency ?? 'EUR'
+            }
+          : undefined,
+      contactInfo: {
+        phone: v.contactPhone ?? undefined,
+        email: v.contactEmail ?? undefined,
+        website: v.contactWebsite ?? undefined
+      },
+      rating: typeof v.rating === 'number' ? v.rating : undefined,
+      totalRatings: typeof v.totalRatings === 'number' ? v.totalRatings : undefined,
+      createdBy: v.createdBy ?? '',
+      isVerified: Boolean(v.isVerified),
+      createdAt: v.createdAt instanceof Date ? v.createdAt : new Date(),
+      updatedAt: v.updatedAt instanceof Date ? v.updatedAt : new Date()
+    }
     return venue
   })
 
@@ -210,7 +298,7 @@ async function uploadFileToR2(file: File, folder: string): Promise<string> {
 // File upload functions
 export const uploadVenueImages = createServerFn({ method: 'POST' })
   .validator((formData: FormData) => formData)
-  .handler(async ({ data: formData, context }) => {
+  .handler(async ({ data: formData }) => {
     const files = formData.getAll('images') as File[]
 
     if (!files || files.length === 0) {
@@ -240,7 +328,7 @@ export const uploadVenueImages = createServerFn({ method: 'POST' })
 
 export const uploadVenuePlan = createServerFn({ method: 'POST' })
   .validator((formData: FormData) => formData)
-  .handler(async ({ data: formData, context }) => {
+  .handler(async ({ data: formData }) => {
     const file = formData.get('plan') as File
 
     try {

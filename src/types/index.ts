@@ -34,6 +34,7 @@ export interface Venue {
   }
   price: number
   currency: string
+  priceRange?: { min: number; max: number; currency: string }
   contactInfo?: {
     phone?: string
     email?: string

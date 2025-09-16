@@ -6,7 +6,6 @@ import { Toggle } from '../ui/Toggle'
 import { VenueSelector } from '../venues/VenueSelector'
 import { AddVenueModal } from '../venues/AddVenueModal'
 import { SPORTS, SKILL_LEVELS } from '../../lib/constants'
-import { mockVenues } from '../../lib/mock-venues'
 import { Venue, type SkillLevel } from '../../types'
 import { eventT } from '../../../drizzle/schema'
 import {
@@ -51,11 +50,13 @@ export type CreateEventFormData = Omit<
 interface CreateEventFormProps {
   onSubmit: (eventData: CreateEventFormData) => Promise<void> | void
   onCancel: () => void
+  venues: Venue[]
 }
 
 export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   onSubmit,
-  onCancel
+  onCancel,
+  venues: initialVenues
 }) => {
   // Calculate default date (one week from now) and format it for input
   const getDefaultDate = () => {
@@ -85,7 +86,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   })
 
   const [showAddVenueModal, setShowAddVenueModal] = useState(false)
-  const [venues, setVenues] = useState(mockVenues) // In real app, this would come from API
+  const [venues, setVenues] = useState(initialVenues)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
