@@ -141,6 +141,7 @@ export function UserButton({
     setActiveSessionPending(true)
     try {
       await authClient.signOut()
+      // TODO double check session is cleared. Seems like it may not be cleared.
     } catch (error) {
       console.error('Sign out error:', error)
     } finally {

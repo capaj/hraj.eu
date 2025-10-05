@@ -85,7 +85,7 @@ type InsertedVenue = z.infer<typeof VenueInsertSchema> & {
 }
 
 export const createVenue = createServerFn({ method: 'POST' })
-  .validator((payload: unknown) => {
+  .inputValidator((payload: unknown) => {
     const parsed = ClientVenueSchema.safeParse(payload)
     if (!parsed.success) {
       const issues = parsed.error.issues

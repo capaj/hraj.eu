@@ -19,7 +19,7 @@ export const getEvents = createServerFn({ method: 'GET' }).handler(async () => {
 })
 
 export const getEventById = createServerFn({ method: 'GET' })
-  .validator((eventId: string) => eventId)
+  .inputValidator((eventId: string) => eventId)
   .handler(async ({ data: eventId }) => {
     await new Promise((resolve) => setTimeout(resolve, 50))
 
@@ -35,7 +35,7 @@ export const getEventById = createServerFn({ method: 'GET' })
   })
 
 export const getUpcomingEvents = createServerFn({ method: 'GET' })
-  .validator((limit?: number) => limit || 3)
+  .inputValidator((limit?: number) => limit || 3)
   .handler(async ({ data: limit }) => {
     await new Promise((resolve) => setTimeout(resolve, 80))
 
@@ -55,7 +55,7 @@ export const getUpcomingEvents = createServerFn({ method: 'GET' })
   })
 
 export const getEventsByFilters = createServerFn({ method: 'GET' })
-  .validator(
+  .inputValidator(
     (filters: { sport?: string; skillLevel?: string; location?: string }) =>
       filters
   )
@@ -89,7 +89,7 @@ export const getUsers = createServerFn({ method: 'GET' }).handler(async () => {
 })
 
 export const getUserById = createServerFn({ method: 'GET' })
-  .validator((userId: string) => userId)
+  .inputValidator((userId: string) => userId)
   .handler(async ({ data: userId }) => {
     await new Promise((resolve) => setTimeout(resolve, 60))
 
@@ -105,7 +105,7 @@ export const getUserById = createServerFn({ method: 'GET' })
   })
 
 export const getUserNotifications = createServerFn({ method: 'GET' })
-  .validator((userId: string) => userId)
+  .inputValidator((userId: string) => userId)
   .handler(async ({ data: userId }) => {
     await new Promise((resolve) => setTimeout(resolve, 90))
 
@@ -130,7 +130,7 @@ export const getVenues = createServerFn({ method: 'GET' }).handler(async () => {
 })
 
 export const getVenueById = createServerFn({ method: 'GET' })
-  .validator((venueId: string) => venueId)
+  .inputValidator((venueId: string) => venueId)
   .handler(async ({ data: venueId }) => {
     await new Promise((resolve) => setTimeout(resolve, 30))
 
@@ -209,7 +209,7 @@ async function uploadFileToR2(file: File, folder: string): Promise<string> {
 
 // File upload functions
 export const uploadVenueImages = createServerFn({ method: 'POST' })
-  .validator((formData: FormData) => formData)
+  .inputValidator((formData: FormData) => formData)
   .handler(async ({ data: formData, context }) => {
     const files = formData.getAll('images') as File[]
 
@@ -239,7 +239,7 @@ export const uploadVenueImages = createServerFn({ method: 'POST' })
   })
 
 export const uploadVenuePlan = createServerFn({ method: 'POST' })
-  .validator((formData: FormData) => formData)
+  .inputValidator((formData: FormData) => formData)
   .handler(async ({ data: formData, context }) => {
     const file = formData.get('plan') as File
 

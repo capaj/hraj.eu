@@ -2,7 +2,7 @@ import { User } from 'better-auth'
 import { inferAdditionalFields } from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/react'
 import { createContext, useContext } from 'react'
-import { AuthCard } from '~/routes/auth/$pathname'
+import { AuthCard } from '~/components/auth/AuthCard'
 import { auth } from './auth'
 
 export const authClient = createAuthClient({

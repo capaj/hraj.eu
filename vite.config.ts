@@ -24,10 +24,12 @@ export default defineConfig({
     tailwindcss()
   ],
   optimizeDeps: {
-    include: ['offline-geocode-city', 's2-geometry', 'long']
+    include: ['offline-geocode-city', 'long'],
+    exclude: ['wrangler', 's2-geometry']
   },
   ssr: {
-    noExternal: ['offline-geocode-city', 's2-geometry', 'long']
+    noExternal: ['offline-geocode-city', 'long'],
+    external: ['wrangler', 's2-geometry']
   },
   resolve: {
     alias:

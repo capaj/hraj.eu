@@ -32,7 +32,7 @@ const EventInsertSchema = createInsertSchema(eventTable)
 type InsertedEvent = z.infer<typeof EventInsertSchema>
 
 export const createEvent = createServerFn({ method: 'POST' })
-  .validator((payload: unknown) => {
+  .inputValidator((payload: unknown) => {
     const parsed = ClientEventSchema.safeParse(payload)
     if (!parsed.success) {
       const issues = parsed.error.issues

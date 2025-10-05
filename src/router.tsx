@@ -11,6 +11,16 @@ export function createRouter() {
   })
 }
 
+let routerSingleton: ReturnType<typeof createRouter> | null = null
+
+export function getRouter() {
+  if (!routerSingleton) {
+    routerSingleton = createRouter()
+  }
+
+  return routerSingleton
+}
+
 declare module '@tanstack/react-router' {
   interface Register {
     router: ReturnType<typeof createRouter>
