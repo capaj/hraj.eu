@@ -19,7 +19,7 @@ export const EventFilters: React.FC<EventFiltersProps> = ({
   return (
     <Card className="mb-6">
       <CardContent className="p-6">
-        <h3 className="font-semibold text-gray-900 mb-4">Filter Events</h3>
+
         
         {/* Sports Filter */}
         <div className="mb-6">
