@@ -36,7 +36,6 @@ jobs:
 
       - name: Build app
         env:
-          VITE_GOOGLE_MAPS_API_KEY: ${{ vars.VITE_GOOGLE_MAPS_API_KEY }}
           VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
         run: |
           pnpm run lingui:extract
