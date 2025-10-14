@@ -1,14 +1,11 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "hraj-eu",
-  "main": ".output/server/index.mjs",
-  "compatibility_date": "2025-01-15",
+  "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
+  "main": "@tanstack/react-start/server-entry",
   "assets": {
     "directory": ".output/public"
-  },
-  "build": {
-    "command": "pnpm run build"
   },
   "observability": {
     "enabled": true

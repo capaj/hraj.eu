@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { lingui } from '@lingui/vite-plugin'
 import macrosPlugin from 'vite-plugin-babel-macros'
 import viteReact from '@vitejs/plugin-react'
+import { cloudflare } from '@cloudflare/vite-plugin'
 
 export default defineConfig({
   server: {
@@ -14,30 +15,12 @@ export default defineConfig({
     tsConfigPaths({
       projects: ['./tsconfig.json']
     }),
-    tanstackStart({
-      target: 'cloudflare-module',
-      customViteReactPlugin: true
-    }),
+    cloudflare({ viteEnvironment: { name: 'ssr' } }),
+
+    tanstackStart(),
     viteReact(),
     macrosPlugin(),
     lingui(),
     tailwindcss()
-  ],
-  optimizeDeps: {
-    include: ['offline-geocode-city', 'long'],
-    exclude: ['wrangler', 's2-geometry']
-  },
-  ssr: {
-    noExternal: ['offline-geocode-city', 'long'],
-    external: ['wrangler', 's2-geometry']
-  },
-  resolve: {
-    alias:
-      process.env.NODE_ENV === 'development'
-        ? {
-            'offline-geocode-city':
-              './node_modules/.pnpm/offline-geocode-city@1.0.2/node_modules/offline-geocode-city/dist/index.cjs.js'
-          }
-        : {}
-  }
+  ]
 })

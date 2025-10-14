@@ -6,8 +6,8 @@ import {
   mockVenues
 } from './mock-data'
 import { Event, User, Notification } from '../types'
-import { getBindings } from '~/utils/getBindings'
 
+import { env } from 'cloudflare:workers'
 // TODO: Replace with Turso database calls
 export const getEvents = createServerFn({ method: 'GET' }).handler(async () => {
   // Simulate some async processing (future database call)
@@ -179,9 +179,8 @@ async function uploadFileToR2(file: File, folder: string): Promise<string> {
   if (file.size > 10 * 1024 * 1024) {
     throw new Error(`File too large: ${file.name}`)
   }
-  const bindings = getBindings()
 
-  const bucket = bindings.hraj_eu_uploads
+  const bucket = env.hraj_eu_uploads
   if (!bucket) {
     throw new Error('R2 bucket not available')
   }

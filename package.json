@@ -11,6 +11,7 @@
     "migrate": "drizzle-kit migrate",
     "generate": "drizzle-kit generate",
     "wrdeploy": "NODE_ENV=production wrangler deploy",
+    "postinstall": "npm run cf-typegen",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv",
     "lingui:extract": "lingui extract",
     "lingui:compile": "lingui compile"
@@ -52,6 +53,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.13.13",
     "@lingui/babel-plugin-lingui-macro": "^5.5.1",
     "@lingui/cli": "^5.5.1",
     "@lingui/conf": "^5.5.1",
