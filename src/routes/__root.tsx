@@ -8,7 +8,7 @@ import {
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { Header } from '../components/layout/Header'
 import { Providers } from '~/lib/providers'
-import '../index.css'
+import appCss from '../styles/app.css?url'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -22,6 +22,12 @@ export const Route = createRootRoute({
       },
       {
         title: 'hraj.eu - Amateur Sports Events'
+      }
+    ],
+    links: [
+      {
+        rel: 'stylesheet',
+        href: appCss
       }
     ]
   }),
