@@ -12,9 +12,10 @@ import { format } from 'date-fns';
 interface EventCardProps {
   event: Event;
   onJoin?: (eventId: string) => void;
+  onView?: (eventId: string) => void;
 }
 
-export const EventCard: React.FC<EventCardProps> = ({ event, onJoin }) => {
+export const EventCard: React.FC<EventCardProps> = ({ event, onJoin, onView }) => {
   const sport = SPORTS.find(s => s.id === event.sport);
   const organizer = mockUsers.find(u => u.id === event.organizerId);
   const venue = mockVenues.find(v => v.id === event.venueId);
@@ -48,7 +49,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onJoin }) => {
   const participantStatus = getParticipantStatus();
 
   return (
-    <Card hover className="animate-fade-in h-full flex flex-col">
+    <Card hover className="animate-fade-in h-full flex flex-col cursor-pointer" onClick={() => onView?.(event.id)}>
       <CardContent className="p-6 flex flex-col h-full">
         <div className="flex items-start justify-between mb-4 gap-3">
           <div className="flex items-center space-x-3 min-w-0 flex-1">
@@ -101,12 +102,15 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onJoin }) => {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => onJoin?.(event.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onJoin?.(event.id);
+            }}
             className="flex-1"
           >
             {isSpotAvailable ? 'Join Game' : 'Join Waitlist'}
           </Button>
-          <Link to="/events/$eventId" params={{ eventId: event.id }}>
+          <Link to="/events/$eventId" params={{ eventId: event.id }} onClick={(e) => e.stopPropagation()}>
             <Button
               variant="outline"
               size="sm"

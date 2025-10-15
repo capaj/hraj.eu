@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useImperativeHandle,
+  forwardRef
+} from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { Event } from '../../types'
@@ -12,116 +18,138 @@ interface EventMapProps {
   onJoinEvent?: (eventId: string) => void
 }
 
-export const EventMap: React.FC<EventMapProps> = ({
-  events,
-  onEventSelect,
-  onJoinEvent
-}) => {
-  const mapRef = useRef<HTMLDivElement>(null)
-  const mapInstanceRef = useRef<L.Map | null>(null)
-  const markersRef = useRef<L.Marker[]>([])
-  const [userLocation, setUserLocation] = useState<{
-    lat: number
-    lng: number
-  } | null>(null)
+export interface EventMapRef {
+  zoomToEvent: (eventId: string) => void
+}
 
-  const onEventSelectRef = useRef(onEventSelect)
-  const onJoinEventRef = useRef(onJoinEvent)
+export const EventMap = forwardRef<EventMapRef, EventMapProps>(
+  ({ events, onEventSelect, onJoinEvent }, ref) => {
+    const mapRef = useRef<HTMLDivElement>(null)
+    const mapInstanceRef = useRef<L.Map | null>(null)
+    const markersRef = useRef<L.Marker[]>([])
+    const eventMarkersRef = useRef<Map<string, L.Marker>>(new Map())
+    const [userLocation, setUserLocation] = useState<{
+      lat: number
+      lng: number
+    } | null>(null)
 
-  useEffect(() => {
-    onJoinEventRef.current = onJoinEvent
-  }, [onJoinEvent])
+    const onEventSelectRef = useRef(onEventSelect)
+    const onJoinEventRef = useRef(onJoinEvent)
 
-  useEffect(() => {
-    onEventSelectRef.current = onEventSelect
-  }, [onEventSelect])
+    useImperativeHandle(
+      ref,
+      () => ({
+        zoomToEvent: (eventId: string) => {
+          const marker = eventMarkersRef.current.get(eventId)
+          if (marker && mapInstanceRef.current) {
+            const latLng = marker.getLatLng()
+            mapInstanceRef.current.flyTo(latLng, 15, {
+              duration: 2
+            })
+            setTimeout(() => {
+              marker.openPopup()
+            }, 2000)
+          }
+        }
+      }),
+      []
+    )
 
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setUserLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          })
-        },
-        (error) => {
-          console.error('Error getting location:', error)
-          setUserLocation({ lat: 50.0755, lng: 14.4378 })
-        },
-        { timeout: 10000, enableHighAccuracy: false }
+    useEffect(() => {
+      onJoinEventRef.current = onJoinEvent
+    }, [onJoinEvent])
+
+    useEffect(() => {
+      onEventSelectRef.current = onEventSelect
+    }, [onEventSelect])
+
+    useEffect(() => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setUserLocation({
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            })
+          },
+          (error) => {
+            console.error('Error getting location:', error)
+            setUserLocation({ lat: 50.0755, lng: 14.4378 })
+          },
+          { timeout: 10000, enableHighAccuracy: false }
+        )
+      } else {
+        setUserLocation({ lat: 50.0755, lng: 14.4378 })
+      }
+    }, [])
+
+    useEffect(() => {
+      if (!mapRef.current || !userLocation || mapInstanceRef.current) return
+
+      const map = L.map(mapRef.current).setView(
+        [userLocation.lat, userLocation.lng],
+        13
       )
-    } else {
-      setUserLocation({ lat: 50.0755, lng: 14.4378 })
-    }
-  }, [])
 
-  useEffect(() => {
-    if (!mapRef.current || !userLocation || mapInstanceRef.current) return
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map)
 
-    const map = L.map(mapRef.current).setView(
-      [userLocation.lat, userLocation.lng],
-      13
-    )
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map)
-
-    const userIcon = L.divIcon({
-      className: 'custom-user-marker',
-      html: '<div style="width: 16px; height: 16px; background-color: #3b82f6; border: 2px solid white; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
-      iconSize: [16, 16],
-      iconAnchor: [8, 8]
-    })
-
-    L.marker([userLocation.lat, userLocation.lng], { icon: userIcon }).addTo(
-      map
-    )
-
-    mapInstanceRef.current = map
-
-    return () => {
-      map.remove()
-      mapInstanceRef.current = null
-    }
-  }, [userLocation])
-
-  useEffect(() => {
-    if (!mapInstanceRef.current) return
-
-    markersRef.current.forEach((marker) => marker.remove())
-    markersRef.current = []
-
-    const bounds: [number, number][] = []
-    if (userLocation) {
-      bounds.push([userLocation.lat, userLocation.lng])
-    }
-
-    events.forEach((event) => {
-      const sport = SPORTS.find((s) => s.id === event.sport)
-      const venue = mockVenues.find((v) => v.id === event.venueId)
-
-      if (!venue || !mapInstanceRef.current) return
-
-      bounds.push([venue.lat, venue.lng])
-
-      const customIcon = L.divIcon({
-        className: 'custom-event-marker',
-        html: `<div style="width: 32px; height: 32px; background-color: white; border: 2px solid #8b5cf6; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size: 16px;">${
-          sport?.icon || '📍'
-        }</span></div>`,
-        iconSize: [32, 32],
-        iconAnchor: [16, 16]
+      const userIcon = L.divIcon({
+        className: 'custom-user-marker',
+        html: '<div style="width: 16px; height: 16px; background-color: #3b82f6; border: 2px solid white; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
+        iconSize: [16, 16],
+        iconAnchor: [8, 8]
       })
 
-      const marker = L.marker([venue.lat, venue.lng], {
-        icon: customIcon
-      }).addTo(mapInstanceRef.current)
+      L.marker([userLocation.lat, userLocation.lng], { icon: userIcon }).addTo(
+        map
+      )
 
-      const spotsLeft = event.maxParticipants - event.participants.length
-      const popupContent = `
+      mapInstanceRef.current = map
+
+      return () => {
+        map.remove()
+        mapInstanceRef.current = null
+      }
+    }, [userLocation])
+
+    useEffect(() => {
+      if (!mapInstanceRef.current) return
+
+      markersRef.current.forEach((marker) => marker.remove())
+      markersRef.current = []
+      eventMarkersRef.current.clear()
+
+      const bounds: [number, number][] = []
+      if (userLocation) {
+        bounds.push([userLocation.lat, userLocation.lng])
+      }
+
+      events.forEach((event) => {
+        const sport = SPORTS.find((s) => s.id === event.sport)
+        const venue = mockVenues.find((v) => v.id === event.venueId)
+
+        if (!venue || !mapInstanceRef.current) return
+
+        bounds.push([venue.lat, venue.lng])
+
+        const customIcon = L.divIcon({
+          className: 'custom-event-marker',
+          html: `<div style="width: 32px; height: 32px; background-color: white; border: 2px solid #8b5cf6; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size: 16px;">${
+            sport?.icon || '📍'
+          }</span></div>`,
+          iconSize: [32, 32],
+          iconAnchor: [16, 16]
+        })
+
+        const marker = L.marker([venue.lat, venue.lng], {
+          icon: customIcon
+        }).addTo(mapInstanceRef.current)
+
+        const spotsLeft = event.maxParticipants - event.participants.length
+        const popupContent = `
         <div style="min-width: 280px; font-family: system-ui, -apple-system, sans-serif;">
           <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
             <div style="display: flex; align-items: center; gap: 8px;">
@@ -162,8 +190,8 @@ export const EventMap: React.FC<EventMapProps> = ({
             <span style="font-size: 12px; padding: 4px 8px; border-radius: 4px; background-color: ${
               spotsLeft > 0 ? '#dcfce7' : '#fef3c7'
             }; color: ${
-        spotsLeft > 0 ? '#166534' : '#92400e'
-      }; font-weight: 500;">
+          spotsLeft > 0 ? '#166534' : '#92400e'
+        }; font-weight: 500;">
               ${spotsLeft > 0 ? `${spotsLeft} spots left` : 'Waitlist'}
             </span>
             <button 
@@ -178,47 +206,49 @@ export const EventMap: React.FC<EventMapProps> = ({
         </div>
       `
 
-      // Create a global function for this event's join button
-      ;(window as any)[`joinEvent_${event.id}`] = () => {
-        onJoinEventRef.current?.(event.id)
-        marker.closePopup()
+        // Create a global function for this event's join button
+        ;(window as any)[`joinEvent_${event.id}`] = () => {
+          onJoinEventRef.current?.(event.id)
+          marker.closePopup()
+        }
+
+        marker.bindPopup(popupContent, {
+          maxWidth: 320,
+          className: 'event-popup'
+        })
+
+        marker.on('click', () => {
+          onEventSelectRef.current?.(event)
+        })
+
+        markersRef.current.push(marker)
+        eventMarkersRef.current.set(event.id, marker)
+      })
+
+      if (bounds.length > 0 && mapInstanceRef.current) {
+        mapInstanceRef.current.fitBounds(bounds, { padding: [50, 50] })
       }
+    }, [events, userLocation])
 
-      marker.bindPopup(popupContent, {
-        maxWidth: 320,
-        className: 'event-popup'
-      })
+    return (
+      <div className="relative w-full h-full">
+        <div ref={mapRef} className="w-full h-full min-h-[500px]" />
 
-      marker.on('click', () => {
-        onEventSelectRef.current?.(event)
-      })
-
-      markersRef.current.push(marker)
-    })
-
-    if (bounds.length > 0 && mapInstanceRef.current) {
-      mapInstanceRef.current.fitBounds(bounds, { padding: [50, 50] })
-    }
-  }, [events, userLocation])
-
-  return (
-    <div className="relative w-full h-full">
-      <div ref={mapRef} className="w-full h-full min-h-[500px]" />
-
-      {/* Map Legend */}
-      <div className="absolute bottom-4 left-4 bg-white rounded-lg shadow-lg p-3 z-20">
-        <h4 className="text-sm font-medium text-gray-900 mb-2">Map Legend</h4>
-        <div className="space-y-1">
-          <div className="flex items-center text-xs text-gray-600">
-            <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-            Your location
-          </div>
-          <div className="flex items-center text-xs text-gray-600">
-            <div className="w-3 h-3 bg-white border-2 border-primary-500 rounded-full mr-2"></div>
-            Sports events
+        {/* Map Legend */}
+        <div className="absolute bottom-4 left-4 bg-white rounded-lg shadow-lg p-3 z-20">
+          <h4 className="text-sm font-medium text-gray-900 mb-2">Map Legend</h4>
+          <div className="space-y-1">
+            <div className="flex items-center text-xs text-gray-600">
+              <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+              Your location
+            </div>
+            <div className="flex items-center text-xs text-gray-600">
+              <div className="w-3 h-3 bg-white border-2 border-primary-500 rounded-full mr-2"></div>
+              Sports events
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  )
-}
+    )
+  }
+)

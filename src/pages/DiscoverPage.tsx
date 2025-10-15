@@ -1,8 +1,8 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useRef } from 'react'
 import { useLoaderData } from '@tanstack/react-router'
 import { EventCard } from '../components/events/EventCard'
 import { EventFilters } from '../components/events/EventFilters'
-import { EventMap } from '../components/map/EventMap'
+import { EventMap, EventMapRef } from '../components/map/EventMap'
 import { Button } from '../components/ui/Button'
 import { Map, List, ArrowUpDown } from 'lucide-react'
 import { Event } from '../types'
@@ -11,9 +11,9 @@ type SortOption = 'date' | 'distance' | 'spots'
 
 export const Discover: React.FC = () => {
   const { events, venues } = useLoaderData({ from: '/discover' })
+  const mapRef = useRef<EventMapRef>(null)
   const [selectedSport, setSelectedSport] = useState<string>()
   const [selectedSkillLevel, setSelectedSkillLevel] = useState<string>()
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [sortBy, setSortBy] = useState<SortOption>('date')
   const [userLocation, setUserLocation] = useState<{
     lat: number
@@ -141,8 +141,7 @@ export const Discover: React.FC = () => {
   }
 
   const onViewEvent = (eventId: string) => {
-    console.log('View event:', eventId)
-    // In a real app, this would navigate to the event details page
+    mapRef.current?.zoomToEvent(eventId)
   }
 
   const getSortLabel = (option: SortOption): string => {
@@ -236,6 +235,7 @@ export const Discover: React.FC = () => {
             style={{ height: '400px' }}
           >
             <EventMap
+              ref={mapRef}
               events={filteredAndSortedEvents}
               onEventSelect={handleEventSelect}
               onJoinEvent={handleJoinEvent}
