@@ -13,4 +13,7 @@ export const env = z.object({
   GOOGLE_CLIENT_SECRET: z.string(),
   FACEBOOK_CLIENT_ID: z.string(),
   FACEBOOK_CLIENT_SECRET: z.string(),
+
+  RESEND_API_KEY: z.string(),
+  SENDER_EMAIL: z.string().email().default('noreply@hraj.eu'),
 }).parse(process.env);

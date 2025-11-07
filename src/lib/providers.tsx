@@ -23,6 +23,7 @@ export function Providers({ children }: { children: ReactNode }) {
           social={{
             providers: ['google', 'facebook']
           }}
+          magicLink={true}
           authClient={authClient}
           navigate={(href) => router.navigate({ href })}
           replace={(href) => router.navigate({ href, replace: true })}
