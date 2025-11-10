@@ -1,8 +1,10 @@
 import { createServerFn } from '@tanstack/react-start'
+import { getRequest } from '@tanstack/react-start/server'
 import { z } from 'zod'
 import { createInsertSchema } from 'drizzle-zod'
 import { eventT as eventTable } from '../../drizzle/schema'
 import { db } from 'drizzle/db'
+import { auth } from './auth'
 
 const ClientEventSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -43,7 +45,15 @@ export const createEvent = createServerFn({ method: 'POST' })
     return parsed.data
   })
   .handler(async ({ data }) => {
-    const organizerId = 'mock-user-id'
+    // Get the current user from the session
+    const request = getRequest()
+    const session = await auth.api.getSession({ headers: request.headers })
+
+    if (!session?.user?.id) {
+      throw new Error('You must be logged in to create an event')
+    }
+
+    const organizerId = session.user.id
 
     const cancellationDeadlineMinutes =
       data.cancellationHours * 60 + data.cancellationMinutes
