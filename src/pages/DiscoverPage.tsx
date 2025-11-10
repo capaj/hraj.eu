@@ -281,6 +281,7 @@ export const Discover: React.FC = () => {
                     )}
                     <EventCard
                       event={event}
+                      venues={venues}
                       onJoin={handleJoinEvent}
                       onView={onViewEvent}
                     />
