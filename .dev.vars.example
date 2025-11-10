@@ -1,0 +1,17 @@
+# Database
+TURSO_DATABASE_URL=your_turso_database_url
+TURSO_AUTH_TOKEN=your_turso_auth_token
+
+# Better Auth
+BETTER_AUTH_SECRET=your_secret_key_here
+BETTER_AUTH_URL=http://localhost:3000
+
+# OAuth Providers
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+FACEBOOK_CLIENT_ID=your_facebook_client_id
+FACEBOOK_CLIENT_SECRET=your_facebook_client_secret
+
+# Email (for magic link login)
+RESEND_API_KEY=your_resend_api_key
+SENDER_EMAIL=noreply@hraj.eu

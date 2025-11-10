@@ -2,9 +2,13 @@ import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { db } from '../../drizzle/db'
 import { reactStartCookies } from 'better-auth/react-start'
+import { magicLink } from 'better-auth/plugins'
 import { env } from './env'
 import * as schema from '../../drizzle/schema'
 import { SPORTS } from './constants'
+import { Resend } from 'resend'
+
+const resend = new Resend(env.RESEND_API_KEY)
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -41,7 +45,28 @@ export const auth = betterAuth({
     }
   },
   trustedOrigins: ['http://localhost:3000', 'https://hraj.eu'],
-  plugins: [reactStartCookies()],
+  plugins: [
+    reactStartCookies(),
+    magicLink({
+      sendMagicLink: async ({ email, url }) => {
+        await resend.emails.send({
+          from: env.SENDER_EMAIL,
+          to: email,
+          subject: 'Sign in to hraj.eu',
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2>Sign in to hraj.eu</h2>
+              <p>Click the button below to sign in to your account:</p>
+              <a href="${url}" style="display: inline-block; background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; margin: 20px 0;">Sign In</a>
+              <p>Or copy and paste this link into your browser:</p>
+              <p style="color: #666; word-break: break-all;">${url}</p>
+              <p style="color: #999; font-size: 12px; margin-top: 30px;">This link will expire in 5 minutes. If you didn't request this email, you can safely ignore it.</p>
+            </div>
+          `
+        })
+      }
+    })
+  ],
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID,

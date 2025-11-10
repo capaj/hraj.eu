@@ -1,12 +1,13 @@
 import { User } from 'better-auth'
 import { inferAdditionalFields } from 'better-auth/client/plugins'
+import { magicLinkClient } from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/react'
 import { createContext, useContext } from 'react'
 import { AuthCard } from '~/components/auth/AuthCard'
 import { auth } from './auth'
 
 export const authClient = createAuthClient({
-  plugins: [inferAdditionalFields<typeof auth>()]
+  plugins: [inferAdditionalFields<typeof auth>(), magicLinkClient()]
 })
 
 export const AuthContext = createContext<User | null>(null)
