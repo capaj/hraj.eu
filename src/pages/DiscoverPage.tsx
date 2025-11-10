@@ -237,6 +237,7 @@ export const Discover: React.FC = () => {
             <EventMap
               ref={mapRef}
               events={filteredAndSortedEvents}
+              venues={venues}
               onEventSelect={handleEventSelect}
               onJoinEvent={handleJoinEvent}
             />

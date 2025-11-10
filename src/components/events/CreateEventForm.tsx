@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, CardHeader, CardContent } from '../ui/Card'
 import { Button } from '../ui/Button'
 import { Badge } from '../ui/Badge'
@@ -6,7 +6,7 @@ import { Toggle } from '../ui/Toggle'
 import { VenueSelector } from '../venues/VenueSelector'
 import { AddVenueModal } from '../venues/AddVenueModal'
 import { SPORTS, SKILL_LEVELS } from '../../lib/constants'
-import { mockVenues } from '../../lib/mock-venues'
+import { getVenues } from '../../lib/server-functions'
 import { Venue, type SkillLevel } from '../../types'
 import { eventT } from '../../../drizzle/schema'
 import {
@@ -85,7 +85,24 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   })
 
   const [showAddVenueModal, setShowAddVenueModal] = useState(false)
-  const [venues, setVenues] = useState(mockVenues) // In real app, this would come from API
+  const [venues, setVenues] = useState<Venue[]>([])
+  const [isLoadingVenues, setIsLoadingVenues] = useState(true)
+
+  // Fetch venues from database
+  useEffect(() => {
+    const fetchVenues = async () => {
+      try {
+        setIsLoadingVenues(true)
+        const venuesData = await getVenues()
+        setVenues(venuesData)
+      } catch (error) {
+        console.error('Failed to load venues:', error)
+      } finally {
+        setIsLoadingVenues(false)
+      }
+    }
+    fetchVenues()
+  }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -240,12 +257,17 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                 Venue Selection
               </h3>
 
-              <VenueSelector
-                selectedVenueId={formData.venueId}
-                onVenueSelect={handleVenueSelect}
-                onAddVenue={() => setShowAddVenueModal(true)}
-                sportFilter={formData.sport}
-              />
+              {isLoadingVenues ? (
+                <div className="text-gray-500">Loading venues...</div>
+              ) : (
+                <VenueSelector
+                  venues={venues}
+                  selectedVenueId={formData.venueId}
+                  onVenueSelect={handleVenueSelect}
+                  onAddVenue={() => setShowAddVenueModal(true)}
+                  sportFilter={formData.sport}
+                />
+              )}
             </div>
 
             {/* Basic Info */}

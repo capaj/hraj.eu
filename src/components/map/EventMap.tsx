@@ -7,13 +7,13 @@ import React, {
 } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { Event } from '../../types'
+import { Event, Venue } from '../../types'
 import { SPORTS } from '../../lib/constants'
-import { mockVenues } from '../../lib/mock-data'
 import { format } from 'date-fns'
 
 interface EventMapProps {
   events: Event[]
+  venues: Venue[]
   onEventSelect?: (event: Event) => void
   onJoinEvent?: (eventId: string) => void
 }
@@ -23,7 +23,7 @@ export interface EventMapRef {
 }
 
 export const EventMap = forwardRef<EventMapRef, EventMapProps>(
-  ({ events, onEventSelect, onJoinEvent }, ref) => {
+  ({ events, venues, onEventSelect, onJoinEvent }, ref) => {
     const mapRef = useRef<HTMLDivElement>(null)
     const mapInstanceRef = useRef<L.Map | null>(null)
     const markersRef = useRef<L.Marker[]>([])
@@ -129,7 +129,7 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
 
       events.forEach((event) => {
         const sport = SPORTS.find((s) => s.id === event.sport)
-        const venue = mockVenues.find((v) => v.id === event.venueId)
+        const venue = venues.find((v) => v.id === event.venueId)
 
         if (!venue || !mapInstanceRef.current) return
 
