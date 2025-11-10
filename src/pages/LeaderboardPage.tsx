@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
-import { mockUsers } from '../lib/mock-data'
+import { getUsers } from '../lib/server-functions'
+import { User } from '../types'
 import { SPORTS } from '../lib/constants'
 import {
   Trophy,
@@ -29,19 +30,37 @@ export const Leaderboard: React.FC = () => {
     undefined
   )
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [users, setUsers] = useState<User[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  // Generate mock leaderboard data
+  // Fetch users from server
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setIsLoading(true)
+        const usersData = await getUsers()
+        setUsers(usersData)
+      } catch (error) {
+        console.error('Failed to load users:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchUsers()
+  }, [])
+
+  // Generate leaderboard data
   const generateLeaderboardData = (type: LeaderboardType, sport?: string) => {
-    let users = [...mockUsers]
+    let filteredUsers = [...users]
 
     // Filter by sport if selected
     if (sport) {
-      users = users.filter((user) => user.skillLevels[sport])
+      filteredUsers = filteredUsers.filter((user) => user.skillLevels[sport])
     }
 
     switch (type) {
       case 'karma':
-        return users
+        return filteredUsers
           .sort((a, b) => b.karmaPoints - a.karmaPoints)
           .map((user, index) => ({
             ...user,
@@ -60,7 +79,7 @@ export const Leaderboard: React.FC = () => {
           .sort((a, b) => b.score - a.score)
 
       case 'events-organized':
-        return users
+        return filteredUsers
           .map((user) => ({
             ...user,
             score: Math.floor(Math.random() * 15) + 1,
@@ -78,7 +97,7 @@ export const Leaderboard: React.FC = () => {
           }))
 
       case 'events-joined':
-        return users
+        return filteredUsers
           .map((user) => ({
             ...user,
             score: Math.floor(Math.random() * 25) + 5,
@@ -96,7 +115,7 @@ export const Leaderboard: React.FC = () => {
           }))
 
       case 'monthly':
-        return users
+        return filteredUsers
           .map((user) => ({
             ...user,
             score: Math.floor(Math.random() * 50) + 10,
@@ -114,7 +133,7 @@ export const Leaderboard: React.FC = () => {
           }))
 
       default:
-        return users.map((user) => ({
+        return filteredUsers.map((user) => ({
           ...user,
           score: 0,
           subtitle: '',

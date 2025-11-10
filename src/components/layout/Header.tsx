@@ -16,7 +16,6 @@ import {
   CheckCircle,
   Menu
 } from 'lucide-react'
-import { mockNotifications, mockUsers, mockEvents } from '../../lib/mock-data'
 import { Notification } from '../../types'
 import { formatDistanceToNow } from 'date-fns'
 import { UserButton } from '../user/UserButton'
@@ -143,8 +142,8 @@ export const NotificationsDropdown = () => {
   const notificationRef = useRef<HTMLDivElement>(null)
   const session = authClient.useSession()
   const currentUserId = session.data?.user?.id
-  const [notifications, setNotifications] =
-    useState<Notification[]>(mockNotifications)
+  // TODO: Fetch notifications from server when notifications table is implemented
+  const [notifications, setNotifications] = useState<Notification[]>([])
   const userNotifications = notifications.filter(
     (n) => n.userId === currentUserId
   )
@@ -200,16 +199,6 @@ export const NotificationsDropdown = () => {
       default:
         return <Bell size={16} className="text-gray-500" />
     }
-  }
-
-  const getFromUserName = (fromUserId?: string) => {
-    if (!fromUserId) return null
-    return mockUsers.find((u) => u.id === fromUserId)?.name
-  }
-
-  const getEventTitle = (eventId?: string) => {
-    if (!eventId) return null
-    return mockEvents.find((e) => e.id === eventId)?.title
   }
 
   return (
