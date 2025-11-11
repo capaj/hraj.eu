@@ -20,3 +20,5 @@ yarn.lock
 .tanstack
 .wrangler
 dist
+worker-configuration.d.ts
+.dev.vars
