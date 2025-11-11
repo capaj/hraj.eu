@@ -350,19 +350,6 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
           </div>
         )}
       </div>
-
-      {/* Sport Filter Info */}
-      {sportFilter && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-          <div className="flex items-center text-sm text-blue-800">
-            <Users size={16} className="mr-2 text-blue-600" />
-            <span>
-              Showing venues that support{' '}
-              <strong>{SPORTS.find((s) => s.id === sportFilter)?.name}</strong>
-            </span>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

@@ -380,7 +380,8 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                   Supported Sports *
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Select all sports that can be played at this venue
+                  Select all sports that can be played at this venue. Select at
+                  least one. You can add more later.
                 </p>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">

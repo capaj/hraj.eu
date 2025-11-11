@@ -250,12 +250,44 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Sport Selection */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Sport *
+              </label>
+              <select
+                required
+                value={formData.sport}
+                onChange={(e) => handleChange('sport', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              >
+                <option value="">Select a sport</option>
+                {SPORTS.map((sport) => (
+                  <option key={sport.id} value={sport.id}>
+                    {sport.icon} {sport.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {/* Venue Selection */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-                <MapPin size={20} className="mr-2" />
-                Venue Selection
-              </h3>
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <MapPin size={20} className="mr-2" />
+                  Venue Selection
+                </h3>
+                {formData.sport && (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-1.5">
+                    <span className="text-sm text-blue-800">
+                      Showing venues that support{' '}
+                      <strong>
+                        {SPORTS.find((s) => s.id === formData.sport)?.name}
+                      </strong>
+                    </span>
+                  </div>
+                )}
+              </div>
 
               {isLoadingVenues ? (
                 <div className="text-gray-500">Loading venues...</div>
@@ -271,38 +303,18 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
             </div>
 
             {/* Basic Info */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Event Title *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.title}
-                  onChange={(e) => handleChange('title', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  placeholder="Sunday Football at the Park"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Sport *
-                </label>
-                <select
-                  required
-                  value={formData.sport}
-                  onChange={(e) => handleChange('sport', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                >
-                  <option value="">Select a sport</option>
-                  {SPORTS.map((sport) => (
-                    <option key={sport.id} value={sport.id}>
-                      {sport.icon} {sport.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Event Title *
+              </label>
+              <input
+                type="text"
+                required
+                value={formData.title}
+                onChange={(e) => handleChange('title', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                placeholder="Sunday Football at the Park"
+              />
             </div>
 
             {/* Game Rules - Moved to replace Description */}
