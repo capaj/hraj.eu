@@ -4,21 +4,20 @@ import { Card, CardContent } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { Calendar, Clock, MapPin, Users, Euro, Target } from 'lucide-react';
-import { Event, User } from '../../types';
-import { mockUsers, mockVenues } from '../../lib/mock-data';
+import { Event, User, Venue } from '../../types';
 import { SPORTS } from '../../lib/constants';
 import { format } from 'date-fns';
 
 interface EventCardProps {
   event: Event;
+  venues?: Venue[];
   onJoin?: (eventId: string) => void;
   onView?: (eventId: string) => void;
 }
 
-export const EventCard: React.FC<EventCardProps> = ({ event, onJoin, onView }) => {
+export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onView }) => {
   const sport = SPORTS.find(s => s.id === event.sport);
-  const organizer = mockUsers.find(u => u.id === event.organizerId);
-  const venue = mockVenues.find(v => v.id === event.venueId);
+  const venue = venues?.find(v => v.id === event.venueId);
   const isSpotAvailable = event.participants.length < event.maxParticipants;
   const spotsLeft = event.maxParticipants - event.participants.length;
   const isIdealReached = event.idealParticipants && event.participants.length >= event.idealParticipants;
@@ -56,7 +55,6 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onJoin, onView }) =
             <div className="text-2xl flex-shrink-0">{sport?.icon}</div>
             <div className="min-w-0 flex-1">
               <h3 className="font-semibold text-gray-900 text-lg truncate">{event.title}</h3>
-              <p className="text-sm text-gray-600 truncate">by {organizer?.name}</p>
             </div>
           </div>
           <div className="flex-shrink-0">

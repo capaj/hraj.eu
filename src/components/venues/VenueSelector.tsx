@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Card, CardContent } from '../ui/Card'
 import { Button } from '../ui/Button'
 import { Badge } from '../ui/Badge'
-import { mockVenues } from '../../lib/mock-venues'
+import { Venue } from '../../types'
 import { SPORTS } from '../../lib/constants'
 import {
   MapPin,
@@ -21,6 +21,7 @@ import {
 } from 'lucide-react'
 
 interface VenueSelectorProps {
+  venues: Venue[]
   selectedVenueId?: string
   onVenueSelect: (venueId: string) => void
   onAddVenue: () => void
@@ -28,6 +29,7 @@ interface VenueSelectorProps {
 }
 
 export const VenueSelector: React.FC<VenueSelectorProps> = ({
+  venues,
   selectedVenueId,
   onVenueSelect,
   onAddVenue,
@@ -38,7 +40,7 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
   const [showAllVenues, setShowAllVenues] = useState(false)
 
   // Filter venues based on search term and sport
-  const filteredVenues = mockVenues.filter((venue) => {
+  const filteredVenues = venues.filter((venue) => {
     const matchesSearch =
       venue.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       venue.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -53,7 +55,7 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
   const displayedVenues = showAllVenues
     ? filteredVenues
     : filteredVenues.slice(0, 3)
-  const selectedVenue = mockVenues.find((v) => v.id === selectedVenueId)
+  const selectedVenue = venues.find((v) => v.id === selectedVenueId)
 
   const getFacilityIcon = (facility: string) => {
     switch (facility) {

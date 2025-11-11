@@ -5,7 +5,6 @@ import { Button } from '../components/ui/Button'
 import { WeatherWidget } from '../components/weather/WeatherWidget'
 import { Event } from '../types'
 import { SPORTS } from '../lib/constants'
-import { mockUsers, mockVenues } from '../lib/mock-data'
 import {
   generateICalEvent,
   downloadICalFile,
@@ -36,8 +35,8 @@ import {
 } from 'lucide-react'
 import { format, isPast, addHours } from 'date-fns'
 
-import { useParams, useNavigate } from '@tanstack/react-router'
-import { mockEvents } from '../lib/mock-data'
+import { useLoaderData, useNavigate } from '@tanstack/react-router'
+import { authClient } from '../lib/auth-client'
 
 interface KarmaFeedback {
   userId: string
@@ -48,9 +47,9 @@ interface KarmaFeedback {
 }
 
 export const EventDetailsPage: React.FC = () => {
-  const { eventId } = useParams({ from: '/events/$eventId' })
+  const { event, venue } = useLoaderData({ from: '/events/$eventId' })
   const navigate = useNavigate()
-  const event = mockEvents.find((e) => e.id === eventId)
+  const session = authClient.useSession()
   const [showKarmaModal, setShowKarmaModal] = useState(false)
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
   const [karmaRating, setKarmaRating] = useState(5)
@@ -65,8 +64,6 @@ export const EventDetailsPage: React.FC = () => {
   }
 
   const sport = SPORTS.find((s) => s.id === event.sport)
-  const organizer = mockUsers.find((u) => u.id === event.organizerId)
-  const venue = mockVenues.find((v) => v.id === event.venueId)
   const isSpotAvailable = event.participants.length < event.maxParticipants
   const spotsLeft = event.maxParticipants - event.participants.length
   const isMinimumReached = event.participants.length >= event.minParticipants
@@ -81,17 +78,22 @@ export const EventDetailsPage: React.FC = () => {
   const eventEndTime = addHours(eventDateTime, Math.ceil(event.duration / 60))
   const hasEventEnded = isPast(eventEndTime)
 
-  if (!event) {
-    return <div>Event not found</div>
-  }
+  // Get current user ID from session
+  const currentUserId = session.data?.user?.id
+  const isParticipant = currentUserId ? event.participants.includes(currentUserId) : false
 
-  // Mock current user ID (in real app, this would come from auth context)
-  const currentUserId = '1' // Assuming current user is Alex
-  const isParticipant = event.participants.includes(currentUserId)
-
-  const participantUsers = event.participants
-    .map((id) => mockUsers.find((u) => u.id === id))
-    .filter(Boolean)
+  // TODO: Fetch participant users from server
+  const participantUsers = event.participants.map((id) => ({
+    id,
+    name: 'Participant',
+    email: '',
+    image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + id,
+    karmaPoints: 100,
+    skillLevels: {},
+    notificationPreferences: {},
+    preferredCurrency: 'CZK',
+    createdAt: new Date()
+  }))
 
   const getEventStatus = () => {
     if (!isMinimumReached) {
@@ -168,7 +170,7 @@ export const EventDetailsPage: React.FC = () => {
       location: venue?.address || 'Location TBD',
       startDate,
       endDate,
-      ...(organizer?.name && { organizer: organizer.name })
+      // TODO: Add organizer name when fetching user data
     }
 
     const icalContent = generateICalEvent(calendarEvent)
@@ -220,11 +222,7 @@ export const EventDetailsPage: React.FC = () => {
     handleCloseKarmaModal()
 
     // Show success message
-    alert(
-      `Feedback submitted for ${
-        mockUsers.find((u) => u.id === selectedUserId)?.name
-      }`
-    )
+    alert(`Feedback submitted successfully`)
   }
 
   const getKarmaButtonText = (rating: number, reportType: string) => {
@@ -262,7 +260,7 @@ export const EventDetailsPage: React.FC = () => {
               <div>
                 <h1 className="text-3xl font-bold text-white">{event.title}</h1>
                 <p className="text-lg text-white/80 mt-1">
-                  Organized by {organizer?.name}
+                  Organized event
                 </p>
                 {hasEventEnded && (
                   <Badge variant="default" size="md" className="mt-2">
@@ -657,26 +655,18 @@ export const EventDetailsPage: React.FC = () => {
               </CardHeader>
               <CardContent className="p-6">
                 <div className="flex items-center space-x-3 mb-4">
-                  <img
-                    src={organizer?.image}
-                    alt={organizer?.name}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
+                  <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
+                    <User size={24} className="text-primary-600" />
+                  </div>
                   <div>
                     <div className="font-medium text-gray-900">
-                      {organizer?.name}
+                      Event Organizer
                     </div>
                     <div className="text-sm text-gray-500">
-                      {organizer?.karmaPoints} karma points
+                      Verified member
                     </div>
                   </div>
                 </div>
-                {organizer?.bio && (
-                  <p className="text-sm text-gray-600 mb-4">{organizer.bio}</p>
-                )}
-                <Button variant="outline" size="sm" className="w-full">
-                  View Profile
-                </Button>
               </CardContent>
             </Card>
           </div>
@@ -690,7 +680,7 @@ export const EventDetailsPage: React.FC = () => {
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Rate {mockUsers.find((u) => u.id === selectedUserId)?.name}
+                  Rate Participant
                 </h3>
                 <button
                   onClick={handleCloseKarmaModal}

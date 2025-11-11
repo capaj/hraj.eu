@@ -5,13 +5,14 @@ import React, {
   useImperativeHandle,
   forwardRef
 } from 'react'
-import { Event } from '../../types'
+import 'leaflet/dist/leaflet.css'
+import { Event, Venue } from '../../types'
 import { SPORTS } from '../../lib/constants'
-import { mockVenues } from '../../lib/mock-data'
 import { format } from 'date-fns'
 
 interface EventMapProps {
   events: Event[]
+  venues: Venue[]
   onEventSelect?: (event: Event) => void
   onJoinEvent?: (eventId: string) => void
 }
@@ -21,7 +22,7 @@ export interface EventMapRef {
 }
 
 export const EventMap = forwardRef<EventMapRef, EventMapProps>(
-  ({ events, onEventSelect, onJoinEvent }, ref) => {
+  ({ events, venues, onEventSelect, onJoinEvent }, ref) => {
     const mapRef = useRef<HTMLDivElement>(null)
     const mapInstanceRef = useRef<any>(null)
     const markersRef = useRef<any[]>([])
@@ -114,17 +115,6 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
             '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map)
 
-        const userIcon = L.divIcon({
-          className: 'custom-user-marker',
-          html: '<div style="width: 16px; height: 16px; background-color: #3b82f6; border: 2px solid white; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
-          iconSize: [16, 16],
-          iconAnchor: [8, 8]
-        })
-
-        L.marker([userLocation.lat, userLocation.lng], {
-          icon: userIcon
-        }).addTo(map)
-
         mapInstanceRef.current = map
       }
 
@@ -156,7 +146,7 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
 
         events.forEach((event) => {
           const sport = SPORTS.find((s) => s.id === event.sport)
-          const venue = mockVenues.find((v) => v.id === event.venueId)
+          const venue = venues.find((v) => v.id === event.venueId)
 
           if (!venue || !mapInstanceRef.current) return
 

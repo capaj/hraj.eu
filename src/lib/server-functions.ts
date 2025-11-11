@@ -1,57 +1,221 @@
 import { createServerFn } from '@tanstack/react-start'
-import {
-  mockEvents,
-  mockUsers,
-  mockNotifications,
-  mockVenues
-} from './mock-data'
-import { Event, User, Notification } from '../types'
+import { Event, User, Notification, Venue } from '../types'
+import { db } from '../../drizzle/db'
+import { eventT, participantT, venueT, user as userTable } from '../../drizzle/schema'
+import { eq, and, sql, gte } from 'drizzle-orm'
 
 import { env } from 'cloudflare:workers'
-// TODO: Replace with Turso database calls
-export const getEvents = createServerFn({ method: 'GET' }).handler(async () => {
-  // Simulate some async processing (future database call)
-  await new Promise((resolve) => setTimeout(resolve, 100))
 
-  // Future: Replace with Turso query
-  // const events = await db.select().from(eventsTable)
-  return mockEvents as Event[]
+// Fetch all events with participants from database
+export const getEvents = createServerFn({ method: 'GET' }).handler(async () => {
+  // Query events from database
+  const eventsFromDb = await db.select().from(eventT)
+
+  // For each event, get its participants
+  const eventsWithParticipants = await Promise.all(
+    eventsFromDb.map(async (event) => {
+      const participants = await db
+        .select({
+          userId: participantT.userId,
+          status: participantT.status
+        })
+        .from(participantT)
+        .where(eq(participantT.eventId, event.id))
+
+      // Separate confirmed participants from waitlisted
+      const confirmedParticipants = participants
+        .filter((p) => p.status === 'confirmed')
+        .map((p) => p.userId)
+
+      const waitlistedParticipants = participants
+        .filter((p) => p.status === 'waitlisted')
+        .map((p) => p.userId)
+
+      // Transform database event to frontend Event type
+      return {
+        id: event.id,
+        title: event.title,
+        description: event.description || '',
+        sport: event.sport,
+        venueId: event.venueId || '',
+        date: new Date(event.date),
+        startTime: event.startTime,
+        duration: event.duration,
+        minParticipants: event.minParticipants,
+        idealParticipants: event.idealParticipants || undefined,
+        maxParticipants: event.maxParticipants,
+        cancellationDeadlineHours: event.cancellationDeadlineMinutes
+          ? Math.floor(event.cancellationDeadlineMinutes / 60)
+          : undefined,
+        price: event.price || undefined,
+        paymentDetails: event.paymentDetails || undefined,
+        gameRules: event.gameRules || undefined,
+        cutoffTime: new Date(
+          new Date(event.date).getTime() -
+            (event.cancellationDeadlineMinutes || 0) * 60 * 1000
+        ),
+        isPublic: event.isPublic,
+        organizerId: event.organizerId,
+        participants: confirmedParticipants,
+        waitlist: waitlistedParticipants,
+        status: event.status as Event['status'],
+        allowedSkillLevels: event.requiredSkillLevel
+          ? [event.requiredSkillLevel]
+          : undefined,
+        requireSkillLevel: !!event.requiredSkillLevel,
+        createdAt: new Date(event.createdAt),
+        updatedAt: new Date(event.updatedAt)
+      } as Event
+    })
+  )
+
+  return eventsWithParticipants
 })
 
 export const getEventById = createServerFn({ method: 'GET' })
   .inputValidator((eventId: string) => eventId)
   .handler(async ({ data: eventId }) => {
-    await new Promise((resolve) => setTimeout(resolve, 50))
+    // Query event from database
+    const events = await db
+      .select()
+      .from(eventT)
+      .where(eq(eventT.id, eventId))
+      .limit(1)
 
-    // Future: Replace with Turso query
-    // const event = await db.select().from(eventsTable).where(eq(eventsTable.id, eventId)).limit(1)
-    const event = mockEvents.find((e) => e.id === eventId)
-
-    if (!event) {
+    if (!events || events.length === 0) {
       throw new Error(`Event with id ${eventId} not found`)
     }
 
-    return event as Event
+    const event = events[0]
+
+    // Get participants for this event
+    const participants = await db
+      .select({
+        userId: participantT.userId,
+        status: participantT.status
+      })
+      .from(participantT)
+      .where(eq(participantT.eventId, event.id))
+
+    // Separate confirmed participants from waitlisted
+    const confirmedParticipants = participants
+      .filter((p) => p.status === 'confirmed')
+      .map((p) => p.userId)
+
+    const waitlistedParticipants = participants
+      .filter((p) => p.status === 'waitlisted')
+      .map((p) => p.userId)
+
+    // Transform database event to frontend Event type
+    return {
+      id: event.id,
+      title: event.title,
+      description: event.description || '',
+      sport: event.sport,
+      venueId: event.venueId || '',
+      date: new Date(event.date),
+      startTime: event.startTime,
+      duration: event.duration,
+      minParticipants: event.minParticipants,
+      idealParticipants: event.idealParticipants || undefined,
+      maxParticipants: event.maxParticipants,
+      cancellationDeadlineHours: event.cancellationDeadlineMinutes
+        ? Math.floor(event.cancellationDeadlineMinutes / 60)
+        : undefined,
+      price: event.price || undefined,
+      paymentDetails: event.paymentDetails || undefined,
+      gameRules: event.gameRules || undefined,
+      cutoffTime: new Date(
+        new Date(event.date).getTime() -
+          (event.cancellationDeadlineMinutes || 0) * 60 * 1000
+      ),
+      isPublic: event.isPublic,
+      organizerId: event.organizerId,
+      participants: confirmedParticipants,
+      waitlist: waitlistedParticipants,
+      status: event.status as Event['status'],
+      allowedSkillLevels: event.requiredSkillLevel
+        ? [event.requiredSkillLevel]
+        : undefined,
+      requireSkillLevel: !!event.requiredSkillLevel,
+      createdAt: new Date(event.createdAt),
+      updatedAt: new Date(event.updatedAt)
+    } as Event
   })
 
 export const getUpcomingEvents = createServerFn({ method: 'GET' })
   .inputValidator((limit?: number) => limit || 3)
   .handler(async ({ data: limit }) => {
-    await new Promise((resolve) => setTimeout(resolve, 80))
+    // Get today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split('T')[0]
 
-    // Future: Replace with Turso query with date filtering and limit
-    // const events = await db.select().from(eventsTable)
-    //   .where(gte(eventsTable.date, new Date()))
-    //   .orderBy(asc(eventsTable.date))
-    //   .limit(limit)
+    // Query upcoming events from database
+    const eventsFromDb = await db
+      .select()
+      .from(eventT)
+      .where(gte(eventT.date, today))
+      .limit(limit)
 
-    const now = new Date()
-    const upcomingEvents = mockEvents
-      .filter((event) => event.date >= now)
-      .sort((a, b) => a.date.getTime() - b.date.getTime())
-      .slice(0, limit)
+    // For each event, get its participants
+    const eventsWithParticipants = await Promise.all(
+      eventsFromDb.map(async (event) => {
+        const participants = await db
+          .select({
+            userId: participantT.userId,
+            status: participantT.status
+          })
+          .from(participantT)
+          .where(eq(participantT.eventId, event.id))
 
-    return upcomingEvents as Event[]
+        const confirmedParticipants = participants
+          .filter((p) => p.status === 'confirmed')
+          .map((p) => p.userId)
+
+        const waitlistedParticipants = participants
+          .filter((p) => p.status === 'waitlisted')
+          .map((p) => p.userId)
+
+        return {
+          id: event.id,
+          title: event.title,
+          description: event.description || '',
+          sport: event.sport,
+          venueId: event.venueId || '',
+          date: new Date(event.date),
+          startTime: event.startTime,
+          duration: event.duration,
+          minParticipants: event.minParticipants,
+          idealParticipants: event.idealParticipants || undefined,
+          maxParticipants: event.maxParticipants,
+          cancellationDeadlineHours: event.cancellationDeadlineMinutes
+            ? Math.floor(event.cancellationDeadlineMinutes / 60)
+            : undefined,
+          price: event.price || undefined,
+          paymentDetails: event.paymentDetails || undefined,
+          gameRules: event.gameRules || undefined,
+          cutoffTime: new Date(
+            new Date(event.date).getTime() -
+              (event.cancellationDeadlineMinutes || 0) * 60 * 1000
+          ),
+          isPublic: event.isPublic,
+          organizerId: event.organizerId,
+          participants: confirmedParticipants,
+          waitlist: waitlistedParticipants,
+          status: event.status as Event['status'],
+          allowedSkillLevels: event.requiredSkillLevel
+            ? [event.requiredSkillLevel]
+            : undefined,
+          requireSkillLevel: !!event.requiredSkillLevel,
+          createdAt: new Date(event.createdAt),
+          updatedAt: new Date(event.updatedAt)
+        } as Event
+      })
+    )
+
+    // Sort by date and time
+    return eventsWithParticipants.sort(
+      (a, b) => a.date.getTime() - b.date.getTime()
+    )
   })
 
 export const getEventsByFilters = createServerFn({ method: 'GET' })
@@ -60,89 +224,238 @@ export const getEventsByFilters = createServerFn({ method: 'GET' })
       filters
   )
   .handler(async ({ data: filters }) => {
-    await new Promise((resolve) => setTimeout(resolve, 120))
+    // Build query conditions
+    let query = db.select().from(eventT)
 
-    // Future: Replace with complex Turso query with joins and filtering
-    // const events = await db.select().from(eventsTable)
-    //   .leftJoin(venuesTable, eq(eventsTable.venueId, venuesTable.id))
-    //   .where(/* complex where clause based on filters */)
-
-    let filteredEvents = [...mockEvents]
-
+    // Apply sport filter if provided
     if (filters.sport) {
-      filteredEvents = filteredEvents.filter(
-        (event) => event.sport === filters.sport
-      )
+      query = query.where(eq(eventT.sport, filters.sport)) as any
     }
 
-    // Additional filtering logic can be added here
+    // Apply skill level filter if provided
+    if (filters.skillLevel) {
+      query = query.where(
+        eq(eventT.requiredSkillLevel, filters.skillLevel as any)
+      ) as any
+    }
 
-    return filteredEvents as Event[]
+    const eventsFromDb = await query
+
+    // For each event, get its participants
+    const eventsWithParticipants = await Promise.all(
+      eventsFromDb.map(async (event) => {
+        const participants = await db
+          .select({
+            userId: participantT.userId,
+            status: participantT.status
+          })
+          .from(participantT)
+          .where(eq(participantT.eventId, event.id))
+
+        const confirmedParticipants = participants
+          .filter((p) => p.status === 'confirmed')
+          .map((p) => p.userId)
+
+        const waitlistedParticipants = participants
+          .filter((p) => p.status === 'waitlisted')
+          .map((p) => p.userId)
+
+        return {
+          id: event.id,
+          title: event.title,
+          description: event.description || '',
+          sport: event.sport,
+          venueId: event.venueId || '',
+          date: new Date(event.date),
+          startTime: event.startTime,
+          duration: event.duration,
+          minParticipants: event.minParticipants,
+          idealParticipants: event.idealParticipants || undefined,
+          maxParticipants: event.maxParticipants,
+          cancellationDeadlineHours: event.cancellationDeadlineMinutes
+            ? Math.floor(event.cancellationDeadlineMinutes / 60)
+            : undefined,
+          price: event.price || undefined,
+          paymentDetails: event.paymentDetails || undefined,
+          gameRules: event.gameRules || undefined,
+          cutoffTime: new Date(
+            new Date(event.date).getTime() -
+              (event.cancellationDeadlineMinutes || 0) * 60 * 1000
+          ),
+          isPublic: event.isPublic,
+          organizerId: event.organizerId,
+          participants: confirmedParticipants,
+          waitlist: waitlistedParticipants,
+          status: event.status as Event['status'],
+          allowedSkillLevels: event.requiredSkillLevel
+            ? [event.requiredSkillLevel]
+            : undefined,
+          requireSkillLevel: !!event.requiredSkillLevel,
+          createdAt: new Date(event.createdAt),
+          updatedAt: new Date(event.updatedAt)
+        } as Event
+      })
+    )
+
+    return eventsWithParticipants
   })
 
 export const getUsers = createServerFn({ method: 'GET' }).handler(async () => {
-  await new Promise((resolve) => setTimeout(resolve, 70))
+  // Query users from database
+  const usersFromDb = await db.select().from(userTable)
 
-  // Future: Replace with Turso query
-  // const users = await db.select().from(usersTable)
-  return mockUsers as User[]
+  // Transform database users to frontend User type
+  const users = usersFromDb.map((user) => ({
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    image: user.image || undefined,
+    karmaPoints: user.karmaPoints || 0,
+    skillLevels: {}, // TODO: fetch from userSkillT table if needed
+    notificationPreferences: {}, // TODO: implement notification preferences table
+    preferredCurrency: user.preferredCurrency || 'CZK',
+    location: user.city && user.country ? `${user.city}, ${user.country}` : undefined,
+    revTag: user.revolutTag || undefined,
+    bankAccount: user.bankAccount || undefined,
+    createdAt: new Date(user.createdAt)
+  })) as User[]
+
+  return users
 })
 
 export const getUserById = createServerFn({ method: 'GET' })
   .inputValidator((userId: string) => userId)
   .handler(async ({ data: userId }) => {
-    await new Promise((resolve) => setTimeout(resolve, 60))
+    // Query user from database
+    const users = await db
+      .select()
+      .from(userTable)
+      .where(eq(userTable.id, userId))
+      .limit(1)
 
-    // Future: Replace with Turso query
-    // const user = await db.select().from(usersTable).where(eq(usersTable.id, userId)).limit(1)
-    const user = mockUsers.find((u) => u.id === userId)
-
-    if (!user) {
+    if (!users || users.length === 0) {
       throw new Error(`User with id ${userId} not found`)
     }
 
-    return user as User
+    const user = users[0]
+
+    // Transform database user to frontend User type
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      image: user.image || undefined,
+      karmaPoints: user.karmaPoints || 0,
+      skillLevels: {}, // TODO: fetch from userSkillT table if needed
+      notificationPreferences: {}, // TODO: implement notification preferences table
+      preferredCurrency: user.preferredCurrency || 'CZK',
+      location: user.city && user.country ? `${user.city}, ${user.country}` : undefined,
+      revTag: user.revolutTag || undefined,
+      bankAccount: user.bankAccount || undefined,
+      createdAt: new Date(user.createdAt)
+    } as User
   })
 
 export const getUserNotifications = createServerFn({ method: 'GET' })
   .inputValidator((userId: string) => userId)
   .handler(async ({ data: userId }) => {
-    await new Promise((resolve) => setTimeout(resolve, 90))
-
-    // Future: Replace with Turso query
+    // TODO: Implement notifications table in database
+    // For now, return empty array since we don't have notifications table yet
     // const notifications = await db.select().from(notificationsTable)
     //   .where(eq(notificationsTable.userId, userId))
     //   .orderBy(desc(notificationsTable.createdAt))
 
-    const userNotifications = mockNotifications
-      .filter((notification) => notification.userId === userId)
-      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-
-    return userNotifications as Notification[]
+    return [] as Notification[]
   })
 
 export const getVenues = createServerFn({ method: 'GET' }).handler(async () => {
-  await new Promise((resolve) => setTimeout(resolve, 40))
+  // Query venues from database
+  const venuesFromDb = await db.select().from(venueT)
 
-  // Future: Replace with Turso query
-  // const venues = await db.select().from(venuesTable)
-  return mockVenues
+  // Transform database venues to frontend Venue type
+  const venues = venuesFromDb.map((venue) => {
+    return {
+      id: venue.id,
+      name: venue.name,
+      address: venue.address || '',
+      city: venue.city || '',
+      country: venue.country || '',
+      lat: venue.lat || 0,
+      lng: venue.lng || 0,
+      type: venue.type || 'outdoor',
+      sports: (venue.sports as string[]) || [],
+      facilities: (venue.facilities as string[]) || [],
+      images: (venue.photos as string[]) || [],
+      orientationPlan: venue.orientationPlan || undefined,
+      description: venue.description || undefined,
+      accessInstructions: venue.accessInstructions || undefined,
+      openingHours: (venue.openingHours as Venue['openingHours']) || undefined,
+      price: venue.priceRangeMin || 0,
+      currency: venue.priceRangeCurrency || 'CZK',
+      contactInfo: {
+        phone: venue.contactPhone || undefined,
+        email: venue.contactEmail || undefined,
+        website: venue.contactWebsite || undefined
+      },
+      rating: venue.rating || undefined,
+      totalRatings: venue.totalRatings || undefined,
+      createdBy: venue.createdBy || '',
+      isVerified: venue.isVerified || false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    } as Venue
+  })
+
+  return venues
 })
 
 export const getVenueById = createServerFn({ method: 'GET' })
   .inputValidator((venueId: string) => venueId)
   .handler(async ({ data: venueId }) => {
-    await new Promise((resolve) => setTimeout(resolve, 30))
+    // Query venue from database
+    const venues = await db
+      .select()
+      .from(venueT)
+      .where(eq(venueT.id, venueId))
+      .limit(1)
 
-    // Future: Replace with Turso query
-    // const venue = await db.select().from(venuesTable).where(eq(venuesTable.id, venueId)).limit(1)
-    const venue = mockVenues.find((v) => v.id === venueId)
-
-    if (!venue) {
+    if (!venues || venues.length === 0) {
       throw new Error(`Venue with id ${venueId} not found`)
     }
 
-    return venue
+    const venue = venues[0]
+
+    // Transform database venue to frontend Venue type
+    return {
+      id: venue.id,
+      name: venue.name,
+      address: venue.address || '',
+      city: venue.city || '',
+      country: venue.country || '',
+      lat: venue.lat || 0,
+      lng: venue.lng || 0,
+      type: venue.type || 'outdoor',
+      sports: (venue.sports as string[]) || [],
+      facilities: (venue.facilities as string[]) || [],
+      images: (venue.photos as string[]) || [],
+      orientationPlan: venue.orientationPlan || undefined,
+      description: venue.description || undefined,
+      accessInstructions: venue.accessInstructions || undefined,
+      openingHours: (venue.openingHours as Venue['openingHours']) || undefined,
+      price: venue.priceRangeMin || 0,
+      currency: venue.priceRangeCurrency || 'CZK',
+      contactInfo: {
+        phone: venue.contactPhone || undefined,
+        email: venue.contactEmail || undefined,
+        website: venue.contactWebsite || undefined
+      },
+      rating: venue.rating || undefined,
+      totalRatings: venue.totalRatings || undefined,
+      createdBy: venue.createdBy || '',
+      isVerified: venue.isVerified || false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    } as Venue
   })
 
 // Stats/Analytics functions

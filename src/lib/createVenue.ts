@@ -1,8 +1,10 @@
 import { createServerFn } from '@tanstack/react-start'
+import { getRequest } from '@tanstack/react-start/server'
 import { z } from 'zod'
 import { createInsertSchema } from 'drizzle-zod'
 import { venueT as venueTable } from '../../drizzle/schema'
 import { db } from 'drizzle/db'
+import { auth } from './auth'
 
 // Base insert schema generated from Drizzle table
 // Make all fields optional to allow us to validate a transformed subset safely
@@ -96,6 +98,14 @@ export const createVenue = createServerFn({ method: 'POST' })
     return parsed.data
   })
   .handler(async ({ data }: { data: z.output<typeof ClientVenueSchema> }) => {
+    // Get the current user from the session
+    const request = getRequest()
+    const session = await auth.api.getSession({ headers: request.headers })
+
+    if (!session?.user?.id) {
+      throw new Error('You must be logged in to create a venue')
+    }
+
     const insertData = VenueInsertSchema.parse({
       name: data.name,
       address: data.address ?? '',
@@ -117,7 +127,8 @@ export const createVenue = createServerFn({ method: 'POST' })
 
       facilities: (data.facilities as InsertedVenue['facilities']) ?? [],
       sports: (data.sports as InsertedVenue['sports']) ?? [],
-      isVerified: data.isVerified ?? false
+      isVerified: data.isVerified ?? false,
+      createdBy: session.user.id
     })
 
     const inserted = await db.insert(venueTable).values(insertData).returning()
