@@ -1,8 +1,7 @@
 import { drizzle } from 'drizzle-orm/libsql'
 import { createClient } from '@libsql/client'
 import * as schema from './schema'
-import { env } from '../src/lib/env'
-
+import { env } from 'cloudflare:workers'
 
 
 const turso = createClient({
