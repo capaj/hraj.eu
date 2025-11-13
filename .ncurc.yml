@@ -1,0 +1,3 @@
+upgrade: true
+reject:
+  - "@paralleldrive/cuid2" ## cannot upgrade-v3 breaks CF workers 
