@@ -114,7 +114,6 @@ export const Discover: React.FC = () => {
   }, [events, selectedSport, selectedSkillLevel, sortBy, userLocation])
 
   const handleEventSelect = (event: Event) => {
-    setSelectedEvent(event)
     // Scroll to the corresponding event card in the list
     const eventElement = document.getElementById(`event-${event.id}`)
     if (eventElement) {

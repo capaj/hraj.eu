@@ -1,0 +1,1 @@
+Avoid explicitly listing out every field in an object. Prefer to spread it in place.

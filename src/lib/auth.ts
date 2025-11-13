@@ -5,7 +5,6 @@ import { reactStartCookies } from 'better-auth/react-start'
 import { magicLink } from 'better-auth/plugins'
 import { env } from 'cloudflare:workers'
 import * as schema from '../../drizzle/schema'
-import { SPORTS } from './constants'
 import { Resend } from 'resend'
 
 const resend = new Resend(env.RESEND_API_KEY)

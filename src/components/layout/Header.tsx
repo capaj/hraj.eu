@@ -279,13 +279,12 @@ export const NotificationsDropdown = () => {
                             </span>
                             {notification.eventId && (
                               <span className="text-xs text-blue-600">
-                                • {getEventTitle(notification.eventId)}
+                                • Event #{notification.eventId.slice(0, 8)}
                               </span>
                             )}
                             {notification.fromUserId && (
                               <span className="text-xs text-green-600">
-                                • from{' '}
-                                {getFromUserName(notification.fromUserId)}
+                                • from User #{notification.fromUserId.slice(0, 8)}
                               </span>
                             )}
                           </div>

@@ -36,10 +36,11 @@ import {
 import { useUser } from '~/lib/auth-client'
 
 export const UserProfile: React.FC = () => {
-  const data = useUser()
-  console.log('data', data)
+  const userFromAuth = useUser()
+
   const [user, setUser] = useState<User>({
-    ...data,
+    ...userFromAuth,
+    image: userFromAuth.image ?? undefined,
     karmaPoints: 0,
     skillLevels: {},
     notificationPreferences: {},
@@ -47,8 +48,7 @@ export const UserProfile: React.FC = () => {
     location: '',
     revTag: '',
     bankAccount: '',
-    createdAt: new Date(),
-    updatedAt: new Date()
+    createdAt: new Date()
   })
   const [isEditing, setIsEditing] = useState(false)
   const [isEditingRevTag, setIsEditingRevTag] = useState(false)

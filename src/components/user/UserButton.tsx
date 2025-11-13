@@ -5,7 +5,8 @@ import {
   LogOutIcon,
   PlusCircleIcon,
   SettingsIcon,
-  UserRoundPlus
+  UserRoundPlus,
+  Building2
 } from 'lucide-react'
 import {
   type ComponentProps,
@@ -221,12 +222,20 @@ export function UserButton({
         ) : (
           <>
             {!disableDefaultLinks && (
-              <Link to="/user-profile">
-                <DropdownMenuItem>
-                  <SettingsIcon />
-                  Settings
-                </DropdownMenuItem>
-              </Link>
+              <>
+                <Link to="/manage-venues">
+                  <DropdownMenuItem>
+                    <Building2 />
+                    Manage Venues
+                  </DropdownMenuItem>
+                </Link>
+                <Link to="/user-profile">
+                  <DropdownMenuItem>
+                    <SettingsIcon />
+                    Settings
+                  </DropdownMenuItem>
+                </Link>
+              </>
             )}
 
             <DropdownMenuItem onClick={handleSignOut}>

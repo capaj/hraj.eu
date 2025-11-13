@@ -4,27 +4,22 @@ import { Button } from '../ui/Button'
 import { SPORTS } from '../../lib/constants'
 import { Venue } from '../../types'
 import { uploadVenueImages, uploadVenuePlan } from '../../lib/server-functions'
-import { createVenue } from '~/lib/createVenue'
-import {
-  X,
-  MapPin,
-  Upload,
-  Image as ImageIcon,
-  Euro,
-  Plus,
-  Info
-} from 'lucide-react'
+import { createVenue, updateVenue } from '~/lib/createVenue'
+import { TagInput } from '../ui/TagInput'
+import { X, MapPin, Upload, Image as ImageIcon, Euro, Plus } from 'lucide-react'
 
 interface AddVenueModalProps {
   isOpen: boolean
   onClose: () => void
   onSubmit: (venueData: Partial<Venue>) => void
+  initialData?: Venue | null
 }
 
 export const AddVenueModal: React.FC<AddVenueModalProps> = ({
   isOpen,
   onClose,
-  onSubmit
+  onSubmit,
+  initialData
 }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -50,6 +45,48 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
   const [uploadingPlan, setUploadingPlan] = useState(false)
 
   useEffect(() => {
+    if (isOpen && initialData) {
+      setFormData({
+        name: initialData.name || '',
+        address: initialData.address || '',
+        city: initialData.city || '',
+        country: initialData.country || 'Czech Republic',
+        type: initialData.type || 'outdoor',
+        sports: initialData.sports || [],
+        facilities: initialData.facilities || [],
+        description: initialData.description || '',
+        accessInstructions: initialData.accessInstructions || '',
+        phone: initialData.contactInfo?.phone || '',
+        email: initialData.contactInfo?.email || '',
+        website: initialData.contactInfo?.website || '',
+        price: initialData.price || 0,
+        currency: initialData.currency || 'CZK'
+      })
+      setImages(initialData.images || [])
+      setOrientationPlan(initialData.orientationPlan || '')
+    } else if (isOpen && !initialData) {
+      setFormData({
+        name: '',
+        address: '',
+        city: '',
+        country: 'Czech Republic',
+        type: 'outdoor',
+        sports: [],
+        facilities: [],
+        description: '',
+        accessInstructions: '',
+        phone: '',
+        email: '',
+        website: '',
+        price: 0,
+        currency: 'CZK'
+      })
+      setImages([])
+      setOrientationPlan('')
+    }
+  }, [isOpen, initialData])
+
+  useEffect(() => {
     const handleEscapeKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && isOpen && !isSubmitting) {
         onClose()
@@ -67,26 +104,17 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
 
   const availableFacilities = [
     { id: 'parking', name: 'Parking', icon: '🚗' },
-    { id: 'changing_rooms', name: 'Changing Rooms', icon: '👕' },
-    { id: 'showers', name: 'Showers', icon: '🚿' },
-    { id: 'equipment_rental', name: 'Equipment Rental', icon: '🛍️' },
-    { id: 'cafe', name: 'Café/Restaurant', icon: '☕' },
+    { id: 'restrooms', name: 'Restrooms', icon: '🚻' },
+    { id: 'food', name: 'Café/Restaurant', icon: '☕' },
+    { id: 'lounge', name: 'Lounge', icon: '🛋️' },
     { id: 'wifi', name: 'WiFi', icon: '📶' },
-    { id: 'first_aid', name: 'First Aid', icon: '🏥' },
-    { id: 'accessibility', name: 'Wheelchair Accessible', icon: '♿' }
+    { id: 'locker_room', name: 'Locker Room', icon: '🔒' },
+    { id: 'shower', name: 'Showers', icon: '🚿' },
+    { id: 'dressing_room', name: 'Changing Rooms', icon: '👕' }
   ]
 
   const handleChange = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
-  }
-
-  const handleSportToggle = (sportId: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      sports: prev.sports.includes(sportId)
-        ? prev.sports.filter((id) => id !== sportId)
-        : [...prev.sports, sportId]
-    }))
   }
 
   const handleFacilityToggle = (facilityId: string) => {
@@ -192,46 +220,43 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
         },
         price: formData.price,
         currency: formData.currency,
-        lat: 50.0755 + (Math.random() - 0.5) * 0.1, // Mock coordinates near Prague
-        lng: 14.4378 + (Math.random() - 0.5) * 0.1,
-        isVerified: false,
-        rating: undefined,
-        totalRatings: 0
+        lat: initialData?.lat ?? 50.0755 + (Math.random() - 0.5) * 0.1,
+        lng: initialData?.lng ?? 14.4378 + (Math.random() - 0.5) * 0.1
       }
 
-      // Call the server function to create the venue
-      const inserted = await createVenue({ data: venueData })
-      // inserted is a plain row; build the Venue for UI from inserted + form fallback
-      const v = inserted as any
+      let venueId: string
+      if (initialData?.id) {
+        venueId = await updateVenue({
+          data: { ...venueData, id: initialData.id }
+        })
+      } else {
+        venueId = await createVenue({ data: venueData })
+      }
 
       const createdVenue: Partial<Venue> = {
-        id: v?.id,
-        name: v?.name ?? venueData.name,
-        address: v?.address ?? venueData.address ?? '',
-        city: v?.city ?? venueData.city ?? '',
-        country: v?.country ?? venueData.country ?? '',
-        type: (v?.type as 'outdoor' | 'indoor' | 'mixed') ?? venueData.type ?? 'outdoor',
-        sports: v?.sports ?? venueData.sports ?? [],
-        facilities: v?.facilities ?? venueData.facilities ?? [],
-        description: v?.description ?? venueData.description ?? undefined,
-        accessInstructions: v?.accessInstructions ?? venueData.accessInstructions ?? undefined,
-        images: v?.images ?? venueData.images ?? [],
-        orientationPlan: v?.orientationPlan ?? venueData.orientationPlan ?? undefined,
-        contactInfo: {
-          phone: v?.contactPhone ?? v?.contactInfo?.phone ?? venueData.contactInfo?.phone ?? '',
-          email: v?.contactEmail ?? v?.contactInfo?.email ?? venueData.contactInfo?.email ?? '',
-          website: v?.contactWebsite ?? v?.contactInfo?.website ?? venueData.contactInfo?.website ?? ''
-        },
-        price: v?.price ?? venueData.price ?? 0,
-        currency: v?.currency ?? venueData.currency ?? 'CZK',
-        lat: v?.lat ?? venueData.lat ?? 0,
-        lng: v?.lng ?? venueData.lng ?? 0,
-        isVerified: v?.isVerified ?? false,
-        rating: v?.rating ?? undefined,
-        totalRatings: v?.totalRatings ?? 0,
-        createdBy: v?.createdBy ?? '',
-        createdAt: v?.createdAt ? new Date(v.createdAt) : new Date(),
-        updatedAt: v?.updatedAt ? new Date(v.updatedAt) : new Date()
+        id: venueId,
+        name: venueData.name,
+        address: venueData.address ?? '',
+        city: venueData.city ?? '',
+        country: venueData.country ?? '',
+        type: venueData.type ?? 'outdoor',
+        sports: venueData.sports ?? [],
+        facilities: venueData.facilities ?? [],
+        description: venueData.description ?? undefined,
+        accessInstructions: venueData.accessInstructions ?? undefined,
+        images: venueData.images ?? [],
+        orientationPlan: venueData.orientationPlan ?? undefined,
+        contactInfo: venueData.contactInfo,
+        price: venueData.price ?? 0,
+        currency: venueData.currency ?? 'CZK',
+        lat: venueData.lat ?? 0,
+        lng: venueData.lng ?? 0,
+        isVerified: initialData?.isVerified ?? false,
+        rating: initialData?.rating ?? undefined,
+        totalRatings: initialData?.totalRatings ?? 0,
+        createdBy: initialData?.createdBy ?? '',
+        createdAt: initialData?.createdAt ?? new Date(),
+        updatedAt: new Date()
       }
 
       onSubmit(createdVenue)
@@ -274,7 +299,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">
-                  Add New Venue
+                  {initialData ? 'Edit Venue' : 'Add New Venue'}
                 </h2>
                 <p className="text-gray-600 mt-1">
                   Help grow our community by adding a new sports venue
@@ -298,7 +323,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                   Basic Information
                 </h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Venue Name *
@@ -328,23 +353,21 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                       <option value="mixed">Mixed (Indoor & Outdoor)</option>
                     </select>
                   </div>
-                </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Address *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.address}
-                    onChange={(e) => handleChange('address', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    placeholder="Street address"
-                  />
-                </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Address *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.address}
+                      onChange={(e) => handleChange('address', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      placeholder="Street address"
+                    />
+                  </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       City *
@@ -375,38 +398,19 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
               </div>
 
               {/* Sports */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Supported Sports *
-                </h3>
-                <p className="text-sm text-gray-600">
-                  Select all sports that can be played at this venue. Select at
-                  least one. You can add more later.
+                </label>
+                <TagInput
+                  options={SPORTS}
+                  selected={formData.sports}
+                  onChange={(selected) => handleChange('sports', selected)}
+                  placeholder="Add sports..."
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Select at least one sport. You can add more later.
                 </p>
-
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                  {SPORTS.map((sport) => (
-                    <label
-                      key={sport.id}
-                      className={`flex items-center p-3 border rounded-lg cursor-pointer transition-all ${
-                        formData.sports.includes(sport.id)
-                          ? 'border-primary-500 bg-primary-50'
-                          : 'border-gray-200 hover:border-gray-300'
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.sports.includes(sport.id)}
-                        onChange={() => handleSportToggle(sport.id)}
-                        className="text-primary-600 focus:ring-primary-500 rounded"
-                      />
-                      <span className="ml-2 text-lg">{sport.icon}</span>
-                      <span className="ml-2 text-sm font-medium text-gray-900">
-                        {sport.name}
-                      </span>
-                    </label>
-                  ))}
-                </div>
               </div>
 
               {/* Facilities */}

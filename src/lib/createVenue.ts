@@ -5,10 +5,7 @@ import { createInsertSchema } from 'drizzle-zod'
 import { venueT as venueTable } from '../../drizzle/schema'
 import { db } from 'drizzle/db'
 import { auth } from './auth'
-
-// Base insert schema generated from Drizzle table
-// Make all fields optional to allow us to validate a transformed subset safely
-const VenueInsertBaseSchema = createInsertSchema(venueTable).partial()
+import { eq } from 'drizzle-orm'
 
 // Helper to normalize TanStack serializer undefined token objects like { $undefined: any }
 const normalizeMaybeUndefined = <T extends z.ZodTypeAny>(inner: T) =>
@@ -86,6 +83,37 @@ type InsertedVenue = z.infer<typeof VenueInsertSchema> & {
   id?: string | number | bigint
 }
 
+const transformVenueData = (
+  data: z.output<typeof ClientVenueSchema>,
+  existingVenue?: {
+    lat?: number | null
+    lng?: number | null
+    type?: string | null
+  }
+) => ({
+  name: data.name,
+  address: data.address ?? '',
+  city: data.city,
+  country: data.country ?? '',
+  lat: data.lat ?? existingVenue?.lat ?? undefined,
+  lng: data.lng ?? existingVenue?.lng ?? undefined,
+  type:
+    data.type ??
+    (existingVenue?.type as 'outdoor' | 'indoor' | 'mixed' | undefined),
+  orientationPlan: data.orientationPlan,
+  photos: data.images ?? [],
+  description: data.description,
+  accessInstructions: data.accessInstructions,
+  priceRangeMin: typeof data.price === 'number' ? data.price : undefined,
+  priceRangeMax: typeof data.price === 'number' ? data.price : undefined,
+  priceRangeCurrency: data.currency,
+  contactPhone: data.contactInfo?.phone,
+  contactEmail: data.contactInfo?.email,
+  contactWebsite: data.contactInfo?.website,
+  facilities: (data.facilities as InsertedVenue['facilities']) ?? [],
+  sports: (data.sports as InsertedVenue['sports']) ?? []
+})
+
 export const createVenue = createServerFn({ method: 'POST' })
   .inputValidator((payload: unknown) => {
     const parsed = ClientVenueSchema.safeParse(payload)
@@ -107,26 +135,7 @@ export const createVenue = createServerFn({ method: 'POST' })
     }
 
     const insertData = VenueInsertSchema.parse({
-      name: data.name,
-      address: data.address ?? '',
-      city: data.city,
-      country: data.country ?? '',
-      lat: data.lat,
-      lng: data.lng,
-      type: data.type,
-      orientationPlan: data.orientationPlan,
-      photos: data.images ?? [],
-      description: data.description,
-      accessInstructions: data.accessInstructions,
-      priceRangeMin: typeof data.price === 'number' ? data.price : undefined,
-      priceRangeMax: typeof data.price === 'number' ? data.price : undefined,
-      priceRangeCurrency: data.currency,
-      contactPhone: data.contactInfo?.phone,
-      contactEmail: data.contactInfo?.email,
-      contactWebsite: data.contactInfo?.website,
-
-      facilities: (data.facilities as InsertedVenue['facilities']) ?? [],
-      sports: (data.sports as InsertedVenue['sports']) ?? [],
+      ...transformVenueData(data),
       isVerified: data.isVerified ?? false,
       createdBy: session.user.id
     })
@@ -136,3 +145,57 @@ export const createVenue = createServerFn({ method: 'POST' })
     console.log('inserted', inserted[0])
     return inserted?.[0].id
   })
+
+export const updateVenue = createServerFn({ method: 'POST' })
+  .inputValidator((payload: unknown) => {
+    const parsed = ClientVenueSchema.extend({
+      id: z.string().min(1, 'Venue ID is required')
+    }).safeParse(payload)
+    if (!parsed.success) {
+      const issues = parsed.error.issues
+        .map((i) => `${i.path.join('.')}: ${i.message}`)
+        .join('; ')
+      throw new Error(`Invalid venue data: ${issues}`)
+    }
+    return parsed.data
+  })
+  .handler(
+    async ({
+      data
+    }: {
+      data: z.output<typeof ClientVenueSchema> & { id: string }
+    }) => {
+      const request = getRequest()
+      const session = await auth.api.getSession({ headers: request.headers })
+
+      if (!session?.user?.id) {
+        throw new Error('You must be logged in to update a venue')
+      }
+
+      const existingVenue = await db
+        .select()
+        .from(venueTable)
+        .where(eq(venueTable.id, data.id))
+        .limit(1)
+
+      if (
+        !existingVenue.length ||
+        existingVenue[0].createdBy !== session.user.id
+      ) {
+        throw new Error(
+          'Venue not found or you do not have permission to update it'
+        )
+      }
+
+      const updateData = {
+        ...transformVenueData(data, existingVenue[0])
+      }
+
+      await db
+        .update(venueTable)
+        .set(updateData)
+        .where(eq(venueTable.id, data.id))
+
+      return data.id
+    }
+  )

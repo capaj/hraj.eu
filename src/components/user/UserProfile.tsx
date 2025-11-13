@@ -5,8 +5,13 @@ import { User } from 'better-auth'
 import { SPORTS, SKILL_LEVELS } from '../../lib/constants'
 import { Trophy, Calendar, Star } from 'lucide-react'
 
+interface ExtendedUser extends User {
+  karmaPoints?: number
+  bio?: string
+}
+
 interface UserProfileProps {
-  user: User
+  user: ExtendedUser
 }
 
 export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
@@ -24,12 +29,14 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
           <div>
             <h2 className="text-xl font-bold text-gray-900">{user.name}</h2>
             <p className="text-gray-600">{user.email}</p>
-            <div className="flex items-center mt-2">
-              <Trophy size={16} className="text-yellow-500 mr-1" />
-              <span className="text-sm font-medium text-gray-700">
-                {user.karmaPoints} karma
-              </span>
-            </div>
+            {user.karmaPoints !== undefined && (
+              <div className="flex items-center mt-2">
+                <Trophy size={16} className="text-yellow-500 mr-1" />
+                <span className="text-sm font-medium text-gray-700">
+                  {user.karmaPoints} karma
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </CardHeader>

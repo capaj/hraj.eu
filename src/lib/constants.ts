@@ -3,7 +3,7 @@ export const SPORTS = [
   { id: 'futsal', name: 'Futsal', icon: '⚽' },
   { id: 'basketball', name: 'Basketball', icon: '🏀' },
   { id: 'volleyball', name: 'Volleyball', icon: '🏐' },
-  { id: 'beach-volleyball', name: 'Beach Volleyball', icon: '🏐🏖️' },
+  { id: 'beach-volleyball', name: 'Beach Volleyball', icon: '🏖️' },
   { id: 'football-tennis', name: 'Football Tennis', icon: '🎾' },
   { id: 'handball', name: 'Handball', icon: '🤾' },
   { id: 'rugby-union', name: 'Rugby Union', icon: '🏉' },

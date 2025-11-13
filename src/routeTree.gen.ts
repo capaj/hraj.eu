@@ -13,6 +13,7 @@ import { Route as UserProfileRouteImport } from './routes/user-profile'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ManageVenuesRouteImport } from './routes/manage-venues'
 import { Route as LeaderboardRouteImport } from './routes/leaderboard'
 import { Route as DiscoverRouteImport } from './routes/discover'
 import { Route as CreateRouteImport } from './routes/create'
@@ -39,6 +40,11 @@ const ProfileRoute = ProfileRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ManageVenuesRoute = ManageVenuesRouteImport.update({
+  id: '/manage-venues',
+  path: '/manage-venues',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LeaderboardRoute = LeaderboardRouteImport.update({
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/create': typeof CreateRoute
   '/discover': typeof DiscoverRoute
   '/leaderboard': typeof LeaderboardRoute
+  '/manage-venues': typeof ManageVenuesRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
   '/terms': typeof TermsRoute
@@ -95,6 +102,7 @@ export interface FileRoutesByTo {
   '/create': typeof CreateRoute
   '/discover': typeof DiscoverRoute
   '/leaderboard': typeof LeaderboardRoute
+  '/manage-venues': typeof ManageVenuesRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
   '/terms': typeof TermsRoute
@@ -109,6 +117,7 @@ export interface FileRoutesById {
   '/create': typeof CreateRoute
   '/discover': typeof DiscoverRoute
   '/leaderboard': typeof LeaderboardRoute
+  '/manage-venues': typeof ManageVenuesRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
   '/terms': typeof TermsRoute
@@ -124,6 +133,7 @@ export interface FileRouteTypes {
     | '/create'
     | '/discover'
     | '/leaderboard'
+    | '/manage-venues'
     | '/privacy'
     | '/profile'
     | '/terms'
@@ -137,6 +147,7 @@ export interface FileRouteTypes {
     | '/create'
     | '/discover'
     | '/leaderboard'
+    | '/manage-venues'
     | '/privacy'
     | '/profile'
     | '/terms'
@@ -150,6 +161,7 @@ export interface FileRouteTypes {
     | '/create'
     | '/discover'
     | '/leaderboard'
+    | '/manage-venues'
     | '/privacy'
     | '/profile'
     | '/terms'
@@ -164,6 +176,7 @@ export interface RootRouteChildren {
   CreateRoute: typeof CreateRoute
   DiscoverRoute: typeof DiscoverRoute
   LeaderboardRoute: typeof LeaderboardRoute
+  ManageVenuesRoute: typeof ManageVenuesRoute
   PrivacyRoute: typeof PrivacyRoute
   ProfileRoute: typeof ProfileRoute
   TermsRoute: typeof TermsRoute
@@ -201,6 +214,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manage-venues': {
+      id: '/manage-venues'
+      path: '/manage-venues'
+      fullPath: '/manage-venues'
+      preLoaderRoute: typeof ManageVenuesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/leaderboard': {
@@ -260,6 +280,7 @@ const rootRouteChildren: RootRouteChildren = {
   CreateRoute: CreateRoute,
   DiscoverRoute: DiscoverRoute,
   LeaderboardRoute: LeaderboardRoute,
+  ManageVenuesRoute: ManageVenuesRoute,
   PrivacyRoute: PrivacyRoute,
   ProfileRoute: ProfileRoute,
   TermsRoute: TermsRoute,

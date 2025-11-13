@@ -224,14 +224,14 @@ export const Leaderboard: React.FC = () => {
     const level = user.skillLevels[sport]
     if (!level) return null
 
-    const levelColors = {
+    const levelColors: Record<'beginner' | 'intermediate' | 'advanced', string> = {
       beginner: 'bg-green-100 text-green-800',
       intermediate: 'bg-yellow-100 text-yellow-800',
       advanced: 'bg-red-100 text-red-800'
     }
 
     return (
-      <Badge variant="default" size="sm" className={levelColors[level]}>
+      <Badge variant="default" size="sm" className={levelColors[level as keyof typeof levelColors]}>
         {level}
       </Badge>
     )
