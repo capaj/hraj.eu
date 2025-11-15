@@ -3,17 +3,30 @@
   "name": "hraj-eu",
   "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "@tanstack/react-start/server-entry",
+  "main": "worker.ts",
   "observability": {
     "enabled": true
   },
   "vars": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "TURSO_DATABASE_URL": "placeholder",
+    "TURSO_AUTH_TOKEN": "placeholder",
+    "BETTER_AUTH_SECRET": "placeholder",
+    "BETTER_AUTH_URL": "placeholder",
+    "GOOGLE_CLIENT_ID": "placeholder",
+    "GOOGLE_CLIENT_SECRET": "placeholder",
+    "FACEBOOK_CLIENT_ID": "placeholder",
+    "FACEBOOK_CLIENT_SECRET": "placeholder",
+    "RESEND_API_KEY": "placeholder",
+    "SENDER_EMAIL": "placeholder"
   },
   "r2_buckets": [
     {
       "bucket_name": "hraj-eu-uploads",
       "binding": "hraj_eu_uploads"
     }
-  ]
+  ],
+  "triggers": {
+    "crons": ["0 0 * * *"]
+  }
 }
