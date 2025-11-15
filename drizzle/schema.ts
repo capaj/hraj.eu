@@ -81,6 +81,7 @@ export const eventT = sqliteTable(
     })
       .default('open')
       .notNull(),
+    cancellationCheckRanAt: integer('cancellation_check_ran_at', { mode: 'timestamp' }),
     cancellationReason: text('cancellation_reason'),
     createdAt: integer('created_at', { mode: 'timestamp' })
       .default(sql`unixepoch()`)

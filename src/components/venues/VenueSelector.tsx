@@ -51,10 +51,15 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
     return matchesSearch && matchesSport
   })
 
+  // Filter out selected venue from the list
+  const venuesWithoutSelected = filteredVenues.filter(
+    (venue) => venue.id !== selectedVenueId
+  )
+  
   // Show only top 3 venues initially, unless "show all" is clicked
   const displayedVenues = showAllVenues
-    ? filteredVenues
-    : filteredVenues.slice(0, 3)
+    ? venuesWithoutSelected
+    : venuesWithoutSelected.slice(0, 3)
   const selectedVenue = venues.find((v) => v.id === selectedVenueId)
 
   const getFacilityIcon = (facility: string) => {
@@ -111,29 +116,31 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
   return (
     <div className="space-y-4">
       {/* Search and Add Venue */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        <div className="relative flex-1">
-          <Search
-            size={16}
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-          />
-          <input
-            type="text"
-            placeholder="Search venues by name or location..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-          />
+      {!selectedVenueId && (
+        <div className="flex flex-col sm:flex-row gap-3">
+          <div className="relative flex-1">
+            <Search
+              size={16}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            />
+            <input
+              type="text"
+              placeholder="Search venues by name or location..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            />
+          </div>
+          <Button
+            variant="outline"
+            onClick={onAddVenue}
+            className="flex-shrink-0"
+          >
+            <Plus size={16} className="mr-2" />
+            Add New Venue
+          </Button>
         </div>
-        <Button
-          variant="outline"
-          onClick={onAddVenue}
-          className="flex-shrink-0"
-        >
-          <Plus size={16} className="mr-2" />
-          Add New Venue
-        </Button>
-      </div>
+      )}
 
       {/* Selected Venue Display */}
       {selectedVenue && (
@@ -183,15 +190,12 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
       )}
 
       {/* Venue List */}
-      <div className="space-y-3">
+      {!selectedVenueId && (
+        <div className="space-y-3">
         {displayedVenues.map((venue) => (
           <Card
             key={venue.id}
-            className={`cursor-pointer transition-all hover:shadow-md ${
-              selectedVenueId === venue.id
-                ? 'ring-2 ring-primary-500 bg-primary-50'
-                : 'hover:bg-gray-50'
-            }`}
+            className="cursor-pointer transition-all hover:shadow-md hover:bg-gray-50"
             onClick={() => onVenueSelect(venue.id)}
           >
             <CardContent className="p-4">
@@ -234,12 +238,6 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
                         </span>
                       </div>
                     </div>
-
-                    {selectedVenueId === venue.id && (
-                      <div className="ml-2">
-                        <Check size={20} className="text-primary-600" />
-                      </div>
-                    )}
                   </div>
 
                   {/* Sports and Rating */}
@@ -307,7 +305,7 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
         ))}
 
         {/* Show More/Less Button */}
-        {filteredVenues.length > 3 && (
+        {venuesWithoutSelected.length > 3 && (
           <div className="text-center">
             <Button
               variant="outline"
@@ -317,7 +315,7 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
               {showAllVenues ? (
                 <>Show Less</>
               ) : (
-                <>Show All {filteredVenues.length} Venues</>
+                <>Show All {venuesWithoutSelected.length} Venues</>
               )}
             </Button>
           </div>
@@ -349,7 +347,8 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
             </Button>
           </div>
         )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }

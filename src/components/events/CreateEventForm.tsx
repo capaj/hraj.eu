@@ -16,7 +16,8 @@ import {
   Euro,
   FileText,
   Info,
-  Shield
+  Shield,
+  AlertTriangle
 } from 'lucide-react'
 
 export type CreateEventFormData = Omit<
@@ -289,6 +290,28 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                 )}
               </div>
 
+              {formData.sport &&
+                _selectedVenue &&
+                !_selectedVenue.sports.includes(formData.sport) && (
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                    <div className="flex items-start">
+                      <AlertTriangle
+                        size={16}
+                        className="text-amber-600 mr-2 mt-0.5 flex-shrink-0"
+                      />
+                      <div className="text-sm text-amber-800">
+                        <strong>Warning:</strong> The selected venue{' '}
+                        <strong>{_selectedVenue.name}</strong> does not support{' '}
+                        <strong>
+                          {SPORTS.find((s) => s.id === formData.sport)?.name}
+                        </strong>
+                        . Please select a different sport or choose a different
+                        venue.
+                      </div>
+                    </div>
+                  </div>
+                )}
+
               {isLoadingVenues ? (
                 <div className="text-gray-500">Loading venues...</div>
               ) : (
@@ -467,45 +490,36 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                   players?
                 </p>
 
-                <div className="grid grid-cols-2 gap-4 max-w-md">
-                  <div>
-                    <label className="block text-xs font-medium text-gray-600 mb-1">
-                      Hours
-                    </label>
-                    <input
-                      type="number"
-                      value={formData.cancellationHours}
-                      onChange={(e) =>
-                        handleChange(
-                          'cancellationHours',
-                          parseInt(e.target.value) || 0
-                        )
+                <div className="max-w-md">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
+                    Hours
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.cancellationHours}
+                    onChange={(e) => {
+                      let val = e.target.value
+                      if (val === '') {
+                        handleChange('cancellationHours', 0)
+                        return
                       }
-                      min="0"
-                      max="72"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-gray-600 mb-1">
-                      Minutes
-                    </label>
-                    <select
-                      value={formData.cancellationMinutes}
-                      onChange={(e) =>
-                        handleChange(
-                          'cancellationMinutes',
-                          parseInt(e.target.value)
-                        )
+                      if (val.startsWith('0') && val.length > 1) {
+                        val = val.replace(/^0+/, '') || '0'
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    >
-                      <option value={0}>0</option>
-                      <option value={15}>15</option>
-                      <option value={30}>30</option>
-                      <option value={45}>45</option>
-                    </select>
-                  </div>
+                      const num = parseInt(val, 10)
+                      if (!isNaN(num) && num >= 0 && num <= 72) {
+                        handleChange('cancellationHours', num)
+                      }
+                    }}
+                    onFocus={(e) => {
+                      if (e.target.value === '0') {
+                        e.target.select()
+                      }
+                    }}
+                    min="0"
+                    max="72"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  />
                 </div>
 
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
