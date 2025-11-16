@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - web-app/**/*.ts'
-      - web-app/**/*.tsx'
-      - web-app/wrangler.*'
-      - web-app/pnpm-*.yaml'
-      - web-app/.github/workflows/deploy.yaml'
+      - web-app/**/*.ts
+      - web-app/**/*.tsx
+      - web-app/wrangler.*
+      - pnpm-*.yaml
+      - .github/workflows/deploy.yaml
 
 jobs:
   deploy:
