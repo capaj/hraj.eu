@@ -1,0 +1,1 @@
+CREATE INDEX `series_id_idx` ON `event` (`series_id`);

@@ -4,7 +4,8 @@ import {
   text,
   real,
   index,
-  uniqueIndex
+  uniqueIndex,
+  AnySQLiteColumn
 } from 'drizzle-orm/sqlite-core'
 import { relations, sql } from 'drizzle-orm'
 import { createId } from '@paralleldrive/cuid2'
@@ -81,8 +82,23 @@ export const eventT = sqliteTable(
     })
       .default('open')
       .notNull(),
-    cancellationCheckRanAt: integer('cancellation_check_ran_at', { mode: 'timestamp' }),
+
+    cancellationCheckRanAt: integer('cancellation_check_ran_at', {
+      mode: 'timestamp'
+    }),
     cancellationReason: text('cancellation_reason'),
+
+    // recurring event fields
+    /** when set, the event is recurring every N days */
+    recurringInDays: integer('recurring_in_days'),
+    /**
+     * series id is used to group recurring events together, it's always
+     */
+    seriesId: text('series_id')
+      .$defaultFn(() => createId())
+      .notNull(),
+    ordinalInSeries: integer('ordinal_in_series').notNull().default(1),
+
     createdAt: integer('created_at', { mode: 'timestamp' })
       .default(sql`unixepoch()`)
       .notNull(),
@@ -94,7 +110,8 @@ export const eventT = sqliteTable(
   (table) => ({
     sportDateIdx: index('sport_date_idx').on(table.sport, table.date),
     organizerIdx: index('organizer_idx').on(table.organizerId),
-    venueIdx: index('venue_idx').on(table.venueId)
+    venueIdx: index('venue_idx').on(table.venueId),
+    seriesIdIdx: index('series_id_idx').on(table.seriesId)
   })
 )
 

@@ -11,6 +11,7 @@ on:
       - web-app/wrangler.*
       - pnpm-*.yaml
       - .github/workflows/deploy.yaml
+      - '**/package.json'
 
 jobs:
   deploy:
