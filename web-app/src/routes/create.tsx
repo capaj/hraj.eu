@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { CreateEvent } from '../pages/CreateEventPage'
-import { getVenues } from '../lib/server-functions'
+import { getVenues } from '~/server-functions/getVenues'
 
 export const Route = createFileRoute('/create')({
   loader: async () => {

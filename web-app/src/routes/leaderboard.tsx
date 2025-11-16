@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Leaderboard } from '../pages/LeaderboardPage'
-import { getEvents } from '../lib/server-functions'
+import { getEvents } from '~/server-functions/getEvents'
 
 export const Route = createFileRoute('/leaderboard')({
   loader: async () => {

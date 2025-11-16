@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
-import { getUsers } from '../lib/server-functions'
+import { getUsers } from '~/server-functions/getUsers'
 import { User } from '../types'
 import { SPORTS } from '../lib/constants'
 import {

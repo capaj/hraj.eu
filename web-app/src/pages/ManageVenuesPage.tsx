@@ -3,7 +3,7 @@ import { Card, CardContent } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { Badge } from '../components/ui/Badge'
 import { Venue } from '../types'
-import { getVenuesByUserId } from '../lib/server-functions'
+import { getVenuesByUserId } from '~/server-functions/getVenuesByUserId'
 import { useUser } from '~/lib/auth-client'
 import { AddVenueModal } from '../components/venues/AddVenueModal'
 import {

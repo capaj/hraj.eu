@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Home } from '../pages/HomePage'
-import { getUpcomingEvents, getAppStats } from '../lib/server-functions'
+import { getUpcomingEvents } from '~/server-functions/getUpcomingEvents'
+import { getAppStats } from '~/server-functions/getAppStats'
 
 export const Route = createFileRoute('/')({
   loader: async () => {

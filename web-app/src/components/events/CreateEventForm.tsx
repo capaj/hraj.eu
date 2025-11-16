@@ -6,7 +6,7 @@ import { Toggle } from '../ui/Toggle'
 import { VenueSelector } from '../venues/VenueSelector'
 import { AddVenueModal } from '../venues/AddVenueModal'
 import { SPORTS, SKILL_LEVELS } from '../../lib/constants'
-import { getVenues } from '../../lib/server-functions'
+import { getVenues } from '~/server-functions/getVenues'
 import { Venue, type SkillLevel } from '../../types'
 import { eventT } from '../../../drizzle/schema'
 import {

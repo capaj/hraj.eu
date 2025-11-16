@@ -1,12 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Profile } from '../pages/ProfilePage'
-import {
-  getUserById,
-  getUserNotifications,
-  getEvents,
-  getVenues,
-  getUsers
-} from '../lib/server-functions'
+import { getUserById } from '~/server-functions/getUserById'
+import { getUserNotifications } from '~/server-functions/getUserNotifications'
+import { getEvents } from '~/server-functions/getEvents'
+import { getVenues } from '~/server-functions/getVenues'
+import { getUsers } from '~/server-functions/getUsers'
 import { ProtectedRoute } from '~/lib/auth-client'
 
 export const Route = createFileRoute('/profile')({
