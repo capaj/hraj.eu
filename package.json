@@ -5,7 +5,8 @@
   "scripts": {
     "test": "turbo test",
     "typecheck": "turbo typecheck",
-    "bump": "turbo bump"
+    "bump": "turbo bump",
+    "postinstall": "turbo postinstall"
   },
   "devDependencies": {
     "oxlint": "^1.28.0",

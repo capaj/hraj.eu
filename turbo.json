@@ -3,6 +3,7 @@
   "tasks": {
     "typecheck": {},
     "test": {},
-    "bump": {}
+    "bump": {},
+    "postinstall": {}
   }
 }
