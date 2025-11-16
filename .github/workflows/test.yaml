@@ -30,6 +30,10 @@ jobs:
           node-version-file: ".nvmrc"
           cache: "pnpm"
 
+      - name: copy dev vars
+        run: |
+          cp .dev.vars.example .dev.vars
+      
       - name: Install deps
         run: pnpm install
 
