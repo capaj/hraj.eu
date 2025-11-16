@@ -2,7 +2,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { Event, User, Notification, Venue } from '../types'
 import { db } from '../../drizzle/db'
 import { eventT, participantT, venueT, user as userTable } from '../../drizzle/schema'
-import { eq, and, sql, gte } from 'drizzle-orm'
+import { eq, and, sql, gte, count } from 'drizzle-orm'
 
 import { env } from 'cloudflare:workers'
 
@@ -314,7 +314,8 @@ export const getUsers = createServerFn({ method: 'GET' }).handler(async () => {
     skillLevels: {}, // TODO: fetch from userSkillT table if needed
     notificationPreferences: {}, // TODO: implement notification preferences table
     preferredCurrency: user.preferredCurrency || 'CZK',
-    location: user.city && user.country ? `${user.city}, ${user.country}` : undefined,
+    location:
+      user.city && user.country ? `${user.city}, ${user.country}` : undefined,
     revTag: user.revolutTag || undefined,
     bankAccount: user.bankAccount || undefined,
     createdAt: new Date(user.createdAt)
@@ -349,7 +350,8 @@ export const getUserById = createServerFn({ method: 'GET' })
       skillLevels: {}, // TODO: fetch from userSkillT table if needed
       notificationPreferences: {}, // TODO: implement notification preferences table
       preferredCurrency: user.preferredCurrency || 'CZK',
-      location: user.city && user.country ? `${user.city}, ${user.country}` : undefined,
+      location:
+        user.city && user.country ? `${user.city}, ${user.country}` : undefined,
       revTag: user.revolutTag || undefined,
       bankAccount: user.bankAccount || undefined,
       createdAt: new Date(user.createdAt)
@@ -391,13 +393,16 @@ export const getVenues = createServerFn({ method: 'GET' }).handler(async () => {
       accessInstructions: venue.accessInstructions || undefined,
       openingHours: venue.openingHours
         ? (Array.isArray(venue.openingHours)
-            ? (venue.openingHours as { day: string; open: string; close: string }[]).reduce(
-                (acc, item) => {
-                  acc[item.day] = { open: item.open, close: item.close }
-                  return acc
-                },
-                {} as { [key: string]: { open: string; close: string } }
-              )
+            ? (
+                venue.openingHours as {
+                  day: string
+                  open: string
+                  close: string
+                }[]
+              ).reduce((acc, item) => {
+                acc[item.day] = { open: item.open, close: item.close }
+                return acc
+              }, {} as { [key: string]: { open: string; close: string } })
             : (venue.openingHours as Venue['openingHours'])) || undefined
         : undefined,
       price: venue.priceRangeMin || 0,
@@ -510,13 +515,16 @@ export const getVenueById = createServerFn({ method: 'GET' })
       accessInstructions: venue.accessInstructions || undefined,
       openingHours: venue.openingHours
         ? (Array.isArray(venue.openingHours)
-            ? (venue.openingHours as { day: string; open: string; close: string }[]).reduce(
-                (acc, item) => {
-                  acc[item.day] = { open: item.open, close: item.close }
-                  return acc
-                },
-                {} as { [key: string]: { open: string; close: string } }
-              )
+            ? (
+                venue.openingHours as {
+                  day: string
+                  open: string
+                  close: string
+                }[]
+              ).reduce((acc, item) => {
+                acc[item.day] = { open: item.open, close: item.close }
+                return acc
+              }, {} as { [key: string]: { open: string; close: string } })
             : (venue.openingHours as Venue['openingHours'])) || undefined
         : undefined,
       price: venue.priceRangeMin || 0,
@@ -538,20 +546,45 @@ export const getVenueById = createServerFn({ method: 'GET' })
 // Stats/Analytics functions
 export const getAppStats = createServerFn({ method: 'GET' }).handler(
   async () => {
-    await new Promise((resolve) => setTimeout(resolve, 150))
+    const [eventsCountResult] = await db.select({ count: count() }).from(eventT)
 
-    // Future: Replace with complex Turso aggregation queries
-    // const stats = await db.select({
-    //   totalEvents: count(eventsTable.id),
-    //   totalUsers: count(usersTable.id),
-    //   // ... more complex aggregations
-    // }).from(eventsTable)
+    const [activeUsersResult] = await db
+      .select({ count: sql<number>`COUNT(DISTINCT ${participantT.userId})` })
+      .from(participantT)
+      .where(eq(participantT.status, 'confirmed'))
+
+    const [countriesResult] = await db
+      .select({ count: sql<number>`COUNT(DISTINCT ${venueT.country})` })
+      .from(venueT)
+      .where(sql`${venueT.country} IS NOT NULL`)
+
+    const [completedEventsResult] = await db
+      .select({ count: count() })
+      .from(eventT)
+      .where(eq(eventT.status, 'completed'))
+
+    const [cancelledEventsResult] = await db
+      .select({ count: count() })
+      .from(eventT)
+      .where(eq(eventT.status, 'cancelled'))
+
+    const eventsCreated = eventsCountResult?.count || 0
+    const activeUsers = Number(activeUsersResult?.count) || 0
+    const countries = Number(countriesResult?.count) || 0
+
+    const completedEvents = completedEventsResult?.count || 0
+    const cancelledEvents = cancelledEventsResult?.count || 0
+    const totalFinishedEvents = completedEvents + cancelledEvents
+    const successRate =
+      totalFinishedEvents > 0
+        ? Math.round((completedEvents / totalFinishedEvents) * 100)
+        : 0
 
     return {
-      eventsCreated: 2547,
-      activeUsers: 8423,
-      countries: 15,
-      successRate: 95
+      eventsCreated,
+      activeUsers,
+      countries,
+      successRate
     }
   }
 )
