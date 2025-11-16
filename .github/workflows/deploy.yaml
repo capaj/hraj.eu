@@ -3,6 +3,8 @@ name: Deploy
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     paths:
       - web-app/**/*.ts
       - web-app/**/*.tsx
@@ -39,7 +41,6 @@ jobs:
 
       - name: Deploy to Cloudflare
         uses: cloudflare/wrangler-action@v3
-        working-directory: web-app
         env:
           TURSO_DATABASE_URL: ${{ vars.TURSO_DATABASE_URL }}
           TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
@@ -49,10 +50,11 @@ jobs:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           FACEBOOK_CLIENT_SECRET: ${{ secrets.FACEBOOK_CLIENT_SECRET }}
           FACEBOOK_CLIENT_ID: ${{ secrets.FACEBOOK_CLIENT_ID }}
-					RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
 
         with:
           packageManager: pnpm
+          workingDirectory: web-app
           secrets: |
             TURSO_AUTH_TOKEN
             BETTER_AUTH_SECRET
