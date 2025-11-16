@@ -1,0 +1,39 @@
+name: Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - web-app/**/*.ts
+      - web-app/**/*.tsx
+      - web-app/wrangler.*
+      - pnpm-*.yaml
+      - .github/workflows/deploy.yaml
+      - "**/package.json"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy app
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "pnpm"
+
+      - name: Install deps
+        run: pnpm install
+
+      - name: Typecheck
+        working-directory: web-app
+        run: |
+          pnpm run typecheck
