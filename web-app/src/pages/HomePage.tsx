@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useLoaderData } from '@tanstack/react-router'
+import { Link, useLoaderData, useNavigate } from '@tanstack/react-router'
 import { Card, CardContent } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { EventCard } from '../components/events/EventCard'
 import { Plus, MapPin, Users, Trophy, Search } from 'lucide-react'
+import { joinEvent } from '~/server-functions/joinEvent'
+import { authClient } from '../lib/auth-client'
 
 export const Home: React.FC = () => {
-  const { upcomingEvents, stats } = useLoaderData({ from: '/' })
+  const { upcomingEvents: initialUpcomingEvents, stats } = useLoaderData({ from: '/' })
+  const navigate = useNavigate()
+  const session = authClient.useSession()
   const [userLocation, setUserLocation] = useState<string>('')
   const [isLoadingLocation, setIsLoadingLocation] = useState(true)
+  const [upcomingEvents, setUpcomingEvents] = useState(initialUpcomingEvents)
+  const [joiningEventId, setJoiningEventId] = useState<string | null>(null)
+
+  useEffect(() => {
+    setUpcomingEvents(initialUpcomingEvents)
+  }, [initialUpcomingEvents])
 
   useEffect(() => {
     // Only run in browser environment
@@ -52,8 +62,34 @@ export const Home: React.FC = () => {
     )
   }, [])
 
-  const handleJoinEvent = (eventId: string) => {
-    console.log('Join event:', eventId)
+  const handleJoinEvent = async (eventId: string) => {
+    if (!session.data?.user?.id) {
+      navigate({ to: '/auth/$pathname', params: { pathname: 'sign-in' } })
+      return
+    }
+
+    setJoiningEventId(eventId)
+    try {
+      const response = await joinEvent({ data: { eventId } })
+
+      if (response?.participants) {
+        setUpcomingEvents((prevEvents) =>
+          prevEvents.map((event) =>
+            event.id === eventId
+              ? {
+                  ...event,
+                  participants: response.participants.confirmed,
+                  waitlist: response.participants.waitlisted
+                }
+              : event
+          )
+        )
+      }
+    } catch (error) {
+      console.error('Failed to join event:', error)
+    } finally {
+      setJoiningEventId(null)
+    }
   }
 
   return (
@@ -118,6 +154,8 @@ export const Home: React.FC = () => {
                   key={event.id}
                   event={event}
                   onJoin={handleJoinEvent}
+                  isJoining={joiningEventId === event.id}
+                  currentUserId={session.data?.user?.id}
                 />
               ))}
             </div>

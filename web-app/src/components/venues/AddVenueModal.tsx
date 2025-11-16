@@ -5,12 +5,21 @@ import { SPORTS } from '../../lib/constants'
 import { Venue } from '../../types'
 import { uploadVenueImages } from '~/server-functions/uploadVenueImages'
 import { uploadVenuePlan } from '~/server-functions/uploadVenuePlan'
-import { createVenue, updateVenue } from '~/lib/createVenue'
+import { createVenue } from '~/lib/createVenue'
+import { updateVenue } from '~/server-functions/updateVenue'
 import { getGoogleMapsApiKey } from '~/server-functions/getGoogleMapsApiKey'
 import { TagInput } from '../ui/TagInput'
 import { AddressAutocomplete, AddressDetails } from './AddressAutocomplete'
 import { VenueMapPreview } from './VenueMapPreview'
-import { X, MapPin, Upload, Image as ImageIcon, Euro, Plus } from 'lucide-react'
+import {
+  X,
+  MapPin,
+  Upload,
+  Image as ImageIcon,
+  Euro,
+  Plus,
+  Edit
+} from 'lucide-react'
 
 interface AddVenueModalProps {
   isOpen: boolean
@@ -315,8 +324,15 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
       setOrientationPlan('')
       setLocation(null)
     } catch (error) {
-      console.error('Failed to create venue:', error)
-      alert('Failed to create venue. Please try again.')
+      console.error(
+        initialData ? 'Failed to update venue:' : 'Failed to create venue:',
+        error
+      )
+      alert(
+        initialData
+          ? 'Failed to update venue. Please try again.'
+          : 'Failed to create venue. Please try again.'
+      )
     } finally {
       setIsSubmitting(false)
     }
@@ -771,12 +787,21 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                   {isSubmitting ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Creating Venue...
+                      {initialData ? 'Updating Venue...' : 'Creating Venue...'}
                     </>
                   ) : (
                     <>
-                      <Plus size={16} className="mr-2" />
-                      Create Venue
+                      {initialData ? (
+                        <>
+                          <Edit size={16} className="mr-2" />
+                          Update Venue
+                        </>
+                      ) : (
+                        <>
+                          <Plus size={16} className="mr-2" />
+                          Create Venue
+                        </>
+                      )}
                     </>
                   )}
                 </Button>

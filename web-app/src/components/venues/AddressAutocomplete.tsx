@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Loader } from '@googlemaps/js-api-loader'
+import { setOptions, importLibrary } from '@googlemaps/js-api-loader'
+
+let isGoogleMapsConfigured = false
 
 export interface AddressDetails {
   address: string
@@ -31,27 +33,47 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
   const inputRef = useRef<HTMLInputElement>(null)
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
+  const onChangeRef = useRef(onChange)
+  const onPlaceSelectedRef = useRef(onPlaceSelected)
 
   useEffect(() => {
-    if (!apiKey) {
-      console.warn('Google Maps API key not provided')
-      return
+    onChangeRef.current = onChange
+  }, [onChange])
+
+  useEffect(() => {
+    onPlaceSelectedRef.current = onPlaceSelected
+  }, [onPlaceSelected])
+
+  useEffect(() => {
+    let isMounted = true
+
+    const loadGoogleMaps = async () => {
+      if (!apiKey) {
+        console.warn('Google Maps API key not provided')
+        return
+      }
+
+      if (!isGoogleMapsConfigured) {
+        setOptions({
+          key: apiKey,
+          v: 'weekly'
+        })
+
+        isGoogleMapsConfigured = true
+      }
+
+      await importLibrary('places')
+
+      if (isMounted) {
+        setIsLoaded(true)
+      }
     }
 
-    const loader = new Loader({
-      apiKey,
-      version: 'weekly',
-      libraries: ['places']
-    })
+    loadGoogleMaps()
 
-    loader
-      .load()
-      .then(() => {
-        setIsLoaded(true)
-      })
-      .catch((error) => {
-        console.error('Error loading Google Maps API:', error)
-      })
+    return () => {
+      isMounted = false
+    }
   }, [apiKey])
 
   useEffect(() => {
@@ -69,57 +91,63 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
     )
 
     // Add listener for place selection
-    const listener = autocompleteRef.current.addListener('place_changed', () => {
-      const place = autocompleteRef.current?.getPlace()
+    const listener = autocompleteRef.current!.addListener(
+      'place_changed',
+      () => {
+        const place = autocompleteRef.current?.getPlace()
 
-      if (!place || !place.geometry || !place.geometry.location) {
-        console.warn('No place details available')
-        return
-      }
-
-      // Extract address components
-      let street = ''
-      let city = ''
-      let country = ''
-
-      place.address_components?.forEach((component) => {
-        const types = component.types
-
-        if (types.includes('route')) {
-          street = component.long_name
-        } else if (types.includes('street_number')) {
-          street = `${component.long_name} ${street}`.trim()
-        } else if (
-          types.includes('locality') ||
-          types.includes('postal_town')
-        ) {
-          city = component.long_name
-        } else if (types.includes('country')) {
-          country = component.long_name
+        if (!place || !place.geometry || !place.geometry.location) {
+          console.warn('No place details available')
+          return
         }
-      })
 
-      // Use formatted_address if street is empty
-      const finalAddress = street || place.formatted_address || place.name || ''
+        // Extract address components
+        let street = ''
+        let city = ''
+        let country = ''
 
-      const details: AddressDetails = {
-        address: finalAddress,
-        city: city,
-        country: country,
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng()
+        place.address_components?.forEach(
+          (component: { long_name: string; types: string[] }) => {
+            const types = component.types
+
+            if (types.includes('route')) {
+              street = component.long_name
+            } else if (types.includes('street_number')) {
+              street = `${component.long_name} ${street}`.trim()
+            } else if (
+              types.includes('locality') ||
+              types.includes('postal_town')
+            ) {
+              city = component.long_name
+            } else if (types.includes('country')) {
+              country = component.long_name
+            }
+          }
+        )
+
+        // Use formatted_address if street is empty
+        const finalAddress =
+          street || place.formatted_address || place.name || ''
+
+        const details: AddressDetails = {
+          address: finalAddress,
+          city: city,
+          country: country,
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng()
+        }
+
+        onChangeRef.current(finalAddress)
+        onPlaceSelectedRef.current(details)
       }
-
-      onChange(finalAddress)
-      onPlaceSelected(details)
-    })
+    )
 
     return () => {
       if (listener) {
         google.maps.event.removeListener(listener)
       }
     }
-  }, [isLoaded, onChange, onPlaceSelected])
+  }, [isLoaded])
 
   return (
     <input
@@ -130,6 +158,7 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
       placeholder={placeholder}
       className={className}
       required={required}
+      autoComplete="off"
     />
   )
 }

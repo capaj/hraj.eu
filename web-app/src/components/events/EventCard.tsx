@@ -13,15 +13,19 @@ interface EventCardProps {
   venues?: Venue[];
   onJoin?: (eventId: string) => void;
   onView?: (eventId: string) => void;
+  isJoining?: boolean;
+  currentUserId?: string;
 }
 
-export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onView }) => {
+export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onView, isJoining = false, currentUserId }) => {
   const sport = SPORTS.find(s => s.id === event.sport);
   const venue = venues?.find(v => v.id === event.venueId);
   const isSpotAvailable = event.participants.length < event.maxParticipants;
   const spotsLeft = event.maxParticipants - event.participants.length;
   const isIdealReached = event.idealParticipants && event.participants.length >= event.idealParticipants;
   const isMinimumReached = event.participants.length >= event.minParticipants;
+  const isParticipant = currentUserId ? event.participants.includes(currentUserId) : false;
+  const isWaitlisted = currentUserId ? event.waitlist?.includes(currentUserId) : false;
 
   const getParticipantStatus = () => {
     if (!isMinimumReached) {
@@ -105,8 +109,17 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
               onJoin?.(event.id);
             }}
             className="flex-1"
+            disabled={isJoining || isParticipant}
           >
-            {isSpotAvailable ? 'Join Game' : 'Join Waitlist'}
+            {isParticipant
+              ? 'You are playing'
+              : isWaitlisted
+              ? 'On Waitlist'
+              : isJoining
+              ? 'Joining...'
+              : isSpotAvailable
+              ? 'Join Game'
+              : 'Join Waitlist'}
           </Button>
           <Link to="/events/$eventId" params={{ eventId: event.id }} onClick={(e) => e.stopPropagation()}>
             <Button
