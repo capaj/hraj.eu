@@ -199,6 +199,9 @@ export const venueT = sqliteTable(
     contactWebsite: text('contact_website'),
     rating: real('rating'),
     totalRatings: integer('total_ratings'),
+    /**
+     * references the user who created the venue
+     */
     createdBy: text('created_by').references(() => user.id, {
       onDelete: 'set null'
     }),

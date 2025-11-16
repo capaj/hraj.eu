@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { WeatherWidget } from '../components/weather/WeatherWidget'
-import { Event } from '../types'
 import { SPORTS } from '../lib/constants'
 import {
   generateICalEvent,
@@ -15,9 +14,8 @@ import {
   Clock,
   MapPin,
   Users,
-  Euro,
   FileText,
-  User,
+  User as UserIcon,
   ArrowLeft,
   Share2,
   Heart,
@@ -27,16 +25,20 @@ import {
   CheckCircle,
   Star,
   CoinsIcon,
-  ThumbsUp,
-  ThumbsDown,
   UserX,
   Flag,
-  MessageSquare
+  Phone,
+  Mail,
+  Globe
 } from 'lucide-react'
 import { format, isPast, addHours } from 'date-fns'
+import { t } from '@lingui/core/macro'
 
 import { useLoaderData, useNavigate } from '@tanstack/react-router'
 import { authClient } from '../lib/auth-client'
+import { joinEvent } from '~/server-functions/joinEvent'
+import { getUserById } from '~/server-functions/getUserById'
+import { User } from '../types'
 
 interface KarmaFeedback {
   userId: string
@@ -46,10 +48,27 @@ interface KarmaFeedback {
   badBehavior?: boolean
 }
 
+const FACILITY_LABELS: Record<string, string> = {
+  parking: t`Parking`,
+  restrooms: t`Restrooms`,
+  food: t`Café/Restaurant`,
+  lounge: t`Lounge`,
+  wifi: t`WiFi`,
+  locker_room: t`Locker Room`,
+  shower: t`Showers`,
+  dressing_room: t`Changing Rooms`
+}
+
 export const EventDetailsPage: React.FC = () => {
-  const { event, venue } = useLoaderData({ from: '/events/$eventId' })
+  const {
+    event: initialEvent,
+    venue,
+    organizer,
+    participants: participantUsers
+  } = useLoaderData({ from: '/events/$eventId' })
   const navigate = useNavigate()
   const session = authClient.useSession()
+  const [event, setEvent] = useState(initialEvent)
   const [showKarmaModal, setShowKarmaModal] = useState(false)
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
   const [karmaRating, setKarmaRating] = useState(5)
@@ -58,6 +77,19 @@ export const EventDetailsPage: React.FC = () => {
     'none' | 'no-show' | 'bad-behavior'
   >('none')
   const [isSubmittingKarma, setIsSubmittingKarma] = useState(false)
+  const [isJoining, setIsJoining] = useState(false)
+  const [joinMessage, setJoinMessage] = useState<string | null>(null)
+  const [participants, setParticipants] = useState<User[]>(
+    participantUsers || []
+  )
+
+  useEffect(() => {
+    setEvent(initialEvent)
+  }, [initialEvent])
+
+  useEffect(() => {
+    setParticipants(participantUsers || [])
+  }, [participantUsers])
 
   if (!event) {
     return <div>Event not found</div>
@@ -80,20 +112,17 @@ export const EventDetailsPage: React.FC = () => {
 
   // Get current user ID from session
   const currentUserId = session.data?.user?.id
-  const isParticipant = currentUserId ? event.participants.includes(currentUserId) : false
+  const isParticipant = currentUserId
+    ? event.participants.includes(currentUserId)
+    : false
 
-  // TODO: Fetch participant users from server
-  const participantUsers = event.participants.map((id) => ({
-    id,
-    name: 'Participant',
-    email: '',
-    image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + id,
-    karmaPoints: 100,
-    skillLevels: {},
-    notificationPreferences: {},
-    preferredCurrency: 'CZK',
-    createdAt: new Date()
-  }))
+  const participantsMap = new Map(participants.map((user) => [user.id, user]))
+
+  const participantUsersList = event.participants
+    .map((id) => participantsMap.get(id))
+    .filter((user): user is NonNullable<typeof user> => user !== undefined)
+
+  const shouldShowWeather = venue?.type !== 'indoor'
 
   const getEventStatus = () => {
     if (!isMinimumReached) {
@@ -169,7 +198,7 @@ export const EventDetailsPage: React.FC = () => {
       ].join('\n'),
       location: venue?.address || 'Location TBD',
       startDate,
-      endDate,
+      endDate
       // TODO: Add organizer name when fetching user data
     }
 
@@ -179,6 +208,62 @@ export const EventDetailsPage: React.FC = () => {
       .toLowerCase()}.ics`
 
     downloadICalFile(icalContent, filename)
+  }
+
+  const handleJoinEvent = async () => {
+    if (!event) {
+      return
+    }
+
+    if (!currentUserId) {
+      setJoinMessage('Please sign in to join this event.')
+      navigate({ to: '/auth/$pathname', params: { pathname: 'sign-in' } })
+      return
+    }
+
+    try {
+      setIsJoining(true)
+      setJoinMessage(null)
+      const response = await joinEvent({ data: { eventId: event.id } })
+
+      if (response?.participants) {
+        setEvent((prev) => ({
+          ...prev,
+          participants: response.participants.confirmed,
+          waitlist: response.participants.waitlisted
+        }))
+
+        const existingIds = new Set(participants.map((u) => u.id))
+        const newParticipantIds = response.participants.confirmed.filter(
+          (id) => !existingIds.has(id)
+        )
+
+        if (newParticipantIds.length > 0) {
+          const newParticipants = await Promise.all(
+            newParticipantIds.map((id) => getUserById({ data: id }))
+          )
+          setParticipants((prev) => [...prev, ...newParticipants])
+        }
+      }
+
+      if (response?.status === 'waitlisted') {
+        setJoinMessage(
+          'This event is full right now, so you were added to the waitlist.'
+        )
+      } else if (response?.status === 'confirmed') {
+        setJoinMessage('You have successfully joined this game.')
+      } else {
+        setJoinMessage('Your request was received.')
+      }
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'Failed to join the event. Please try again.'
+      setJoinMessage(message)
+    } finally {
+      setIsJoining(false)
+    }
   }
 
   const handleOpenKarmaModal = (userId: string) => {
@@ -259,9 +344,7 @@ export const EventDetailsPage: React.FC = () => {
               <div className="text-4xl">{sport?.icon}</div>
               <div>
                 <h1 className="text-3xl font-bold text-white">{event.title}</h1>
-                <p className="text-lg text-white/80 mt-1">
-                  Organized event
-                </p>
+                <p className="text-lg text-white/80 mt-1">Organized event</p>
                 {hasEventEnded && (
                   <Badge variant="default" size="md" className="mt-2">
                     Event Completed
@@ -489,11 +572,119 @@ export const EventDetailsPage: React.FC = () => {
             )}
 
             {/* Weather Widget */}
-            <WeatherWidget
-              date={event.date}
-              location={venue?.address || 'Location TBD'}
-              sport={event.sport}
-            />
+            {shouldShowWeather && (
+              <WeatherWidget
+                date={event.date}
+                location={venue?.address || 'Location TBD'}
+                sport={event.sport}
+              />
+            )}
+
+            {/* Venue Information */}
+            {venue && (
+              <Card>
+                <CardHeader>
+                  <h2 className="text-xl font-semibold text-gray-900">
+                    Venue Information
+                  </h2>
+                </CardHeader>
+                <CardContent className="p-6 space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {venue.name}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {[venue.address, venue.city, venue.country]
+                          .filter(Boolean)
+                          .join(', ')}
+                      </p>
+                    </div>
+                    <Badge variant="default">
+                      {venue.type === 'indoor'
+                        ? 'Indoor venue'
+                        : venue.type === 'mixed'
+                        ? 'Indoor & outdoor venue'
+                        : 'Outdoor venue'}
+                    </Badge>
+                  </div>
+
+                  {venue.description && (
+                    <p className="text-gray-700 leading-relaxed">
+                      {venue.description}
+                    </p>
+                  )}
+
+                  {venue.accessInstructions && (
+                    <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-700">
+                      <p className="font-medium mb-1">Access Instructions</p>
+                      <p>{venue.accessInstructions}</p>
+                    </div>
+                  )}
+
+                  {(venue.contactInfo?.phone ||
+                    venue.contactInfo?.email ||
+                    venue.contactInfo?.website ||
+                    venue.price) && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {venue.contactInfo?.phone && (
+                        <a
+                          href={`tel:${venue.contactInfo.phone}`}
+                          className="flex items-center text-gray-700 hover:text-primary-600 transition-colors"
+                        >
+                          <Phone size={16} className="mr-2 text-gray-500" />
+                          {venue.contactInfo.phone}
+                        </a>
+                      )}
+                      {venue.contactInfo?.email && (
+                        <a
+                          href={`mailto:${venue.contactInfo.email}`}
+                          className="flex items-center text-gray-700 hover:text-primary-600 transition-colors"
+                        >
+                          <Mail size={16} className="mr-2 text-gray-500" />
+                          {venue.contactInfo.email}
+                        </a>
+                      )}
+                      {venue.contactInfo?.website && (
+                        <a
+                          href={venue.contactInfo.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center text-gray-700 hover:text-primary-600 transition-colors"
+                        >
+                          <Globe size={16} className="mr-2 text-gray-500" />
+                          Visit website
+                        </a>
+                      )}
+                      {venue.price ? (
+                        <div className="flex items-center text-gray-700">
+                          <CoinsIcon size={16} className="mr-2 text-gray-500" />
+                          Approx. {venue.price} {venue.currency} / visit
+                        </div>
+                      ) : null}
+                    </div>
+                  )}
+
+                  {venue.facilities && venue.facilities.length > 0 && (
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900 mb-2">
+                        Facilities
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {venue.facilities.map((facility) => (
+                          <span
+                            key={facility}
+                            className="px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-700"
+                          >
+                            {FACILITY_LABELS[facility] || facility}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
           </div>
 
           {/* Sidebar */}
@@ -520,22 +711,24 @@ export const EventDetailsPage: React.FC = () => {
                     variant="primary"
                     size="lg"
                     className="w-full mb-3"
-                    onClick={() => {
-                      console.log('Join event:', event.id)
-                      // In a real app, this would make an API call to join the event
-                      alert(
-                        isSpotAvailable
-                          ? 'Successfully joined the game!'
-                          : 'Added to waitlist!'
-                      )
-                    }}
+                    disabled={isJoining || isParticipant}
+                    onClick={handleJoinEvent}
                   >
-                    {isSpotAvailable ? 'Join Game' : 'Join Waitlist'}
+                    {isParticipant
+                      ? 'You are playing'
+                      : isSpotAvailable
+                      ? 'Join Game'
+                      : 'Join Waitlist'}
                   </Button>
 
                   <div className="text-xs text-gray-500 text-center">
                     Minimum {event.minParticipants} players needed to confirm
                   </div>
+                  {joinMessage && (
+                    <div className="text-xs text-center text-gray-600 mt-2">
+                      {joinMessage}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             )}
@@ -545,7 +738,7 @@ export const EventDetailsPage: React.FC = () => {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-                    <User size={18} className="mr-2" />
+                    <UserIcon size={18} className="mr-2" />
                     Who's Playing
                   </h3>
                   {hasEventEnded && isParticipant && (
@@ -557,17 +750,23 @@ export const EventDetailsPage: React.FC = () => {
               </CardHeader>
               <CardContent className="p-6">
                 <div className="space-y-3">
-                  {participantUsers.map((user, index) => (
+                  {participantUsersList.map((user) => (
                     <div
                       key={user?.id}
                       className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
                     >
                       <div className="flex items-center space-x-3">
-                        <img
-                          src={user?.image}
-                          alt={user?.name}
-                          className="w-10 h-10 rounded-full object-cover"
-                        />
+                        {user?.image ? (
+                          <img
+                            src={user.image}
+                            alt={user.name}
+                            className="w-10 h-10 rounded-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                            <UserIcon size={20} className="text-primary-600" />
+                          </div>
+                        )}
                         <div className="flex-1">
                           <div className="flex items-center space-x-2">
                             <div className="font-medium text-gray-900">
@@ -655,16 +854,22 @@ export const EventDetailsPage: React.FC = () => {
               </CardHeader>
               <CardContent className="p-6">
                 <div className="flex items-center space-x-3 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
-                    <User size={24} className="text-primary-600" />
-                  </div>
+                  {organizer?.image ? (
+                    <img
+                      src={organizer.image}
+                      alt={organizer.name}
+                      className="w-12 h-12 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
+                      <UserIcon size={24} className="text-primary-600" />
+                    </div>
+                  )}
                   <div>
                     <div className="font-medium text-gray-900">
-                      Event Organizer
+                      {organizer?.name || 'Event Organizer'}
                     </div>
-                    <div className="text-sm text-gray-500">
-                      Verified member
-                    </div>
+                    <div className="text-sm text-gray-500">Verified member</div>
                   </div>
                 </div>
               </CardContent>

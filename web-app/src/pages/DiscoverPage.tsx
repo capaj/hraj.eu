@@ -1,16 +1,20 @@
 import React, { useState, useMemo, useRef } from 'react'
-import { useLoaderData } from '@tanstack/react-router'
+import { useLoaderData, useNavigate } from '@tanstack/react-router'
 import { EventCard } from '../components/events/EventCard'
 import { EventFilters } from '../components/events/EventFilters'
 import { EventMap, EventMapRef } from '../components/map/EventMap'
 import { Button } from '../components/ui/Button'
 import { Map, List, ArrowUpDown } from 'lucide-react'
 import { Event } from '../types'
+import { joinEvent } from '~/server-functions/joinEvent'
+import { authClient } from '../lib/auth-client'
 
 type SortOption = 'date' | 'distance' | 'spots'
 
 export const Discover: React.FC = () => {
-  const { events, venues } = useLoaderData({ from: '/discover' })
+  const { events: initialEvents, venues } = useLoaderData({ from: '/discover' })
+  const navigate = useNavigate()
+  const session = authClient.useSession()
   const mapRef = useRef<EventMapRef>(null)
   const [selectedSport, setSelectedSport] = useState<string>()
   const [selectedSkillLevel, setSelectedSkillLevel] = useState<string>()
@@ -19,6 +23,12 @@ export const Discover: React.FC = () => {
     lat: number
     lng: number
   } | null>(null)
+  const [events, setEvents] = useState(initialEvents)
+  const [joiningEventId, setJoiningEventId] = useState<string | null>(null)
+
+  React.useEffect(() => {
+    setEvents(initialEvents)
+  }, [initialEvents])
 
   // Get user location for distance calculations
   React.useEffect(() => {
@@ -134,9 +144,34 @@ export const Discover: React.FC = () => {
     }
   }
 
-  const handleJoinEvent = (eventId: string) => {
-    console.log('Join event:', eventId)
-    // In a real app, this would make an API call to join the event
+  const handleJoinEvent = async (eventId: string) => {
+    if (!session.data?.user?.id) {
+      navigate({ to: '/auth/$pathname', params: { pathname: 'sign-in' } })
+      return
+    }
+
+    setJoiningEventId(eventId)
+    try {
+      const response = await joinEvent({ data: { eventId } })
+
+      if (response?.participants) {
+        setEvents((prevEvents) =>
+          prevEvents.map((event) =>
+            event.id === eventId
+              ? {
+                  ...event,
+                  participants: response.participants.confirmed,
+                  waitlist: response.participants.waitlisted
+                }
+              : event
+          )
+        )
+      }
+    } catch (error) {
+      console.error('Failed to join event:', error)
+    } finally {
+      setJoiningEventId(null)
+    }
   }
 
   const onViewEvent = (eventId: string) => {
@@ -283,6 +318,8 @@ export const Discover: React.FC = () => {
                       venues={venues}
                       onJoin={handleJoinEvent}
                       onView={onViewEvent}
+                      isJoining={joiningEventId === event.id}
+                      currentUserId={session.data?.user?.id}
                     />
                   </div>
                 )

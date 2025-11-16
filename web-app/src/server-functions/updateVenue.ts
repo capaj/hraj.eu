@@ -1,13 +1,11 @@
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
 import { z } from 'zod'
-import { createInsertSchema } from 'drizzle-zod'
 import { venueT as venueTable } from '../../drizzle/schema'
 import { db } from 'drizzle/db'
-import { auth } from './auth'
+import { auth } from '~/lib/auth'
 import { eq } from 'drizzle-orm'
 
-// Helper to normalize TanStack serializer undefined token objects like { $undefined: any }
 const normalizeMaybeUndefined = <T extends z.ZodTypeAny>(inner: T) =>
   z
     .union([inner, z.object({ $undefined: z.any() })])
@@ -15,7 +13,6 @@ const normalizeMaybeUndefined = <T extends z.ZodTypeAny>(inner: T) =>
       typeof v === 'object' && v && '$undefined' in v ? undefined : v
     )
 
-// Client payload schema (what frontend sends)
 const ClientVenueSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   address: normalizeMaybeUndefined(z.string())
@@ -75,14 +72,6 @@ const ClientVenueSchema = z.object({
   isVerified: z.boolean().optional()
 })
 
-// Transform client payload to DB insert shape according to venue table columns
-const VenueInsertSchema = createInsertSchema(venueTable)
-
-// Narrow the server function return type to a serializable domain object
-type InsertedVenue = z.infer<typeof VenueInsertSchema> & {
-  id?: string | number | bigint
-}
-
 const transformVenueData = (
   data: z.output<typeof ClientVenueSchema>,
   existingVenue?: {
@@ -110,13 +99,15 @@ const transformVenueData = (
   contactPhone: data.contactInfo?.phone,
   contactEmail: data.contactInfo?.email,
   contactWebsite: data.contactInfo?.website,
-  facilities: (data.facilities as InsertedVenue['facilities']) ?? [],
-  sports: (data.sports as InsertedVenue['sports']) ?? []
+  facilities: (data.facilities as string[]) ?? [],
+  sports: (data.sports as string[]) ?? []
 })
 
-export const createVenue = createServerFn({ method: 'POST' })
+export const updateVenue = createServerFn({ method: 'POST' })
   .inputValidator((payload: unknown) => {
-    const parsed = ClientVenueSchema.safeParse(payload)
+    const parsed = ClientVenueSchema.extend({
+      id: z.string().min(1, 'Venue ID is required')
+    }).safeParse(payload)
     if (!parsed.success) {
       const issues = parsed.error.issues
         .map((i) => `${i.path.join('.')}: ${i.message}`)
@@ -125,23 +116,44 @@ export const createVenue = createServerFn({ method: 'POST' })
     }
     return parsed.data
   })
-  .handler(async ({ data }: { data: z.output<typeof ClientVenueSchema> }) => {
-    // Get the current user from the session
-    const request = getRequest()
-    const session = await auth.api.getSession({ headers: request.headers })
+  .handler(
+    async ({
+      data
+    }: {
+      data: z.output<typeof ClientVenueSchema> & { id: string }
+    }) => {
+      const request = getRequest()
+      const session = await auth.api.getSession({ headers: request.headers })
 
-    if (!session?.user?.id) {
-      throw new Error('You must be logged in to create a venue')
+      if (!session?.user?.id) {
+        throw new Error('You must be logged in to update a venue')
+      }
+
+      const existingVenue = await db
+        .select()
+        .from(venueTable)
+        .where(eq(venueTable.id, data.id))
+        .limit(1)
+
+      if (
+        !existingVenue.length ||
+        existingVenue[0].createdBy !== session.user.id
+      ) {
+        throw new Error(
+          'Venue not found or you do not have permission to update it'
+        )
+      }
+
+      const updateData = {
+        ...transformVenueData(data, existingVenue[0])
+      }
+
+      await db
+        .update(venueTable)
+        .set(updateData)
+        .where(eq(venueTable.id, data.id))
+
+      return data.id
     }
+  )
 
-    const insertData = VenueInsertSchema.parse({
-      ...transformVenueData(data),
-      isVerified: data.isVerified ?? false,
-      createdBy: session.user.id
-    })
-
-    const inserted = await db.insert(venueTable).values(insertData).returning()
-
-    console.log('inserted', inserted[0])
-    return inserted?.[0].id
-  })
