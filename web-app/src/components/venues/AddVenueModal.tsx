@@ -6,7 +6,10 @@ import { Venue } from '../../types'
 import { uploadVenueImages } from '~/server-functions/uploadVenueImages'
 import { uploadVenuePlan } from '~/server-functions/uploadVenuePlan'
 import { createVenue, updateVenue } from '~/lib/createVenue'
+import { getGoogleMapsApiKey } from '~/server-functions/getGoogleMapsApiKey'
 import { TagInput } from '../ui/TagInput'
+import { AddressAutocomplete, AddressDetails } from './AddressAutocomplete'
+import { VenueMapPreview } from './VenueMapPreview'
 import { X, MapPin, Upload, Image as ImageIcon, Euro, Plus } from 'lucide-react'
 
 interface AddVenueModalProps {
@@ -44,6 +47,17 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [uploadingImage, setUploadingImage] = useState(false)
   const [uploadingPlan, setUploadingPlan] = useState(false)
+  const [location, setLocation] = useState<{ lat: number; lng: number } | null>(
+    null
+  )
+  const [googleMapsApiKey, setGoogleMapsApiKey] = useState<string>('')
+
+  // Fetch Google Maps API key
+  useEffect(() => {
+    getGoogleMapsApiKey().then((key) => {
+      setGoogleMapsApiKey(key)
+    })
+  }, [])
 
   useEffect(() => {
     if (isOpen && initialData) {
@@ -65,6 +79,10 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
       })
       setImages(initialData.images || [])
       setOrientationPlan(initialData.orientationPlan || '')
+      // Set location if available
+      if (initialData.lat && initialData.lng) {
+        setLocation({ lat: initialData.lat, lng: initialData.lng })
+      }
     } else if (isOpen && !initialData) {
       setFormData({
         name: '',
@@ -84,6 +102,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
       })
       setImages([])
       setOrientationPlan('')
+      setLocation(null)
     }
   }, [isOpen, initialData])
 
@@ -185,6 +204,18 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
     setImages((prev) => prev.filter((_, i) => i !== index))
   }
 
+  const handlePlaceSelected = (details: AddressDetails) => {
+    // Update form data with address details
+    setFormData((prev) => ({
+      ...prev,
+      address: details.address,
+      city: details.city || prev.city,
+      country: details.country || prev.country
+    }))
+    // Update location
+    setLocation({ lat: details.lat, lng: details.lng })
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -221,8 +252,8 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
         },
         price: formData.price,
         currency: formData.currency,
-        lat: initialData?.lat ?? 50.0755 + (Math.random() - 0.5) * 0.1,
-        lng: initialData?.lng ?? 14.4378 + (Math.random() - 0.5) * 0.1
+        lat: location?.lat ?? initialData?.lat ?? 50.0755,
+        lng: location?.lng ?? initialData?.lng ?? 14.4378
       }
 
       let venueId: string
@@ -282,6 +313,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
       })
       setImages([])
       setOrientationPlan('')
+      setLocation(null)
     } catch (error) {
       console.error('Failed to create venue:', error)
       alert('Failed to create venue. Please try again.')
@@ -359,13 +391,14 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Address *
                     </label>
-                    <input
-                      type="text"
-                      required
+                    <AddressAutocomplete
                       value={formData.address}
-                      onChange={(e) => handleChange('address', e.target.value)}
+                      onChange={(value) => handleChange('address', value)}
+                      onPlaceSelected={handlePlaceSelected}
+                      placeholder="Start typing to search for an address..."
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                      placeholder="Street address"
+                      required
+                      apiKey={googleMapsApiKey}
                     />
                   </div>
 
@@ -396,6 +429,24 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                     />
                   </div>
                 </div>
+
+                {/* Map Preview */}
+                {location && (
+                  <div className="mt-6">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Location Preview
+                    </label>
+                    <VenueMapPreview
+                      lat={location.lat}
+                      lng={location.lng}
+                      className="h-64 w-full"
+                    />
+                    <p className="text-xs text-gray-500 mt-2">
+                      📍 Coordinates: {location.lat.toFixed(6)},{' '}
+                      {location.lng.toFixed(6)}
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Sports */}

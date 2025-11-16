@@ -12,7 +12,8 @@
 		"SENDER_EMAIL": "noreply@hraj.eu",
 		"BETTER_AUTH_URL": "https://hraj.eu",
 		"GOOGLE_CLIENT_ID": "283001109128-he4lpvd6o7vl9eurh8pn7ittkhikfrvb.apps.googleusercontent.com",
-		"TURSO_DATABASE_URL": "libsql://hrajeu-capaj.aws-eu-west-1.turso.io"
+		"TURSO_DATABASE_URL": "libsql://hrajeu-capaj.aws-eu-west-1.turso.io",
+		"GOOGLE_MAPS_API_KEY": ""
 	},
 	"r2_buckets": [
 		{
