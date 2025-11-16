@@ -4,15 +4,11 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'app/**'
-      - '**/*.ts'
-      - '**/*.tsx'
-      - 'wrangler.*'
-      - 'pnpm-*.yaml'
-      - '.github/workflows/deploy.yaml'
-
-    branches:
-      - main
+      - web-app/**/*.ts'
+      - web-app/**/*.tsx'
+      - web-app/wrangler.*'
+      - web-app/pnpm-*.yaml'
+      - web-app/.github/workflows/deploy.yaml'
 
 jobs:
   deploy:
@@ -51,6 +47,7 @@ jobs:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           FACEBOOK_CLIENT_SECRET: ${{ secrets.FACEBOOK_CLIENT_SECRET }}
           FACEBOOK_CLIENT_ID: ${{ secrets.FACEBOOK_CLIENT_ID }}
+					RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
 
         with:
           packageManager: pnpm
@@ -62,7 +59,7 @@ jobs:
             GOOGLE_CLIENT_ID
             FACEBOOK_CLIENT_SECRET
             FACEBOOK_CLIENT_ID
-
+            RESEND_API_KEY
           vars: |
             TURSO_DATABASE_URL
 

@@ -1,0 +1,23 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "hraj-eu",
+	"compatibility_date": "2025-09-24",
+	"compatibility_flags": ["nodejs_compat"],
+	"main": "@tanstack/react-start/server-entry",
+	"observability": {
+		"enabled": true
+	},
+	"vars": {
+		"NODE_ENV": "production",
+		"SENDER_EMAIL": "noreply@hraj.eu",
+		"BETTER_AUTH_URL": "https://hraj.eu",
+		"GOOGLE_CLIENT_ID": "283001109128-he4lpvd6o7vl9eurh8pn7ittkhikfrvb.apps.googleusercontent.com",
+		"TURSO_DATABASE_URL": "libsql://hrajeu-capaj.aws-eu-west-1.turso.io"
+	},
+	"r2_buckets": [
+		{
+			"bucket_name": "hraj-eu-uploads",
+			"binding": "hraj_eu_uploads"
+		}
+	]
+}
