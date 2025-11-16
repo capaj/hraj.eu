@@ -29,7 +29,7 @@ export const userSkillT = sqliteTable(
       .notNull(),
     updatedAt: integer('updated_at', { mode: 'timestamp' })
       .default(sql`unixepoch()`)
-      .$onUpdate(() => sql`unix`)
+      .$onUpdate(() => new Date())
       .notNull()
   },
   (table) => ({
@@ -104,7 +104,7 @@ export const eventT = sqliteTable(
       .notNull(),
     updatedAt: integer('updated_at', { mode: 'timestamp' })
       .default(sql`unixepoch()`)
-      .$onUpdate(() => sql`unix`)
+      .$onUpdate(() => new Date())
       .notNull()
   },
   (table) => ({
@@ -228,7 +228,7 @@ export const venueT = sqliteTable(
       .notNull(),
     updatedAt: integer('updated_at', { mode: 'timestamp' })
       .default(sql`unixepoch()`)
-      .$onUpdate(() => sql`unixepoch()`)
+      .$onUpdate(() => new Date())
       .notNull()
   },
   (table) => ({
