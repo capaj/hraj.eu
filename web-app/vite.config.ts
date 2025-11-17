@@ -7,9 +7,14 @@ import macrosPlugin from 'vite-plugin-babel-macros'
 import viteReact from '@vitejs/plugin-react'
 import { cloudflare } from '@cloudflare/vite-plugin'
 
+const linguiMacroPackages = ['@lingui/core/macro', '@lingui/react/macro']
+
 export default defineConfig({
   server: {
     port: 5173
+  },
+  optimizeDeps: {
+    exclude: linguiMacroPackages
   },
   plugins: [
     tsConfigPaths({

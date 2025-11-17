@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+import { i18n } from '@lingui/core'
 import {
   createRootRoute,
   Outlet,
@@ -8,6 +9,7 @@ import {
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { Header } from '../components/layout/Header'
 import { Providers } from '~/lib/providers'
+import { defaultLocale } from '~/modules/lingui/i18n'
 import appCss from '../styles/app.css?url'
 
 export const Route = createRootRoute({
@@ -47,8 +49,10 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const lang = i18n.locale || defaultLocale
+
   return (
-    <html>
+    <html lang={lang}>
       <head>
         <HeadContent />
       </head>

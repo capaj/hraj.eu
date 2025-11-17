@@ -48,18 +48,17 @@ interface KarmaFeedback {
   badBehavior?: boolean
 }
 
-const FACILITY_LABELS: Record<string, string> = {
-  parking: t`Parking`,
-  restrooms: t`Restrooms`,
-  food: t`Café/Restaurant`,
-  lounge: t`Lounge`,
-  wifi: t`WiFi`,
-  locker_room: t`Locker Room`,
-  shower: t`Showers`,
-  dressing_room: t`Changing Rooms`
-}
-
 export const EventDetailsPage: React.FC = () => {
+  const FACILITY_LABELS: Record<string, string> = {
+    parking: t`Parking`,
+    restrooms: t`Restrooms`,
+    food: t`Café/Restaurant`,
+    lounge: t`Lounge`,
+    wifi: t`WiFi`,
+    locker_room: t`Locker Room`,
+    shower: t`Showers`,
+    dressing_room: t`Changing Rooms`
+  }
   const {
     event: initialEvent,
     venue,
