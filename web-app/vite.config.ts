@@ -15,12 +15,17 @@ export default defineConfig({
     tsConfigPaths({
       projects: ['./tsconfig.json']
     }),
-    cloudflare({ viteEnvironment: { name: 'ssr' } }),
-
-    tanstackStart(),
-    viteReact(),
-    macrosPlugin(),
+    viteReact({
+      babel: {
+        plugins: ['@lingui/babel-plugin-lingui-macro']
+      }
+    }),
     lingui(),
+
+    macrosPlugin(),
+    tanstackStart(),
+
+    cloudflare({ viteEnvironment: { name: 'ssr' } }),
     tailwindcss()
   ]
 })
