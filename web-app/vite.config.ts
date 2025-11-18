@@ -10,6 +10,9 @@ export default defineConfig({
   server: {
     port: 5173
   },
+  optimizeDeps: {
+    exclude: ['@lingui/core/macro', '@lingui/react/macro', '@lingui/macro']
+  },
   plugins: [
     tsConfigPaths({
       projects: ['./tsconfig.json']
