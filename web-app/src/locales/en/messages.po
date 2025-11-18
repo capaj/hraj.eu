@@ -1,0 +1,40 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-11-18 15:07+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+
+#: src/pages/EventDetailsPage.tsx:54
+msgid "Café/Restaurant"
+msgstr "Café/Restaurant"
+
+#: src/pages/EventDetailsPage.tsx:59
+msgid "Changing Rooms"
+msgstr "Changing Rooms"
+
+#: src/pages/EventDetailsPage.tsx:57
+msgid "Locker Room"
+msgstr "Locker Room"
+
+#: src/pages/EventDetailsPage.tsx:55
+msgid "Lounge"
+msgstr "Lounge"
+
+#: src/pages/EventDetailsPage.tsx:52
+msgid "Parking"
+msgstr "Parking"
+
+#: src/pages/EventDetailsPage.tsx:53
+msgid "Restrooms"
+msgstr "Restrooms"
+
+#: src/pages/EventDetailsPage.tsx:58
+msgid "Showers"
+msgstr "Showers"
+
+#: src/pages/EventDetailsPage.tsx:56
+msgid "WiFi"
+msgstr "WiFi"

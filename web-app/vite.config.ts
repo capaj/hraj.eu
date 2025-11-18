@@ -1,27 +1,30 @@
+import { lingui } from '@lingui/vite-plugin'
+import tailwindcss from '@tailwindcss/vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import { defineConfig } from 'vite'
 import tsConfigPaths from 'vite-tsconfig-paths'
-import tailwindcss from '@tailwindcss/vite'
-import { lingui } from '@lingui/vite-plugin'
-import viteReact from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react'
 import { cloudflare } from '@cloudflare/vite-plugin'
 
 export default defineConfig({
   server: {
     port: 5173
   },
-  optimizeDeps: {
-    exclude: ['@lingui/core/macro', '@lingui/react/macro', '@lingui/macro']
+  build: {
+    target: 'esnext'
   },
   plugins: [
+    lingui(),
+    tailwindcss(),
     tsConfigPaths({
       projects: ['./tsconfig.json']
     }),
     cloudflare({ viteEnvironment: { name: 'ssr' } }),
-
-    tanstackStart(),
-    lingui(),
-    viteReact(),
-    tailwindcss()
+    tanstackStart({}),
+    react({
+      babel: {
+        plugins: ['@lingui/babel-plugin-lingui-macro']
+      }
+    })
   ]
 })

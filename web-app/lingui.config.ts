@@ -1,16 +1,12 @@
-import type { LinguiConfig } from '@lingui/conf'
+import { defineConfig } from '@lingui/cli'
 
-const config: LinguiConfig = {
-  fallbackLocales: {
-    default: 'en'
-  },
-  locales: ['en', 'cs'],
+export default defineConfig({
   catalogs: [
     {
-      path: '<rootDir>/app/locales/{locale}',
-      include: ['app']
+      include: ['src'],
+      path: '<rootDir>/src/locales/{locale}/messages'
     }
-  ]
-}
-
-export default config
+  ],
+  locales: ['en', 'cs'],
+  sourceLocale: 'en'
+})
