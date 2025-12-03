@@ -9,6 +9,7 @@ import 'leaflet/dist/leaflet.css'
 import { Event, Venue } from '../../types'
 import { SPORTS } from '../../lib/constants'
 import { format } from 'date-fns'
+import { authClient } from '../../lib/auth-client'
 
 interface EventMapProps {
   events: Event[]
@@ -32,6 +33,8 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
       lat: number
       lng: number
     } | null>(null)
+    const session = authClient.useSession()
+    const currentUserId = session.data?.user?.id
 
     const onEventSelectRef = useRef(onEventSelect)
     const onJoinEventRef = useRef(onJoinEvent)
@@ -166,6 +169,8 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
           }).addTo(mapInstanceRef.current)
 
           const spotsLeft = event.maxParticipants - event.participants.length
+          const isParticipating =
+            currentUserId && event.participants.includes(currentUserId)
           const popupContent = `
         <div style="min-width: 280px; font-family: system-ui, -apple-system, sans-serif;">
           <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
@@ -205,19 +210,44 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
           </div>
           <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
             <span style="font-size: 12px; padding: 4px 8px; border-radius: 4px; background-color: ${
-              spotsLeft > 0 ? '#dcfce7' : '#fef3c7'
+              isParticipating
+                ? '#dbeafe'
+                : spotsLeft > 0
+                ? '#dcfce7'
+                : '#fef3c7'
             }; color: ${
-            spotsLeft > 0 ? '#166534' : '#92400e'
+            isParticipating ? '#1e40af' : spotsLeft > 0 ? '#166534' : '#92400e'
           }; font-weight: 500;">
-              ${spotsLeft > 0 ? `${spotsLeft} spots left` : 'Waitlist'}
+              ${
+                isParticipating
+                  ? 'You are playing'
+                  : spotsLeft > 0
+                  ? `${spotsLeft} spots left`
+                  : 'Waitlist'
+              }
             </span>
             <button 
               onclick="window.joinEvent_${event.id}()"
-              style="padding: 8px 16px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
-              onmouseover="this.style.backgroundColor='#059669'"
-              onmouseout="this.style.backgroundColor='#10b981'"
+              style="padding: 8px 16px; background-color: ${
+                isParticipating ? '#6b7280' : '#10b981'
+              }; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: ${
+            isParticipating ? 'default' : 'pointer'
+          }; transition: background-color 0.2s;"
+              onmouseover="${
+                isParticipating ? '' : "this.style.backgroundColor='#059669'"
+              }"
+              onmouseout="${
+                isParticipating ? '' : "this.style.backgroundColor='#10b981'"
+              }"
+              ${isParticipating ? 'disabled' : ''}
             >
-              ${spotsLeft > 0 ? 'Join Game' : 'Join Waitlist'}
+              ${
+                isParticipating
+                  ? 'You are playing'
+                  : spotsLeft > 0
+                  ? 'Join Game'
+                  : 'Join Waitlist'
+              }
             </button>
           </div>
         </div>
@@ -249,7 +279,7 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
       }
 
       updateMarkers()
-    }, [mounted, events, userLocation])
+    }, [mounted, events, userLocation, currentUserId])
 
     if (!mounted) {
       return (
