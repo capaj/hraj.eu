@@ -1,7 +1,7 @@
 {
   "name": "hraj.eu",
   "private": true,
-  "packageManager": "pnpm@10.22.0",
+  "packageManager": "pnpm@10.24.0",
   "scripts": {
     "test": "turbo test",
     "typecheck": "turbo typecheck",
@@ -9,7 +9,7 @@
     "postinstall": "turbo postinstall"
   },
   "devDependencies": {
-    "oxlint": "^1.28.0",
+    "oxlint": "^1.31.0",
     "turbo": "^2.6.1"
   }
 }
