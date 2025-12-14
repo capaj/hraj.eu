@@ -17,6 +17,17 @@ export const SPORTS = [
   { id: 'floorball', name: 'Floorball', icon: '🏒' }
 ] as const
 
+export const FACILITIES = [
+  { id: 'parking', name: 'Parking', icon: '🚗' },
+  { id: 'restrooms', name: 'Restrooms', icon: '🚻' },
+  { id: 'food', name: 'Café/Restaurant', icon: '☕' },
+  { id: 'lounge', name: 'Lounge', icon: '🛋️' },
+  { id: 'wifi', name: 'WiFi', icon: '📶' },
+  { id: 'locker_room', name: 'Locker Room', icon: '🔒' },
+  { id: 'shower', name: 'Showers', icon: '🚿' },
+  { id: 'dressing_room', name: 'Changing Rooms', icon: '👕' }
+] as const
+
 export const SKILL_LEVELS = [
   { id: 'beginner', name: 'Beginner', color: 'bg-green-100 text-green-800' },
   {

@@ -27,6 +27,8 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
     const mapInstanceRef = useRef<any>(null)
     const markersRef = useRef<any[]>([])
     const eventMarkersRef = useRef<Map<string, any>>(new Map())
+    const hasFittedBoundsRef = useRef(false)
+    const [isMapReady, setIsMapReady] = useState(false)
     const [mounted, setMounted] = useState(false)
     const [userLocation, setUserLocation] = useState<{
       lat: number
@@ -116,6 +118,7 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
         }).addTo(map)
 
         mapInstanceRef.current = map
+        setIsMapReady(true)
       }
 
       initMap()
@@ -124,6 +127,7 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
         if (mapInstanceRef.current) {
           mapInstanceRef.current.remove()
           mapInstanceRef.current = null
+          setIsMapReady(false)
         }
       }
     }, [mounted, userLocation])
@@ -154,9 +158,8 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
 
           const customIcon = L.divIcon({
             className: 'custom-event-marker',
-            html: `<div style="width: 32px; height: 32px; background-color: white; border: 2px solid #8b5cf6; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size: 16px;">${
-              sport?.icon || '📍'
-            }</span></div>`,
+            html: `<div style="width: 32px; height: 32px; background-color: white; border: 2px solid #8b5cf6; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size: 16px;">${sport?.icon || '📍'
+              }</span></div>`,
             iconSize: [32, 32],
             iconAnchor: [16, 16]
           })
@@ -171,14 +174,12 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
           <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
             <div style="display: flex; align-items: center; gap: 8px;">
               <span style="font-size: 20px;">${sport?.icon || '📍'}</span>
-              <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: #111827;">${
-                event.title
-              }</h3>
+              <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: #111827;">${event.title
+            }</h3>
             </div>
           </div>
-          <p style="margin: 0 0 12px 0; font-size: 14px; color: #4b5563;">${
-            event.description
-          }</p>
+          <p style="margin: 0 0 12px 0; font-size: 14px; color: #4b5563;">${event.description
+            }</p>
           <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
             <div style="display: flex; align-items: center; font-size: 14px; color: #4b5563;">
               <span style="margin-right: 8px;">📅</span>
@@ -192,23 +193,20 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
               <span style="margin-right: 8px;">👥</span>
               ${event.participants.length}/${event.maxParticipants} players
             </div>
-            ${
-              event.price
-                ? `
+            ${event.price
+              ? `
               <div style="display: flex; align-items: center; font-size: 14px; color: #4b5563;">
                 <span style="margin-right: 8px;">💰</span>
                 €${event.price} per person
               </div>
             `
-                : ''
+              : ''
             }
           </div>
           <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
-            <span style="font-size: 12px; padding: 4px 8px; border-radius: 4px; background-color: ${
-              spotsLeft > 0 ? '#dcfce7' : '#fef3c7'
-            }; color: ${
-            spotsLeft > 0 ? '#166534' : '#92400e'
-          }; font-weight: 500;">
+            <span style="font-size: 12px; padding: 4px 8px; border-radius: 4px; background-color: ${spotsLeft > 0 ? '#dcfce7' : '#fef3c7'
+            }; color: ${spotsLeft > 0 ? '#166534' : '#92400e'
+            }; font-weight: 500;">
               ${spotsLeft > 0 ? `${spotsLeft} spots left` : 'Waitlist'}
             </span>
             <button 
@@ -224,7 +222,7 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
       `
 
           if (typeof window !== 'undefined') {
-            ;(window as any)[`joinEvent_${event.id}`] = () => {
+            ; (window as any)[`joinEvent_${event.id}`] = () => {
               onJoinEventRef.current?.(event.id)
               marker.closePopup()
             }
@@ -243,13 +241,18 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
           eventMarkersRef.current.set(event.id, marker)
         })
 
-        if (bounds.length > 0 && mapInstanceRef.current) {
+        if (
+          bounds.length > 0 &&
+          mapInstanceRef.current &&
+          !hasFittedBoundsRef.current
+        ) {
           mapInstanceRef.current.fitBounds(bounds, { padding: [50, 50] })
+          hasFittedBoundsRef.current = true
         }
       }
 
       updateMarkers()
-    }, [mounted, events, userLocation])
+    }, [mounted, events, userLocation, isMapReady])
 
     if (!mounted) {
       return (

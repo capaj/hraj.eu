@@ -6,3 +6,41 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: cs\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/pages/EventDetailsPage.tsx:56
+msgid "Café/Restaurant"
+msgstr ""
+
+#: src/pages/EventDetailsPage.tsx:61
+msgid "Changing Rooms"
+msgstr ""
+
+#: src/pages/EventDetailsPage.tsx:59
+msgid "Locker Room"
+msgstr ""
+
+#: src/pages/EventDetailsPage.tsx:57
+msgid "Lounge"
+msgstr ""
+
+#: src/pages/EventDetailsPage.tsx:54
+msgid "Parking"
+msgstr ""
+
+#: src/pages/EventDetailsPage.tsx:55
+msgid "Restrooms"
+msgstr ""
+
+#: src/pages/EventDetailsPage.tsx:60
+msgid "Showers"
+msgstr ""
+
+#: src/pages/EventDetailsPage.tsx:58
+msgid "WiFi"
+msgstr ""

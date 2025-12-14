@@ -3,12 +3,13 @@ import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { WeatherWidget } from '../components/weather/WeatherWidget'
-import { SPORTS } from '../lib/constants'
+import { SPORTS, FACILITIES } from '../lib/constants'
 import {
   generateICalEvent,
   downloadICalFile,
   CalendarEvent
 } from '../utils/calendar'
+import { VenueMapPreview } from '../components/venues/VenueMapPreview'
 import {
   Calendar,
   Clock,
@@ -29,10 +30,30 @@ import {
   Flag,
   Phone,
   Mail,
-  Globe
+  Globe,
+  Image as ImageIcon,
+  Facebook,
+  Twitter,
+  MessageCircle,
+  Send
 } from 'lucide-react'
 import { format, isPast, addHours } from 'date-fns'
-import { t } from '@lingui/core/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { i18n } from '~/lib/i18n'
+import { toast } from 'sonner'
+import {
+  FacebookShare,
+  TwitterShare,
+  WhatsappShare,
+  TelegramShare
+} from 'react-share-kit'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '../components/ui/dropdown-menu'
 
 import { useLoaderData, useNavigate } from '@tanstack/react-router'
 import { authClient } from '../lib/auth-client'
@@ -48,16 +69,7 @@ interface KarmaFeedback {
   badBehavior?: boolean
 }
 
-const FACILITY_LABELS: Record<string, string> = {
-  parking: t`Parking`,
-  restrooms: t`Restrooms`,
-  food: t`Café/Restaurant`,
-  lounge: t`Lounge`,
-  wifi: t`WiFi`,
-  locker_room: t`Locker Room`,
-  shower: t`Showers`,
-  dressing_room: t`Changing Rooms`
-}
+
 
 export const EventDetailsPage: React.FC = () => {
   const {
@@ -78,10 +90,16 @@ export const EventDetailsPage: React.FC = () => {
   >('none')
   const [isSubmittingKarma, setIsSubmittingKarma] = useState(false)
   const [isJoining, setIsJoining] = useState(false)
-  const [joinMessage, setJoinMessage] = useState<string | null>(null)
   const [participants, setParticipants] = useState<User[]>(
     participantUsers || []
   )
+  const [shareUrl, setShareUrl] = useState('')
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setShareUrl(window.location.href)
+    }
+  }, [])
 
   useEffect(() => {
     setEvent(initialEvent)
@@ -128,9 +146,8 @@ export const EventDetailsPage: React.FC = () => {
     if (!isMinimumReached) {
       return {
         variant: 'error' as const,
-        text: `Need ${
-          event.minParticipants - event.participants.length
-        } more players to confirm`,
+        text: `Need ${event.minParticipants - event.participants.length
+          } more players to confirm`,
         icon: <AlertTriangle size={16} className="mr-1" />
       }
     } else if (isIdealReached) {
@@ -142,9 +159,8 @@ export const EventDetailsPage: React.FC = () => {
     } else {
       return {
         variant: 'warning' as const,
-        text: `Event confirmed - ${
-          event.idealParticipants! - event.participants.length
-        } more for ideal`,
+        text: `Event confirmed - ${event.idealParticipants! - event.participants.length
+          } more for ideal`,
         icon: <Target size={16} className="mr-1" />
       }
     }
@@ -216,14 +232,13 @@ export const EventDetailsPage: React.FC = () => {
     }
 
     if (!currentUserId) {
-      setJoinMessage('Please sign in to join this event.')
+      toast.error('Please sign in to join this event.')
       navigate({ to: '/auth/$pathname', params: { pathname: 'sign-in' } })
       return
     }
 
     try {
       setIsJoining(true)
-      setJoinMessage(null)
       const response = await joinEvent({ data: { eventId: event.id } })
 
       if (response?.participants) {
@@ -247,20 +262,20 @@ export const EventDetailsPage: React.FC = () => {
       }
 
       if (response?.status === 'waitlisted') {
-        setJoinMessage(
+        toast.info(
           'This event is full right now, so you were added to the waitlist.'
         )
       } else if (response?.status === 'confirmed') {
-        setJoinMessage('You have successfully joined this game.')
+        toast.success('You have successfully joined this game.')
       } else {
-        setJoinMessage('Your request was received.')
+        toast.info('Your request was received.')
       }
     } catch (error) {
       const message =
         error instanceof Error
           ? error.message
           : 'Failed to join the event. Please try again.'
-      setJoinMessage(message)
+      toast.error(message)
     } finally {
       setIsJoining(false)
     }
@@ -353,14 +368,44 @@ export const EventDetailsPage: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center space-x-2">
-              <Button
-                variant="outline"
-                size="sm"
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-              >
-                <Share2 size={16} className="mr-2" />
-                Share
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                  >
+                    <Share2 size={16} className="mr-2" />
+                    Share
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuItem asChild>
+                    <FacebookShare url={shareUrl} className="w-full flex items-center cursor-pointer">
+                      <Facebook size={20} className="mr-2" />
+                      <span>Facebook</span>
+                    </FacebookShare>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <TwitterShare url={shareUrl} title={event.title} className="w-full flex items-center cursor-pointer">
+                      <Twitter size={20} className="mr-2" />
+                      <span>Twitter</span>
+                    </TwitterShare>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <WhatsappShare url={shareUrl} title={event.title} className="w-full flex items-center cursor-pointer">
+                      <MessageCircle size={20} className="mr-2" />
+                      <span>WhatsApp</span>
+                    </WhatsappShare>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <TelegramShare url={shareUrl} title={event.title} className="w-full flex items-center cursor-pointer">
+                      <Send size={20} className="mr-2" />
+                      <span>Telegram</span>
+                    </TelegramShare>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
               <Button
                 variant="outline"
                 size="sm"
@@ -424,16 +469,6 @@ export const EventDetailsPage: React.FC = () => {
                 )}
 
                 {/* Add to Calendar Button */}
-                <div className="pt-4 border-t border-gray-200">
-                  <Button
-                    variant="outline"
-                    onClick={handleAddToCalendar}
-                    className="w-full sm:w-auto"
-                  >
-                    <CalendarPlus size={16} className="mr-2" />
-                    Add to Calendar
-                  </Button>
-                </div>
               </CardContent>
             </Card>
 
@@ -447,10 +482,21 @@ export const EventDetailsPage: React.FC = () => {
               <CardContent className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-4">
-                    <h3 className="font-semibold text-gray-900 flex items-center">
-                      <Calendar size={18} className="mr-2 text-primary-600" />
-                      Date & Time
-                    </h3>
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-semibold text-gray-900 flex items-center">
+                        <Calendar size={18} className="mr-2 text-primary-600" />
+                        Date & Time
+                      </h3>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleAddToCalendar}
+                        className="h-8 text-xs sm:text-sm"
+                      >
+                        <CalendarPlus size={14} className="mr-1.5" />
+                        Add to Calendar
+                      </Button>
+                    </div>
                     <div className="space-y-3 ml-6">
                       <div className="flex items-center text-gray-700">
                         <Calendar size={16} className="mr-2 text-gray-500" />
@@ -520,6 +566,35 @@ export const EventDetailsPage: React.FC = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* Organizer Info */}
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <h3 className="font-semibold text-gray-900 flex items-center mb-4">
+                    <UserIcon size={18} className="mr-2 text-primary-600" />
+                    Organizer
+                  </h3>
+                  <div className="flex items-center space-x-3">
+                    {organizer?.image ? (
+                      <img
+                        src={organizer.image}
+                        alt={organizer.name}
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
+                        <UserIcon size={24} className="text-primary-600" />
+                      </div>
+                    )}
+                    <div>
+                      <div className="font-medium text-gray-900">
+                        {organizer?.name || 'Event Organizer'}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        Verified member
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
@@ -580,111 +655,7 @@ export const EventDetailsPage: React.FC = () => {
               />
             )}
 
-            {/* Venue Information */}
-            {venue && (
-              <Card>
-                <CardHeader>
-                  <h2 className="text-xl font-semibold text-gray-900">
-                    Venue Information
-                  </h2>
-                </CardHeader>
-                <CardContent className="p-6 space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {venue.name}
-                      </h3>
-                      <p className="text-sm text-gray-600">
-                        {[venue.address, venue.city, venue.country]
-                          .filter(Boolean)
-                          .join(', ')}
-                      </p>
-                    </div>
-                    <Badge variant="default">
-                      {venue.type === 'indoor'
-                        ? 'Indoor venue'
-                        : venue.type === 'mixed'
-                        ? 'Indoor & outdoor venue'
-                        : 'Outdoor venue'}
-                    </Badge>
-                  </div>
 
-                  {venue.description && (
-                    <p className="text-gray-700 leading-relaxed">
-                      {venue.description}
-                    </p>
-                  )}
-
-                  {venue.accessInstructions && (
-                    <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-700">
-                      <p className="font-medium mb-1">Access Instructions</p>
-                      <p>{venue.accessInstructions}</p>
-                    </div>
-                  )}
-
-                  {(venue.contactInfo?.phone ||
-                    venue.contactInfo?.email ||
-                    venue.contactInfo?.website ||
-                    venue.price) && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {venue.contactInfo?.phone && (
-                        <a
-                          href={`tel:${venue.contactInfo.phone}`}
-                          className="flex items-center text-gray-700 hover:text-primary-600 transition-colors"
-                        >
-                          <Phone size={16} className="mr-2 text-gray-500" />
-                          {venue.contactInfo.phone}
-                        </a>
-                      )}
-                      {venue.contactInfo?.email && (
-                        <a
-                          href={`mailto:${venue.contactInfo.email}`}
-                          className="flex items-center text-gray-700 hover:text-primary-600 transition-colors"
-                        >
-                          <Mail size={16} className="mr-2 text-gray-500" />
-                          {venue.contactInfo.email}
-                        </a>
-                      )}
-                      {venue.contactInfo?.website && (
-                        <a
-                          href={venue.contactInfo.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center text-gray-700 hover:text-primary-600 transition-colors"
-                        >
-                          <Globe size={16} className="mr-2 text-gray-500" />
-                          Visit website
-                        </a>
-                      )}
-                      {venue.price ? (
-                        <div className="flex items-center text-gray-700">
-                          <CoinsIcon size={16} className="mr-2 text-gray-500" />
-                          Approx. {venue.price} {venue.currency} / visit
-                        </div>
-                      ) : null}
-                    </div>
-                  )}
-
-                  {venue.facilities && venue.facilities.length > 0 && (
-                    <div>
-                      <p className="text-sm font-semibold text-gray-900 mb-2">
-                        Facilities
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {venue.facilities.map((facility) => (
-                          <span
-                            key={facility}
-                            className="px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-700"
-                          >
-                            {FACILITY_LABELS[facility] || facility}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            )}
           </div>
 
           {/* Sidebar */}
@@ -693,11 +664,36 @@ export const EventDetailsPage: React.FC = () => {
             {!hasEventEnded && (
               <Card>
                 <CardContent className="p-6">
-                  <div className="text-center mb-4">
-                    <div className="text-2xl font-bold text-gray-900 mb-1">
-                      {event.participants.length}/{event.maxParticipants}
+                  <div className="text-center mb-6">
+                    <div className="flex items-baseline justify-center space-x-1 mb-3">
+                      <span
+                        className={`text-4xl font-extrabold ${isMinimumReached
+                          ? 'text-primary-600'
+                          : 'text-orange-500'
+                          }`}
+                      >
+                        {event.participants.length}
+                      </span>
+                      <span className="text-xl text-gray-400 font-medium">
+                        / {event.maxParticipants}
+                      </span>
                     </div>
-                    <div className="text-sm text-gray-600">
+
+                    <div className="w-full bg-gray-100 rounded-full h-3 mb-3 overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all duration-500 ease-out ${isMinimumReached ? 'bg-primary-600' : 'bg-orange-500'
+                          }`}
+                        style={{
+                          width: `${Math.min(
+                            100,
+                            (event.participants.length / event.maxParticipants) *
+                            100
+                          )}%`
+                        }}
+                      />
+                    </div>
+
+                    <div className="text-sm text-gray-600 font-medium">
                       Players confirmed
                     </div>
                     {event.idealParticipants && (
@@ -717,18 +713,14 @@ export const EventDetailsPage: React.FC = () => {
                     {isParticipant
                       ? 'You are playing'
                       : isSpotAvailable
-                      ? 'Join Game'
-                      : 'Join Waitlist'}
+                        ? 'Join Game'
+                        : 'Join Waitlist'}
                   </Button>
 
                   <div className="text-xs text-gray-500 text-center">
                     Minimum {event.minParticipants} players needed to confirm
                   </div>
-                  {joinMessage && (
-                    <div className="text-xs text-center text-gray-600 mt-2">
-                      {joinMessage}
-                    </div>
-                  )}
+                  {/* Join message removed, now using toast */}
                 </CardContent>
               </Card>
             )}
@@ -845,37 +837,201 @@ export const EventDetailsPage: React.FC = () => {
               </CardContent>
             </Card>
 
-            {/* Organizer Info */}
-            <Card>
-              <CardHeader>
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Organizer
-                </h3>
-              </CardHeader>
-              <CardContent className="p-6">
-                <div className="flex items-center space-x-3 mb-4">
-                  {organizer?.image ? (
-                    <img
-                      src={organizer.image}
-                      alt={organizer.name}
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
-                      <UserIcon size={24} className="text-primary-600" />
-                    </div>
-                  )}
-                  <div>
-                    <div className="font-medium text-gray-900">
-                      {organizer?.name || 'Event Organizer'}
-                    </div>
-                    <div className="text-sm text-gray-500">Verified member</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </div>
+
+        {/* Venue Information - Full Width */}
+        {venue && (
+          <Card className="mt-8">
+            <CardHeader>
+              <h2 className="text-xl font-semibold text-gray-900">
+                Venue Information
+              </h2>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {venue.name}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {[venue.address, venue.city, venue.country]
+                          .filter(Boolean)
+                          .join(', ')}
+                      </p>
+                    </div>
+                    <Badge variant="default">
+                      {venue.type === 'indoor'
+                        ? 'Indoor venue'
+                        : venue.type === 'mixed'
+                          ? 'Indoor & outdoor venue'
+                          : 'Outdoor venue'}
+                    </Badge>
+                  </div>
+
+                  {venue.description && (
+                    <p className="text-gray-700 leading-relaxed">
+                      {venue.description}
+                    </p>
+                  )}
+
+                  {venue.accessInstructions && (
+                    <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-700">
+                      <p className="font-medium mb-1">Access Instructions</p>
+                      <p>{venue.accessInstructions}</p>
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {venue.contactInfo?.phone ? (
+                      <a
+                        href={`tel:${venue.contactInfo.phone}`}
+                        className="flex items-center text-gray-700 hover:text-primary-600 transition-colors"
+                      >
+                        <Phone size={16} className="mr-2 text-gray-500" />
+                        {venue.contactInfo.phone}
+                      </a>
+                    ) : (
+                      <div className="flex items-center text-gray-400" title="No phone number available">
+                        <Phone size={16} className="mr-2 text-gray-300" />
+                        <span className="italic">No phone number</span>
+                      </div>
+                    )}
+
+                    {venue.contactInfo?.email && (
+                      <a
+                        href={`mailto:${venue.contactInfo.email}`}
+                        className="flex items-center text-gray-700 hover:text-primary-600 transition-colors"
+                      >
+                        <Mail size={16} className="mr-2 text-gray-500" />
+                        {venue.contactInfo.email}
+                      </a>
+                    )}
+                    {venue.contactInfo?.website && (
+                      <a
+                        href={venue.contactInfo.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center text-gray-700 hover:text-primary-600 transition-colors"
+                      >
+                        <Globe size={16} className="mr-2 text-gray-500" />
+                        Visit website
+                      </a>
+                    )}
+                    {venue.price ? (
+                      <div className="flex items-center text-gray-700">
+                        <CoinsIcon size={16} className="mr-2 text-gray-500" />
+                        Approx. {venue.price} {venue.currency} / visit
+                      </div>
+                    ) : null}
+                  </div>
+
+                  {venue.facilities && venue.facilities.length > 0 && (
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900 mb-2">
+                        Facilities
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {venue.facilities.map((facilityId) => {
+                          const facility = FACILITIES.find(
+                            (f) => f.id === facilityId
+                          )
+                          return (
+                            <span
+                              key={facilityId}
+                              className="px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-700 flex items-center"
+                            >
+                              {facility?.icon && (
+                                <span className="mr-1.5">{facility.icon}</span>
+                              )}
+                              {facility?.name || facilityId}
+                            </span>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Venue Images & Orientation Plan */}
+                  {((venue.images && venue.images.length > 0) ||
+                    venue.orientationPlan) && (
+                      <div className="pt-4 border-t border-gray-100">
+                        <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center">
+                          <ImageIcon size={16} className="mr-2 text-primary-600" />
+                          Photos & Orientation
+                        </h4>
+
+                        <div className="space-y-6">
+                          {/* Orientation Plan */}
+                          {venue.orientationPlan && (
+                            <div className="space-y-2">
+                              <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">
+                                Orientation Plan
+                              </p>
+                              <div className="relative rounded-lg overflow-hidden border border-gray-200 cursor-pointer hover:opacity-95 transition-opacity">
+                                <a
+                                  href={venue.orientationPlan}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <img
+                                    src={venue.orientationPlan}
+                                    alt={`${venue.name} Orientation Plan`}
+                                    className="w-full h-auto object-contain max-h-[300px] bg-gray-50"
+                                  />
+                                </a>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Venue Photos */}
+                          {venue.images && venue.images.length > 0 && (
+                            <div className="space-y-2">
+                              {venue.orientationPlan && (
+                                <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">
+                                  Photos
+                                </p>
+                              )}
+                              <div className="grid grid-cols-2 gap-3">
+                                {venue.images.map((img, idx) => (
+                                  <div
+                                    key={idx}
+                                    className="relative rounded-lg overflow-hidden border border-gray-200 aspect-video cursor-pointer hover:opacity-95 transition-opacity"
+                                  >
+                                    <a
+                                      href={img}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      <img
+                                        src={img}
+                                        alt={`${venue.name} photo ${idx + 1}`}
+                                        className="w-full h-full object-cover"
+                                      />
+                                    </a>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                </div>
+
+                <div className="h-full min-h-[300px] rounded-lg overflow-hidden">
+                  <VenueMapPreview
+                    lat={venue.lat}
+                    lng={venue.lng}
+                    className="w-full h-full min-h-[300px]"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       {/* Karma Feedback Modal */}
@@ -956,11 +1112,10 @@ export const EventDetailsPage: React.FC = () => {
                       <button
                         key={rating}
                         onClick={() => setKarmaRating(rating)}
-                        className={`p-1 rounded transition-colors ${
-                          rating <= karmaRating
-                            ? 'text-yellow-500'
-                            : 'text-gray-300 hover:text-yellow-400'
-                        }`}
+                        className={`p-1 rounded transition-colors ${rating <= karmaRating
+                          ? 'text-yellow-500'
+                          : 'text-gray-300 hover:text-yellow-400'
+                          }`}
                       >
                         <Star
                           size={24}
@@ -995,8 +1150,8 @@ export const EventDetailsPage: React.FC = () => {
                     reportType === 'no-show'
                       ? 'Please describe what happened...'
                       : reportType === 'bad-behavior'
-                      ? 'Please describe the behavior issue...'
-                      : 'Share your experience playing with this person...'
+                        ? 'Please describe the behavior issue...'
+                        : 'Share your experience playing with this person...'
                   }
                   required={reportType !== 'none'}
                 />

@@ -5,10 +5,11 @@ const config: LinguiConfig = {
     default: 'en'
   },
   locales: ['en', 'cs'],
+  compileNamespace: 'es',
   catalogs: [
     {
       path: '<rootDir>/app/locales/{locale}',
-      include: ['app']
+      include: ['src', 'app']
     }
   ]
 }

@@ -1,7 +1,7 @@
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { db } from '../../drizzle/db'
-import { reactStartCookies } from 'better-auth/react-start'
+import { tanstackStartCookies } from 'better-auth/tanstack-start'
 import { magicLink } from 'better-auth/plugins'
 import { env } from 'cloudflare:workers'
 import * as schema from '../../drizzle/schema'
@@ -45,7 +45,7 @@ export const auth = betterAuth({
   },
   trustedOrigins: ['http://localhost:3000', 'https://hraj.eu'],
   plugins: [
-    reactStartCookies(),
+    tanstackStartCookies(),
     magicLink({
       sendMagicLink: async ({ email, url }) => {
         await resend.emails.send({

@@ -12,7 +12,7 @@ import { useUser } from '~/lib/auth-client'
 
 export const Profile: React.FC = () => {
 
-  const {  notifications, events, venues, users } = useLoaderData({
+  const { notifications, events, venues, users } = useLoaderData({
     from: '/profile'
   })
   const user = useUser()
@@ -117,7 +117,7 @@ export const Profile: React.FC = () => {
         </div>
 
         <div className="flex justify-end space-x-2">
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: `/events/${event.id}` })}>
             View Details
           </Button>
           {showSaveButton && (
@@ -186,17 +186,17 @@ export const Profile: React.FC = () => {
                   {upcomingEvents.length > 0
                     ? upcomingEvents.map((event) => renderEventCard(event))
                     : renderEmptyState(
-                        <Calendar size={48} className="mx-auto" />,
-                        'No upcoming events',
-                        "You haven't joined or created any upcoming events yet.",
-                        <Button
-                          variant="primary"
-                          size="sm"
-                          onClick={() => navigate({ to: '/discover' })}
-                        >
-                          Browse Events
-                        </Button>
-                      )}
+                      <Calendar size={48} className="mx-auto" />,
+                      'No upcoming events',
+                      "You haven't joined or created any upcoming events yet.",
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        onClick={() => navigate({ to: '/discover' })}
+                      >
+                        Browse Events
+                      </Button>
+                    )}
                 </div>
               </CardContent>
             </Card>
@@ -223,16 +223,16 @@ export const Profile: React.FC = () => {
                 <div className="space-y-4">
                   {savedEvents.length > 0
                     ? savedEvents.map((event) =>
-                        renderEventCard(event, true, true)
-                      )
+                      renderEventCard(event, true, true)
+                    )
                     : renderEmptyState(
-                        <Heart size={48} className="mx-auto" />,
-                        'No saved events',
-                        'Save interesting events to easily find them later.',
-                        <Button variant="outline" size="sm">
-                          Discover Events
-                        </Button>
-                      )}
+                      <Heart size={48} className="mx-auto" />,
+                      'No saved events',
+                      'Save interesting events to easily find them later.',
+                      <Button variant="outline" size="sm">
+                        Discover Events
+                      </Button>
+                    )}
                 </div>
               </CardContent>
             </Card>
@@ -260,13 +260,13 @@ export const Profile: React.FC = () => {
                   {pastEvents.length > 0
                     ? pastEvents.map((event) => renderEventCard(event))
                     : renderEmptyState(
-                        <Trophy size={48} className="mx-auto" />,
-                        'No past events',
-                        'Your completed events will appear here.',
-                        <Button variant="outline" size="sm">
-                          Join Your First Event
-                        </Button>
-                      )}
+                      <Trophy size={48} className="mx-auto" />,
+                      'No past events',
+                      'Your completed events will appear here.',
+                      <Button variant="outline" size="sm">
+                        Join Your First Event
+                      </Button>
+                    )}
                 </div>
               </CardContent>
             </Card>
