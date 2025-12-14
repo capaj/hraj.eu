@@ -15,6 +15,7 @@ interface EventMapProps {
   venues: Venue[]
   onEventSelect?: (event: Event) => void
   onJoinEvent?: (eventId: string) => void
+  currentUserId?: string
 }
 
 export interface EventMapRef {
@@ -22,7 +23,7 @@ export interface EventMapRef {
 }
 
 export const EventMap = forwardRef<EventMapRef, EventMapProps>(
-  ({ events, venues, onEventSelect, onJoinEvent }, ref) => {
+  ({ events, venues, onEventSelect, onJoinEvent, currentUserId }, ref) => {
     const mapRef = useRef<HTMLDivElement>(null)
     const mapInstanceRef = useRef<any>(null)
     const markersRef = useRef<any[]>([])
@@ -168,6 +169,7 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
             icon: customIcon
           }).addTo(mapInstanceRef.current)
 
+          const isJoined = currentUserId && event.participants.includes(currentUserId)
           const spotsLeft = event.maxParticipants - event.participants.length
           const popupContent = `
         <div style="min-width: 280px; font-family: system-ui, -apple-system, sans-serif;">
@@ -209,14 +211,21 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
             }; font-weight: 500;">
               ${spotsLeft > 0 ? `${spotsLeft} spots left` : 'Waitlist'}
             </span>
-            <button 
-              onclick="window.joinEvent_${event.id}()"
-              style="padding: 8px 16px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
-              onmouseover="this.style.backgroundColor='#059669'"
-              onmouseout="this.style.backgroundColor='#10b981'"
-            >
-              ${spotsLeft > 0 ? 'Join Game' : 'Join Waitlist'}
-            </button>
+            ${isJoined
+              ? `<button 
+                  style="padding: 8px 16px; background-color: #e5e7eb; color: #374151; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: default;"
+                >
+                  You are playing
+                </button>`
+              : `<button 
+                  onclick="window.joinEvent_${event.id}()"
+                  style="padding: 8px 16px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
+                  onmouseover="this.style.backgroundColor='#059669'"
+                  onmouseout="this.style.backgroundColor='#10b981'"
+                >
+                  ${spotsLeft > 0 ? 'Join Game' : 'Join Waitlist'}
+                </button>`
+            } 
           </div>
         </div>
       `
@@ -252,7 +261,7 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
       }
 
       updateMarkers()
-    }, [mounted, events, userLocation, isMapReady])
+    }, [mounted, events, userLocation, isMapReady, currentUserId])
 
     if (!mounted) {
       return (

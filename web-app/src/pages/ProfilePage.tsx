@@ -4,6 +4,7 @@ import { UserProfile } from '../components/user/UserProfile'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { Badge } from '../components/ui/Badge'
+import { EditableEventCard } from '../components/events/EditableEventCard'
 
 import { Calendar, MapPin, Users, Clock, Heart, Trophy } from 'lucide-react'
 import { format, isPast, isFuture } from 'date-fns'
@@ -41,99 +42,7 @@ export const Profile: React.FC = () => {
       !event.participants.includes(user.id) // Not already joined
   )
 
-  const renderEventCard = (
-    event: any,
-    showSaveButton = false,
-    showUnsaveButton = false
-  ) => {
-    const venue = venues.find((v) => v.id === event.venueId)
 
-    return (
-      <div
-        key={event.id}
-        className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors"
-      >
-        <div className="flex justify-between items-start mb-3">
-          <div className="flex items-center space-x-3">
-            <div className="text-2xl">
-              {event.sport === 'football' && '⚽'}
-              {event.sport === 'basketball' && '🏀'}
-              {event.sport === 'handball' && '🤾'}
-              {event.sport === 'ice-hockey' && '🏒'}
-            </div>
-            <div>
-              <h3 className="font-semibold text-gray-900">{event.title}</h3>
-              <p className="text-sm text-gray-600">
-                by {users.find((u) => u.id === event.organizerId)?.name}
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Badge variant={event.status === 'open' ? 'success' : 'info'}>
-              {event.status}
-            </Badge>
-            {event.organizerId === user.id && (
-              <Badge variant="warning">Organizer</Badge>
-            )}
-            {showUnsaveButton && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-red-600 hover:text-red-700"
-              >
-                <Heart size={14} className="fill-current" />
-              </Button>
-            )}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-600 mb-4">
-          <div className="flex items-center">
-            <Calendar size={14} className="mr-2" />
-            {format(event.date, 'EEEE, MMM d, yyyy')}
-          </div>
-          <div className="flex items-center">
-            <Clock size={14} className="mr-2" />
-            {event.startTime} ({event.duration} min)
-          </div>
-          <div className="flex items-center">
-            <MapPin size={14} className="mr-2" />
-            {venue?.address?.split(',')[0] || 'Location TBD'}
-          </div>
-          <div className="flex items-center">
-            <Users size={14} className="mr-2" />
-            {event.participants.length}/{event.maxParticipants}
-            {event.idealParticipants && (
-              <span className="text-gray-500 ml-1">
-                (ideal: {event.idealParticipants})
-              </span>
-            )}
-          </div>
-          {event.price && (
-            <div className="flex items-center md:col-span-2">
-              <span className="mr-2">€</span>€{event.price} per person
-            </div>
-          )}
-        </div>
-
-        <div className="flex justify-end space-x-2">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: `/events/${event.id}` })}>
-            View Details
-          </Button>
-          {showSaveButton && (
-            <Button variant="primary" size="sm">
-              Join Game
-            </Button>
-          )}
-          {event.organizerId === user.id && !isPast(event.date) && (
-            <Button variant="ghost" size="sm">
-              Edit
-            </Button>
-          )}
-        </div>
-      </div>
-    )
-  }
 
   const renderEmptyState = (
     icon: React.ReactNode,
@@ -184,7 +93,15 @@ export const Profile: React.FC = () => {
               <CardContent>
                 <div className="space-y-4">
                   {upcomingEvents.length > 0
-                    ? upcomingEvents.map((event) => renderEventCard(event))
+                    ? upcomingEvents.map((event) => (
+                      <EditableEventCard
+                        key={event.id}
+                        event={event}
+                        venues={venues}
+                        users={users}
+                        currentUserId={user?.id}
+                      />
+                    ))
                     : renderEmptyState(
                       <Calendar size={48} className="mx-auto" />,
                       'No upcoming events',
@@ -222,9 +139,17 @@ export const Profile: React.FC = () => {
               <CardContent>
                 <div className="space-y-4">
                   {savedEvents.length > 0
-                    ? savedEvents.map((event) =>
-                      renderEventCard(event, true, true)
-                    )
+                    ? savedEvents.map((event) => (
+                      <EditableEventCard
+                        key={event.id}
+                        event={event}
+                        venues={venues}
+                        users={users}
+                        currentUserId={user?.id}
+                        showSaveButton
+                        showUnsaveButton
+                      />
+                    ))
                     : renderEmptyState(
                       <Heart size={48} className="mx-auto" />,
                       'No saved events',
@@ -258,7 +183,15 @@ export const Profile: React.FC = () => {
               <CardContent>
                 <div className="space-y-4">
                   {pastEvents.length > 0
-                    ? pastEvents.map((event) => renderEventCard(event))
+                    ? pastEvents.map((event) => (
+                      <EditableEventCard
+                        key={event.id}
+                        event={event}
+                        venues={venues}
+                        users={users}
+                        currentUserId={user?.id}
+                      />
+                    ))
                     : renderEmptyState(
                       <Trophy size={48} className="mx-auto" />,
                       'No past events',

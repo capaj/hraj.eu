@@ -5,6 +5,7 @@ import { venueT as venueTable } from '../../drizzle/schema'
 import { db } from 'drizzle/db'
 import { auth } from '~/lib/auth'
 import { eq } from 'drizzle-orm'
+import { SPORTS } from '~/lib/constants'
 
 const normalizeMaybeUndefined = <T extends z.ZodTypeAny>(inner: T) =>
   z
@@ -99,8 +100,8 @@ const transformVenueData = (
   contactPhone: data.contactInfo?.phone,
   contactEmail: data.contactInfo?.email,
   contactWebsite: data.contactInfo?.website,
-  facilities: (data.facilities as string[]) ?? [],
-  sports: (data.sports as string[]) ?? []
+  facilities: data.facilities ?? [],
+  sports: (data.sports as Array<(typeof SPORTS)[number]['id']>) ?? []
 })
 
 export const updateVenue = createServerFn({ method: 'POST' })

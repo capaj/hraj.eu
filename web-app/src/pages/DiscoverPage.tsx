@@ -66,9 +66,9 @@ export const Discover: React.FC = () => {
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLng / 2) *
-        Math.sin(dLng / 2)
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2)
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
     return R * c
   }
@@ -159,10 +159,10 @@ export const Discover: React.FC = () => {
           prevEvents.map((event) =>
             event.id === eventId
               ? {
-                  ...event,
-                  participants: response.participants.confirmed,
-                  waitlist: response.participants.waitlisted
-                }
+                ...event,
+                participants: response.participants.confirmed,
+                waitlist: response.participants.waitlisted
+              }
               : event
           )
         )
@@ -274,6 +274,7 @@ export const Discover: React.FC = () => {
               venues={venues}
               onEventSelect={handleEventSelect}
               onJoinEvent={handleJoinEvent}
+              currentUserId={session.data?.user?.id}
             />
           </div>
         </div>
@@ -305,11 +306,10 @@ export const Discover: React.FC = () => {
                           {sortBy === 'distance' && distance
                             ? distance
                             : sortBy === 'spots'
-                            ? `${
-                                event.maxParticipants -
-                                event.participants.length
+                              ? `${event.maxParticipants -
+                              event.participants.length
                               } spots`
-                            : `#${index + 1}`}
+                              : `#${index + 1}`}
                         </div>
                       </div>
                     )}

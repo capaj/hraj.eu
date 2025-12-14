@@ -52,11 +52,15 @@ export type CreateEventFormData = Omit<
 interface CreateEventFormProps {
   onSubmit: (eventData: CreateEventFormData) => Promise<void> | void
   onCancel: () => void
+  initialData?: Partial<CreateEventFormData>
+  onCancelEvent?: (reason?: string) => Promise<void> | void
 }
 
 export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   onSubmit,
-  onCancel
+  onCancel,
+  initialData,
+  onCancelEvent
 }) => {
   // Calculate default date (one week from now) and format it for input
   const getDefaultDate = () => {
@@ -66,26 +70,28 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   }
 
   const [formData, setFormData] = useState<CreateEventFormData>({
-    title: '',
-    sport: '',
-    venueId: '', // Changed from address to venueId
-    date: getDefaultDate(),
-    startTime: '18:00',
-    duration: 90,
-    minParticipants: 2,
-    idealParticipants: 8,
-    maxParticipants: 10,
-    cancellationHours: 2,
-    cancellationMinutes: 0,
-    price: '',
-    paymentDetails: '',
-    gameRules: '',
-    isPublic: true,
-    allowedSkillLevels: ['beginner', 'intermediate', 'advanced'], // All levels allowed by default
-    requireSkillLevel: false // Whether to enforce skill level restrictions
+    title: initialData?.title || '',
+    sport: initialData?.sport || '',
+    venueId: initialData?.venueId || '',
+    date: initialData?.date || getDefaultDate(),
+    startTime: initialData?.startTime || '18:00',
+    duration: initialData?.duration || 90,
+    minParticipants: initialData?.minParticipants || 2,
+    idealParticipants: initialData?.idealParticipants || 8,
+    maxParticipants: initialData?.maxParticipants || 10,
+    cancellationHours: initialData?.cancellationHours ?? 2,
+    cancellationMinutes: initialData?.cancellationMinutes ?? 0,
+    price: initialData?.price || '',
+    paymentDetails: initialData?.paymentDetails || '',
+    gameRules: initialData?.gameRules || '',
+    isPublic: initialData?.isPublic ?? true,
+    allowedSkillLevels: initialData?.allowedSkillLevels || ['beginner', 'intermediate', 'advanced'],
+    requireSkillLevel: initialData?.requireSkillLevel || false
   })
 
   const [showAddVenueModal, setShowAddVenueModal] = useState(false)
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false)
+  const [cancellationReason, setCancellationReason] = useState('')
   const [venues, setVenues] = useState<Venue[]>([])
   const [isLoadingVenues, setIsLoadingVenues] = useState(true)
 
@@ -244,9 +250,13 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     <>
       <Card className="max-w-4xl mx-auto animate-slide-up">
         <CardHeader>
-          <h2 className="text-2xl font-bold text-gray-900">Create New Event</h2>
+          <h2 className="text-2xl font-bold text-gray-900">
+            {initialData ? 'Edit Event' : 'Create New Event'}
+          </h2>
           <p className="text-gray-600">
-            Fill in the details to organize your next game
+            {initialData
+              ? 'Update the details of your event'
+              : 'Fill in the details to organize your next game'}
           </p>
         </CardHeader>
         <CardContent>
@@ -582,11 +592,10 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                       return (
                         <label
                           key={level.id}
-                          className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all ${
-                            isSelected
-                              ? 'border-primary-500 bg-primary-50'
-                              : 'border-gray-200 hover:border-gray-300'
-                          } ${isOnlySelected ? 'opacity-75' : ''}`}
+                          className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all ${isSelected
+                            ? 'border-primary-500 bg-primary-50'
+                            : 'border-gray-200 hover:border-gray-300'
+                            } ${isOnlySelected ? 'opacity-75' : ''}`}
                         >
                           <input
                             type="checkbox"
@@ -640,7 +649,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                             Players without the required skill level in{' '}
                             {formData.sport
                               ? SPORTS.find((s) => s.id === formData.sport)
-                                  ?.name
+                                ?.name
                               : 'this sport'}{' '}
                             will not be able to join this event.
                           </p>
@@ -751,13 +760,26 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
             </div>
 
             {/* Actions */}
-            <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
-              <Button type="button" variant="outline" onClick={onCancel}>
-                Cancel
-              </Button>
-              <Button type="submit" variant="primary">
-                Create Event
-              </Button>
+            <div className="flex justify-between items-center pt-6 border-t border-gray-200">
+              <div>
+                {initialData && onCancelEvent && (
+                  <Button
+                    type="button"
+                    variant="danger"
+                    onClick={() => setShowCancelConfirm(true)}
+                  >
+                    Cancel Event
+                  </Button>
+                )}
+              </div>
+              <div className="flex space-x-4">
+                <Button type="button" variant="outline" onClick={onCancel}>
+                  Close
+                </Button>
+                <Button type="submit" variant="primary">
+                  {initialData ? 'Update Event' : 'Create Event'}
+                </Button>
+              </div>
             </div>
           </form>
         </CardContent>
@@ -769,6 +791,50 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
         onClose={() => setShowAddVenueModal(false)}
         onSubmit={handleAddVenue}
       />
+
+      {/* Cancel Event Confirmation Modal */}
+      {showCancelConfirm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[60] p-4">
+          <Card className="w-full max-w-md animate-fade-in">
+            <CardHeader>
+              <h3 className="text-xl font-bold text-red-600">Cancel Event?</h3>
+              <p className="text-sm text-gray-600">Are you sure you want to cancel this event? This action cannot be undone.</p>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Cancellation Reason (Optional)
+                  </label>
+                  <textarea
+                    value={cancellationReason}
+                    onChange={(e) => setCancellationReason(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                    placeholder="e.g., Weather conditions, Insufficient players..."
+                    rows={3}
+                  />
+                </div>
+                <div className="flex justify-end space-x-3">
+                  <Button variant="outline" onClick={() => setShowCancelConfirm(false)}>
+                    Keep Event
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => {
+                      if (onCancelEvent) {
+                        onCancelEvent(cancellationReason);
+                        setShowCancelConfirm(false);
+                      }
+                    }}
+                  >
+                    Yes, Cancel Event
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </>
   )
 }
