@@ -58,6 +58,7 @@ import {
 import { useLoaderData, useNavigate } from '@tanstack/react-router'
 import { authClient } from '../lib/auth-client'
 import { joinEvent } from '~/server-functions/joinEvent'
+import { leaveEvent } from '~/server-functions/leaveEvent'
 import { getUserById } from '~/server-functions/getUserById'
 import { User } from '../types'
 
@@ -275,6 +276,42 @@ export const EventDetailsPage: React.FC = () => {
         error instanceof Error
           ? error.message
           : 'Failed to join the event. Please try again.'
+      toast.error(message)
+    } finally {
+      setIsJoining(false)
+    }
+  }
+
+  const handleLeaveEvent = async () => {
+    if (!event || !currentUserId) return
+
+    try {
+      setIsJoining(true) // Reusing isJoining state for loading UI
+      const response = await leaveEvent({ data: { eventId: event.id } })
+
+      if (response?.participants) {
+        setEvent((prev) => ({
+          ...prev,
+          participants: response.participants.confirmed,
+          waitlist: response.participants.waitlisted
+        }))
+
+        // Removed user is naturally filtered out from participants list render 
+        // because event.participants (ids) is updated.
+        // But we might want to keep the user object in `participants` state 
+        // so we don't have to refetch if they rejoin? 
+        // Actually, we are just maintaining a list of User objects.
+        // No need to remove from `participants` state array, 
+        // just updating `event.participants` (list of IDs) is enough to trigger re-render
+        // and filter the list correctly in `participantUsersList`.
+
+        toast.info('You have left the event.')
+      }
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'Failed to leave the event. Please try again.'
       toast.error(message)
     } finally {
       setIsJoining(false)
@@ -775,6 +812,21 @@ export const EventDetailsPage: React.FC = () => {
                           </div>
                         </div>
                       </div>
+
+                      {/* Leave button for current user */}
+                      {!hasEventEnded &&
+                        currentUserId === user?.id && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                            onClick={handleLeaveEvent}
+                            disabled={isJoining}
+                          >
+                            <UserX size={16} className="mr-1" />
+                            Leave
+                          </Button>
+                        )}
 
                       {/* Karma feedback buttons - only show after event ends and for other participants */}
                       {hasEventEnded &&

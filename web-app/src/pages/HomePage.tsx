@@ -77,10 +77,10 @@ export const Home: React.FC = () => {
           prevEvents.map((event) =>
             event.id === eventId
               ? {
-                  ...event,
-                  participants: response.participants.confirmed,
-                  waitlist: response.participants.waitlisted
-                }
+                ...event,
+                participants: response.participants.confirmed,
+                waitlist: response.participants.waitlisted
+              }
               : event
           )
         )
@@ -110,10 +110,10 @@ export const Home: React.FC = () => {
               ) : (
                 <p className="text-white/80 mt-2 flex items-center">
                   {upcomingEvents.length > 0 && (
-                    <p>
+                    <span className="flex items-center">
                       <MapPin size={16} className="mr-1" />
                       Showing events near your location
-                    </p>
+                    </span>
                   )}
                 </p>
               )}

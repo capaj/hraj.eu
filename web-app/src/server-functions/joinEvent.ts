@@ -39,28 +39,25 @@ export const joinEvent = createServerFn({ method: 'POST' })
       throw new Error('Event not found')
     }
 
-    const existingParticipant = await db
-      .select()
-      .from(participantT)
-      .where(
-        and(
-          eq(participantT.eventId, data.eventId),
-          eq(participantT.userId, session.user.id)
-        )
-      )
-      .limit(1)
-
-    if (existingParticipant.length > 0) {
-      return {
-        status: existingParticipant[0].status,
-        participants: await getParticipants(data.eventId)
-      }
-    }
-
     const allParticipants = await db
       .select()
       .from(participantT)
       .where(eq(participantT.eventId, data.eventId))
+
+    const existingParticipant = allParticipants.find(
+      (p) => p.userId === session.user.id
+    )
+
+    if (
+      existingParticipant &&
+      (existingParticipant.status === 'confirmed' ||
+        existingParticipant.status === 'waitlisted')
+    ) {
+      return {
+        status: existingParticipant.status,
+        participants: await getParticipants(data.eventId)
+      }
+    }
 
     const confirmedCount = allParticipants.filter(
       (p) => p.status === 'confirmed'
@@ -71,16 +68,29 @@ export const joinEvent = createServerFn({ method: 'POST' })
 
     const isSpotAvailable = confirmedCount < event.maxParticipants
     const status = isSpotAvailable ? 'confirmed' : 'waitlisted'
+    const ordinal =
+      status === 'confirmed'
+        ? confirmedCount + 1
+        : confirmedCount + waitlistCount + 1
 
-    await db.insert(participantT).values({
-      eventId: data.eventId,
-      userId: session.user.id,
-      status,
-      confirmedParticipantOrdinal:
-        status === 'confirmed'
-          ? confirmedCount + 1
-          : confirmedCount + waitlistCount + 1
-    })
+    if (existingParticipant) {
+      // Rejoining after cancellation or accepting invite
+      await db
+        .update(participantT)
+        .set({
+          status,
+          confirmedParticipantOrdinal: ordinal
+        })
+        .where(eq(participantT.id, existingParticipant.id))
+    } else {
+      // New join
+      await db.insert(participantT).values({
+        eventId: data.eventId,
+        userId: session.user.id,
+        status,
+        confirmedParticipantOrdinal: ordinal
+      })
+    }
 
     const participants = await getParticipants(data.eventId)
 
