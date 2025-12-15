@@ -29,6 +29,7 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
     cancellationHours: event.cancellationDeadlineHours || 0,
     cancellationMinutes: 0, // Simplified as we only get hours from Event type currently
     price: event.price,
+    currency: event.currency || 'CZK',
     paymentDetails: event.paymentDetails,
     gameRules: event.gameRules,
     isPublic: event.isPublic,
@@ -56,6 +57,7 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
           cancellationHours: Number(eventData.cancellationHours ?? 0),
           cancellationMinutes: Number(eventData.cancellationMinutes ?? 0),
           price: eventData.price,
+          currency: eventData.currency,
           paymentDetails: eventData.paymentDetails,
           gameRules: eventData.gameRules,
           isPublic: Boolean(eventData.isPublic),

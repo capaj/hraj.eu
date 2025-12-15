@@ -66,6 +66,7 @@ export interface Event {
   maxParticipants: number
   cancellationDeadlineHours?: number
   price?: number
+  currency?: string
   paymentDetails?: string
   gameRules?: string
   cutoffTime: Date

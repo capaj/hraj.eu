@@ -23,6 +23,7 @@ import {
   Heart,
   CalendarPlus,
   Target,
+  House,
   AlertTriangle,
   CheckCircle,
   Star,
@@ -726,10 +727,19 @@ export const EventDetailsPage: React.FC = () => {
                   <div className="bg-gray-50 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-gray-700 text-lg">
-                        <Trans>Price per person:</Trans>
+                        <Trans>Price total:</Trans>
                       </span>
                       <span className="font-bold text-2xl text-primary-600">
-                        €{event.price}
+                        {event.price} {event.currency ?? 'CZK'}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-gray-700 text-lg">
+                        <Trans>Price per person({event.idealParticipants ?? event.minParticipants} people):</Trans>
+                      </span>
+                      <span className="font-bold text-2xl text-primary-600">
+                        {event.price / (event.idealParticipants ?? event.minParticipants)}{' '}
+                        {event.currency ?? 'CZK'}
                       </span>
                     </div>
                     {event.paymentDetails && (
@@ -980,7 +990,8 @@ export const EventDetailsPage: React.FC = () => {
         {venue && (
           <Card className="mt-8">
             <CardHeader>
-              <h2 className="text-xl font-semibold text-gray-900">
+              <h2 className="text-xl font-semibold text-gray-900 flex items-center">
+                <House size={16} className="mr-2 text-primary-600" />
                 <Trans>Venue Information</Trans>
               </h2>
             </CardHeader>
@@ -1066,7 +1077,7 @@ export const EventDetailsPage: React.FC = () => {
                     {venue.price ? (
                       <div className="flex items-center text-gray-700">
                         <CoinsIcon size={16} className="mr-2 text-gray-500" />
-                        {i18n._(msg`Approx. {price} {currency} / visit`.id, {
+                        {i18n._(msg`Approx. {price} {currency} / hour`.id, {
                           price: venue.price,
                           currency: venue.currency
                         })}

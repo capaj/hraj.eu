@@ -34,6 +34,7 @@ export const CreateEvent: React.FC = () => {
           cancellationHours: Number(eventData.cancellationHours ?? 0),
           cancellationMinutes: Number(eventData.cancellationMinutes ?? 0),
           price: eventData.price,
+          currency: eventData.currency,
           paymentDetails: eventData.paymentDetails,
           gameRules: eventData.gameRules,
           isPublic: Boolean(eventData.isPublic),
@@ -65,8 +66,8 @@ export const CreateEvent: React.FC = () => {
 
       {isSubmitting && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 flex items-center space-x-4">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+          <div className="bg-white rounded-lg p-6 flex items-center space-x-4">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
             <span className="text-gray-900">
               <Trans>Creating event...</Trans>
             </span>

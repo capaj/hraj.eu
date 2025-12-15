@@ -6,6 +6,7 @@
     "test": "turbo test",
     "typecheck": "turbo typecheck",
     "bump": "turbo bump",
+    "lingui": "cd web-app && lingui:extract && lingui:compile",
     "postinstall": "turbo postinstall"
   },
   "devDependencies": {

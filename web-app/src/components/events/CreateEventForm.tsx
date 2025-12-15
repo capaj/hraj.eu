@@ -42,6 +42,7 @@ export type CreateEventFormData = Omit<
   allowedSkillLevels: SkillLevel[]
   requireSkillLevel: boolean
   price?: number | ''
+  currency: string
   description?: string
   paymentDetails?: string
   gameRules?: string
@@ -82,6 +83,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     cancellationHours: initialData?.cancellationHours ?? 2,
     cancellationMinutes: initialData?.cancellationMinutes ?? 0,
     price: initialData?.price || '',
+    currency: initialData?.currency || 'CZK',
     paymentDetails: initialData?.paymentDetails || '',
     gameRules: initialData?.gameRules || '',
     isPublic: initialData?.isPublic ?? true,
@@ -177,6 +179,10 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
 
   const handleVenueSelect = (venueId: string) => {
     handleChange('venueId', venueId)
+    const selectedVenue = venues.find((v) => v.id === venueId)
+    if (selectedVenue?.currency) {
+      handleChange('currency', selectedVenue.currency)
+    }
   }
 
   const handleAddVenue = (venueData: Partial<Venue>) => {
@@ -686,10 +692,10 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                 <Euro size={20} className="mr-2" />
                 Payment (Optional)
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                <div className="md:col-span-4">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Total Price (€)
+                    Total Price
                   </label>
                   <input
                     type="number"
@@ -709,7 +715,21 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                     Will be divided by participant count
                   </p>
                 </div>
-                <div>
+                <div className="md:col-span-3">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Currency
+                  </label>
+                  <select
+                    value={formData.currency}
+                    onChange={(e) => handleChange('currency', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  >
+                    <option value="CZK">CZK (Kč)</option>
+                    <option value="EUR">EUR (€)</option>
+                    <option value="USD">USD ($)</option>
+                  </select>
+                </div>
+                <div className="md:col-span-5">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Payment Details
                   </label>

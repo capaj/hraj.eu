@@ -1,0 +1,1 @@
+ALTER TABLE `event` ADD `currency` text DEFAULT 'CZK';

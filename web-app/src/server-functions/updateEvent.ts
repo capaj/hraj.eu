@@ -20,6 +20,7 @@ const UpdateEventSchema = z.object({
   cancellationHours: z.number().int().min(0).max(72).optional(),
   cancellationMinutes: z.number().int().min(0).max(59).optional(),
   price: z.union([z.number(), z.string()]).optional(),
+  currency: z.string().optional(),
   paymentDetails: z.string().optional(),
   gameRules: z.string().optional(),
   isPublic: z.boolean().optional(),
@@ -91,6 +92,8 @@ export const updateEvent = createServerFn({ method: 'POST' })
           ? data.price
           : null
     }
+    
+    if (data.currency) updates.currency = data.currency;
 
     if (data.paymentDetails !== undefined)
       updates.paymentDetails = data.paymentDetails
