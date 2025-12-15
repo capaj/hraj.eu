@@ -19,7 +19,8 @@ import {
   useState
 } from 'react'
 import { Button } from '../ui/Button'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import { Avatar, AvatarFallback } from '../ui/avatar'
+import { UserAvatar } from './UserAvatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -70,57 +71,12 @@ const UserView = ({ user, isPending, size }: UserViewProps) => {
 
   return (
     <div className="flex items-center space-x-2">
-      <UserAvatar user={user} size="sm" />
+      <UserAvatar user={user} className="h-6 w-6" />
       <div className="flex flex-col text-left">
         <span className="text-sm font-medium">{user.name}</span>
         <span className="text-xs text-gray-500">{user.email}</span>
       </div>
     </div>
-  )
-}
-
-const UserAvatar = ({
-  user,
-  isPending = false,
-  className,
-  size = 'md',
-  ...props
-}: {
-  user?: {
-    name?: string
-    image?: string | null
-  } | null
-  isPending?: boolean
-  className?: string
-  size?: 'sm' | 'md' | 'lg'
-  [key: string]: any
-}) => {
-  const sizeClasses = {
-    sm: 'h-6 w-6',
-    md: 'h-8 w-8',
-    lg: 'h-12 w-12'
-  }
-
-  if (isPending) {
-    return (
-      <Avatar className={cn(sizeClasses[size], className)}>
-        <AvatarFallback>
-          <div className="h-full w-full animate-pulse bg-gray-300" />
-        </AvatarFallback>
-      </Avatar>
-    )
-  }
-
-  return (
-    <Avatar className={cn(sizeClasses[size], className)} {...props}>
-      <AvatarImage
-        src={user?.image || undefined}
-        alt={user?.name || 'User avatar'}
-      />
-      <AvatarFallback>
-        {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
-      </AvatarFallback>
-    </Avatar>
   )
 }
 
@@ -159,13 +115,17 @@ export function UserButton({
         {trigger ||
           (size === 'icon' ? (
             <Button size="sm" className="p-1 rounded-full" variant="ghost">
-              {user ? (
+              {isPending ? (
+                <Avatar className={cn('h-12 w-12', className)}>
+                  <AvatarFallback className="bg-transparent p-0">
+                    <div className="h-full w-full animate-pulse bg-gray-300 rounded-full" />
+                  </AvatarFallback>
+                </Avatar>
+              ) : user ? (
                 <UserAvatar
                   key={user?.image}
-                  isPending={isPending}
-                  className={className}
+                  className={cn('h-12 w-12', className)}
                   user={user}
-                  size="lg"
                   aria-label="Account"
                 />
               ) : (

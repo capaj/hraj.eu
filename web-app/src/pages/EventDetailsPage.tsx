@@ -4,6 +4,7 @@ import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { WeatherWidget } from '../components/weather/WeatherWidget'
 import { SPORTS, FACILITIES } from '../lib/constants'
+import { UserAvatar } from '../components/user/UserAvatar'
 import {
   generateICalEvent,
   downloadICalFile,
@@ -216,24 +217,24 @@ export const EventDetailsPage: React.FC = () => {
         }),
         ...(event.idealParticipants
           ? [
-              i18n._(msg`Ideal: {count} players`.id, {
-                count: event.idealParticipants
-              })
-            ]
+            i18n._(msg`Ideal: {count} players`.id, {
+              count: event.idealParticipants
+            })
+          ]
           : []),
         ...(event.price
           ? [
-              i18n._(msg`Price: €{price} per person`.id, {
-                price: event.price
-              })
-            ]
+            i18n._(msg`Price: €{price} per person`.id, {
+              price: event.price
+            })
+          ]
           : []),
         ...(event.paymentDetails
           ? [
-              i18n._(msg`Payment: {paymentDetails}`.id, {
-                paymentDetails: event.paymentDetails
-              })
-            ]
+            i18n._(msg`Payment: {paymentDetails}`.id, {
+              paymentDetails: event.paymentDetails
+            })
+          ]
           : []),
         ...(event.gameRules
           ? ['', i18n._(msg`Game Rules:`), event.gameRules]
@@ -695,17 +696,10 @@ export const EventDetailsPage: React.FC = () => {
                     <Trans>Organizer</Trans>
                   </h3>
                   <div className="flex items-center space-x-3">
-                    {organizer?.image ? (
-                      <img
-                        src={organizer.image}
-                        alt={organizer.name}
-                        className="w-12 h-12 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
-                        <UserIcon size={24} className="text-primary-600" />
-                      </div>
-                    )}
+                    <UserAvatar
+                      user={organizer || {}}
+                      className="w-12 h-12"
+                    />
                     <div>
                       <div className="font-medium text-gray-900">
                         {organizer?.name || i18n._(msg`Event Organizer`)}
@@ -876,17 +870,10 @@ export const EventDetailsPage: React.FC = () => {
                       className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
                     >
                       <div className="flex items-center space-x-3">
-                        {user?.image ? (
-                          <img
-                            src={user.image}
-                            alt={user.name}
-                            className="w-10 h-10 rounded-full object-cover"
-                          />
-                        ) : (
-                          <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                            <UserIcon size={20} className="text-primary-600" />
-                          </div>
-                        )}
+                        <UserAvatar
+                          user={user || {}}
+                          className="w-10 h-10"
+                        />
                         <div className="flex-1">
                           <div className="flex items-center space-x-2">
                             <div className="font-medium text-gray-900">
@@ -1316,8 +1303,8 @@ export const EventDetailsPage: React.FC = () => {
                       : reportType === 'bad-behavior'
                         ? i18n._(msg`Please describe the behavior issue...`)
                         : i18n._(
-                            msg`Share your experience playing with this person...`
-                          )
+                          msg`Share your experience playing with this person...`
+                        )
                   }
                   required={reportType !== 'none'}
                 />
@@ -1338,11 +1325,11 @@ export const EventDetailsPage: React.FC = () => {
                       <p>
                         {reportType === 'no-show'
                           ? i18n._(
-                              msg`No-show reports will deduct karma points and may affect future event participation.`
-                            )
+                            msg`No-show reports will deduct karma points and may affect future event participation.`
+                          )
                           : i18n._(
-                              msg`Behavior reports are taken seriously and may result in account restrictions.`
-                            )}
+                            msg`Behavior reports are taken seriously and may result in account restrictions.`
+                          )}
                       </p>
                     </div>
                   </div>

@@ -6,6 +6,7 @@ import { Button } from '../components/ui/Button'
 import { Toggle } from '../components/ui/Toggle'
 import { SPORTS, SKILL_LEVELS, EU_CURRENCIES } from '../lib/constants'
 import { User } from '../types'
+import { UserAvatar } from '../components/user/UserAvatar'
 import {
   User as UserIcon,
   Camera,
@@ -37,6 +38,10 @@ import {
 
 import { useLoaderData } from '@tanstack/react-router'
 import { updateUserSkill } from '~/server-functions/updateUserSkill'
+import { updateUserProfile } from '~/server-functions/updateUserProfile'
+import { deleteUserAccount } from '~/server-functions/deleteUserAccount'
+import { authClient } from '~/lib/auth-client'
+import { toast } from 'sonner'
 import { i18n } from '~/lib/i18n'
 
 export const UserProfile: React.FC = () => {
@@ -92,17 +97,26 @@ export const UserProfile: React.FC = () => {
   const [isDeletingAccount, setIsDeletingAccount] = useState(false)
 
   const handleSave = async () => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    try {
+      await updateUserProfile({
+        data: {
+          name: editedUser.name,
+          location: editedUser.location,
+          bio: editedUser.bio,
+          image: editedUser.image
+        }
+      })
 
-    setUser(editedUser)
-    setIsEditing(false)
-    setSkillLevelChanges({})
-    setNotificationChanges({})
+      setUser(editedUser)
+      setIsEditing(false)
+      setSkillLevelChanges({})
+      setNotificationChanges({})
 
-    // In a real app, this would make an API call to update the user
-    console.log('User updated:', editedUser)
-    alert(i18n._(msg`Profile updated successfully!`))
+      toast.success(i18n._(msg`Profile updated successfully!`))
+    } catch (error) {
+      console.error('Failed to update profile:', error)
+      toast.error(i18n._(msg`Failed to update profile`))
+    }
   }
 
   const handleCancel = () => {
@@ -114,18 +128,21 @@ export const UserProfile: React.FC = () => {
 
   const handleSaveRevTag = async () => {
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await updateUserProfile({
+        data: {
+          revolutTag: editedRevTag
+        }
+      })
 
       const updatedUser = { ...user, revTag: editedRevTag }
       setUser(updatedUser)
       setEditedUser(updatedUser)
       setIsEditingRevTag(false)
 
-      console.log('Revolut tag updated:', editedRevTag)
+      toast.success(i18n._(msg`Revolut tag updated!`))
     } catch (error) {
       console.error('Failed to update Revolut tag:', error)
-      alert(i18n._(msg`Failed to update Revolut tag. Please try again.`))
+      toast.error(i18n._(msg`Failed to update Revolut tag`))
     }
   }
 
@@ -136,18 +153,21 @@ export const UserProfile: React.FC = () => {
 
   const handleSaveBankAccount = async () => {
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await updateUserProfile({
+        data: {
+          bankAccount: editedBankAccount
+        }
+      })
 
       const updatedUser = { ...user, bankAccount: editedBankAccount }
       setUser(updatedUser)
       setEditedUser(updatedUser)
       setIsEditingBankAccount(false)
 
-      console.log('Bank account updated:', editedBankAccount)
+      toast.success(i18n._(msg`Bank account updated!`))
     } catch (error) {
       console.error('Failed to update bank account:', error)
-      alert(i18n._(msg`Failed to update bank account. Please try again.`))
+      toast.error(i18n._(msg`Failed to update bank account`))
     }
   }
 
@@ -243,16 +263,21 @@ export const UserProfile: React.FC = () => {
     // Auto-save notification changes (even when not in full edit mode)
     if (!isEditing) {
       try {
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 300))
+        const newPreferences = {
+          ...user.notificationPreferences,
+          [sport]: enabled
+        }
+
+        await updateUserProfile({
+          data: {
+            notificationPreferences: newPreferences
+          }
+        })
 
         // Update the main user state
         setUser((prev) => ({
           ...prev,
-          notificationPreferences: {
-            ...prev.notificationPreferences,
-            [sport]: enabled
-          }
+          notificationPreferences: newPreferences
         }))
 
         // Clear the change indicator after a delay
@@ -264,9 +289,9 @@ export const UserProfile: React.FC = () => {
           })
         }, 1500)
 
-        console.log(`Notification preference updated for ${sport}: ${enabled}`)
       } catch (error) {
         console.error('Failed to update notification preference:', error)
+        toast.error(i18n._(msg`Failed to update notification`))
         // Revert the change on error
         setEditedUser((prev) => ({
           ...prev,
@@ -288,15 +313,19 @@ export const UserProfile: React.FC = () => {
     // Auto-save currency changes (even when not in full edit mode)
     if (!isEditing) {
       try {
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 300))
+        await updateUserProfile({
+          data: {
+            preferredCurrency: newCurrency
+          }
+        })
 
         // Update the main user state
         setUser((prev) => ({ ...prev, preferredCurrency: newCurrency }))
 
-        console.log(`Currency updated to: ${newCurrency}`)
+        toast.success(i18n._(msg`Currency updated`))
       } catch (error) {
         console.error('Failed to update currency:', error)
+        toast.error(i18n._(msg`Failed to update currency`))
         // Revert the change on error
         setEditedUser((prev) => ({
           ...prev,
@@ -357,25 +386,28 @@ export const UserProfile: React.FC = () => {
       !passwordData.newPassword ||
       !passwordData.confirmPassword
     ) {
-      alert(i18n._(msg`Please fill in all password fields.`))
+      toast.error(i18n._(msg`Please fill in all password fields.`))
       return
     }
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert(i18n._(msg`New passwords do not match.`))
+      toast.error(i18n._(msg`New passwords do not match.`))
       return
     }
 
     if (passwordData.newPassword.length < 8) {
-      alert(i18n._(msg`New password must be at least 8 characters long.`))
+      toast.error(i18n._(msg`New password must be at least 8 characters long.`))
       return
     }
 
     setIsChangingPassword(true)
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      await authClient.changePassword({
+        currentPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword,
+        revokeOtherSessions: true
+      })
 
       // Reset form
       setPasswordData({
@@ -385,11 +417,11 @@ export const UserProfile: React.FC = () => {
       })
       setShowPasswordChange(false)
 
-      console.log('Password changed successfully')
-      alert(i18n._(msg`Password changed successfully!`))
+      toast.success(i18n._(msg`Password changed successfully!`))
     } catch (error) {
       console.error('Failed to change password:', error)
-      alert(i18n._(msg`Failed to change password. Please try again.`))
+      const message = error instanceof Error ? error.message : 'Failed to change password'
+      toast.error(message)
     } finally {
       setIsChangingPassword(false)
     }
@@ -397,29 +429,22 @@ export const UserProfile: React.FC = () => {
 
   const handleDeleteAccount = async () => {
     if (deleteConfirmText !== 'DELETE') {
-      alert(i18n._(msg`Please type "DELETE" to confirm account deletion.`))
+      toast.error(i18n._(msg`Please type "DELETE" to confirm account deletion.`))
       return
     }
 
     setIsDeletingAccount(true)
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 3000))
+      await deleteUserAccount()
 
-      console.log('Account deletion requested')
-      alert(
-        i18n._(
-          msg`Account deletion request submitted. You will receive an email with further instructions.`
-        )
-      )
+      toast.success(i18n._(msg`Account deleted successfully`))
 
-      // Reset form
-      setShowDeleteConfirm(false)
-      setDeleteConfirmText('')
+      // Redirect to home or sign-out
+      window.location.href = '/'
     } catch (error) {
       console.error('Failed to delete account:', error)
-      alert(i18n._(msg`Failed to process account deletion. Please try again.`))
+      toast.error(i18n._(msg`Failed to process account deletion`))
     } finally {
       setIsDeletingAccount(false)
     }
@@ -462,10 +487,10 @@ export const UserProfile: React.FC = () => {
             <div className="flex flex-col lg:flex-row items-center lg:items-start space-y-6 lg:space-y-0 lg:space-x-8">
               {/* Avatar Section */}
               <div className="relative flex-shrink-0">
-                <img
-                  src={editedUser.image}
-                  alt={editedUser.name}
-                  className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
+                <UserAvatar
+                  user={editedUser}
+                  className="w-32 h-32 border-4 border-white shadow-lg"
+                  fallbackClassName="text-4xl"
                 />
                 {isEditing && (
                   <button

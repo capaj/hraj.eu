@@ -20,6 +20,7 @@ import {
   Filter,
   ChevronDown
 } from 'lucide-react'
+import { UserAvatar } from '../components/user/UserAvatar'
 
 type LeaderboardType =
   | 'karma'
@@ -69,18 +70,18 @@ export const Leaderboard: React.FC = () => {
             ...user,
             score: sport
               ? Math.floor(user.karmaPoints * 0.7) +
-                Math.floor(Math.random() * 20)
+              Math.floor(Math.random() * 20)
               : user.karmaPoints,
             subtitle: sport
               ? i18n._(msg`{karma} karma in {sportName}`.id, {
-                  karma:
-                    Math.floor(user.karmaPoints * 0.7) +
-                    Math.floor(Math.random() * 20),
-                  sportName: SPORTS.find((s) => s.id === sport)?.name ?? sport
-                })
+                karma:
+                  Math.floor(user.karmaPoints * 0.7) +
+                  Math.floor(Math.random() * 20),
+                sportName: SPORTS.find((s) => s.id === sport)?.name ?? sport
+              })
               : i18n._(msg`{karmaPoints} karma points`.id, {
-                  karmaPoints: user.karmaPoints
-                }),
+                karmaPoints: user.karmaPoints
+              }),
             change: Math.floor(Math.random() * 20) - 10
           }))
           .sort((a, b) => b.score - a.score)
@@ -98,9 +99,9 @@ export const Leaderboard: React.FC = () => {
             ...user,
             subtitle: sport
               ? i18n._(msg`{count} {sportName} events organized`.id, {
-                  count: user.score,
-                  sportName: SPORTS.find((s) => s.id === sport)?.name ?? sport
-                })
+                count: user.score,
+                sportName: SPORTS.find((s) => s.id === sport)?.name ?? sport
+              })
               : i18n._(msg`{count} events organized`.id, { count: user.score })
           }))
 
@@ -117,9 +118,9 @@ export const Leaderboard: React.FC = () => {
             ...user,
             subtitle: sport
               ? i18n._(msg`{count} {sportName} events joined`.id, {
-                  count: user.score,
-                  sportName: SPORTS.find((s) => s.id === sport)?.name ?? sport
-                })
+                count: user.score,
+                sportName: SPORTS.find((s) => s.id === sport)?.name ?? sport
+              })
               : i18n._(msg`{count} events joined`.id, { count: user.score })
           }))
 
@@ -136,9 +137,9 @@ export const Leaderboard: React.FC = () => {
             ...user,
             subtitle: sport
               ? i18n._(msg`{count} points in {sportName} this month`.id, {
-                  count: user.score,
-                  sportName: SPORTS.find((s) => s.id === sport)?.name ?? sport
-                })
+                count: user.score,
+                sportName: SPORTS.find((s) => s.id === sport)?.name ?? sport
+              })
               : i18n._(msg`{count} points this month`.id, { count: user.score })
           }))
 
@@ -216,15 +217,15 @@ export const Leaderboard: React.FC = () => {
       : ''
 
     switch (type) {
-          case 'karma':
+      case 'karma':
         return sportName
           ? selectedSport
             ? i18n._(msg`{sportName} - Top players by sport-specific karma points earned`.id, {
-                sportName
-              })
+              sportName
+            })
             : i18n._(msg`{sportName} - Top players by total karma points earned`.id, {
-                sportName
-              })
+              sportName
+            })
           : selectedSport
             ? i18n._(msg`Top players by sport-specific karma points earned`)
             : i18n._(msg`Top players by total karma points earned`)
@@ -346,9 +347,8 @@ export const Leaderboard: React.FC = () => {
                   </span>
                   <ChevronDown
                     size={16}
-                    className={`transition-transform ${
-                      isDropdownOpen ? 'rotate-180' : ''
-                    }`}
+                    className={`transition-transform ${isDropdownOpen ? 'rotate-180' : ''
+                      }`}
                   />
                 </button>
 
@@ -359,9 +359,8 @@ export const Leaderboard: React.FC = () => {
                         setSelectedSport(undefined)
                         setIsDropdownOpen(false)
                       }}
-                      className={`w-full px-3 py-2 text-left hover:bg-gray-50 flex items-center ${
-                        !selectedSport ? 'bg-primary-50 text-primary-700' : ''
-                      }`}
+                      className={`w-full px-3 py-2 text-left hover:bg-gray-50 flex items-center ${!selectedSport ? 'bg-primary-50 text-primary-700' : ''
+                        }`}
                     >
                       <span className="mr-2">🏆</span>
                       <span>
@@ -375,11 +374,10 @@ export const Leaderboard: React.FC = () => {
                           setSelectedSport(sport.id)
                           setIsDropdownOpen(false)
                         }}
-                        className={`w-full px-3 py-2 text-left hover:bg-gray-50 flex items-center ${
-                          selectedSport === sport.id
-                            ? 'bg-primary-50 text-primary-700'
-                            : ''
-                        }`}
+                        className={`w-full px-3 py-2 text-left hover:bg-gray-50 flex items-center ${selectedSport === sport.id
+                          ? 'bg-primary-50 text-primary-700'
+                          : ''
+                          }`}
                       >
                         <span className="mr-2">{sport.icon}</span>
                         <span className="truncate">{sport.name}</span>
@@ -439,11 +437,10 @@ export const Leaderboard: React.FC = () => {
                   return (
                     <div
                       key={user.id}
-                      className={`p-6 transition-colors hover:bg-gray-50 ${
-                        isTopThree
-                          ? 'bg-gradient-to-r from-yellow-50 to-orange-50'
-                          : ''
-                      }`}
+                      className={`p-6 transition-colors hover:bg-gray-50 ${isTopThree
+                        ? 'bg-gradient-to-r from-yellow-50 to-orange-50'
+                        : ''
+                        }`}
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
@@ -454,12 +451,10 @@ export const Leaderboard: React.FC = () => {
 
                           {/* User Info */}
                           <div className="flex items-center space-x-3">
-                            <img
-                              src={user.image}
-                              alt={user.name}
-                              className={`w-12 h-12 rounded-full object-cover ${
-                                isTopThree ? 'ring-2 ring-yellow-400' : ''
-                              }`}
+                            <UserAvatar
+                              user={user}
+                              className={`w-12 h-12 ${isTopThree ? 'ring-2 ring-yellow-400' : ''
+                                }`}
                             />
                             <div>
                               <div className="flex items-center space-x-2">
@@ -474,8 +469,8 @@ export const Leaderboard: React.FC = () => {
                                     {position === 1
                                       ? '🥇'
                                       : position === 2
-                                      ? '🥈'
-                                      : '🥉'}
+                                        ? '🥈'
+                                        : '🥉'}
                                   </Badge>
                                 )}
                                 {selectedSport &&
@@ -536,17 +531,15 @@ export const Leaderboard: React.FC = () => {
                           </div>
                           {user.change !== 0 && (
                             <div
-                              className={`flex items-center text-sm ${
-                                user.change > 0
-                                  ? 'text-green-600'
-                                  : 'text-red-600'
-                              }`}
+                              className={`flex items-center text-sm ${user.change > 0
+                                ? 'text-green-600'
+                                : 'text-red-600'
+                                }`}
                             >
                               <TrendingUp
                                 size={14}
-                                className={`mr-1 ${
-                                  user.change < 0 ? 'rotate-180' : ''
-                                }`}
+                                className={`mr-1 ${user.change < 0 ? 'rotate-180' : ''
+                                  }`}
                               />
                               {user.change > 0 ? '+' : ''}
                               {user.change}
@@ -597,10 +590,10 @@ export const Leaderboard: React.FC = () => {
                 <div className="text-sm text-gray-600">
                   {selectedSport
                     ? i18n._(msg`{sportName} Champion`.id, {
-                        sportName:
-                          SPORTS.find((s) => s.id === selectedSport)?.name ??
-                          ''
-                      })
+                      sportName:
+                        SPORTS.find((s) => s.id === selectedSport)?.name ??
+                        ''
+                    })
                     : i18n._(msg`Current Champion`)}
                 </div>
               </CardContent>
@@ -617,10 +610,10 @@ export const Leaderboard: React.FC = () => {
                 <div className="text-sm text-gray-600">
                   {selectedSport
                     ? i18n._(msg`{sportName} Players`.id, {
-                        sportName:
-                          SPORTS.find((s) => s.id === selectedSport)?.name ??
-                          ''
-                      })
+                      sportName:
+                        SPORTS.find((s) => s.id === selectedSport)?.name ??
+                        ''
+                    })
                     : i18n._(msg`Active Players`)}
                 </div>
               </CardContent>
@@ -634,7 +627,7 @@ export const Leaderboard: React.FC = () => {
                 <div className="text-2xl font-bold text-gray-900 mb-1">
                   {Math.round(
                     leaderboardData.reduce((sum, user) => sum + user.score, 0) /
-                      leaderboardData.length
+                    leaderboardData.length
                   )}
                 </div>
                 <div className="text-sm text-gray-600">

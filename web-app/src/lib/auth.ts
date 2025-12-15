@@ -21,12 +21,32 @@ export const auth = betterAuth({
     additionalFields: {
       karmaPoints: {
         type: 'number',
-        input: false
       },
       preferredCurrency: {
         type: 'string',
         input: true,
         defaultValue: 'CZK'
+      },
+      location: {
+        type: 'string',
+        input: false
+      },
+      bio: {
+        type: 'string',
+        input: false
+      },
+      // better-auth doesn't support json type directly in additionalFields for inference in the same way, 
+      // but defining it helps if we strictly used better-auth's schema management.
+      // Since we use drizzle adapter, this is mostly for the client session type augmentation if usage conforms.
+      // However, complex types might need manual handling in custom schema or type extensions.
+      // Let's at least add simple string fields.
+      revolutTag: {
+        type: 'string',
+        input: false
+      },
+      bankAccount: {
+          type: 'string',
+          input: false
       }
     }
   },

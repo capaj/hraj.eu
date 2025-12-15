@@ -4,6 +4,7 @@ import { Badge } from '../ui/Badge'
 import { User } from '../../types'
 import { SPORTS, SKILL_LEVELS } from '../../lib/constants'
 import { Trophy, Calendar } from 'lucide-react'
+import { UserAvatar } from './UserAvatar'
 
 interface UserProfileProps {
   user: User
@@ -14,11 +15,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
     <Card className="animate-fade-in">
       <CardHeader>
         <div className="flex items-center space-x-4">
-          <img
-            src={user.image ?? undefined}
-            alt={user.name}
-            className="w-16 h-16 rounded-full object-cover"
-          />
+          <UserAvatar user={user} className="w-16 h-16" />
           <div>
             <h2 className="text-xl font-bold text-gray-900">{user.name}</h2>
             <p className="text-gray-600">{user.email}</p>
