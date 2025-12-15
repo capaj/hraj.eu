@@ -2,7 +2,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { Event } from '../types'
 import { db } from '../../drizzle/db'
 import { eventT, participantT } from '../../drizzle/schema'
-import { eq, gte } from 'drizzle-orm'
+import { and, eq, gte, not } from 'drizzle-orm'
 
 export const getUpcomingEvents = createServerFn({ method: 'GET' })
   .inputValidator((limit?: number) => limit || 3)
@@ -12,7 +12,8 @@ export const getUpcomingEvents = createServerFn({ method: 'GET' })
     const eventsFromDb = await db
       .select()
       .from(eventT)
-      .where(gte(eventT.date, today))
+      .where(and(gte(eventT.date, today), eq(eventT.isPublic, true), not(eq(eventT.status, 'cancelled'))))
+
       .limit(limit)
 
     const eventsWithParticipants = await Promise.all(
