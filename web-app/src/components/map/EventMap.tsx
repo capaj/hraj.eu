@@ -149,18 +149,33 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
           bounds.push([userLocation.lat, userLocation.lng])
         }
 
+        const eventsByVenue = new Map<string, Event[]>()
         events.forEach((event) => {
-          const sport = SPORTS.find((s) => s.id === event.sport)
-          const venue = venues.find((v) => v.id === event.venueId)
+          if (!event.venueId) return
+          if (!eventsByVenue.has(event.venueId)) {
+            eventsByVenue.set(event.venueId, [])
+          }
+          eventsByVenue.get(event.venueId)!.push(event)
+        })
+
+        eventsByVenue.forEach((venueEvents, venueId) => {
+          const venue = venues.find((v) => v.id === venueId)
 
           if (!venue || !mapInstanceRef.current) return
 
           bounds.push([venue.lat, venue.lng])
 
+          const mainSport = SPORTS.find((s) => s.id === venueEvents[0].sport)
+
+          const countBadge =
+            venueEvents.length > 1
+              ? `<div style="position: absolute; top: -6px; right: -6px; background-color: #ef4444; color: white; border-radius: 9999px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; border: 2px solid white; box-shadow: 0 1px 2px rgba(0,0,0,0.1); z-index: 10;">${venueEvents.length}</div>`
+              : ''
+
           const customIcon = L.divIcon({
             className: 'custom-event-marker',
-            html: `<div style="width: 32px; height: 32px; background-color: white; border: 2px solid #8b5cf6; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size: 16px;">${sport?.icon || '📍'
-              }</span></div>`,
+            html: `<div style="position: relative; width: 32px; height: 32px; background-color: white; border: 2px solid #8b5cf6; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size: 16px;">${mainSport?.icon || '📍'
+              }</span>${countBadge}</div>`,
             iconSize: [32, 32],
             iconAnchor: [16, 16]
           })
@@ -169,73 +184,102 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
             icon: customIcon
           }).addTo(mapInstanceRef.current)
 
-          const isJoined = currentUserId && event.participants.includes(currentUserId)
-          const spotsLeft = event.maxParticipants - event.participants.length
-          const popupContent = `
-        <div style="min-width: 280px; font-family: system-ui, -apple-system, sans-serif;">
-          <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 20px;">${sport?.icon || '📍'}</span>
-              <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: #111827;">${event.title
-            }</h3>
-            </div>
-          </div>
-          <p style="margin: 0 0 12px 0; font-size: 14px; color: #4b5563;">${event.description
-            }</p>
-          <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
-            <div style="display: flex; align-items: center; font-size: 14px; color: #4b5563;">
-              <span style="margin-right: 8px;">📅</span>
-              ${format(event.date, 'EEEE, MMM d')}
-            </div>
-            <div style="display: flex; align-items: center; font-size: 14px; color: #4b5563;">
-              <span style="margin-right: 8px;">🕐</span>
-              ${event.startTime} (${event.duration} min)
-            </div>
-            <div style="display: flex; align-items: center; font-size: 14px; color: #4b5563;">
-              <span style="margin-right: 8px;">👥</span>
-              ${event.participants.length}/${event.maxParticipants} players
-            </div>
-            ${event.price
-              ? `
-              <div style="display: flex; align-items: center; font-size: 14px; color: #4b5563;">
-                <span style="margin-right: 8px;">💰</span>
-                €${event.price} per person
+          let popupContent = `<div style="min-width: 280px; font-family: system-ui, -apple-system, sans-serif;">`
+
+          if (venueEvents.length > 1) {
+            popupContent += `
+               <div style="padding-bottom: 8px; border-bottom: 1px solid #e5e7eb; margin-bottom: 12px;">
+                 <h3 style="margin: 0; font-size: 14px; font-weight: 600; color: #374151;">
+                   ${venueEvents.length} events at ${venue.name}
+                 </h3>
+               </div>
+               <div style="max-height: 320px; overflow-y: auto; padding-right: 4px;">
+             `
+          }
+
+          venueEvents.forEach((event, index) => {
+            const sport = SPORTS.find((s) => s.id === event.sport)
+            const isJoined =
+              currentUserId && event.participants.includes(currentUserId)
+            const spotsLeft = event.maxParticipants - event.participants.length
+
+            const eventHtml = `
+              <div style="${index > 0
+                ? 'padding-top: 12px; border-top: 1px dashed #e5e7eb; margin-top: 12px;'
+                : ''
+              }">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 20px;">${sport?.icon || '📍'}</span>
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: #111827;">${event.title
+              }</h3>
+                  </div>
+                </div>
+                <p style="margin: 0 0 8px 0; font-size: 14px; color: #4b5563;">${event.description
+              }</p>
+                <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px;">
+                  <div style="display: flex; align-items: center; font-size: 14px; color: #4b5563;">
+                    <span style="margin-right: 8px;">📅</span>
+                    ${format(event.date, 'EEEE, MMM d')}
+                  </div>
+                  <div style="display: flex; align-items: center; font-size: 14px; color: #4b5563;">
+                    <span style="margin-right: 8px;">🕐</span>
+                    ${event.startTime} (${event.duration} min)
+                  </div>
+                  <div style="display: flex; align-items: center; font-size: 14px; color: #4b5563;">
+                    <span style="margin-right: 8px;">👥</span>
+                    ${event.participants.length}/${event.maxParticipants} players
+                  </div>
+                  ${event.price
+                ? `
+                    <div style="display: flex; align-items: center; font-size: 14px; color: #4b5563;">
+                      <span style="margin-right: 8px;">💰</span>
+                      €${event.price} per person
+                    </div>
+                  `
+                : ''
+              }
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                  <span style="font-size: 12px; padding: 4px 8px; border-radius: 4px; background-color: ${spotsLeft > 0 ? '#dcfce7' : '#fef3c7'
+              }; color: ${spotsLeft > 0 ? '#166534' : '#92400e'
+              }; font-weight: 500;">
+                    ${spotsLeft > 0 ? `${spotsLeft} spots left` : 'Waitlist'}
+                  </span>
+                  ${isJoined
+                ? `<button 
+                        style="padding: 6px 12px; background-color: #e5e7eb; color: #374151; border: none; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: default;"
+                      >
+                        You are playing
+                      </button>`
+                : `<button 
+                        onclick="window.joinEvent_${event.id}()"
+                        style="padding: 6px 12px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
+                        onmouseover="this.style.backgroundColor='#059669'"
+                        onmouseout="this.style.backgroundColor='#10b981'"
+                      >
+                        ${spotsLeft > 0 ? 'Join Game' : 'Join Waitlist'}
+                      </button>`
+              } 
+                </div>
               </div>
             `
-              : ''
-            }
-          </div>
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
-            <span style="font-size: 12px; padding: 4px 8px; border-radius: 4px; background-color: ${spotsLeft > 0 ? '#dcfce7' : '#fef3c7'
-            }; color: ${spotsLeft > 0 ? '#166534' : '#92400e'
-            }; font-weight: 500;">
-              ${spotsLeft > 0 ? `${spotsLeft} spots left` : 'Waitlist'}
-            </span>
-            ${isJoined
-              ? `<button 
-                  style="padding: 8px 16px; background-color: #e5e7eb; color: #374151; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: default;"
-                >
-                  You are playing
-                </button>`
-              : `<button 
-                  onclick="window.joinEvent_${event.id}()"
-                  style="padding: 8px 16px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
-                  onmouseover="this.style.backgroundColor='#059669'"
-                  onmouseout="this.style.backgroundColor='#10b981'"
-                >
-                  ${spotsLeft > 0 ? 'Join Game' : 'Join Waitlist'}
-                </button>`
-            } 
-          </div>
-        </div>
-      `
+            popupContent += eventHtml
 
-          if (typeof window !== 'undefined') {
-            ; (window as any)[`joinEvent_${event.id}`] = () => {
-              onJoinEventRef.current?.(event.id)
-              marker.closePopup()
+            if (typeof window !== 'undefined') {
+              ; (window as any)[`joinEvent_${event.id}`] = () => {
+                onJoinEventRef.current?.(event.id)
+                marker.closePopup()
+              }
             }
+
+            eventMarkersRef.current.set(event.id, marker)
+          })
+
+          if (venueEvents.length > 1) {
+            popupContent += `</div>`
           }
+          popupContent += `</div>`
 
           marker.bindPopup(popupContent, {
             maxWidth: 320,
@@ -243,11 +287,12 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
           })
 
           marker.on('click', () => {
-            onEventSelectRef.current?.(event)
+            if (venueEvents.length === 1) {
+              onEventSelectRef.current?.(venueEvents[0])
+            }
           })
 
           markersRef.current.push(marker)
-          eventMarkersRef.current.set(event.id, marker)
         })
 
         if (
