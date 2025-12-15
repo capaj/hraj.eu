@@ -6,8 +6,11 @@ import { EventMap, EventMapRef } from '../components/map/EventMap'
 import { Button } from '../components/ui/Button'
 import { Map, List, ArrowUpDown } from 'lucide-react'
 import { Event } from '../types'
+import { msg } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 import { joinEvent } from '~/server-functions/joinEvent'
 import { authClient } from '../lib/auth-client'
+import { i18n } from '~/lib/i18n'
 
 type SortOption = 'date' | 'distance' | 'spots'
 
@@ -181,13 +184,13 @@ export const Discover: React.FC = () => {
   const getSortLabel = (option: SortOption): string => {
     switch (option) {
       case 'date':
-        return 'Date & Time'
+        return i18n._(msg`Date & Time`)
       case 'distance':
-        return 'Distance'
+        return i18n._(msg`Distance`)
       case 'spots':
-        return 'Available Spots'
+        return i18n._(msg`Available Spots`)
       default:
-        return 'Date & Time'
+        return i18n._(msg`Date & Time`)
     }
   }
 
@@ -213,15 +216,19 @@ export const Discover: React.FC = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-white">Discover Events</h1>
+            <h1 className="text-3xl font-bold text-white">
+              <Trans>Discover Events</Trans>
+            </h1>
             <p className="text-white/80 mt-2">
-              Find and join sports events in your area
+              <Trans>Find and join sports events in your area</Trans>
             </p>
           </div>
 
           <div className="flex items-center space-x-2 text-sm text-white/80">
             <Map size={16} className="text-white" />
-            <span>Click markers to highlight events below</span>
+            <span>
+              <Trans>Click markers to highlight events below</Trans>
+            </span>
           </div>
         </div>
 
@@ -236,27 +243,31 @@ export const Discover: React.FC = () => {
         {/* Results and Sort Controls */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
           <p className="text-white/80">
-            {filteredAndSortedEvents.length} event
-            {filteredAndSortedEvents.length !== 1 ? 's' : ''} found
+            {i18n._(
+              msg`{count} event{count, plural, one {} other {s}} found`.id,
+              { count: filteredAndSortedEvents.length }
+            )}
           </p>
 
           {/* Sort Dropdown */}
           <div className="flex items-center space-x-3">
             <ArrowUpDown size={16} className="text-white/80" />
-            <span className="text-sm text-white font-medium">Sort by:</span>
+            <span className="text-sm text-white font-medium">
+              <Trans>Sort by:</Trans>
+            </span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
               className="px-3 py-2 border border-white/20 rounded-lg text-sm focus:ring-2 focus:ring-white focus:border-transparent bg-white/10 text-white backdrop-blur-sm"
             >
               <option value="date" className="text-gray-900">
-                Date & Time
+                <Trans>Date & Time</Trans>
               </option>
               <option value="distance" className="text-gray-900">
-                Distance
+                <Trans>Distance</Trans>
               </option>
               <option value="spots" className="text-gray-900">
-                Available Spots
+                <Trans>Available Spots</Trans>
               </option>
             </select>
           </div>
@@ -284,8 +295,11 @@ export const Discover: React.FC = () => {
           <div className="flex items-center mb-6">
             <List size={20} className="text-white mr-2" />
             <h2 className="text-xl font-semibold text-white">
-              Event List{' '}
-              {sortBy !== 'date' && `(sorted by ${getSortLabel(sortBy)})`}
+              <Trans>Event List</Trans>{' '}
+              {sortBy !== 'date' &&
+                i18n._(msg`(sorted by {label})`.id, {
+                  label: getSortLabel(sortBy)
+                })}
             </h2>
           </div>
 
@@ -306,9 +320,11 @@ export const Discover: React.FC = () => {
                           {sortBy === 'distance' && distance
                             ? distance
                             : sortBy === 'spots'
-                              ? `${event.maxParticipants -
-                              event.participants.length
-                              } spots`
+                              ? i18n._(msg`{count} spots`.id, {
+                                  count:
+                                    event.maxParticipants -
+                                    event.participants.length
+                                })
                               : `#${index + 1}`}
                         </div>
                       </div>
@@ -331,12 +347,14 @@ export const Discover: React.FC = () => {
                 <List size={48} className="mx-auto" />
               </div>
               <h3 className="text-lg font-medium text-white mb-2">
-                No events found
+                <Trans>No events found</Trans>
               </h3>
               <p className="text-white/80 mb-4">
-                Try adjusting your filters or create a new event.
+                <Trans>Try adjusting your filters or create a new event.</Trans>
               </p>
-              <Button variant="secondary">Create Event</Button>
+              <Button variant="secondary">
+                <Trans>Create Event</Trans>
+              </Button>
             </div>
           )}
         </div>

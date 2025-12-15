@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
+import { msg } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { getUsers } from '~/server-functions/getUsers'
 import { User } from '../types'
 import { SPORTS } from '../lib/constants'
+import { i18n } from '~/lib/i18n'
 import {
   Trophy,
   Medal,
@@ -69,11 +72,15 @@ export const Leaderboard: React.FC = () => {
                 Math.floor(Math.random() * 20)
               : user.karmaPoints,
             subtitle: sport
-              ? `${
-                  Math.floor(user.karmaPoints * 0.7) +
-                  Math.floor(Math.random() * 20)
-                } karma in ${SPORTS.find((s) => s.id === sport)?.name}`
-              : `${user.karmaPoints} karma points`,
+              ? i18n._(msg`{karma} karma in {sportName}`.id, {
+                  karma:
+                    Math.floor(user.karmaPoints * 0.7) +
+                    Math.floor(Math.random() * 20),
+                  sportName: SPORTS.find((s) => s.id === sport)?.name ?? sport
+                })
+              : i18n._(msg`{karmaPoints} karma points`.id, {
+                  karmaPoints: user.karmaPoints
+                }),
             change: Math.floor(Math.random() * 20) - 10
           }))
           .sort((a, b) => b.score - a.score)
@@ -90,10 +97,11 @@ export const Leaderboard: React.FC = () => {
           .map((user, index) => ({
             ...user,
             subtitle: sport
-              ? `${user.score} ${
-                  SPORTS.find((s) => s.id === sport)?.name
-                } events organized`
-              : `${user.score} events organized`
+              ? i18n._(msg`{count} {sportName} events organized`.id, {
+                  count: user.score,
+                  sportName: SPORTS.find((s) => s.id === sport)?.name ?? sport
+                })
+              : i18n._(msg`{count} events organized`.id, { count: user.score })
           }))
 
       case 'events-joined':
@@ -108,10 +116,11 @@ export const Leaderboard: React.FC = () => {
           .map((user, index) => ({
             ...user,
             subtitle: sport
-              ? `${user.score} ${
-                  SPORTS.find((s) => s.id === sport)?.name
-                } events joined`
-              : `${user.score} events joined`
+              ? i18n._(msg`{count} {sportName} events joined`.id, {
+                  count: user.score,
+                  sportName: SPORTS.find((s) => s.id === sport)?.name ?? sport
+                })
+              : i18n._(msg`{count} events joined`.id, { count: user.score })
           }))
 
       case 'monthly':
@@ -126,10 +135,11 @@ export const Leaderboard: React.FC = () => {
           .map((user, index) => ({
             ...user,
             subtitle: sport
-              ? `${user.score} points in ${
-                  SPORTS.find((s) => s.id === sport)?.name
-                } this month`
-              : `${user.score} points this month`
+              ? i18n._(msg`{count} points in {sportName} this month`.id, {
+                  count: user.score,
+                  sportName: SPORTS.find((s) => s.id === sport)?.name ?? sport
+                })
+              : i18n._(msg`{count} points this month`.id, { count: user.score })
           }))
 
       default:
@@ -190,13 +200,13 @@ export const Leaderboard: React.FC = () => {
   const getTypeTitle = (type: LeaderboardType) => {
     switch (type) {
       case 'karma':
-        return 'Overall Karma'
+        return i18n._(msg`Overall Karma`)
       case 'events-organized':
-        return 'Events Organized'
+        return i18n._(msg`Events Organized`)
       case 'events-joined':
-        return 'Events Joined'
+        return i18n._(msg`Events Joined`)
       case 'monthly':
-        return 'This Month'
+        return i18n._(msg`This Month`)
     }
   }
 
@@ -204,19 +214,32 @@ export const Leaderboard: React.FC = () => {
     const sportName = selectedSport
       ? SPORTS.find((s) => s.id === selectedSport)?.name
       : ''
-    const sportPrefix = sportName ? `${sportName} - ` : ''
 
     switch (type) {
-      case 'karma':
-        return `${sportPrefix}Top players by ${
-          selectedSport ? 'sport-specific' : 'total'
-        } karma points earned`
+          case 'karma':
+        return sportName
+          ? selectedSport
+            ? i18n._(msg`{sportName} - Top players by sport-specific karma points earned`.id, {
+                sportName
+              })
+            : i18n._(msg`{sportName} - Top players by total karma points earned`.id, {
+                sportName
+              })
+          : selectedSport
+            ? i18n._(msg`Top players by sport-specific karma points earned`)
+            : i18n._(msg`Top players by total karma points earned`)
       case 'events-organized':
-        return `${sportPrefix}Most active event organizers`
+        return sportName
+          ? i18n._(msg`{sportName} - Most active event organizers`.id, { sportName })
+          : i18n._(msg`Most active event organizers`)
       case 'events-joined':
-        return `${sportPrefix}Most active participants`
+        return sportName
+          ? i18n._(msg`{sportName} - Most active participants`.id, { sportName })
+          : i18n._(msg`Most active participants`)
       case 'monthly':
-        return `${sportPrefix}Top performers this month`
+        return sportName
+          ? i18n._(msg`{sportName} - Top performers this month`.id, { sportName })
+          : i18n._(msg`Top performers this month`)
     }
   }
 
@@ -248,11 +271,13 @@ export const Leaderboard: React.FC = () => {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white mb-4 flex items-center justify-center">
             <Trophy className="text-yellow-400 mr-3" size={32} />
-            Community Leaderboard
+            <Trans>Community Leaderboard</Trans>
           </h1>
           <p className="text-lg text-white/80 max-w-2xl mx-auto">
-            Celebrate our most active community members and see how you rank
-            among fellow sports enthusiasts
+            <Trans>
+              Celebrate our most active community members and see how you rank
+              among fellow sports enthusiasts
+            </Trans>
           </p>
         </div>
 
@@ -262,7 +287,7 @@ export const Leaderboard: React.FC = () => {
           <Card>
             <CardContent className="p-4">
               <h3 className="font-semibold text-gray-900 mb-3 text-sm">
-                Leaderboard Categories
+                <Trans>Leaderboard Categories</Trans>
               </h3>
               <div className="grid grid-cols-2 gap-2">
                 {(
@@ -295,7 +320,7 @@ export const Leaderboard: React.FC = () => {
             <CardContent className="p-4">
               <h3 className="font-semibold text-gray-900 mb-3 text-sm flex items-center">
                 <Filter size={16} className="mr-2" />
-                Filter by Sport
+                <Trans>Filter by Sport</Trans>
               </h3>
               <div className="relative">
                 <button
@@ -313,7 +338,9 @@ export const Leaderboard: React.FC = () => {
                     ) : (
                       <>
                         <span className="mr-2">🏆</span>
-                        <span>All Sports</span>
+                        <span>
+                          <Trans>All Sports</Trans>
+                        </span>
                       </>
                     )}
                   </span>
@@ -337,7 +364,9 @@ export const Leaderboard: React.FC = () => {
                       }`}
                     >
                       <span className="mr-2">🏆</span>
-                      <span>All Sports</span>
+                      <span>
+                        <Trans>All Sports</Trans>
+                      </span>
                     </button>
                     {SPORTS.map((sport) => (
                       <button
@@ -371,7 +400,9 @@ export const Leaderboard: React.FC = () => {
                 <h2 className="text-xl font-bold text-gray-900 flex items-center">
                   {getTypeIcon(selectedType)}
                   <span className="ml-2">
-                    {getTypeTitle(selectedType)} Leaderboard
+                    {i18n._(msg`{title} Leaderboard`.id, {
+                      title: getTypeTitle(selectedType)
+                    })}
                   </span>
                   {selectedSport && (
                     <span className="ml-2 text-lg">
@@ -393,7 +424,7 @@ export const Leaderboard: React.FC = () => {
                   </Badge>
                 )}
                 <Badge variant="default" size="md">
-                  Updated daily
+                  <Trans>Updated daily</Trans>
                 </Badge>
               </div>
             </div>
@@ -533,17 +564,19 @@ export const Leaderboard: React.FC = () => {
                   <Trophy size={48} className="mx-auto" />
                 </div>
                 <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  No players found
+                  <Trans>No players found</Trans>
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  No players have skill levels recorded for{' '}
-                  {SPORTS.find((s) => s.id === selectedSport)?.name}.
+                  <Trans>
+                    No players have skill levels recorded for{' '}
+                    {SPORTS.find((s) => s.id === selectedSport)?.name ?? ''}.
+                  </Trans>
                 </p>
                 <Button
                   variant="outline"
                   onClick={() => setSelectedSport(undefined)}
                 >
-                  View All Sports
+                  <Trans>View All Sports</Trans>
                 </Button>
               </div>
             )}
@@ -559,14 +592,16 @@ export const Leaderboard: React.FC = () => {
                   <Crown className="text-yellow-600" size={24} />
                 </div>
                 <div className="text-2xl font-bold text-gray-900 mb-1">
-                  {leaderboardData[0]?.name || 'N/A'}
+                  {leaderboardData[0]?.name || i18n._(msg`N/A`)}
                 </div>
                 <div className="text-sm text-gray-600">
                   {selectedSport
-                    ? `${
-                        SPORTS.find((s) => s.id === selectedSport)?.name
-                      } Champion`
-                    : 'Current Champion'}
+                    ? i18n._(msg`{sportName} Champion`.id, {
+                        sportName:
+                          SPORTS.find((s) => s.id === selectedSport)?.name ??
+                          ''
+                      })
+                    : i18n._(msg`Current Champion`)}
                 </div>
               </CardContent>
             </Card>
@@ -581,10 +616,12 @@ export const Leaderboard: React.FC = () => {
                 </div>
                 <div className="text-sm text-gray-600">
                   {selectedSport
-                    ? `${
-                        SPORTS.find((s) => s.id === selectedSport)?.name
-                      } Players`
-                    : 'Active Players'}
+                    ? i18n._(msg`{sportName} Players`.id, {
+                        sportName:
+                          SPORTS.find((s) => s.id === selectedSport)?.name ??
+                          ''
+                      })
+                    : i18n._(msg`Active Players`)}
                 </div>
               </CardContent>
             </Card>
@@ -600,7 +637,9 @@ export const Leaderboard: React.FC = () => {
                       leaderboardData.length
                   )}
                 </div>
-                <div className="text-sm text-gray-600">Average Score</div>
+                <div className="text-sm text-gray-600">
+                  <Trans>Average Score</Trans>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -610,50 +649,50 @@ export const Leaderboard: React.FC = () => {
         <Card className="mt-8">
           <CardHeader>
             <h3 className="text-lg font-semibold text-gray-900">
-              How Karma Points Work
+              <Trans>How Karma Points Work</Trans>
             </h3>
           </CardHeader>
           <CardContent className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <h4 className="font-medium text-gray-900 mb-3 text-green-700">
-                  Earn Points For:
+                  <Trans>Earn Points For:</Trans>
                 </h4>
                 <ul className="space-y-2 text-sm text-gray-700">
                   <li className="flex items-center">
                     <span className="text-green-500 mr-2">+</span>
-                    Organizing successful events (+10 points)
+                    <Trans>Organizing successful events (+10 points)</Trans>
                   </li>
                   <li className="flex items-center">
                     <span className="text-green-500 mr-2">+</span>
-                    Attending events (+5 points)
+                    <Trans>Attending events (+5 points)</Trans>
                   </li>
                   <li className="flex items-center">
                     <span className="text-green-500 mr-2">+</span>
-                    Positive feedback from players (+3 points)
+                    <Trans>Positive feedback from players (+3 points)</Trans>
                   </li>
                   <li className="flex items-center">
                     <span className="text-green-500 mr-2">+</span>
-                    Helping new players (+2 points)
+                    <Trans>Helping new players (+2 points)</Trans>
                   </li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-medium text-gray-900 mb-3 text-red-700">
-                  Lose Points For:
+                  <Trans>Lose Points For:</Trans>
                 </h4>
                 <ul className="space-y-2 text-sm text-gray-700">
                   <li className="flex items-center">
                     <span className="text-red-500 mr-2">-</span>
-                    No-shows without notice (-5 points)
+                    <Trans>No-shows without notice (-5 points)</Trans>
                   </li>
                   <li className="flex items-center">
                     <span className="text-red-500 mr-2">-</span>
-                    Canceling events last minute (-3 points)
+                    <Trans>Canceling events last minute (-3 points)</Trans>
                   </li>
                   <li className="flex items-center">
                     <span className="text-red-500 mr-2">-</span>
-                    Negative behavior reports (-10 points)
+                    <Trans>Negative behavior reports (-10 points)</Trans>
                   </li>
                 </ul>
               </div>
@@ -664,14 +703,18 @@ export const Leaderboard: React.FC = () => {
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <h4 className="font-medium text-blue-900 mb-2 flex items-center">
                     {SPORTS.find((s) => s.id === selectedSport)?.icon}
-                    <span className="ml-2">Sport-Specific Rankings</span>
+                    <span className="ml-2">
+                      <Trans>Sport-Specific Rankings</Trans>
+                    </span>
                   </h4>
                   <p className="text-sm text-blue-800">
-                    When filtering by{' '}
-                    {SPORTS.find((s) => s.id === selectedSport)?.name}, rankings
-                    show karma points and activities specifically related to
-                    this sport. Only players with recorded skill levels in this
-                    sport are included in the rankings.
+                    <Trans>
+                      When filtering by{' '}
+                      {SPORTS.find((s) => s.id === selectedSport)?.name ?? ''},
+                      rankings show karma points and activities specifically
+                      related to this sport. Only players with recorded skill
+                      levels in this sport are included in the rankings.
+                    </Trans>
                   </p>
                 </div>
               </div>

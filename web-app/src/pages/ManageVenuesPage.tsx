@@ -6,6 +6,7 @@ import { Venue } from '../types'
 import { getVenuesByUserId } from '~/server-functions/getVenuesByUserId'
 import { useUser } from '~/lib/auth-client'
 import { AddVenueModal } from '../components/venues/AddVenueModal'
+import { Trans } from '@lingui/react/macro'
 import {
   MapPin,
   Edit,
@@ -81,6 +82,7 @@ export const ManageVenuesPage: React.FC = () => {
   }
 
   const renderVenueCard = (venue: Venue) => {
+    const createdAtLabel = format(venue.createdAt, 'MMM d, yyyy')
     return (
       <Card key={venue.id} className="hover:shadow-lg transition-shadow">
         <CardContent className="p-6">
@@ -93,13 +95,13 @@ export const ManageVenuesPage: React.FC = () => {
                 {venue.isVerified && (
                   <Badge variant="success" size="sm">
                     <CheckCircle size={12} className="mr-1" />
-                    Verified
+                    <Trans>Verified</Trans>
                   </Badge>
                 )}
                 {!venue.isVerified && (
                   <Badge variant="warning" size="sm">
                     <XCircle size={12} className="mr-1" />
-                    Pending
+                    <Trans>Pending</Trans>
                   </Badge>
                 )}
               </div>
@@ -122,7 +124,7 @@ export const ManageVenuesPage: React.FC = () => {
                 )}
                 <div className="flex items-center">
                   <Calendar size={14} className="mr-1" />
-                  Added {format(venue.createdAt, 'MMM d, yyyy')}
+                  <Trans>Added {createdAtLabel}</Trans>
                 </div>
               </div>
             </div>
@@ -132,7 +134,7 @@ export const ManageVenuesPage: React.FC = () => {
               onClick={() => handleEditVenue(venue)}
             >
               <Edit size={16} className="mr-2" />
-              Edit
+              <Trans>Edit</Trans>
             </Button>
           </div>
 
@@ -145,7 +147,7 @@ export const ManageVenuesPage: React.FC = () => {
           {venue.sports.length > 0 && (
             <div className="mb-4">
               <h4 className="text-sm font-medium text-gray-700 mb-2">
-                Sports:
+                <Trans>Sports:</Trans>
               </h4>
               <div className="flex flex-wrap gap-2">
                 {venue.sports.map((sportId) => (
@@ -161,7 +163,7 @@ export const ManageVenuesPage: React.FC = () => {
           {venue.facilities.length > 0 && (
             <div className="mb-4">
               <h4 className="text-sm font-medium text-gray-700 mb-2">
-                Facilities:
+                <Trans>Facilities:</Trans>
               </h4>
               <div className="flex flex-wrap gap-2">
                 {venue.facilities.map((facility) => (
@@ -196,7 +198,7 @@ export const ManageVenuesPage: React.FC = () => {
                     rel="noopener noreferrer"
                     className="text-primary-600 hover:underline"
                   >
-                    Website
+                    <Trans>Website</Trans>
                   </a>
                 </div>
               )}
@@ -228,15 +230,15 @@ export const ManageVenuesPage: React.FC = () => {
             <div>
               <h1 className="text-3xl font-bold text-white flex items-center">
                 <Building2 className="mr-3 text-white" size={32} />
-                Manage Venues
+                <Trans>Manage Venues</Trans>
               </h1>
               <p className="text-white/80 mt-2">
-                View and edit venues you've added to the platform
+                <Trans>View and edit venues you've added to the platform</Trans>
               </p>
             </div>
             <Button variant="primary" onClick={handleAddVenue}>
               <Plus size={16} className="mr-2" />
-              Add New Venue
+              <Trans>Add New Venue</Trans>
             </Button>
           </div>
         </div>
@@ -245,7 +247,9 @@ export const ManageVenuesPage: React.FC = () => {
           <Card>
             <CardContent className="p-8 text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto"></div>
-              <p className="mt-4 text-gray-600">Loading venues...</p>
+              <p className="mt-4 text-gray-600">
+                <Trans>Loading venues...</Trans>
+              </p>
             </CardContent>
           </Card>
         ) : venues.length === 0 ? (
@@ -253,15 +257,17 @@ export const ManageVenuesPage: React.FC = () => {
             <CardContent className="p-8 text-center">
               <Building2 size={48} className="mx-auto text-gray-400 mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">
-                No venues yet
+                <Trans>No venues yet</Trans>
               </h3>
               <p className="text-gray-600 mb-4">
-                You haven't added any venues yet. Start by adding your first
-                venue!
+                <Trans>
+                  You haven't added any venues yet. Start by adding your first
+                  venue!
+                </Trans>
               </p>
               <Button variant="primary" onClick={handleAddVenue}>
                 <Plus size={16} className="mr-2" />
-                Add Your First Venue
+                <Trans>Add Your First Venue</Trans>
               </Button>
             </CardContent>
           </Card>

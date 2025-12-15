@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { msg } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { Toggle } from '../components/ui/Toggle'
@@ -34,6 +36,7 @@ import {
 } from 'lucide-react'
 
 import { useUser } from '~/lib/auth-client'
+import { i18n } from '~/lib/i18n'
 
 export const UserProfile: React.FC = () => {
   const userFromAuth = useUser()
@@ -97,7 +100,7 @@ export const UserProfile: React.FC = () => {
 
     // In a real app, this would make an API call to update the user
     console.log('User updated:', editedUser)
-    alert('Profile updated successfully!')
+    alert(i18n._(msg`Profile updated successfully!`))
   }
 
   const handleCancel = () => {
@@ -120,7 +123,7 @@ export const UserProfile: React.FC = () => {
       console.log('Revolut tag updated:', editedRevTag)
     } catch (error) {
       console.error('Failed to update Revolut tag:', error)
-      alert('Failed to update Revolut tag. Please try again.')
+      alert(i18n._(msg`Failed to update Revolut tag. Please try again.`))
     }
   }
 
@@ -142,7 +145,7 @@ export const UserProfile: React.FC = () => {
       console.log('Bank account updated:', editedBankAccount)
     } catch (error) {
       console.error('Failed to update bank account:', error)
-      alert('Failed to update bank account. Please try again.')
+      alert(i18n._(msg`Failed to update bank account. Please try again.`))
     }
   }
 
@@ -302,13 +305,13 @@ export const UserProfile: React.FC = () => {
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      alert('Please select an image file')
+      alert(i18n._(msg`Please select an image file`))
       return
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      alert('Image must be smaller than 5MB')
+      alert(i18n._(msg`Image must be smaller than 5MB`))
       return
     }
 
@@ -332,7 +335,7 @@ export const UserProfile: React.FC = () => {
       console.log('Avatar uploaded:', file.name)
     } catch (error) {
       console.error('Upload failed:', error)
-      alert('Failed to upload image. Please try again.')
+      alert(i18n._(msg`Failed to upload image. Please try again.`))
     } finally {
       setIsUploadingAvatar(false)
     }
@@ -345,17 +348,17 @@ export const UserProfile: React.FC = () => {
       !passwordData.newPassword ||
       !passwordData.confirmPassword
     ) {
-      alert('Please fill in all password fields.')
+      alert(i18n._(msg`Please fill in all password fields.`))
       return
     }
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert('New passwords do not match.')
+      alert(i18n._(msg`New passwords do not match.`))
       return
     }
 
     if (passwordData.newPassword.length < 8) {
-      alert('New password must be at least 8 characters long.')
+      alert(i18n._(msg`New password must be at least 8 characters long.`))
       return
     }
 
@@ -374,10 +377,10 @@ export const UserProfile: React.FC = () => {
       setShowPasswordChange(false)
 
       console.log('Password changed successfully')
-      alert('Password changed successfully!')
+      alert(i18n._(msg`Password changed successfully!`))
     } catch (error) {
       console.error('Failed to change password:', error)
-      alert('Failed to change password. Please try again.')
+      alert(i18n._(msg`Failed to change password. Please try again.`))
     } finally {
       setIsChangingPassword(false)
     }
@@ -385,7 +388,7 @@ export const UserProfile: React.FC = () => {
 
   const handleDeleteAccount = async () => {
     if (deleteConfirmText !== 'DELETE') {
-      alert('Please type "DELETE" to confirm account deletion.')
+      alert(i18n._(msg`Please type "DELETE" to confirm account deletion.`))
       return
     }
 
@@ -397,7 +400,9 @@ export const UserProfile: React.FC = () => {
 
       console.log('Account deletion requested')
       alert(
-        'Account deletion request submitted. You will receive an email with further instructions.'
+        i18n._(
+          msg`Account deletion request submitted. You will receive an email with further instructions.`
+        )
       )
 
       // Reset form
@@ -405,7 +410,7 @@ export const UserProfile: React.FC = () => {
       setDeleteConfirmText('')
     } catch (error) {
       console.error('Failed to delete account:', error)
-      alert('Failed to process account deletion. Please try again.')
+      alert(i18n._(msg`Failed to process account deletion. Please try again.`))
     } finally {
       setIsDeletingAccount(false)
     }
@@ -481,8 +486,8 @@ export const UserProfile: React.FC = () => {
                   )}
                   <div className="flex items-center justify-center lg:justify-start">
                     <Calendar size={16} className="mr-2" />
-                    Member since{' '}
-                    {editedUser.createdAt.toLocaleDateString('en-US', {
+                    <Trans>Member since</Trans>{' '}
+                    {editedUser.createdAt.toLocaleDateString(undefined, {
                       month: 'long',
                       year: 'numeric'
                     })}
@@ -496,7 +501,9 @@ export const UserProfile: React.FC = () => {
                     <div className="text-2xl font-bold text-yellow-600">
                       {editedUser.karmaPoints}
                     </div>
-                    <div className="text-sm text-gray-600">Karma Points</div>
+                    <div className="text-sm text-gray-600">
+                      <Trans>Karma Points</Trans>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -515,7 +522,7 @@ export const UserProfile: React.FC = () => {
                 <div className="flex-shrink-0 flex justify-between">
                   <h3 className="text-xl font-semibold text-gray-900 flex items-center">
                     <Settings size={20} className="mr-2" />
-                    Personal Information
+                    <Trans>Personal Information</Trans>
                   </h3>
                   {!isEditing ? (
                     <Button
@@ -523,16 +530,16 @@ export const UserProfile: React.FC = () => {
                       onClick={() => setIsEditing(true)}
                     >
                       <Edit3 size={16} className="mr-2" />
-                      Edit Profile
+                      <Trans>Edit Profile</Trans>
                     </Button>
                   ) : (
                     <div className="flex space-x-3">
                       <Button variant="outline" onClick={handleCancel}>
-                        Cancel
+                        <Trans>Cancel</Trans>
                       </Button>
                       <Button variant="primary" onClick={handleSave}>
                         <Save size={16} className="mr-2" />
-                        Save Changes
+                        <Trans>Save Changes</Trans>
                       </Button>
                     </div>
                   )}
@@ -563,17 +570,17 @@ export const UserProfile: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email Address
+                      <Trans>Email Address</Trans>
                     </label>
                     <div className="py-2 text-gray-900">{user.email}</div>
                     <div className="text-xs text-gray-500">
-                      Contact support to change email
+                      <Trans>Contact support to change email</Trans>
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Location
+                      <Trans>Location</Trans>
                     </label>
                     {isEditing ? (
                       <input
@@ -586,18 +593,18 @@ export const UserProfile: React.FC = () => {
                           }))
                         }
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                        placeholder="City, Country"
+                        placeholder={i18n._(msg`City, Country`)}
                       />
                     ) : (
                       <div className="py-2 text-gray-900">
-                        {user.location || 'Not specified'}
+                        {user.location || i18n._(msg`Not specified`)}
                       </div>
                     )}
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Bio
+                      <Trans>Bio</Trans>
                     </label>
                     {isEditing ? (
                       <textarea
@@ -610,11 +617,13 @@ export const UserProfile: React.FC = () => {
                         }
                         rows={3}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                        placeholder="Tell us about yourself and your sports interests..."
+                        placeholder={i18n._(
+                          msg`Tell us about yourself and your sports interests...`
+                        )}
                       />
                     ) : (
                       <div className="py-2 text-gray-900">
-                        {user.bio || 'No bio provided'}
+                        {user.bio || i18n._(msg`No bio provided`)}
                       </div>
                     )}
                   </div>
@@ -627,10 +636,10 @@ export const UserProfile: React.FC = () => {
               <CardHeader>
                 <h3 className="text-xl font-semibold text-gray-900 flex items-center">
                   <Shield size={20} className="mr-2" />
-                  Account Security
+                  <Trans>Account Security</Trans>
                 </h3>
                 <p className="text-gray-600 text-sm mt-1">
-                  Manage your password and account security settings
+                  <Trans>Manage your password and account security settings</Trans>
                 </p>
               </CardHeader>
               <CardContent className="p-6">

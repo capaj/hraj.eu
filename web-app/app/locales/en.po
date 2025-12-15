@@ -13,34 +13,661 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/EventDetailsPage.tsx:56
-msgid "Café/Restaurant"
+#: src/pages/DiscoverPage.tsx:300
+msgid "(sorted by {label})"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:61
-msgid "Changing Rooms"
+#: src/pages/LeaderboardPage.tsx:119
+msgid "{count} {sportName} events joined"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:59
-msgid "Locker Room"
+#: src/pages/LeaderboardPage.tsx:100
+msgid "{count} {sportName} events organized"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:57
-msgid "Lounge"
+#: src/pages/DiscoverPage.tsx:247
+msgid "{count} event{count, plural, one {} other {s}} found"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:54
-msgid "Parking"
+#: src/pages/LeaderboardPage.tsx:123
+msgid "{count} events joined"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:55
-msgid "Restrooms"
+#: src/pages/LeaderboardPage.tsx:104
+msgid "{count} events organized"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:60
-msgid "Showers"
+#: src/pages/LeaderboardPage.tsx:138
+msgid "{count} points in {sportName} this month"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:58
-msgid "WiFi"
+#: src/pages/LeaderboardPage.tsx:142
+msgid "{count} points this month"
+msgstr ""
+
+#: src/pages/DiscoverPage.tsx:323
+msgid "{count} spots"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:75
+msgid "{karma} karma in {sportName}"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:81
+msgid "{karmaPoints} karma points"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:233
+msgid "{sportName} - Most active event organizers"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:237
+msgid "{sportName} - Most active participants"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:241
+msgid "{sportName} - Top performers this month"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:222
+msgid "{sportName} - Top players by sport-specific karma points earned"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:225
+msgid "{sportName} - Top players by total karma points earned"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:599
+msgid "{sportName} Champion"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:619
+msgid "{sportName} Players"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:403
+msgid "{title} Leaderboard"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:404
+msgid "Account deletion request submitted. You will receive an email with further instructions."
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:639
+msgid "Account Security"
+msgstr ""
+
+#: src/pages/HomePage.tsx:194
+#: src/pages/LeaderboardPage.tsx:624
+msgid "Active Players"
+msgstr ""
+
+#: src/pages/ManageVenuesPage.tsx:241
+msgid "Add New Venue"
+msgstr ""
+
+#: src/pages/ManageVenuesPage.tsx:270
+msgid "Add Your First Venue"
+msgstr ""
+
+#: src/pages/ManageVenuesPage.tsx:127
+msgid "Added {createdAtLabel}"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:342
+#: src/pages/LeaderboardPage.tsx:368
+msgid "All Sports"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:668
+msgid "Attending events (+5 points)"
+msgstr ""
+
+#: src/pages/DiscoverPage.tsx:191
+#: src/pages/DiscoverPage.tsx:270
+msgid "Available Spots"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:641
+msgid "Average Score"
+msgstr ""
+
+#: src/pages/HomePage.tsx:149
+msgid "Be the first to bring your community together! Create an event and start building connections through sport."
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:607
+msgid "Bio"
+msgstr ""
+
+#: src/pages/ProfilePage.tsx:119
+msgid "Browse Events"
+msgstr ""
+
+#: src/pages/HomePage.tsx:279
+msgid "Build Community"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:538
+msgid "Cancel"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:691
+msgid "Canceling events last minute (-3 points)"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:277
+msgid "Celebrate our most active community members and see how you rank among fellow sports enthusiasts"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:596
+msgid "City, Country"
+msgstr ""
+
+#: src/pages/DiscoverPage.tsx:230
+msgid "Click markers to highlight events below"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:274
+msgid "Community Leaderboard"
+msgstr ""
+
+#: src/pages/HomePage.tsx:282
+msgid "Connect with like-minded players, earn karma points, and climb the leaderboards."
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:577
+msgid "Contact support to change email"
+msgstr ""
+
+#: src/pages/HomePage.tsx:202
+msgid "Countries"
+msgstr ""
+
+#: src/components/layout/Header.tsx:108
+#: src/components/layout/Header.tsx:173
+#: src/pages/DiscoverPage.tsx:356
+#: src/pages/HomePage.tsx:235
+msgid "Create Event"
+msgstr ""
+
+#: src/pages/HomePage.tsx:299
+msgid "Create events with payment integration, team balancing, and automated notifications."
+msgstr ""
+
+#: src/pages/ProfilePage.tsx:89
+msgid "Create New"
+msgstr ""
+
+#: src/pages/HomePage.tsx:157
+msgid "Create new Event"
+msgstr ""
+
+#: src/pages/CreateEventPage.tsx:71
+msgid "Creating event..."
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:604
+msgid "Current Champion"
+msgstr ""
+
+#: src/pages/DiscoverPage.tsx:187
+#: src/pages/DiscoverPage.tsx:193
+#: src/pages/DiscoverPage.tsx:264
+msgid "Date & Time"
+msgstr ""
+
+#: src/components/layout/Header.tsx:352
+msgid "Delete notification"
+msgstr ""
+
+#: src/components/layout/Header.tsx:67
+#: src/components/layout/Header.tsx:148
+msgid "Discover"
+msgstr ""
+
+#: src/pages/DiscoverPage.tsx:220
+#: src/pages/ProfilePage.tsx:163
+msgid "Discover Events"
+msgstr ""
+
+#: src/pages/HomePage.tsx:245
+msgid "Discover Games"
+msgstr ""
+
+#: src/pages/HomePage.tsx:265
+msgid "Discover sports events near you with advanced filtering by sport, skill level, and location."
+msgstr ""
+
+#: src/pages/DiscoverPage.tsx:189
+#: src/pages/DiscoverPage.tsx:267
+msgid "Distance"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:659
+msgid "Earn Points For:"
+msgstr ""
+
+#: src/pages/HomePage.tsx:296
+msgid "Easy Organization"
+msgstr ""
+
+#: src/pages/ManageVenuesPage.tsx:137
+msgid "Edit"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:533
+msgid "Edit Profile"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:573
+msgid "Email Address"
+msgstr ""
+
+#: src/components/layout/Header.tsx:327
+msgid "Event"
+msgstr ""
+
+#: src/pages/CreateEventPage.tsx:45
+msgid "Event created successfully!"
+msgstr ""
+
+#: src/pages/DiscoverPage.tsx:298
+msgid "Event List"
+msgstr ""
+
+#: src/pages/HomePage.tsx:186
+msgid "Events Created"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:207
+msgid "Events Joined"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:205
+msgid "Events Organized"
+msgstr ""
+
+#: src/pages/ProfilePage.tsx:93
+msgid "Events you're organizing or participating in"
+msgstr ""
+
+#: src/pages/ProfilePage.tsx:141
+msgid "Events you've saved for later"
+msgstr ""
+
+#: src/pages/ManageVenuesPage.tsx:166
+msgid "Facilities:"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:383
+msgid "Failed to change password. Please try again."
+msgstr ""
+
+#: src/pages/CreateEventPage.tsx:48
+msgid "Failed to create event"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:413
+msgid "Failed to process account deletion. Please try again."
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:148
+msgid "Failed to update bank account. Please try again."
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:126
+msgid "Failed to update Revolut tag. Please try again."
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:338
+msgid "Failed to upload image. Please try again."
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:323
+msgid "Filter by Sport"
+msgstr ""
+
+#: src/pages/DiscoverPage.tsx:223
+msgid "Find and join sports events in your area"
+msgstr ""
+
+#: src/pages/HomePage.tsx:262
+msgid "Find Local Games"
+msgstr ""
+
+#: src/pages/HomePage.tsx:116
+msgid "Finding events near you..."
+msgstr ""
+
+#: src/components/layout/Header.tsx:332
+msgid "from User"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:676
+msgid "Helping new players (+2 points)"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:652
+msgid "How Karma Points Work"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:314
+msgid "Image must be smaller than 5MB"
+msgstr ""
+
+#: src/pages/HomePage.tsx:225
+msgid "Join the largest community of sports enthusiasts across Europe. Organize games, discover events, and make new friends through sport."
+msgstr ""
+
+#: src/pages/ProfilePage.tsx:205
+msgid "Join Your First Event"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:505
+msgid "Karma Points"
+msgstr ""
+
+#: src/components/layout/Header.tsx:89
+#: src/components/layout/Header.tsx:130
+msgid "Language"
+msgstr ""
+
+#: src/components/layout/Header.tsx:81
+#: src/components/layout/Header.tsx:164
+msgid "Leaderboard"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:290
+msgid "Leaderboard Categories"
+msgstr ""
+
+#: src/pages/HomePage.tsx:222
+msgid "Let's Play Together"
+msgstr ""
+
+#: src/pages/ManageVenuesPage.tsx:251
+msgid "Loading venues..."
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:583
+msgid "Location"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:682
+msgid "Lose Points For:"
+msgstr ""
+
+#: src/pages/ManageVenuesPage.tsx:233
+msgid "Manage Venues"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:642
+msgid "Manage your password and account security settings"
+msgstr ""
+
+#: src/components/layout/Header.tsx:278
+msgid "Mark all read"
+msgstr ""
+
+#: src/components/layout/Header.tsx:342
+msgid "Mark as read"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:489
+msgid "Member since"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:234
+msgid "Most active event organizers"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:238
+msgid "Most active participants"
+msgstr ""
+
+#: src/components/layout/Header.tsx:74
+#: src/components/layout/Header.tsx:156
+msgid "My Events"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:595
+msgid "N/A"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:695
+msgid "Negative behavior reports (-10 points)"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:361
+msgid "New password must be at least 8 characters long."
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:356
+msgid "New passwords do not match."
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:626
+msgid "No bio provided"
+msgstr ""
+
+#: src/pages/DiscoverPage.tsx:350
+msgid "No events found"
+msgstr ""
+
+#: src/pages/HomePage.tsx:146
+msgid "No Events Yet in Your Area"
+msgstr ""
+
+#: src/components/layout/Header.tsx:366
+msgid "No notifications yet"
+msgstr ""
+
+#: src/pages/ProfilePage.tsx:202
+msgid "No past events"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:567
+msgid "No players found"
+msgstr ""
+
+#. placeholder {0}: SPORTS.find((s) => s.id === selectedSport)?.name ?? ''
+#: src/pages/LeaderboardPage.tsx:570
+msgid "No players have skill levels recorded for {0}."
+msgstr ""
+
+#: src/pages/ProfilePage.tsx:160
+msgid "No saved events"
+msgstr ""
+
+#: src/pages/ProfilePage.tsx:110
+msgid "No upcoming events"
+msgstr ""
+
+#: src/pages/ManageVenuesPage.tsx:260
+msgid "No venues yet"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:687
+msgid "No-shows without notice (-5 points)"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:600
+msgid "Not specified"
+msgstr ""
+
+#: src/components/layout/Header.tsx:270
+msgid "Notifications"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:664
+msgid "Organizing successful events (+10 points)"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:203
+msgid "Overall Karma"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:380
+msgid "Password changed successfully!"
+msgstr ""
+
+#: src/pages/ProfilePage.tsx:177
+msgid "Past Events"
+msgstr ""
+
+#: src/pages/ManageVenuesPage.tsx:104
+msgid "Pending"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:525
+msgid "Personal Information"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:351
+msgid "Please fill in all password fields."
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:308
+msgid "Please select an image file"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:391
+msgid "Please type \"DELETE\" to confirm account deletion."
+msgstr ""
+
+#: src/pages/HomePage.tsx:109
+msgid "Popular Events"
+msgstr ""
+
+#: src/pages/HomePage.tsx:107
+msgid "Popular Events in {userLocation}"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:672
+msgid "Positive feedback from players (+3 points)"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:103
+msgid "Profile updated successfully!"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:542
+msgid "Save Changes"
+msgstr ""
+
+#: src/pages/ProfilePage.tsx:161
+msgid "Save interesting events to easily find them later."
+msgstr ""
+
+#: src/pages/ProfilePage.tsx:133
+msgid "Saved Events"
+msgstr ""
+
+#: src/pages/HomePage.tsx:124
+msgid "Showing events near your location"
+msgstr ""
+
+#: src/pages/DiscoverPage.tsx:256
+msgid "Sort by:"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:707
+msgid "Sport-Specific Rankings"
+msgstr ""
+
+#: src/pages/ManageVenuesPage.tsx:150
+msgid "Sports:"
+msgstr ""
+
+#: src/pages/HomePage.tsx:210
+msgid "Success Rate"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:621
+msgid "Tell us about yourself and your sports interests..."
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:209
+msgid "This Month"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:242
+msgid "Top performers this month"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:229
+msgid "Top players by sport-specific karma points earned"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:230
+msgid "Top players by total karma points earned"
+msgstr ""
+
+#: src/pages/DiscoverPage.tsx:353
+msgid "Try adjusting your filters or create a new event."
+msgstr ""
+
+#: src/pages/ProfilePage.tsx:82
+msgid "Upcoming Events"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:427
+msgid "Updated daily"
+msgstr ""
+
+#: src/pages/ManageVenuesPage.tsx:98
+msgid "Verified"
+msgstr ""
+
+#: src/pages/HomePage.tsx:135
+msgid "View All Events"
+msgstr ""
+
+#: src/components/layout/Header.tsx:386
+msgid "View all notifications"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:579
+msgid "View All Sports"
+msgstr ""
+
+#: src/pages/ManageVenuesPage.tsx:236
+msgid "View and edit venues you've added to the platform"
+msgstr ""
+
+#: src/pages/ManageVenuesPage.tsx:201
+msgid "Website"
+msgstr ""
+
+#. placeholder {0}: SPORTS.find((s) => s.id === selectedSport)?.name ?? ''
+#: src/pages/LeaderboardPage.tsx:711
+msgid "When filtering by {0}, rankings show karma points and activities specifically related to this sport. Only players with recorded skill levels in this sport are included in the rankings."
+msgstr ""
+
+#: src/pages/ManageVenuesPage.tsx:263
+msgid "You haven't added any venues yet. Start by adding your first venue!"
+msgstr ""
+
+#: src/pages/ProfilePage.tsx:112
+msgid "You haven't joined or created any upcoming events yet."
+msgstr ""
+
+#: src/components/layout/Header.tsx:369
+msgid "You'll see updates about your events here"
+msgstr ""
+
+#: src/pages/HomePage.tsx:29
+#: src/pages/HomePage.tsx:45
+#: src/pages/HomePage.tsx:50
+#: src/pages/HomePage.tsx:57
+msgid "your area"
+msgstr ""
+
+#: src/pages/ProfilePage.tsx:203
+msgid "Your completed events will appear here."
+msgstr ""
+
+#: src/pages/ProfilePage.tsx:185
+msgid "Your sports history and achievements"
 msgstr ""

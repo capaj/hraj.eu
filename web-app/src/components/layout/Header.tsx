@@ -1,4 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { useLingui } from '@lingui/react'
+import { Trans } from '@lingui/react/macro'
+import { msg } from '@lingui/core/macro'
 import { Link } from '@tanstack/react-router'
 import { Button } from '../ui/Button'
 import { Badge } from '../ui/Badge'
@@ -14,16 +17,25 @@ import {
   Euro,
   AlertTriangle,
   CheckCircle,
-  Menu
+  Menu,
+  Globe
 } from 'lucide-react'
 import { Notification } from '../../types'
 import { formatDistanceToNow } from 'date-fns'
 import { UserButton } from '../user/UserButton'
 import { authClient } from '~/lib/auth-client'
+import { activateLocale, type AppLocale } from '~/lib/i18n'
 
 export const Header: React.FC = () => {
   const session = authClient.useSession()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const { i18n } = useLingui()
+
+  const currentLocale = (i18n.locale as AppLocale) || 'en'
+  const setLocale = (locale: AppLocale) => {
+    activateLocale(locale)
+    if (typeof window !== 'undefined') window.localStorage.setItem('locale', locale)
+  }
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -52,30 +64,48 @@ export const Header: React.FC = () => {
               className="transition-colors text-gray-700 hover:text-primary-600"
               activeProps={{ className: 'text-primary-600 font-medium' }}
             >
-              Discover
+              <Trans>Discover</Trans>
             </Link>
             <Link
               to="/profile"
               className="transition-colors text-gray-700 hover:text-primary-600"
               activeProps={{ className: 'text-primary-600 font-medium' }}
             >
-              My Events
+              <Trans>My Events</Trans>
             </Link>
             <Link
               to="/leaderboard"
               className="transition-colors text-gray-700 hover:text-primary-600"
               activeProps={{ className: 'text-primary-600 font-medium' }}
             >
-              Leaderboard
+              <Trans>Leaderboard</Trans>
             </Link>
           </nav>
 
           {/* Actions */}
           <div className="flex items-center space-x-4">
+            <div className="hidden sm:flex items-center">
+              <label className="sr-only" htmlFor="locale-select">
+                <Trans>Language</Trans>
+              </label>
+              <div className="flex items-center gap-2 px-2 py-1 border border-gray-200 rounded-lg bg-white">
+                <Globe size={16} className="text-gray-500" />
+                <select
+                  id="locale-select"
+                  value={currentLocale}
+                  onChange={(e) => setLocale(e.target.value as AppLocale)}
+                  className="text-sm bg-transparent text-gray-700 focus:outline-none"
+                >
+                  <option value="en">EN</option>
+                  <option value="cs">CS</option>
+                </select>
+              </div>
+            </div>
+
             <Link to="/create" className="hidden sm:inline-flex">
               <Button variant="primary" size="sm">
                 <Plus size={16} className="mr-2" />
-                Create Event
+                <Trans>Create Event</Trans>
               </Button>
             </Link>
 
@@ -95,13 +125,27 @@ export const Header: React.FC = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden border-t border-gray-200 bg-white">
             <nav className="px-4 py-4 space-y-4">
+              <div className="py-2">
+                <label className="block text-xs text-gray-500 mb-2">
+                  <Trans>Language</Trans>
+                </label>
+                <select
+                  value={currentLocale}
+                  onChange={(e) => setLocale(e.target.value as AppLocale)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white text-gray-700"
+                >
+                  <option value="en">EN</option>
+                  <option value="cs">CS</option>
+                </select>
+              </div>
+
               <Link
                 to="/discover"
                 className="block transition-colors text-gray-700 hover:text-primary-600 py-2"
                 activeProps={{ className: 'text-primary-600 font-medium' }}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Discover
+                <Trans>Discover</Trans>
               </Link>
               <Link
                 to="/profile"
@@ -109,7 +153,7 @@ export const Header: React.FC = () => {
                 activeProps={{ className: 'text-primary-600 font-medium' }}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                My Events
+                <Trans>My Events</Trans>
               </Link>
               <Link
                 to="/leaderboard"
@@ -117,7 +161,7 @@ export const Header: React.FC = () => {
                 activeProps={{ className: 'text-primary-600 font-medium' }}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Leaderboard
+                <Trans>Leaderboard</Trans>
               </Link>
               <Link
                 to="/create"
@@ -126,7 +170,7 @@ export const Header: React.FC = () => {
               >
                 <Button variant="primary" size="sm">
                   <Plus size={16} className="mr-2" />
-                  Create Event
+                  <Trans>Create Event</Trans>
                 </Button>
               </Link>
             </nav>
@@ -138,6 +182,7 @@ export const Header: React.FC = () => {
 }
 
 export const NotificationsDropdown = () => {
+  const { i18n } = useLingui()
   const [showNotifications, setShowNotifications] = useState(false)
   const notificationRef = useRef<HTMLDivElement>(null)
   const session = authClient.useSession()
@@ -222,7 +267,7 @@ export const NotificationsDropdown = () => {
           <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-semibold text-gray-900">
-                Notifications
+                <Trans>Notifications</Trans>
               </h3>
               <div className="flex items-center space-x-2">
                 {unreadCount > 0 && (
@@ -230,7 +275,7 @@ export const NotificationsDropdown = () => {
                     onClick={handleMarkAllAsRead}
                     className="text-xs text-primary-600 hover:text-primary-700 font-medium"
                   >
-                    Mark all read
+                    <Trans>Mark all read</Trans>
                   </button>
                 )}
                 <Badge variant="info" size="sm">
@@ -278,23 +323,23 @@ export const NotificationsDropdown = () => {
                               })}
                             </span>
                             {notification.eventId && (
-                              <span className="text-xs text-blue-600">
-                                • Event #{notification.eventId.slice(0, 8)}
-                              </span>
-                            )}
-                            {notification.fromUserId && (
-                              <span className="text-xs text-green-600">
-                                • from User #{notification.fromUserId.slice(0, 8)}
-                              </span>
-                            )}
-                          </div>
+                            <span className="text-xs text-blue-600">
+                              • <Trans>Event</Trans> #{notification.eventId.slice(0, 8)}
+                            </span>
+                          )}
+                          {notification.fromUserId && (
+                            <span className="text-xs text-green-600">
+                              • <Trans>from User</Trans> #{notification.fromUserId.slice(0, 8)}
+                            </span>
+                          )}
                         </div>
-                        <div className="flex items-center space-x-1 ml-2">
+                      </div>
+                      <div className="flex items-center space-x-1 ml-2">
                           {!notification.isRead && (
                             <button
                               onClick={() => handleMarkAsRead(notification.id)}
                               className="p-1 text-gray-400 hover:text-green-600 transition-colors"
-                              title="Mark as read"
+                              title={i18n._(msg`Mark as read`)}
                             >
                               <Check size={14} />
                             </button>
@@ -304,7 +349,7 @@ export const NotificationsDropdown = () => {
                               handleDeleteNotification(notification.id)
                             }
                             className="p-1 text-gray-400 hover:text-red-600 transition-colors"
-                            title="Delete notification"
+                            title={i18n._(msg`Delete notification`)}
                           >
                             <X size={14} />
                           </button>
@@ -317,9 +362,11 @@ export const NotificationsDropdown = () => {
             ) : (
               <div className="px-4 py-8 text-center">
                 <Bell size={32} className="mx-auto text-gray-400 mb-2" />
-                <p className="text-sm text-gray-500">No notifications yet</p>
+                <p className="text-sm text-gray-500">
+                  <Trans>No notifications yet</Trans>
+                </p>
                 <p className="text-xs text-gray-400 mt-1">
-                  You'll see updates about your events here
+                  <Trans>You'll see updates about your events here</Trans>
                 </p>
               </div>
             )}
@@ -336,7 +383,7 @@ export const NotificationsDropdown = () => {
                 }}
                 className="text-xs text-primary-600 hover:text-primary-700 font-medium w-full text-center"
               >
-                View all notifications
+                <Trans>View all notifications</Trans>
               </button>
             </div>
           )}

@@ -3,8 +3,11 @@ import { CreateEventForm } from '../components/events/CreateEventForm'
 import type { CreateEventFormData } from '../components/events/CreateEventForm'
 // using CreateEventFormData from the form; no need to redeclare based on eventT here
 import { useAuthenticate } from '@daveyplate/better-auth-ui'
+import { msg } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 import { createEvent } from '../lib/createEvent'
 import { toast } from 'sonner'
+import { i18n } from '~/lib/i18n'
 
 // type provided by form
 
@@ -39,9 +42,11 @@ export const CreateEvent: React.FC = () => {
         }
       })
       console.log('Event created:', created)
-      toast.success('Event created successfully!')
+      toast.success(i18n._(msg`Event created successfully!`))
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Failed to create event')
+      toast.error(
+        err instanceof Error ? err.message : i18n._(msg`Failed to create event`)
+      )
     } finally {
       setIsSubmitting(false)
     }
@@ -60,9 +65,11 @@ export const CreateEvent: React.FC = () => {
 
       {isSubmitting && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 flex items-center space-x-4">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
-            <span className="text-gray-900">Creating event...</span>
+            <div className="bg-white rounded-lg p-6 flex items-center space-x-4">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+            <span className="text-gray-900">
+              <Trans>Creating event...</Trans>
+            </span>
           </div>
         </div>
       )}

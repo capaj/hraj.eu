@@ -10,6 +10,9 @@ import { Calendar, MapPin, Users, Clock, Heart, Trophy } from 'lucide-react'
 import { format, isPast, isFuture } from 'date-fns'
 import { useAuthenticate } from '@daveyplate/better-auth-ui'
 import { useUser } from '~/lib/auth-client'
+import { msg } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
+import { i18n } from '~/lib/i18n'
 
 export const Profile: React.FC = () => {
 
@@ -76,18 +79,18 @@ export const Profile: React.FC = () => {
                   <div className="flex items-center">
                     <Calendar className="text-primary-600 mr-2" size={20} />
                     <h2 className="text-xl font-bold text-gray-900">
-                      Upcoming Events
+                      <Trans>Upcoming Events</Trans>
                     </h2>
                     <Badge variant="info" size="sm" className="ml-3">
                       {upcomingEvents.length}
                     </Badge>
                   </div>
                   <Button variant="primary" size="sm">
-                    Create New
+                    <Trans>Create New</Trans>
                   </Button>
                 </div>
                 <p className="text-gray-600 text-sm mt-1">
-                  Events you're organizing or participating in
+                  <Trans>Events you're organizing or participating in</Trans>
                 </p>
               </CardHeader>
               <CardContent>
@@ -104,14 +107,16 @@ export const Profile: React.FC = () => {
                     ))
                     : renderEmptyState(
                       <Calendar size={48} className="mx-auto" />,
-                      'No upcoming events',
-                      "You haven't joined or created any upcoming events yet.",
+                      i18n._(msg`No upcoming events`),
+                      i18n._(
+                        msg`You haven't joined or created any upcoming events yet.`
+                      ),
                       <Button
                         variant="primary"
                         size="sm"
                         onClick={() => navigate({ to: '/discover' })}
                       >
-                        Browse Events
+                        <Trans>Browse Events</Trans>
                       </Button>
                     )}
                 </div>
@@ -125,7 +130,7 @@ export const Profile: React.FC = () => {
                   <div className="flex items-center">
                     <Heart className="text-red-500 mr-2" size={20} />
                     <h2 className="text-xl font-bold text-gray-900">
-                      Saved Events
+                      <Trans>Saved Events</Trans>
                     </h2>
                     <Badge variant="info" size="sm" className="ml-3">
                       {savedEvents.length}
@@ -133,7 +138,7 @@ export const Profile: React.FC = () => {
                   </div>
                 </div>
                 <p className="text-gray-600 text-sm mt-1">
-                  Events you've saved for later
+                  <Trans>Events you've saved for later</Trans>
                 </p>
               </CardHeader>
               <CardContent>
@@ -152,10 +157,10 @@ export const Profile: React.FC = () => {
                     ))
                     : renderEmptyState(
                       <Heart size={48} className="mx-auto" />,
-                      'No saved events',
-                      'Save interesting events to easily find them later.',
+                      i18n._(msg`No saved events`),
+                      i18n._(msg`Save interesting events to easily find them later.`),
                       <Button variant="outline" size="sm">
-                        Discover Events
+                        <Trans>Discover Events</Trans>
                       </Button>
                     )}
                 </div>
@@ -169,7 +174,7 @@ export const Profile: React.FC = () => {
                   <div className="flex items-center">
                     <Trophy className="text-yellow-500 mr-2" size={20} />
                     <h2 className="text-xl font-bold text-gray-900">
-                      Past Events
+                      <Trans>Past Events</Trans>
                     </h2>
                     <Badge variant="info" size="sm" className="ml-3">
                       {pastEvents.length}
@@ -177,7 +182,7 @@ export const Profile: React.FC = () => {
                   </div>
                 </div>
                 <p className="text-gray-600 text-sm mt-1">
-                  Your sports history and achievements
+                  <Trans>Your sports history and achievements</Trans>
                 </p>
               </CardHeader>
               <CardContent>
@@ -194,10 +199,10 @@ export const Profile: React.FC = () => {
                     ))
                     : renderEmptyState(
                       <Trophy size={48} className="mx-auto" />,
-                      'No past events',
-                      'Your completed events will appear here.',
+                      i18n._(msg`No past events`),
+                      i18n._(msg`Your completed events will appear here.`),
                       <Button variant="outline" size="sm">
-                        Join Your First Event
+                        <Trans>Join Your First Event</Trans>
                       </Button>
                     )}
                 </div>

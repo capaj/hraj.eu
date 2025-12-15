@@ -4,8 +4,11 @@ import { Card, CardContent } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { EventCard } from '../components/events/EventCard'
 import { Plus, MapPin, Users, Trophy, Search } from 'lucide-react'
+import { msg } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 import { joinEvent } from '~/server-functions/joinEvent'
 import { authClient } from '../lib/auth-client'
+import { i18n } from '~/lib/i18n'
 
 export const Home: React.FC = () => {
   const { upcomingEvents: initialUpcomingEvents, stats } = useLoaderData({ from: '/' })
@@ -23,7 +26,7 @@ export const Home: React.FC = () => {
   useEffect(() => {
     // Only run in browser environment
     if (typeof window === 'undefined' || !navigator.geolocation) {
-      setUserLocation('your area')
+      setUserLocation(i18n._(msg`your area`))
       setIsLoadingLocation(false)
       return
     }
@@ -39,19 +42,19 @@ export const Home: React.FC = () => {
           // Dynamically import offline geocoding to avoid SSR issues
           const { getNearestCity } = await import('offline-geocode-city')
           const nearestCity = getNearestCity(latitude, longitude)
-          const city = nearestCity ? nearestCity.cityName : 'your area'
+          const city = nearestCity ? nearestCity.cityName : i18n._(msg`your area`)
 
           setUserLocation(city)
         } catch (error) {
           console.error('Error getting location name:', error)
-          setUserLocation('your area')
+          setUserLocation(i18n._(msg`your area`))
         } finally {
           setIsLoadingLocation(false)
         }
       },
       (error) => {
         console.error('Error getting location:', error)
-        setUserLocation('your area')
+        setUserLocation(i18n._(msg`your area`))
         setIsLoadingLocation(false)
       },
       {
@@ -100,19 +103,25 @@ export const Home: React.FC = () => {
           <div className="flex justify-between items-center mb-8">
             <div>
               <h2 className="text-3xl font-bold text-white">
-                Popular Events {userLocation && `in ${userLocation}`}
+                {userLocation ? (
+                  <Trans>Popular Events in {userLocation}</Trans>
+                ) : (
+                  <Trans>Popular Events</Trans>
+                )}
               </h2>
               {isLoadingLocation ? (
                 <div className="flex items-center mt-2 text-white/80">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  <span className="text-sm">Finding events near you...</span>
+                  <span className="text-sm">
+                    <Trans>Finding events near you...</Trans>
+                  </span>
                 </div>
               ) : (
                 <p className="text-white/80 mt-2 flex items-center">
                   {upcomingEvents.length > 0 && (
                     <span className="flex items-center">
                       <MapPin size={16} className="mr-1" />
-                      Showing events near your location
+                      <Trans>Showing events near your location</Trans>
                     </span>
                   )}
                 </p>
@@ -123,7 +132,7 @@ export const Home: React.FC = () => {
                 variant="outline"
                 className="bg-white/10 border-white/20 text-white hover:bg-white/20"
               >
-                View All Events
+                <Trans>View All Events</Trans>
               </Button>
             </Link>
           </div>
@@ -134,16 +143,18 @@ export const Home: React.FC = () => {
                 <Plus size={32} className="text-white" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-4">
-                No Events Yet in Your Area
+                <Trans>No Events Yet in Your Area</Trans>
               </h3>
               <p className="text-white/80 mb-8 max-w-md mx-auto">
-                Be the first to bring your community together! Create an event
-                and start building connections through sport.
+                <Trans>
+                  Be the first to bring your community together! Create an event
+                  and start building connections through sport.
+                </Trans>
               </p>
               <Link to="/create">
                 <Button size="lg" variant="secondary" className="text-lg">
                   <Plus size={20} className="mr-2" />
-                  Create new Event
+                  <Trans>Create new Event</Trans>
                 </Button>
               </Link>
             </div>
@@ -171,25 +182,33 @@ export const Home: React.FC = () => {
               <div className="text-4xl font-bold text-white mb-2">
                 {stats.eventsCreated.toLocaleString()}
               </div>
-              <div className="text-white/80">Events Created</div>
+              <div className="text-white/80">
+                <Trans>Events Created</Trans>
+              </div>
             </div>
             <div>
               <div className="text-4xl font-bold text-white mb-2">
                 {stats.activeUsers.toLocaleString()}
               </div>
-              <div className="text-white/80">Active Players</div>
+              <div className="text-white/80">
+                <Trans>Active Players</Trans>
+              </div>
             </div>
             <div>
               <div className="text-4xl font-bold text-white mb-2">
                 {stats.countries}
               </div>
-              <div className="text-white/80">Countries</div>
+              <div className="text-white/80">
+                <Trans>Countries</Trans>
+              </div>
             </div>
             <div>
               <div className="text-4xl font-bold text-white mb-2">
                 {stats.successRate}%
               </div>
-              <div className="text-white/80">Success Rate</div>
+              <div className="text-white/80">
+                <Trans>Success Rate</Trans>
+              </div>
             </div>
           </div>
         </div>
@@ -200,18 +219,20 @@ export const Home: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
-              Let's Play Together
+              <Trans>Let's Play Together</Trans>
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-primary-100 max-w-3xl mx-auto animate-slide-up">
-              Join the largest community of sports enthusiasts across Europe.
-              Organize games, discover events, and make new friends through
-              sport.
+              <Trans>
+                Join the largest community of sports enthusiasts across Europe.
+                Organize games, discover events, and make new friends through
+                sport.
+              </Trans>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-bounce-gentle">
               <Link to="/create">
                 <Button size="lg" variant="secondary" className="text-lg">
                   <Plus size={20} className="mr-2" />
-                  Create Event
+                  <Trans>Create Event</Trans>
                 </Button>
               </Link>
               <Link to="/discover">
@@ -221,7 +242,7 @@ export const Home: React.FC = () => {
                   className="text-lg bg-white/10 border-white/20 text-white hover:bg-white/20"
                 >
                   <Search size={20} className="mr-2" />
-                  Discover Games
+                  <Trans>Discover Games</Trans>
                 </Button>
               </Link>
             </div>
@@ -238,11 +259,13 @@ export const Home: React.FC = () => {
                   <MapPin size={24} className="text-primary-600" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                  Find Local Games
+                  <Trans>Find Local Games</Trans>
                 </h3>
                 <p className="text-gray-600">
-                  Discover sports events near you with advanced filtering by
-                  sport, skill level, and location.
+                  <Trans>
+                    Discover sports events near you with advanced filtering by
+                    sport, skill level, and location.
+                  </Trans>
                 </p>
               </CardContent>
             </Card>
@@ -253,11 +276,13 @@ export const Home: React.FC = () => {
                   <Users size={24} className="text-secondary-600" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                  Build Community
+                  <Trans>Build Community</Trans>
                 </h3>
                 <p className="text-gray-600">
-                  Connect with like-minded players, earn karma points, and climb
-                  the leaderboards.
+                  <Trans>
+                    Connect with like-minded players, earn karma points, and climb
+                    the leaderboards.
+                  </Trans>
                 </p>
               </CardContent>
             </Card>
@@ -268,11 +293,13 @@ export const Home: React.FC = () => {
                   <Trophy size={24} className="text-accent-600" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                  Easy Organization
+                  <Trans>Easy Organization</Trans>
                 </h3>
                 <p className="text-gray-600">
-                  Create events with payment integration, team balancing, and
-                  automated notifications.
+                  <Trans>
+                    Create events with payment integration, team balancing, and
+                    automated notifications.
+                  </Trans>
                 </p>
               </CardContent>
             </Card>
