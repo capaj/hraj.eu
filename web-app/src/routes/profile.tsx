@@ -13,7 +13,11 @@ export const Route = createFileRoute('/profile')({
     const mockUserId = '1'
     const [notifications, events, venues, users] = await Promise.all([
       getUserNotifications({ data: mockUserId }),
-      getEvents(),
+      getEvents({
+        data: {
+          statuses: ['open', 'confirmed', 'cancelled', 'completed']
+        }
+      }),
       getVenues(),
       getUsers()
     ])

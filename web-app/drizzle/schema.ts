@@ -44,6 +44,8 @@ export const userSkillRelations = relations(userSkillT, ({ one }) => ({
   })
 }))
 
+export const eventStatuses = ['open', 'confirmed', 'cancelled', 'completed'] as const
+
 export const eventT = sqliteTable(
   'event',
   {
@@ -79,7 +81,7 @@ export const eventT = sqliteTable(
       enum: ['beginner', 'intermediate', 'advanced']
     }),
     status: text('status', {
-      enum: ['open', 'confirmed', 'cancelled', 'completed']
+      enum: eventStatuses
     })
       .default('open')
       .notNull(),

@@ -15,7 +15,7 @@ import { i18n } from '~/lib/i18n'
 
 type SortOption = 'date' | 'distance' | 'spots'
 
-export const Discover: React.FC = () => {
+export const DiscoverPage: React.FC = () => {
   const { events: initialEvents, venues } = useLoaderData({ from: '/discover' })
   const navigate = useNavigate()
   const session = authClient.useSession()

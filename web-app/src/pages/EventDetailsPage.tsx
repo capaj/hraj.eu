@@ -41,6 +41,7 @@ import {
   Edit
 } from 'lucide-react'
 import { format, isPast, addHours } from 'date-fns'
+import { enUS, cs } from 'date-fns/locale'
 import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { i18n } from '~/lib/i18n'
@@ -177,6 +178,7 @@ export const EventDetailsPage: React.FC = () => {
   }
 
   const eventStatus = getEventStatus()
+  const dateLocale = i18n.locale === 'cs' ? cs : enUS
 
   const getCancellationDeadline = () => {
     if (!event.cancellationDeadlineHours) return null
@@ -191,7 +193,11 @@ export const EventDetailsPage: React.FC = () => {
 
     return {
       time: deadlineTime,
-      formatted: format(deadlineTime, "EEEE, MMMM d 'at' HH:mm")
+      formatted: format(
+        deadlineTime,
+        i18n.locale === 'cs' ? "EEEE, d. MMMM 'v' HH:mm" : "EEEE, MMMM d 'at' HH:mm",
+        { locale: dateLocale }
+      )
     }
   }
 
@@ -595,24 +601,18 @@ export const EventDetailsPage: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <h3 className="font-semibold text-gray-900 flex items-center">
+                      <h3 className="font-semibold text-gray-900 flex items-center whitespace-nowrap">
                         <Calendar size={18} className="mr-2 text-primary-600" />
                         <Trans>Date & Time</Trans>
                       </h3>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handleAddToCalendar}
-                        className="h-8 text-xs sm:text-sm"
-                      >
-                        <CalendarPlus size={14} className="mr-1.5" />
-                        <Trans>Add to Calendar</Trans>
-                      </Button>
+
                     </div>
                     <div className="space-y-3 ml-6">
                       <div className="flex items-center text-gray-700">
                         <Calendar size={16} className="mr-2 text-gray-500" />
-                        <span>{format(event.date, 'EEEE, MMMM d, yyyy')}</span>
+                        <span>
+                          {format(event.date, 'PPPP', { locale: dateLocale })}
+                        </span>
                       </div>
                       <div className="flex items-center text-gray-700">
                         <Clock size={16} className="mr-2 text-gray-500" />
@@ -624,6 +624,15 @@ export const EventDetailsPage: React.FC = () => {
                         </span>
                       </div>
                     </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleAddToCalendar}
+                      className="h-8 text-xs sm:text-sm whitespace-nowrap"
+                    >
+                      <CalendarPlus size={14} className="mr-1.5" />
+                      <Trans>Add to Calendar</Trans>
+                    </Button>
                   </div>
 
                   <div className="space-y-4">
@@ -706,7 +715,7 @@ export const EventDetailsPage: React.FC = () => {
                         {organizer?.name || i18n._(msg`Event Organizer`)}
                       </div>
                       <div className="text-sm text-gray-500">
-                        <Trans>Verified member</Trans>
+                        <Trans>Karma points: {organizer?.karmaPoints}</Trans>
                       </div>
                     </div>
                   </div>

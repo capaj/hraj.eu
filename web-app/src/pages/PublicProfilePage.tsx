@@ -37,8 +37,7 @@ export const PublicProfilePage: React.FC = () => {
   const pastEvents = events.filter(
     (event) =>
       (event.organizerId === user.id || event.participants.includes(user.id)) &&
-      isPast(event.date) &&
-      event.status !== 'cancelled'
+      (isPast(event.date) || event.status === 'cancelled')
   )
 
   const savedEvents = events.filter(
