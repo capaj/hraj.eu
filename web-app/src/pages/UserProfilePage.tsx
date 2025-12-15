@@ -35,24 +35,26 @@ import {
   BellOff
 } from 'lucide-react'
 
-import { useUser } from '~/lib/auth-client'
+import { useLoaderData } from '@tanstack/react-router'
+import { updateUserSkill } from '~/server-functions/updateUserSkill'
 import { i18n } from '~/lib/i18n'
 
 export const UserProfile: React.FC = () => {
-  const userFromAuth = useUser()
+  const { user: userFromLoader } = useLoaderData({ from: '/user-profile' })
 
   const [user, setUser] = useState<User>({
-    ...userFromAuth,
-    image: userFromAuth.image ?? undefined,
-    karmaPoints: 0,
-    skillLevels: {},
-    notificationPreferences: {},
-    preferredCurrency: 'EUR',
-    location: '',
-    revTag: '',
-    bankAccount: '',
-    createdAt: new Date()
+    ...userFromLoader,
+    image: userFromLoader.image ?? undefined,
+    karmaPoints: userFromLoader.karmaPoints ?? 0,
+    skillLevels: userFromLoader.skillLevels ?? {},
+    notificationPreferences: userFromLoader.notificationPreferences ?? {},
+    preferredCurrency: userFromLoader.preferredCurrency ?? 'EUR',
+    location: userFromLoader.location ?? '',
+    revTag: userFromLoader.revTag ?? '',
+    bankAccount: userFromLoader.bankAccount ?? '',
+    createdAt: new Date(userFromLoader.createdAt)
   })
+
   const [isEditing, setIsEditing] = useState(false)
   const [isEditingRevTag, setIsEditingRevTag] = useState(false)
   const [isEditingBankAccount, setIsEditingBankAccount] = useState(false)
@@ -154,6 +156,8 @@ export const UserProfile: React.FC = () => {
     setIsEditingBankAccount(false)
   }
 
+
+
   const handleSkillLevelChange = async (
     sport: string,
     level: string | null
@@ -178,8 +182,13 @@ export const UserProfile: React.FC = () => {
     // Auto-save skill level changes (even when not in full edit mode)
     if (!isEditing) {
       try {
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 500))
+        // Call server function
+        await updateUserSkill({
+          data: {
+            sport,
+            skillLevel: level as 'beginner' | 'intermediate' | 'advanced' | null
+          }
+        })
 
         // Update the main user state
         setUser((prev) => {
@@ -1197,11 +1206,10 @@ export const UserProfile: React.FC = () => {
                 return (
                   <div
                     key={sport.id}
-                    className={`flex items-center justify-between p-4 border rounded-lg transition-all duration-300 ${
-                      hasRecentChange || hasNotificationChange
-                        ? 'border-green-300 bg-green-50'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
+                    className={`flex items-center justify-between p-4 border rounded-lg transition-all duration-300 ${hasRecentChange || hasNotificationChange
+                      ? 'border-green-300 bg-green-50'
+                      : 'border-gray-200 hover:border-gray-300'
+                      }`}
                   >
                     <div className="flex items-center space-x-3 min-w-0 flex-1">
                       <span className="text-2xl flex-shrink-0">
@@ -1258,19 +1266,17 @@ export const UserProfile: React.FC = () => {
                                 )
                               }
                               disabled={hasRecentChange}
-                              className={`px-2 py-1 text-xs font-medium rounded-full transition-all duration-200 ${
-                                isSelected
-                                  ? level.id === 'beginner'
-                                    ? 'bg-green-500 text-white'
-                                    : level.id === 'intermediate'
+                              className={`px-2 py-1 text-xs font-medium rounded-full transition-all duration-200 ${isSelected
+                                ? level.id === 'beginner'
+                                  ? 'bg-green-500 text-white'
+                                  : level.id === 'intermediate'
                                     ? 'bg-yellow-500 text-white'
                                     : 'bg-red-500 text-white'
-                                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                              } ${
-                                hasRecentChange
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                } ${hasRecentChange
                                   ? 'opacity-50 cursor-not-allowed'
                                   : 'cursor-pointer'
-                              } ${isChanging ? 'ring-2 ring-green-400' : ''}`}
+                                } ${isChanging ? 'ring-2 ring-green-400' : ''}`}
                             >
                               {isChanging ? (
                                 <div className="flex items-center">
@@ -1371,9 +1377,8 @@ export const UserProfile: React.FC = () => {
                   />
                   <label
                     htmlFor="avatar-upload"
-                    className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 cursor-pointer ${
-                      isUploadingAvatar ? 'opacity-50 cursor-not-allowed' : ''
-                    }`}
+                    className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 cursor-pointer ${isUploadingAvatar ? 'opacity-50 cursor-not-allowed' : ''
+                      }`}
                   >
                     {isUploadingAvatar ? (
                       <>

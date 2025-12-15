@@ -168,7 +168,7 @@ export function UserButton({
                   size="lg"
                   aria-label="Account"
                 />
-            ) : (
+              ) : (
                 <Tooltip>
                   <TooltipTrigger>
                     <UserRoundPlus />
@@ -193,7 +193,7 @@ export function UserButton({
         align={align}
         onCloseAutoFocus={(e) => e.preventDefault()}
       >
-        <div className="p-2">
+        <div className="p-2 cursor-pointer">
           {user || isPending ? (
             <UserView user={user} isPending={isPending} />
           ) : (
@@ -223,13 +223,13 @@ export function UserButton({
           <>
             {!disableDefaultLinks && (
               <>
-                <Link to="/manage-venues">
+                <Link to="/manage-venues" className="cursor-pointer">
                   <DropdownMenuItem>
                     <Building2 />
                     Manage Venues
                   </DropdownMenuItem>
                 </Link>
-                <Link to="/user-profile">
+                <Link to="/user-profile" className="cursor-pointer">
                   <DropdownMenuItem>
                     <SettingsIcon />
                     Settings

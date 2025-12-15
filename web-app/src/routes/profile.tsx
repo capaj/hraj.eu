@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Profile } from '../pages/ProfilePage'
+import { PublicProfilePage } from '../pages/PublicProfilePage'
 import { getUserById } from '~/server-functions/getUserById'
 import { getUserNotifications } from '~/server-functions/getUserNotifications'
 import { getEvents } from '~/server-functions/getEvents'
@@ -28,7 +28,7 @@ export const Route = createFileRoute('/profile')({
   component: () => {
     return (
       <ProtectedRoute>
-        <Profile />
+        <PublicProfilePage />
       </ProtectedRoute>
     )
   }

@@ -486,8 +486,8 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                     <label
                       key={facility.id}
                       className={`flex items-center p-3 border rounded-lg cursor-pointer transition-all ${formData.facilities.includes(facility.id)
-                          ? 'border-primary-500 bg-primary-50'
-                          : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-primary-500 bg-primary-50'
+                        : 'border-gray-200 hover:border-gray-300'
                         }`}
                     >
                       <input
@@ -731,8 +731,8 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                     </label>
                     <input
                       type="number"
-                      value={formData.price}
-                      onChange={(e) => handleChange('priceMin', e.target.value)}
+                      value={formData.price || ''}
+                      onChange={(e) => handleChange('price', e.target.value === '' ? 0 : parseFloat(e.target.value))}
                       min="0"
                       step="0.5"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"

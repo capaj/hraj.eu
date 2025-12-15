@@ -43,11 +43,12 @@ export const auth = betterAuth({
       trustedProviders: ['google', 'facebook']
     }
   },
-  trustedOrigins: ['http://localhost:3000', 'https://hraj.eu'],
+  trustedOrigins: ['http://localhost:5173', 'https://hraj.eu'],
   plugins: [
     tanstackStartCookies(),
     magicLink({
       sendMagicLink: async ({ email, url }) => {
+        console.log('Sending magic link to', email)
         await resend.emails.send({
           from: env.SENDER_EMAIL,
           to: email,

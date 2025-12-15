@@ -7,17 +7,26 @@ import { eq } from 'drizzle-orm'
 export const getUserById = createServerFn({ method: 'GET' })
   .inputValidator((userId: string) => userId)
   .handler(async ({ data: userId }) => {
-    const users = await db
-      .select()
-      .from(userTable)
-      .where(eq(userTable.id, userId))
-      .limit(1)
+    const user = await db.query.user.findFirst({
+      where: eq(userTable.id, userId),
+      with: {
+        skills: true
+      }
+    })
 
-    if (!users || users.length === 0) {
+    if (!user) {
       throw new Error(`User with id ${userId} not found`)
     }
 
-    const user = users[0]
+    const skillLevels: Record<string, 'beginner' | 'intermediate' | 'advanced'> = {}
+    if (user.skills) {
+      for (const skill of user.skills) {
+        skillLevels[skill.sport] = skill.skillLevel as
+          | 'beginner'
+          | 'intermediate'
+          | 'advanced'
+      }
+    }
 
     return {
       id: user.id,
@@ -25,8 +34,8 @@ export const getUserById = createServerFn({ method: 'GET' })
       name: user.name,
       image: user.image || undefined,
       karmaPoints: user.karmaPoints || 0,
-      skillLevels: {},
-      notificationPreferences: {},
+      skillLevels,
+      notificationPreferences: {}, // notifications logic is separate
       preferredCurrency: user.preferredCurrency || 'CZK',
       location:
         user.city && user.country ? `${user.city}, ${user.country}` : undefined,

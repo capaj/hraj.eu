@@ -14,12 +14,13 @@ import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { i18n } from '~/lib/i18n'
 
-export const Profile: React.FC = () => {
+export const PublicProfilePage: React.FC = () => {
 
   const { notifications, events, venues, users } = useLoaderData({
     from: '/profile'
   })
-  const user = useUser()
+  const sessionUser = useUser()
+  const user = users.find((u) => u.id === sessionUser.id) || (sessionUser as any)
   const navigate = useNavigate()
 
   // Mock saved events (in a real app, this would come from user's saved events)
@@ -29,13 +30,15 @@ export const Profile: React.FC = () => {
   const upcomingEvents = events.filter(
     (event) =>
       (event.organizerId === user.id || event.participants.includes(user.id)) &&
-      isFuture(event.date)
+      isFuture(event.date) &&
+      event.status !== 'cancelled'
   )
 
   const pastEvents = events.filter(
     (event) =>
       (event.organizerId === user.id || event.participants.includes(user.id)) &&
-      isPast(event.date)
+      isPast(event.date) &&
+      event.status !== 'cancelled'
   )
 
   const savedEvents = events.filter(
@@ -85,9 +88,7 @@ export const Profile: React.FC = () => {
                       {upcomingEvents.length}
                     </Badge>
                   </div>
-                  <Button variant="primary" size="sm">
-                    <Trans>Create New</Trans>
-                  </Button>
+
                 </div>
                 <p className="text-gray-600 text-sm mt-1">
                   <Trans>Events you're organizing or participating in</Trans>

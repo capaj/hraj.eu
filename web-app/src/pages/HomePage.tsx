@@ -20,7 +20,7 @@ export const Home: React.FC = () => {
   const [joiningEventId, setJoiningEventId] = useState<string | null>(null)
 
   useEffect(() => {
-    setUpcomingEvents(initialUpcomingEvents)
+    setUpcomingEvents(initialUpcomingEvents.filter(e => e.status !== 'cancelled'))
   }, [initialUpcomingEvents])
 
   useEffect(() => {

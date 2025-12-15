@@ -35,11 +35,12 @@ import {
   Facebook,
   Twitter,
   MessageCircle,
-  Send
+  Send,
+  Edit
 } from 'lucide-react'
 import { format, isPast, addHours } from 'date-fns'
-import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 import { i18n } from '~/lib/i18n'
 import { toast } from 'sonner'
 import {
@@ -111,7 +112,11 @@ export const EventDetailsPage: React.FC = () => {
   }, [participantUsers])
 
   if (!event) {
-    return <div>Event not found</div>
+    return (
+      <div>
+        <Trans>Event not found</Trans>
+      </div>
+    )
   }
 
   const sport = SPORTS.find((s) => s.id === event.sport)
@@ -147,21 +152,23 @@ export const EventDetailsPage: React.FC = () => {
     if (!isMinimumReached) {
       return {
         variant: 'error' as const,
-        text: `Need ${event.minParticipants - event.participants.length
-          } more players to confirm`,
+        text: i18n._(msg`Need {count} more players to confirm`.id, {
+          count: event.minParticipants - event.participants.length
+        }),
         icon: <AlertTriangle size={16} className="mr-1" />
       }
     } else if (isIdealReached) {
       return {
         variant: 'success' as const,
-        text: 'Event confirmed - ideal number reached!',
+        text: i18n._(msg`Event confirmed - ideal number reached!`),
         icon: <CheckCircle size={16} className="mr-1" />
       }
     } else {
       return {
         variant: 'warning' as const,
-        text: `Event confirmed - ${event.idealParticipants! - event.participants.length
-          } more for ideal`,
+        text: i18n._(msg`Event confirmed - {count} more for ideal`.id, {
+          count: event.idealParticipants! - event.participants.length
+        }),
         icon: <Target size={16} className="mr-1" />
       }
     }
@@ -202,18 +209,39 @@ export const EventDetailsPage: React.FC = () => {
       description: [
         event.description,
         '',
-        `Sport: ${sport?.name}`,
-        `Participants: ${event.participants.length}/${event.maxParticipants}`,
+        i18n._(msg`Sport: {sportName}`.id, { sportName: sport?.name ?? '' }),
+        i18n._(msg`Participants: {current}/{max}`.id, {
+          current: event.participants.length,
+          max: event.maxParticipants
+        }),
         ...(event.idealParticipants
-          ? [`Ideal: ${event.idealParticipants} players`]
+          ? [
+              i18n._(msg`Ideal: {count} players`.id, {
+                count: event.idealParticipants
+              })
+            ]
           : []),
-        ...(event.price ? [`Price: €${event.price} per person`] : []),
-        ...(event.paymentDetails ? [`Payment: ${event.paymentDetails}`] : []),
-        ...(event.gameRules ? ['', 'Game Rules:', event.gameRules] : []),
+        ...(event.price
+          ? [
+              i18n._(msg`Price: €{price} per person`.id, {
+                price: event.price
+              })
+            ]
+          : []),
+        ...(event.paymentDetails
+          ? [
+              i18n._(msg`Payment: {paymentDetails}`.id, {
+                paymentDetails: event.paymentDetails
+              })
+            ]
+          : []),
+        ...(event.gameRules
+          ? ['', i18n._(msg`Game Rules:`), event.gameRules]
+          : []),
         '',
-        'Event created via hraj.eu'
+        i18n._(msg`Event created via hraj.eu`)
       ].join('\n'),
-      location: venue?.address || 'Location TBD',
+      location: venue?.address || i18n._(msg`Location TBD`),
       startDate,
       endDate
       // TODO: Add organizer name when fetching user data
@@ -233,7 +261,7 @@ export const EventDetailsPage: React.FC = () => {
     }
 
     if (!currentUserId) {
-      toast.error('Please sign in to join this event.')
+      toast.error(i18n._(msg`Please sign in to join this event.`))
       navigate({ to: '/auth/$pathname', params: { pathname: 'sign-in' } })
       return
     }
@@ -264,18 +292,20 @@ export const EventDetailsPage: React.FC = () => {
 
       if (response?.status === 'waitlisted') {
         toast.info(
-          'This event is full right now, so you were added to the waitlist.'
+          i18n._(
+            msg`This event is full right now, so you were added to the waitlist.`
+          )
         )
       } else if (response?.status === 'confirmed') {
-        toast.success('You have successfully joined this game.')
+        toast.success(i18n._(msg`You have successfully joined this game.`))
       } else {
-        toast.info('Your request was received.')
+        toast.info(i18n._(msg`Your request was received.`))
       }
     } catch (error) {
       const message =
         error instanceof Error
           ? error.message
-          : 'Failed to join the event. Please try again.'
+          : i18n._(msg`Failed to join the event. Please try again.`)
       toast.error(message)
     } finally {
       setIsJoining(false)
@@ -305,13 +335,13 @@ export const EventDetailsPage: React.FC = () => {
         // just updating `event.participants` (list of IDs) is enough to trigger re-render
         // and filter the list correctly in `participantUsersList`.
 
-        toast.info('You have left the event.')
+        toast.info(i18n._(msg`You have left the event.`))
       }
     } catch (error) {
       const message =
         error instanceof Error
           ? error.message
-          : 'Failed to leave the event. Please try again.'
+          : i18n._(msg`Failed to leave the event. Please try again.`)
       toast.error(message)
     } finally {
       setIsJoining(false)
@@ -359,15 +389,15 @@ export const EventDetailsPage: React.FC = () => {
     handleCloseKarmaModal()
 
     // Show success message
-    alert(`Feedback submitted successfully`)
+    alert(i18n._(msg`Feedback submitted successfully`))
   }
 
   const getKarmaButtonText = (rating: number, reportType: string) => {
-    if (reportType === 'no-show') return 'Report No-Show'
-    if (reportType === 'bad-behavior') return 'Report Bad Behavior'
-    if (rating >= 4) return 'Give Positive Karma'
-    if (rating >= 3) return 'Give Neutral Karma'
-    return 'Give Negative Karma'
+    if (reportType === 'no-show') return i18n._(msg`Report No-Show`)
+    if (reportType === 'bad-behavior') return i18n._(msg`Report Bad Behavior`)
+    if (rating >= 4) return i18n._(msg`Give Positive Karma`)
+    if (rating >= 3) return i18n._(msg`Give Neutral Karma`)
+    return i18n._(msg`Give Negative Karma`)
   }
 
   const getKarmaButtonVariant = (rating: number, reportType: string) => {
@@ -388,7 +418,7 @@ export const EventDetailsPage: React.FC = () => {
             className="mb-4 bg-white/10 border-white/20 text-white hover:bg-white/20"
           >
             <ArrowLeft size={16} className="mr-2" />
-            Back to Events
+            <Trans>Back to Events</Trans>
           </Button>
 
           <div className="flex justify-between items-start">
@@ -396,24 +426,38 @@ export const EventDetailsPage: React.FC = () => {
               <div className="text-4xl">{sport?.icon}</div>
               <div>
                 <h1 className="text-3xl font-bold text-white">{event.title}</h1>
-                <p className="text-lg text-white/80 mt-1">Organized event</p>
+                <p className="text-lg text-white/80 mt-1">
+                  <Trans>Organized event</Trans>
+                </p>
                 {hasEventEnded && (
                   <Badge variant="default" size="md" className="mt-2">
-                    Event Completed
+                    <Trans>Event Completed</Trans>
                   </Badge>
                 )}
               </div>
             </div>
             <div className="flex items-center space-x-2">
+              {currentUserId === event.organizerId && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                  onClick={() => navigate({ to: '/edit-event/$eventId', params: { eventId: event.id } })}
+                >
+                  <Edit size={16} className="mr-2" />
+                  <Trans>Edit Event</Trans>
+                </Button>
+              )}
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
+                <DropdownMenuTrigger asChild disabled={event.status === 'cancelled'}>
                   <Button
                     variant="outline"
+                    disabled={event.status === 'cancelled'}
                     size="sm"
                     className="bg-white/10 border-white/20 text-white hover:bg-white/20"
                   >
                     <Share2 size={16} className="mr-2" />
-                    Share
+                    <Trans>Share</Trans>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
@@ -449,7 +493,7 @@ export const EventDetailsPage: React.FC = () => {
                 className="bg-white/10 border-white/20 text-white hover:bg-white/20"
               >
                 <Heart size={16} className="mr-2" />
-                Save
+                <Trans>Save</Trans>
               </Button>
             </div>
           </div>
@@ -462,20 +506,47 @@ export const EventDetailsPage: React.FC = () => {
             <Card>
               <CardContent className="p-6">
                 <div className="mb-4">
-                  <Badge
-                    variant={eventStatus.variant}
-                    size="md"
-                    className="flex items-center w-fit"
-                  >
-                    {eventStatus.icon}
-                    {eventStatus.text}
-                  </Badge>
+                  {event.status === 'cancelled' ? (
+                    <Badge variant="destructive" size="md" className="flex items-center w-fit">
+                      <AlertTriangle size={16} className="mr-1" />
+                      <Trans>Event Cancelled</Trans>
+                    </Badge>
+                  ) : (
+                    <Badge
+                      variant={eventStatus.variant}
+                      size="md"
+                      className="flex items-center w-fit"
+                    >
+                      {eventStatus.icon}
+                      {eventStatus.text}
+                    </Badge>
+                  )}
                 </div>
+
+                {event.status === 'cancelled' && (
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                    <div className="flex items-start">
+                      <AlertTriangle
+                        size={20}
+                        className="text-red-600 mr-3 mt-0.5 flex-shrink-0"
+                      />
+
+                      <div className="text-sm">
+                        <p className="text-red-800 font-medium mb-1">
+                          <Trans>This event has been cancelled</Trans>
+                        </p>
+                        <p className="text-red-700">
+                          <Trans>The organizer has cancelled this event.</Trans>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {event.description && (
                   <div className="mb-6">
                     <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                      About this event
+                      <Trans>About this event</Trans>
                     </h2>
                     <p className="text-gray-700 leading-relaxed">
                       {event.description}
@@ -484,7 +555,7 @@ export const EventDetailsPage: React.FC = () => {
                 )}
 
                 {/* Cancellation Policy */}
-                {cancellationDeadline && !isMinimumReached && (
+                {cancellationDeadline && !isMinimumReached && event.status !== 'cancelled' && (
                   <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
                     <div className="flex items-start">
                       <AlertTriangle
@@ -493,12 +564,14 @@ export const EventDetailsPage: React.FC = () => {
                       />
                       <div className="text-sm">
                         <p className="text-amber-800 font-medium mb-1">
-                          Cancellation Policy
+                          <Trans>Cancellation Policy</Trans>
                         </p>
                         <p className="text-amber-700">
-                          This event will be automatically cancelled if we don't
-                          reach the minimum of {event.minParticipants} players
-                          by <strong>{cancellationDeadline.formatted}</strong>.
+                          <Trans>
+                            This event will be automatically cancelled if we don't
+                            reach the minimum of {event.minParticipants} players
+                            by <strong>{cancellationDeadline.formatted}</strong>.
+                          </Trans>
                         </p>
                       </div>
                     </div>
@@ -513,7 +586,7 @@ export const EventDetailsPage: React.FC = () => {
             <Card>
               <CardHeader>
                 <h2 className="text-xl font-semibold text-gray-900">
-                  Event Details
+                  <Trans>Event Details</Trans>
                 </h2>
               </CardHeader>
               <CardContent className="p-6">
@@ -522,7 +595,7 @@ export const EventDetailsPage: React.FC = () => {
                     <div className="flex items-center justify-between">
                       <h3 className="font-semibold text-gray-900 flex items-center">
                         <Calendar size={18} className="mr-2 text-primary-600" />
-                        Date & Time
+                        <Trans>Date & Time</Trans>
                       </h3>
                       <Button
                         variant="outline"
@@ -531,7 +604,7 @@ export const EventDetailsPage: React.FC = () => {
                         className="h-8 text-xs sm:text-sm"
                       >
                         <CalendarPlus size={14} className="mr-1.5" />
-                        Add to Calendar
+                        <Trans>Add to Calendar</Trans>
                       </Button>
                     </div>
                     <div className="space-y-3 ml-6">
@@ -542,7 +615,10 @@ export const EventDetailsPage: React.FC = () => {
                       <div className="flex items-center text-gray-700">
                         <Clock size={16} className="mr-2 text-gray-500" />
                         <span>
-                          {event.startTime} ({event.duration} minutes)
+                          {i18n._(msg`{time} ({duration} minutes)`.id, {
+                            time: event.startTime,
+                            duration: event.duration
+                          })}
                         </span>
                       </div>
                     </div>
@@ -551,7 +627,7 @@ export const EventDetailsPage: React.FC = () => {
                   <div className="space-y-4">
                     <h3 className="font-semibold text-gray-900 flex items-center">
                       <MapPin size={18} className="mr-2 text-primary-600" />
-                      Location
+                      <Trans>Location</Trans>
                     </h3>
                     <div className="ml-6">
                       <div className="flex items-start text-gray-700">
@@ -559,7 +635,9 @@ export const EventDetailsPage: React.FC = () => {
                           size={16}
                           className="mr-2 mt-0.5 text-gray-500 flex-shrink-0"
                         />
-                        <span>{venue?.address || 'Location TBD'}</span>
+                        <span>
+                          {venue?.address || i18n._(msg`Location TBD`)}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -569,16 +647,18 @@ export const EventDetailsPage: React.FC = () => {
                 <div className="mt-6 pt-6 border-t border-gray-200">
                   <h3 className="font-semibold text-gray-900 flex items-center mb-4">
                     <Users size={18} className="mr-2 text-primary-600" />
-                    Player Requirements
+                    <Trans>Player Requirements</Trans>
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="text-center p-4 bg-gray-50 rounded-lg">
                       <div className="text-2xl font-bold text-gray-900">
                         {event.minParticipants}
                       </div>
-                      <div className="text-sm text-gray-600">Minimum</div>
+                      <div className="text-sm text-gray-600">
+                        <Trans>Minimum</Trans>
+                      </div>
                       <div className="text-xs text-gray-500 mt-1">
-                        Required to confirm
+                        <Trans>Required to confirm</Trans>
                       </div>
                     </div>
                     {event.idealParticipants && (
@@ -586,9 +666,11 @@ export const EventDetailsPage: React.FC = () => {
                         <div className="text-2xl font-bold text-blue-900">
                           {event.idealParticipants}
                         </div>
-                        <div className="text-sm text-blue-600">Ideal</div>
+                        <div className="text-sm text-blue-600">
+                          <Trans>Ideal</Trans>
+                        </div>
                         <div className="text-xs text-blue-500 mt-1">
-                          Perfect game size
+                          <Trans>Perfect game size</Trans>
                         </div>
                       </div>
                     )}
@@ -596,9 +678,11 @@ export const EventDetailsPage: React.FC = () => {
                       <div className="text-2xl font-bold text-green-900">
                         {event.maxParticipants}
                       </div>
-                      <div className="text-sm text-green-600">Maximum</div>
+                      <div className="text-sm text-green-600">
+                        <Trans>Maximum</Trans>
+                      </div>
                       <div className="text-xs text-green-500 mt-1">
-                        Full capacity
+                        <Trans>Full capacity</Trans>
                       </div>
                     </div>
                   </div>
@@ -608,7 +692,7 @@ export const EventDetailsPage: React.FC = () => {
                 <div className="mt-6 pt-6 border-t border-gray-200">
                   <h3 className="font-semibold text-gray-900 flex items-center mb-4">
                     <UserIcon size={18} className="mr-2 text-primary-600" />
-                    Organizer
+                    <Trans>Organizer</Trans>
                   </h3>
                   <div className="flex items-center space-x-3">
                     {organizer?.image ? (
@@ -624,10 +708,10 @@ export const EventDetailsPage: React.FC = () => {
                     )}
                     <div>
                       <div className="font-medium text-gray-900">
-                        {organizer?.name || 'Event Organizer'}
+                        {organizer?.name || i18n._(msg`Event Organizer`)}
                       </div>
                       <div className="text-sm text-gray-500">
-                        Verified member
+                        <Trans>Verified member</Trans>
                       </div>
                     </div>
                   </div>
@@ -641,14 +725,14 @@ export const EventDetailsPage: React.FC = () => {
                 <CardHeader>
                   <h2 className="text-xl font-semibold text-gray-900 flex items-center">
                     <CoinsIcon size={20} className="mr-2 text-primary-600" />
-                    Payment Information
+                    <Trans>Payment Information</Trans>
                   </h2>
                 </CardHeader>
                 <CardContent className="p-6">
                   <div className="bg-gray-50 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-gray-700 text-lg">
-                        Price per person:
+                        <Trans>Price per person:</Trans>
                       </span>
                       <span className="font-bold text-2xl text-primary-600">
                         €{event.price}
@@ -656,7 +740,10 @@ export const EventDetailsPage: React.FC = () => {
                     </div>
                     {event.paymentDetails && (
                       <div className="text-gray-600">
-                        <strong>Payment details:</strong> {event.paymentDetails}
+                        <strong>
+                          <Trans>Payment details:</Trans>
+                        </strong>{' '}
+                        {event.paymentDetails}
                       </div>
                     )}
                   </div>
@@ -670,7 +757,7 @@ export const EventDetailsPage: React.FC = () => {
                 <CardHeader>
                   <h2 className="text-xl font-semibold text-gray-900 flex items-center">
                     <FileText size={20} className="mr-2 text-primary-600" />
-                    Game Rules & Guidelines
+                    <Trans>Game Rules & Guidelines</Trans>
                   </h2>
                 </CardHeader>
                 <CardContent className="p-6">
@@ -687,7 +774,7 @@ export const EventDetailsPage: React.FC = () => {
             {shouldShowWeather && (
               <WeatherWidget
                 date={event.date}
-                location={venue?.address || 'Location TBD'}
+                location={venue?.address || i18n._(msg`Location TBD`)}
                 sport={event.sport}
               />
             )}
@@ -698,7 +785,7 @@ export const EventDetailsPage: React.FC = () => {
           {/* Sidebar */}
           <div className="lg:col-span-2 space-y-6">
             {/* Join Action */}
-            {!hasEventEnded && (
+            {!hasEventEnded && event.status !== 'cancelled' && (
               <Card>
                 <CardContent className="p-6">
                   <div className="text-center mb-6">
@@ -731,11 +818,13 @@ export const EventDetailsPage: React.FC = () => {
                     </div>
 
                     <div className="text-sm text-gray-600 font-medium">
-                      Players confirmed
+                      <Trans>Players confirmed</Trans>
                     </div>
                     {event.idealParticipants && (
                       <div className="text-xs text-gray-500 mt-1">
-                        Ideal: {event.idealParticipants} players
+                        {i18n._(msg`Ideal: {count} players`.id, {
+                          count: event.idealParticipants
+                        })}
                       </div>
                     )}
                   </div>
@@ -748,14 +837,16 @@ export const EventDetailsPage: React.FC = () => {
                     onClick={handleJoinEvent}
                   >
                     {isParticipant
-                      ? 'You are playing'
+                      ? i18n._(msg`You are playing`)
                       : isSpotAvailable
-                        ? 'Join Game'
-                        : 'Join Waitlist'}
+                        ? i18n._(msg`Join Game`)
+                        : i18n._(msg`Join Waitlist`)}
                   </Button>
 
                   <div className="text-xs text-gray-500 text-center">
-                    Minimum {event.minParticipants} players needed to confirm
+                    {i18n._(msg`Minimum {count} players needed to confirm`.id, {
+                      count: event.minParticipants
+                    })}
                   </div>
                   {/* Join message removed, now using toast */}
                 </CardContent>
@@ -768,11 +859,11 @@ export const EventDetailsPage: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-gray-900 flex items-center">
                     <UserIcon size={18} className="mr-2" />
-                    Who's Playing
+                    <Trans>Who's Playing</Trans>
                   </h3>
                   {hasEventEnded && isParticipant && (
                     <Badge variant="info" size="sm">
-                      Rate Players
+                      <Trans>Rate Players</Trans>
                     </Badge>
                   )}
                 </div>
@@ -803,12 +894,14 @@ export const EventDetailsPage: React.FC = () => {
                             </div>
                             {event.organizerId === user?.id && (
                               <Badge variant="info" size="sm">
-                                Organizer
+                                <Trans>Organizer</Trans>
                               </Badge>
                             )}
                           </div>
                           <div className="text-sm text-gray-500">
-                            {user?.karmaPoints} karma
+                            {i18n._(msg`{karmaPoints} karma`.id, {
+                              karmaPoints: user?.karmaPoints ?? 0
+                            })}
                           </div>
                         </div>
                       </div>
@@ -824,7 +917,7 @@ export const EventDetailsPage: React.FC = () => {
                             disabled={isJoining}
                           >
                             <UserX size={16} className="mr-1" />
-                            Leave
+                            <Trans>Leave</Trans>
                           </Button>
                         )}
 
@@ -841,7 +934,7 @@ export const EventDetailsPage: React.FC = () => {
                               className="flex items-center"
                             >
                               <Star size={14} className="mr-1" />
-                              Rate
+                              <Trans>Rate</Trans>
                             </Button>
                           </div>
                         )}
@@ -858,7 +951,9 @@ export const EventDetailsPage: React.FC = () => {
                         <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
                           <Users size={16} className="text-gray-400" />
                         </div>
-                        <span className="text-gray-500">Open spot</span>
+                        <span className="text-gray-500">
+                          <Trans>Open spot</Trans>
+                        </span>
                       </div>
                     ))}
                 </div>
@@ -874,12 +969,14 @@ export const EventDetailsPage: React.FC = () => {
                         />
                         <div className="text-sm text-blue-800">
                           <p className="font-medium mb-1">
-                            Rate Your Fellow Players
+                            <Trans>Rate Your Fellow Players</Trans>
                           </p>
                           <p>
-                            Help build our community by giving karma to players
-                            who showed good sportsmanship, or report issues if
-                            needed.
+                            <Trans>
+                              Help build our community by giving karma to players
+                              who showed good sportsmanship, or report issues if
+                              needed.
+                            </Trans>
                           </p>
                         </div>
                       </div>
@@ -897,7 +994,7 @@ export const EventDetailsPage: React.FC = () => {
           <Card className="mt-8">
             <CardHeader>
               <h2 className="text-xl font-semibold text-gray-900">
-                Venue Information
+                <Trans>Venue Information</Trans>
               </h2>
             </CardHeader>
             <CardContent className="p-6">
@@ -916,10 +1013,10 @@ export const EventDetailsPage: React.FC = () => {
                     </div>
                     <Badge variant="default">
                       {venue.type === 'indoor'
-                        ? 'Indoor venue'
+                        ? i18n._(msg`Indoor venue`)
                         : venue.type === 'mixed'
-                          ? 'Indoor & outdoor venue'
-                          : 'Outdoor venue'}
+                          ? i18n._(msg`Indoor & outdoor venue`)
+                          : i18n._(msg`Outdoor venue`)}
                     </Badge>
                   </div>
 
@@ -931,7 +1028,9 @@ export const EventDetailsPage: React.FC = () => {
 
                   {venue.accessInstructions && (
                     <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-700">
-                      <p className="font-medium mb-1">Access Instructions</p>
+                      <p className="font-medium mb-1">
+                        <Trans>Access Instructions</Trans>
+                      </p>
                       <p>{venue.accessInstructions}</p>
                     </div>
                   )}
@@ -946,9 +1045,14 @@ export const EventDetailsPage: React.FC = () => {
                         {venue.contactInfo.phone}
                       </a>
                     ) : (
-                      <div className="flex items-center text-gray-400" title="No phone number available">
+                      <div
+                        className="flex items-center text-gray-400"
+                        title={i18n._(msg`No phone number available`)}
+                      >
                         <Phone size={16} className="mr-2 text-gray-300" />
-                        <span className="italic">No phone number</span>
+                        <span className="italic">
+                          <Trans>No phone number</Trans>
+                        </span>
                       </div>
                     )}
 
@@ -969,13 +1073,16 @@ export const EventDetailsPage: React.FC = () => {
                         className="flex items-center text-gray-700 hover:text-primary-600 transition-colors"
                       >
                         <Globe size={16} className="mr-2 text-gray-500" />
-                        Visit website
+                        <Trans>Visit website</Trans>
                       </a>
                     )}
                     {venue.price ? (
                       <div className="flex items-center text-gray-700">
                         <CoinsIcon size={16} className="mr-2 text-gray-500" />
-                        Approx. {venue.price} {venue.currency} / visit
+                        {i18n._(msg`Approx. {price} {currency} / visit`.id, {
+                          price: venue.price,
+                          currency: venue.currency
+                        })}
                       </div>
                     ) : null}
                   </div>
@@ -983,7 +1090,7 @@ export const EventDetailsPage: React.FC = () => {
                   {venue.facilities && venue.facilities.length > 0 && (
                     <div>
                       <p className="text-sm font-semibold text-gray-900 mb-2">
-                        Facilities
+                        <Trans>Facilities</Trans>
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {venue.facilities.map((facilityId) => {
@@ -1012,7 +1119,7 @@ export const EventDetailsPage: React.FC = () => {
                       <div className="pt-4 border-t border-gray-100">
                         <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center">
                           <ImageIcon size={16} className="mr-2 text-primary-600" />
-                          Photos & Orientation
+                          <Trans>Photos & Orientation</Trans>
                         </h4>
 
                         <div className="space-y-6">
@@ -1020,7 +1127,7 @@ export const EventDetailsPage: React.FC = () => {
                           {venue.orientationPlan && (
                             <div className="space-y-2">
                               <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">
-                                Orientation Plan
+                                <Trans>Orientation Plan</Trans>
                               </p>
                               <div className="relative rounded-lg overflow-hidden border border-gray-200 cursor-pointer hover:opacity-95 transition-opacity">
                                 <a
@@ -1030,7 +1137,9 @@ export const EventDetailsPage: React.FC = () => {
                                 >
                                   <img
                                     src={venue.orientationPlan}
-                                    alt={`${venue.name} Orientation Plan`}
+                                    alt={i18n._(msg`{name} Orientation Plan`.id, {
+                                      name: venue.name
+                                    })}
                                     className="w-full h-auto object-contain max-h-[300px] bg-gray-50"
                                   />
                                 </a>
@@ -1043,7 +1152,7 @@ export const EventDetailsPage: React.FC = () => {
                             <div className="space-y-2">
                               {venue.orientationPlan && (
                                 <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">
-                                  Photos
+                                  <Trans>Photos</Trans>
                                 </p>
                               )}
                               <div className="grid grid-cols-2 gap-3">
@@ -1059,7 +1168,10 @@ export const EventDetailsPage: React.FC = () => {
                                     >
                                       <img
                                         src={img}
-                                        alt={`${venue.name} photo ${idx + 1}`}
+                                        alt={i18n._(msg`{name} photo {index}`.id, {
+                                          name: venue.name,
+                                          index: idx + 1
+                                        })}
                                         className="w-full h-full object-cover"
                                       />
                                     </a>
@@ -1093,7 +1205,7 @@ export const EventDetailsPage: React.FC = () => {
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Rate Participant
+                  <Trans>Rate Participant</Trans>
                 </h3>
                 <button
                   onClick={handleCloseKarmaModal}
@@ -1106,7 +1218,7 @@ export const EventDetailsPage: React.FC = () => {
               {/* Report Type Selection */}
               <div className="mb-6">
                 <h4 className="text-sm font-medium text-gray-700 mb-3">
-                  Feedback Type
+                  <Trans>Feedback Type</Trans>
                 </h4>
                 <div className="space-y-2">
                   <label className="flex items-center">
@@ -1119,7 +1231,7 @@ export const EventDetailsPage: React.FC = () => {
                       className="text-primary-600 focus:ring-primary-500"
                     />
                     <span className="ml-2 text-sm text-gray-700">
-                      Give karma rating
+                      <Trans>Give karma rating</Trans>
                     </span>
                   </label>
                   <label className="flex items-center">
@@ -1133,7 +1245,7 @@ export const EventDetailsPage: React.FC = () => {
                     />
                     <span className="ml-2 text-sm text-gray-700 flex items-center">
                       <UserX size={14} className="mr-1 text-red-500" />
-                      Report no-show
+                      <Trans>Report no-show</Trans>
                     </span>
                   </label>
                   <label className="flex items-center">
@@ -1147,7 +1259,7 @@ export const EventDetailsPage: React.FC = () => {
                     />
                     <span className="ml-2 text-sm text-gray-700 flex items-center">
                       <Flag size={14} className="mr-1 text-red-500" />
-                      Report bad behavior
+                      <Trans>Report bad behavior</Trans>
                     </span>
                   </label>
                 </div>
@@ -1157,7 +1269,7 @@ export const EventDetailsPage: React.FC = () => {
               {reportType === 'none' && (
                 <div className="mb-6">
                   <h4 className="text-sm font-medium text-gray-700 mb-3">
-                    Rating
+                    <Trans>Rating</Trans>
                   </h4>
                   <div className="flex items-center space-x-2 mb-2">
                     {[1, 2, 3, 4, 5].map((rating) => (
@@ -1177,11 +1289,11 @@ export const EventDetailsPage: React.FC = () => {
                     ))}
                   </div>
                   <div className="text-sm text-gray-600">
-                    {karmaRating === 1 && 'Poor sportsmanship'}
-                    {karmaRating === 2 && 'Below average'}
-                    {karmaRating === 3 && 'Average player'}
-                    {karmaRating === 4 && 'Good sportsmanship'}
-                    {karmaRating === 5 && 'Excellent player!'}
+                    {karmaRating === 1 && i18n._(msg`Poor sportsmanship`)}
+                    {karmaRating === 2 && i18n._(msg`Below average`)}
+                    {karmaRating === 3 && i18n._(msg`Average player`)}
+                    {karmaRating === 4 && i18n._(msg`Good sportsmanship`)}
+                    {karmaRating === 5 && i18n._(msg`Excellent player!`)}
                   </div>
                 </div>
               )}
@@ -1190,8 +1302,8 @@ export const EventDetailsPage: React.FC = () => {
               <div className="mb-6">
                 <h4 className="text-sm font-medium text-gray-700 mb-2">
                   {reportType === 'none'
-                    ? 'Comment (optional)'
-                    : 'Details (required)'}
+                    ? i18n._(msg`Comment (optional)`)
+                    : i18n._(msg`Details (required)`)}
                 </h4>
                 <textarea
                   value={karmaComment}
@@ -1200,10 +1312,12 @@ export const EventDetailsPage: React.FC = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder={
                     reportType === 'no-show'
-                      ? 'Please describe what happened...'
+                      ? i18n._(msg`Please describe what happened...`)
                       : reportType === 'bad-behavior'
-                        ? 'Please describe the behavior issue...'
-                        : 'Share your experience playing with this person...'
+                        ? i18n._(msg`Please describe the behavior issue...`)
+                        : i18n._(
+                            msg`Share your experience playing with this person...`
+                          )
                   }
                   required={reportType !== 'none'}
                 />
@@ -1218,11 +1332,17 @@ export const EventDetailsPage: React.FC = () => {
                       className="text-red-600 mr-2 mt-0.5 flex-shrink-0"
                     />
                     <div className="text-sm text-red-800">
-                      <p className="font-medium mb-1">Important</p>
+                      <p className="font-medium mb-1">
+                        <Trans>Important</Trans>
+                      </p>
                       <p>
                         {reportType === 'no-show'
-                          ? 'No-show reports will deduct karma points and may affect future event participation.'
-                          : 'Behavior reports are taken seriously and may result in account restrictions.'}
+                          ? i18n._(
+                              msg`No-show reports will deduct karma points and may affect future event participation.`
+                            )
+                          : i18n._(
+                              msg`Behavior reports are taken seriously and may result in account restrictions.`
+                            )}
                       </p>
                     </div>
                   </div>
@@ -1237,7 +1357,7 @@ export const EventDetailsPage: React.FC = () => {
                   className="flex-1"
                   disabled={isSubmittingKarma}
                 >
-                  Cancel
+                  <Trans>Cancel</Trans>
                 </Button>
                 <Button
                   variant={getKarmaButtonVariant(karmaRating, reportType)}
@@ -1251,7 +1371,7 @@ export const EventDetailsPage: React.FC = () => {
                   {isSubmittingKarma ? (
                     <div className="flex items-center">
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Submitting...
+                      <Trans>Submitting...</Trans>
                     </div>
                   ) : (
                     getKarmaButtonText(karmaRating, reportType)

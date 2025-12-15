@@ -1,10 +1,11 @@
 import React, { useState, useMemo, useRef } from 'react'
+import { isPast, isFuture } from 'date-fns'
 import { useLoaderData, useNavigate } from '@tanstack/react-router'
 import { EventCard } from '../components/events/EventCard'
 import { EventFilters } from '../components/events/EventFilters'
 import { EventMap, EventMapRef } from '../components/map/EventMap'
 import { Button } from '../components/ui/Button'
-import { Map, List, ArrowUpDown } from 'lucide-react'
+import { Map, List, ArrowUpDown, History, Flame } from 'lucide-react'
 import { Event } from '../types'
 import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
@@ -291,57 +292,102 @@ export const Discover: React.FC = () => {
         </div>
 
         {/* List View */}
-        <div>
-          <div className="flex items-center mb-6">
-            <List size={20} className="text-white mr-2" />
-            <h2 className="text-xl font-semibold text-white">
-              <Trans>Event List</Trans>{' '}
-              {sortBy !== 'date' &&
-                i18n._(msg`(sorted by {label})`.id, {
-                  label: getSortLabel(sortBy)
-                })}
-            </h2>
-          </div>
+        {/* List View */}
+        <div className="space-y-12">
+          {/* Upcoming Events */}
+          <div>
+            <div className="flex items-center mb-6">
+              <Flame size={20} className="text-white mr-2" />
+              <h2 className="text-xl font-semibold text-white">
+                <Trans>Upcoming Events</Trans>{' '}
+                {sortBy !== 'date' &&
+                  i18n._(msg`(sorted by {label})`.id, {
+                    label: getSortLabel(sortBy)
+                  })}
+              </h2>
+            </div>
 
-          {filteredAndSortedEvents.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredAndSortedEvents.map((event, index) => {
-                const distance = getEventDistance(event)
-                return (
-                  <div
-                    key={event.id}
-                    id={`event-${event.id}`}
-                    className="transition-all duration-300 relative"
-                  >
-                    {/* Sort indicator */}
-                    {sortBy !== 'date' && (
-                      <div className="absolute -top-2 -left-2 z-10">
-                        <div className="bg-white text-primary-600 text-xs px-2 py-1 rounded-full font-medium shadow-lg">
-                          {sortBy === 'distance' && distance
-                            ? distance
-                            : sortBy === 'spots'
-                              ? i18n._(msg`{count} spots`.id, {
+            {filteredAndSortedEvents.filter(e => isFuture(e.date)).length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredAndSortedEvents.filter(e => isFuture(e.date)).map((event, index) => {
+                  const distance = getEventDistance(event)
+                  return (
+                    <div
+                      key={event.id}
+                      id={`event-${event.id}`}
+                      className="transition-all duration-300 relative"
+                    >
+                      {/* Sort indicator */}
+                      {sortBy !== 'date' && (
+                        <div className="absolute -top-2 -left-2 z-10">
+                          <div className="bg-white text-primary-600 text-xs px-2 py-1 rounded-full font-medium shadow-lg">
+                            {sortBy === 'distance' && distance
+                              ? distance
+                              : sortBy === 'spots'
+                                ? i18n._(msg`{count} spots`.id, {
                                   count:
                                     event.maxParticipants -
                                     event.participants.length
                                 })
-                              : `#${index + 1}`}
+                                : `#${index + 1}`}
+                          </div>
                         </div>
-                      </div>
-                    )}
-                    <EventCard
-                      event={event}
-                      venues={venues}
-                      onJoin={handleJoinEvent}
-                      onView={onViewEvent}
-                      isJoining={joiningEventId === event.id}
-                      currentUserId={session.data?.user?.id}
-                    />
-                  </div>
-                )
-              })}
+                      )}
+                      <EventCard
+                        event={event}
+                        venues={venues}
+                        onJoin={handleJoinEvent}
+                        onView={onViewEvent}
+                        isJoining={joiningEventId === event.id}
+                        currentUserId={session.data?.user?.id}
+                      />
+                    </div>
+                  )
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-white/80">
+                  <Trans>No upcoming events found.</Trans>
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Past Events */}
+          {filteredAndSortedEvents.some(e => isPast(e.date)) && (
+            <div>
+              <div className="flex items-center mb-6">
+                <History size={20} className="text-white/80 mr-2" />
+                <h2 className="text-xl font-semibold text-white/80">
+                  <Trans>Past Events</Trans>
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredAndSortedEvents.filter(e => isPast(e.date)).map((event) => {
+                  return (
+                    <div
+                      key={event.id}
+                      id={`event-${event.id}`}
+                      className="transition-all duration-300 relative"
+                    >
+                      <EventCard
+                        event={event}
+                        venues={venues}
+                        onJoin={handleJoinEvent}
+                        onView={onViewEvent}
+                        isJoining={joiningEventId === event.id}
+                        currentUserId={session.data?.user?.id}
+                      />
+                    </div>
+                  )
+                })}
+              </div>
             </div>
-          ) : (
+          )}
+
+          {filteredAndSortedEvents.length === 0 && (
             <div className="text-center py-12">
               <div className="text-white/60 mb-4">
                 <List size={48} className="mx-auto" />
