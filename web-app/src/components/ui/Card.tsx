@@ -19,7 +19,7 @@ export const Card: React.FC<CardProps> = ({
       className={clsx(
         'bg-white rounded-xl shadow-sm border border-gray-200',
         hover &&
-          'hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-pointer',
+        'hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-pointer',
         className
       )}
       onClick={onClick}
@@ -29,11 +29,17 @@ export const Card: React.FC<CardProps> = ({
   )
 }
 
-export const CardHeader: React.FC<{
-  children: React.ReactNode
-  className?: string
-}> = ({ children, className }) => {
-  return <div className={clsx('p-6 pb-4', className)}>{children}</div>
+export const CardHeader: React.FC<
+  {
+    children: React.ReactNode
+    className?: string
+  } & React.HTMLAttributes<HTMLDivElement>
+> = ({ children, className, ...props }) => {
+  return (
+    <div className={clsx('p-6 pb-4', className)} {...props}>
+      {children}
+    </div>
+  )
 }
 
 export const CardContent: React.FC<{

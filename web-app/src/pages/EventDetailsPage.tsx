@@ -38,7 +38,8 @@ import {
   Twitter,
   MessageCircle,
   Send,
-  Edit
+  Edit,
+  ChevronDown
 } from 'lucide-react'
 import { format, isPast, addHours } from 'date-fns'
 import { enUS, cs } from 'date-fns/locale'
@@ -99,6 +100,7 @@ export const EventDetailsPage: React.FC = () => {
     participantUsers || []
   )
   const [shareUrl, setShareUrl] = useState('')
+  const [isParticipantsExpanded, setIsParticipantsExpanded] = useState(false)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -868,11 +870,19 @@ export const EventDetailsPage: React.FC = () => {
 
             {/* Participants */}
             <Card>
-              <CardHeader>
+              <CardHeader
+                className="cursor-pointer lg:cursor-default"
+                onClick={() => setIsParticipantsExpanded(!isParticipantsExpanded)}
+              >
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-gray-900 flex items-center">
                     <UserIcon size={18} className="mr-2" />
                     <Trans>Who's Playing</Trans>
+                    <ChevronDown
+                      size={20}
+                      className={`ml-2 lg:hidden transition-transform duration-200 ${isParticipantsExpanded ? 'rotate-180' : ''
+                        }`}
+                    />
                   </h3>
                   {hasEventEnded && isParticipant && (
                     <Badge variant="info" size="sm">
@@ -881,7 +891,10 @@ export const EventDetailsPage: React.FC = () => {
                   )}
                 </div>
               </CardHeader>
-              <CardContent className="p-6">
+              <CardContent
+                className={`p-6 ${!isParticipantsExpanded ? 'hidden lg:block' : ''
+                  }`}
+              >
                 <div className="space-y-3">
                   {participantUsersList.map((user) => (
                     <div
