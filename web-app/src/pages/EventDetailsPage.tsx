@@ -429,7 +429,7 @@ export const EventDetailsPage: React.FC = () => {
             <Trans>Back to Events</Trans>
           </Button>
 
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
             <div className="flex items-center space-x-4">
               <div className="text-4xl">{sport?.icon}</div>
               <div>
@@ -660,39 +660,39 @@ export const EventDetailsPage: React.FC = () => {
                     <Users size={18} className="mr-2 text-primary-600" />
                     <Trans>Player Requirements</Trans>
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="text-center p-4 bg-gray-50 rounded-lg">
-                      <div className="text-2xl font-bold text-gray-900">
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className="text-center p-2 bg-gray-50 rounded-lg">
+                      <div className="text-xl font-bold text-gray-900">
                         {event.minParticipants}
                       </div>
-                      <div className="text-sm text-gray-600">
+                      <div className="text-xs text-gray-600">
                         <Trans>Minimum</Trans>
                       </div>
-                      <div className="text-xs text-gray-500 mt-1">
+                      <div className="hidden sm:block text-xs text-gray-500 mt-1">
                         <Trans>Required to confirm</Trans>
                       </div>
                     </div>
                     {event.idealParticipants && (
-                      <div className="text-center p-4 bg-blue-50 rounded-lg">
-                        <div className="text-2xl font-bold text-blue-900">
+                      <div className="text-center p-2 bg-blue-50 rounded-lg">
+                        <div className="text-xl font-bold text-blue-900">
                           {event.idealParticipants}
                         </div>
-                        <div className="text-sm text-blue-600">
+                        <div className="text-xs text-blue-600">
                           <Trans>Ideal</Trans>
                         </div>
-                        <div className="text-xs text-blue-500 mt-1">
+                        <div className="hidden sm:block text-xs text-blue-500 mt-1">
                           <Trans>Perfect game size</Trans>
                         </div>
                       </div>
                     )}
-                    <div className="text-center p-4 bg-green-50 rounded-lg">
-                      <div className="text-2xl font-bold text-green-900">
+                    <div className="text-center p-2 bg-green-50 rounded-lg">
+                      <div className="text-xl font-bold text-green-900">
                         {event.maxParticipants}
                       </div>
-                      <div className="text-sm text-green-600">
+                      <div className="text-xs text-green-600">
                         <Trans>Maximum</Trans>
                       </div>
-                      <div className="text-xs text-green-500 mt-1">
+                      <div className="hidden sm:block text-xs text-green-500 mt-1">
                         <Trans>Full capacity</Trans>
                       </div>
                     </div>
