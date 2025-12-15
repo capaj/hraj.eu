@@ -18,6 +18,7 @@ interface EventCardProps {
 }
 
 export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onView, isJoining = false, currentUserId }) => {
+
   const sport = SPORTS.find(s => s.id === event.sport);
   const venue = venues?.find(v => v.id === event.venueId);
   const isSpotAvailable = event.participants.length < event.maxParticipants;
@@ -94,8 +95,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
           </div>
           {event.price && (
             <div className="flex items-center text-sm text-gray-600">
-              <Euro size={16} className="mr-2" />
-              €{event.price} per person
+              {event.price} {event.currency} total for the venue
             </div>
           )}
         </div>
@@ -114,12 +114,12 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
             {isParticipant
               ? 'You are playing'
               : isWaitlisted
-              ? 'On Waitlist'
-              : isJoining
-              ? 'Joining...'
-              : isSpotAvailable
-              ? 'Join Game'
-              : 'Join Waitlist'}
+                ? 'On Waitlist'
+                : isJoining
+                  ? 'Joining...'
+                  : isSpotAvailable
+                    ? 'Join Game'
+                    : 'Join Waitlist'}
           </Button>
           <Link to="/events/$eventId" params={{ eventId: event.id }} onClick={(e) => e.stopPropagation()}>
             <Button

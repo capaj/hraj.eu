@@ -42,6 +42,7 @@ export const getUpcomingEvents = createServerFn({ method: 'GET' })
           date: new Date(event.date),
           startTime: event.startTime,
           duration: event.duration,
+          currency: event.currency || 'CZK',
           minParticipants: event.minParticipants,
           idealParticipants: event.idealParticipants || undefined,
           maxParticipants: event.maxParticipants,

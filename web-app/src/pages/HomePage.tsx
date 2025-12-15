@@ -10,7 +10,7 @@ import { joinEvent } from '~/server-functions/joinEvent'
 import { authClient } from '../lib/auth-client'
 import { i18n } from '~/lib/i18n'
 
-export const Home: React.FC = () => {
+export const HomePage: React.FC = () => {
   const { upcomingEvents: initialUpcomingEvents, stats } = useLoaderData({ from: '/' })
   const navigate = useNavigate()
   const session = authClient.useSession()
@@ -223,9 +223,9 @@ export const Home: React.FC = () => {
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-primary-100 max-w-3xl mx-auto animate-slide-up">
               <Trans>
-                Join the largest community of sports enthusiasts across Europe.
+                Join the vibrant community of sports enthusiasts across Europe.
                 Organize games, discover events, and make new friends through
-                sport.
+                team sports.
               </Trans>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-bounce-gentle">
