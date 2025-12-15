@@ -88,7 +88,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
         price: initialData.price || 0,
         currency: initialData.currency || 'CZK'
       })
-      setImages(initialData.images || [])
+      setImages(initialData.photos || [])
       setOrientationPlan(initialData.orientationPlan || '')
       // Set location if available
       if (initialData.lat && initialData.lng) {
@@ -330,7 +330,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
         facilities: venueData.facilities ?? [],
         description: venueData.description ?? undefined,
         accessInstructions: venueData.accessInstructions ?? undefined,
-        images: venueData.images ?? [],
+        photos: venueData.images ?? [],
         orientationPlan: venueData.orientationPlan ?? undefined,
         contactInfo: venueData.contactInfo,
         price: venueData.price ?? 0,

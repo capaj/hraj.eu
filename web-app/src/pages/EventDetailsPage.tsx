@@ -1134,7 +1134,7 @@ export const EventDetailsPage: React.FC = () => {
                   )}
 
                   {/* Venue Images & Orientation Plan */}
-                  {((venue.images && venue.images.length > 0) ||
+                  {((venue.photos && venue.photos.length > 0) ||
                     venue.orientationPlan) && (
                       <div className="pt-4 border-t border-gray-100">
                         <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center">
@@ -1168,7 +1168,7 @@ export const EventDetailsPage: React.FC = () => {
                           )}
 
                           {/* Venue Photos */}
-                          {venue.images && venue.images.length > 0 && (
+                          {venue.photos && venue.photos.length > 0 && (
                             <div className="space-y-2">
                               {venue.orientationPlan && (
                                 <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">
@@ -1176,7 +1176,7 @@ export const EventDetailsPage: React.FC = () => {
                                 </p>
                               )}
                               <div className="grid grid-cols-2 gap-3">
-                                {venue.images.map((img, idx) => (
+                                {venue.photos.map((img: string, idx: number) => (
                                   <div
                                     key={idx}
                                     className="relative rounded-lg overflow-hidden border border-gray-200 aspect-video cursor-pointer hover:opacity-95 transition-opacity"

@@ -22,6 +22,7 @@ import { Route as EventsEventIdRouteImport } from './routes/events/$eventId'
 import { Route as EditEventEventIdRouteImport } from './routes/edit-event.$eventId'
 import { Route as AuthPathnameRouteImport } from './routes/auth/$pathname'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as ApiOgEventEventIdRouteImport } from './routes/api/og/event/$eventId'
 
 const UserProfileRoute = UserProfileRouteImport.update({
   id: '/user-profile',
@@ -88,6 +89,11 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiOgEventEventIdRoute = ApiOgEventEventIdRouteImport.update({
+  id: '/api/og/event/$eventId',
+  path: '/api/og/event/$eventId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -103,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/edit-event/$eventId': typeof EditEventEventIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/og/event/$eventId': typeof ApiOgEventEventIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -118,6 +125,7 @@ export interface FileRoutesByTo {
   '/edit-event/$eventId': typeof EditEventEventIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/og/event/$eventId': typeof ApiOgEventEventIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -134,6 +142,7 @@ export interface FileRoutesById {
   '/edit-event/$eventId': typeof EditEventEventIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/og/event/$eventId': typeof ApiOgEventEventIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -151,6 +160,7 @@ export interface FileRouteTypes {
     | '/edit-event/$eventId'
     | '/events/$eventId'
     | '/api/auth/$'
+    | '/api/og/event/$eventId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -166,6 +176,7 @@ export interface FileRouteTypes {
     | '/edit-event/$eventId'
     | '/events/$eventId'
     | '/api/auth/$'
+    | '/api/og/event/$eventId'
   id:
     | '__root__'
     | '/'
@@ -181,6 +192,7 @@ export interface FileRouteTypes {
     | '/edit-event/$eventId'
     | '/events/$eventId'
     | '/api/auth/$'
+    | '/api/og/event/$eventId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -197,6 +209,7 @@ export interface RootRouteChildren {
   EditEventEventIdRoute: typeof EditEventEventIdRoute
   EventsEventIdRoute: typeof EventsEventIdRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiOgEventEventIdRoute: typeof ApiOgEventEventIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -292,6 +305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/og/event/$eventId': {
+      id: '/api/og/event/$eventId'
+      path: '/api/og/event/$eventId'
+      fullPath: '/api/og/event/$eventId'
+      preLoaderRoute: typeof ApiOgEventEventIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -309,6 +329,7 @@ const rootRouteChildren: RootRouteChildren = {
   EditEventEventIdRoute: EditEventEventIdRoute,
   EventsEventIdRoute: EventsEventIdRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiOgEventEventIdRoute: ApiOgEventEventIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

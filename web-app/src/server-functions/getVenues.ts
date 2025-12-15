@@ -16,9 +16,9 @@ export const getVenues = createServerFn({ method: 'GET' }).handler(async () => {
       lat: venue.lat || 0,
       lng: venue.lng || 0,
       type: venue.type || 'outdoor',
-      sports: (venue.sports as string[]) || [],
-      facilities: (venue.facilities as string[]) || [],
-      images: (venue.photos as string[]) || [],
+      sports: venue.sports  || [],
+      facilities: venue.facilities  || [],
+      photos: venue.photos  || [],
       orientationPlan: venue.orientationPlan || undefined,
       description: venue.description || undefined,
       accessInstructions: venue.accessInstructions || undefined,
@@ -49,7 +49,7 @@ export const getVenues = createServerFn({ method: 'GET' }).handler(async () => {
       isVerified: venue.isVerified || false,
       createdAt: new Date(),
       updatedAt: new Date()
-    } as Venue
+    } 
   })
 
   return venues

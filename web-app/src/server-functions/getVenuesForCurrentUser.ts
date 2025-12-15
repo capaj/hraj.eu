@@ -47,7 +47,7 @@ export const getVenuesForCurrentUser = createServerFn({ method: 'GET' })
         type: venue.type || 'outdoor',
         sports: (venue.sports as string[]) || [],
         facilities: (venue.facilities as string[]) || [],
-        images: (venue.photos as string[]) || [],
+        photos: (venue.photos as string[]) || [],
         orientationPlan: venue.orientationPlan || undefined,
         description: venue.description || undefined,
         accessInstructions: venue.accessInstructions || undefined,
