@@ -5,7 +5,7 @@ import { EventCard } from '../components/events/EventCard'
 import { EventFilters } from '../components/events/EventFilters'
 import { EventMap, EventMapRef } from '../components/map/EventMap'
 import { Button } from '../components/ui/Button'
-import { Map, List, ArrowUpDown, History, Flame } from 'lucide-react'
+import { List, ArrowUpDown, History, Flame } from 'lucide-react'
 import { Event } from '../types'
 import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
@@ -127,25 +127,8 @@ export const DiscoverPage: React.FC = () => {
     return sorted
   }, [events, selectedSport, selectedSkillLevel, sortBy, userLocation])
 
-  const handleEventSelect = (event: Event) => {
-    // Scroll to the corresponding event card in the list
-    const eventElement = document.getElementById(`event-${event.id}`)
-    if (eventElement) {
-      eventElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      // Add a temporary highlight effect
-      eventElement.classList.add(
-        'ring-2',
-        'ring-primary-500',
-        'ring-opacity-50'
-      )
-      setTimeout(() => {
-        eventElement.classList.remove(
-          'ring-2',
-          'ring-primary-500',
-          'ring-opacity-50'
-        )
-      }, 2000)
-    }
+  const handleEventSelect = (_event: Event) => {
+    // No-op: Map selection is now handled via popups
   }
 
   const handleJoinEvent = async (eventId: string) => {
@@ -214,22 +197,20 @@ export const DiscoverPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-600 to-secondary-600 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-white">
-              <Trans>Discover Events</Trans>
-            </h1>
-            <p className="text-white/80 mt-2">
-              <Trans>Find and join sports events in your area</Trans>
-            </p>
-          </div>
-
-          <div className="flex items-center space-x-2 text-sm text-white/80">
-            <Map size={16} className="text-white" />
-            <span>
-              <Trans>Click markers to highlight events below</Trans>
-            </span>
+        {/* Map View */}
+        <div className="mb-8">
+          <div
+            className="bg-white rounded-xl shadow-sm border border-white/20 overflow-hidden"
+            style={{ height: '400px' }}
+          >
+            <EventMap
+              ref={mapRef}
+              events={filteredAndSortedEvents}
+              venues={venues}
+              onEventSelect={handleEventSelect}
+              onJoinEvent={handleJoinEvent}
+              currentUserId={session.data?.user?.id}
+            />
           </div>
         </div>
 
@@ -274,24 +255,8 @@ export const DiscoverPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Map View */}
-        <div className="mb-8">
-          <div
-            className="bg-white rounded-xl shadow-sm border border-white/20 overflow-hidden"
-            style={{ height: '400px' }}
-          >
-            <EventMap
-              ref={mapRef}
-              events={filteredAndSortedEvents}
-              venues={venues}
-              onEventSelect={handleEventSelect}
-              onJoinEvent={handleJoinEvent}
-              currentUserId={session.data?.user?.id}
-            />
-          </div>
-        </div>
 
-        {/* List View */}
+
         {/* List View */}
         <div className="space-y-12">
           {/* Upcoming Events */}

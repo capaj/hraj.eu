@@ -814,7 +814,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
 
       {/* Cancel Event Confirmation Modal */}
       {showCancelConfirm && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[60] p-4">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[3060] p-4">
           <Card className="w-full max-w-md animate-fade-in">
             <CardHeader>
               <h3 className="text-xl font-bold text-red-600">Cancel Event?</h3>

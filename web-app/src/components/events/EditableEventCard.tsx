@@ -200,7 +200,7 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
       </div>
 
       {isEditOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[3000] p-4">
           <div className="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden relative">
             <button
               onClick={() => setIsEditOpen(false)}
