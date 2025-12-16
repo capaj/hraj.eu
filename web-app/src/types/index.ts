@@ -25,7 +25,7 @@ export interface Venue {
   type: 'outdoor' | 'indoor' | 'mixed'
   sports: string[] // Array of sport IDs that can be played at this venue
   facilities: string[] // e.g., ['parking', 'changing_rooms', 'showers', 'equipment_rental']
-  images: string[] // Array of image URLs
+  photos: string[] // Array of image URLs
   orientationPlan?: string // URL to orientation/access plan image
   description?: string
   accessInstructions?: string // How to find/access the field/gym

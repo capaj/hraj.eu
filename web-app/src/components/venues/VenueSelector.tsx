@@ -55,7 +55,7 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
   const venuesWithoutSelected = filteredVenues.filter(
     (venue) => venue.id !== selectedVenueId
   )
-  
+
   // Show only top 3 venues initially, unless "show all" is clicked
   const displayedVenues = showAllVenues
     ? venuesWithoutSelected
@@ -192,161 +192,159 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
       {/* Venue List */}
       {!selectedVenueId && (
         <div className="space-y-3">
-        {displayedVenues.map((venue) => (
-          <Card
-            key={venue.id}
-            className="cursor-pointer transition-all hover:shadow-md hover:bg-gray-50"
-            onClick={() => onVenueSelect(venue.id)}
-          >
-            <CardContent className="p-4">
-              <div className="flex items-start space-x-4">
-                {/* Venue Image */}
-                <div className="flex-shrink-0">
-                  <img
-                    src={venue.images[0]}
-                    alt={venue.name}
-                    className="w-16 h-16 rounded-lg object-cover"
-                  />
-                </div>
-
-                {/* Venue Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between mb-2">
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2 mb-1">
-                        <h3 className="font-semibold text-gray-900 truncate">
-                          {venue.name}
-                        </h3>
-                        <Badge
-                          variant="default"
-                          size="sm"
-                          className={getVenueTypeColor(venue.type)}
-                        >
-                          {venue.type}
-                        </Badge>
-                        {venue.isVerified && (
-                          <Badge variant="success" size="sm">
-                            <Check size={12} className="mr-1" />
-                            Verified
-                          </Badge>
-                        )}
-                      </div>
-                      <div className="flex items-center text-sm text-gray-600 mb-2">
-                        <MapPin size={14} className="mr-1 flex-shrink-0" />
-                        <span className="truncate">
-                          {venue.address}, {venue.city}
-                        </span>
-                      </div>
-                    </div>
+          {displayedVenues.map((venue) => (
+            <Card
+              key={venue.id}
+              className="cursor-pointer transition-all hover:shadow-md hover:bg-gray-50"
+              onClick={() => onVenueSelect(venue.id)}
+            >
+              <CardContent className="p-4">
+                <div className="flex items-start space-x-4">
+                  {/* Venue Image */}
+                  <div className="flex-shrink-0">
+                    <img
+                      src={venue.photos[0]}
+                      alt={venue.name}
+                      className="w-16 h-16 rounded-lg object-cover"
+                    />
                   </div>
 
-                  {/* Sports and Rating */}
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center space-x-2">
-                      {venue.sports.slice(0, 3).map((sportId) => {
-                        const sport = SPORTS.find((s) => s.id === sportId)
-                        return sport ? (
-                          <span
-                            key={sportId}
-                            className="text-lg"
-                            title={sport.name}
+                  {/* Venue Info */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-1">
+                          <h3 className="font-semibold text-gray-900 truncate">
+                            {venue.name}
+                          </h3>
+                          <Badge
+                            variant="default"
+                            size="sm"
+                            className={getVenueTypeColor(venue.type)}
                           >
-                            {sport.icon}
+                            {venue.type}
+                          </Badge>
+                          {venue.isVerified && (
+                            <Badge variant="success" size="sm">
+                              <Check size={12} className="mr-1" />
+                              Verified
+                            </Badge>
+                          )}
+                        </div>
+                        <div className="flex items-center text-sm text-gray-600 mb-2">
+                          <MapPin size={14} className="mr-1 flex-shrink-0" />
+                          <span className="truncate">
+                            {venue.address}, {venue.city}
                           </span>
-                        ) : null
-                      })}
-                      {venue.sports.length > 3 && (
-                        <span className="text-sm text-gray-500">
-                          +{venue.sports.length - 3}
-                        </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Sports and Rating */}
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center space-x-2">
+                        {venue.sports.slice(0, 3).map((sportId) => {
+                          const sport = SPORTS.find((s) => s.id === sportId)
+                          return sport ? (
+                            <span
+                              key={sportId}
+                              className="text-lg"
+                              title={sport.name}
+                            >
+                              {sport.icon}
+                            </span>
+                          ) : null
+                        })}
+                        {venue.sports.length > 3 && (
+                          <span className="text-sm text-gray-500">
+                            +{venue.sports.length - 3}
+                          </span>
+                        )}
+                      </div>
+
+                      {venue.rating && (
+                        <div className="flex items-center text-sm text-gray-600">
+                          <Star
+                            size={14}
+                            className="mr-1 text-yellow-500 fill-current"
+                          />
+                          {venue.rating}
+                        </div>
                       )}
                     </div>
 
-                    {venue.rating && (
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Star
-                          size={14}
-                          className="mr-1 text-yellow-500 fill-current"
-                        />
-                        {venue.rating}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Facilities */}
-                  <div className="flex items-center space-x-3 text-xs text-gray-500">
-                    {venue.facilities.slice(0, 4).map((facility) => (
-                      <div
-                        key={facility}
-                        className="flex items-center space-x-1"
-                      >
-                        {getFacilityIcon(facility)}
-                        <span>{getFacilityLabel(facility)}</span>
-                      </div>
-                    ))}
-                    {venue.facilities.length > 4 && (
-                      <span>+{venue.facilities.length - 4} more</span>
-                    )}
-                  </div>
-                    
-                  {/* Price Range */}
-                  {venue.priceRange && venue.priceRange.max > 0 && (
-                    <div className="mt-2 text-sm text-gray-600">
-                      €{venue.priceRange.min}
-                      {venue.priceRange.min !== venue.priceRange.max &&
-                        `-€${venue.priceRange.max}`}
-                      <span className="text-gray-500"> per hour</span>
+                    {/* Facilities */}
+                    <div className="flex items-center space-x-3 text-xs text-gray-500">
+                      {venue.facilities.slice(0, 4).map((facility) => (
+                        <div
+                          key={facility}
+                          className="flex items-center space-x-1"
+                        >
+                          {getFacilityIcon(facility)}
+                          <span>{getFacilityLabel(facility)}</span>
+                        </div>
+                      ))}
+                      {venue.facilities.length > 4 && (
+                        <span>+{venue.facilities.length - 4} more</span>
+                      )}
                     </div>
-                  )}
+
+                    {/* Price Range */}
+                    {venue.priceRange && venue.priceRange.max > 0 && (
+                      <div className="mt-2 text-sm text-gray-600">
+                        €{venue.priceRange.min}
+                        {venue.priceRange.min !== venue.priceRange.max &&
+                          `-€${venue.priceRange.max}`}
+                        <span className="text-gray-500"> per hour</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          ))}
 
-        {/* Show More/Less Button */}
-        {venuesWithoutSelected.length > 3 && (
-          <div className="text-center">
-            <Button
-              variant="outline"
-              onClick={() => setShowAllVenues(!showAllVenues)}
-              className="w-full sm:w-auto"
-            >
-              {showAllVenues ? (
-                <>Show Less</>
-              ) : (
-                <>Show All {venuesWithoutSelected.length} Venues</>
-              )}
-            </Button>
-          </div>
-        )}
+          {/* Show More/Less Button */}
+          {venuesWithoutSelected.length > 3 && (
+            <div className="text-center">
+              <Button
+                variant="outline"
+                onClick={() => setShowAllVenues(!showAllVenues)}
+                className="w-full sm:w-auto"
+              >
+                {showAllVenues ? (
+                  <>Show Less</>
+                ) : (
+                  <>Show All {venuesWithoutSelected.length} Venues</>
+                )}
+              </Button>
+            </div>
+          )}
 
-        {/* No Results */}
-        {filteredVenues.length === 0 && (
-          <div className="text-center py-8 text-gray-500">
-            <MapPin size={48} className="mx-auto mb-4 text-gray-400" />
-            <h3 className="text-lg font-medium text-gray-700 mb-2">
-              No venues found
-            </h3>
-            <p className="text-sm text-gray-600 mb-4">
-              {searchTerm
-                ? `No venues match "${searchTerm}"${
-                    sportFilter
-                      ? ` for ${SPORTS.find((s) => s.id === sportFilter)?.name}`
-                      : ''
+          {/* No Results */}
+          {filteredVenues.length === 0 && (
+            <div className="text-center py-8 text-gray-500">
+              <MapPin size={48} className="mx-auto mb-4 text-gray-400" />
+              <h3 className="text-lg font-medium text-gray-700 mb-2">
+                No venues found
+              </h3>
+              <p className="text-sm text-gray-600 mb-4">
+                {searchTerm
+                  ? `No venues match "${searchTerm}"${sportFilter
+                    ? ` for ${SPORTS.find((s) => s.id === sportFilter)?.name}`
+                    : ''
                   }`
-                : `No venues available${
-                    sportFilter
-                      ? ` for ${SPORTS.find((s) => s.id === sportFilter)?.name}`
-                      : ''
+                  : `No venues available${sportFilter
+                    ? ` for ${SPORTS.find((s) => s.id === sportFilter)?.name}`
+                    : ''
                   }`}
-            </p>
-            <Button variant="primary" onClick={onAddVenue}>
-              <Plus size={16} className="mr-2" />
-              Add the First Venue
-            </Button>
-          </div>
-        )}
+              </p>
+              <Button variant="primary" onClick={onAddVenue}>
+                <Plus size={16} className="mr-2" />
+                Add the First Venue
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </div>

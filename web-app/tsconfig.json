@@ -16,6 +16,7 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
+      "drizzle/*": ["./drizzle/*"],
       "~/*": ["./src/*"]
     },
     "noEmit": true

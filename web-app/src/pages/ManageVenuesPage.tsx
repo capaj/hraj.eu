@@ -205,9 +205,9 @@ export const ManageVenuesPage: React.FC = () => {
             </div>
           )}
 
-          {venue.images.length > 0 && (
+          {venue.photos.length > 0 && (
             <div className="mt-4 grid grid-cols-3 gap-2">
-              {venue.images.slice(0, 3).map((image, idx) => (
+              {venue.photos.slice(0, 3).map((image, idx) => (
                 <img
                   key={idx}
                   src={image}
