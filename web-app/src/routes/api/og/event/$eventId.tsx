@@ -4,6 +4,7 @@ import { getEventById } from '~/server-functions/getEventById'
 import { getVenues } from '~/server-functions/getVenues'
 import { getUsersByIds } from '~/server-functions/getUsersByIds'
 import { SPORTS } from '~/lib/constants'
+import { env } from 'cloudflare:workers'
 
 const CACHE_CONTROL = 'public, max-age=3600, s-maxage=86400'
 
@@ -57,6 +58,21 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
       },
       GET: async ({ request, params }) => {
         try {
+          const bucket = env.hraj_eu_uploads
+          const key = `og-images/${params.eventId}.png`
+
+          if (bucket) {
+            const existing = await bucket.get(key)
+            if (existing) {
+              return new Response(existing.body, {
+                headers: {
+                  'Content-Type': 'image/png',
+                  'Cache-Control': CACHE_CONTROL
+                }
+              })
+            }
+          }
+
           const origin = new URL(request.url).origin
           const event = await getEventById({ data: params.eventId })
           const venues = await getVenues()
@@ -296,6 +312,24 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
               ]
             }
           )
+
+          if (bucket) {
+            const buffer = await imageResponse.arrayBuffer()
+            await bucket.put(key, buffer, {
+              httpMetadata: {
+                contentType: 'image/png',
+                cacheControl: CACHE_CONTROL
+              }
+            })
+
+            return new Response(buffer, {
+              headers: {
+                ...Object.fromEntries(imageResponse.headers),
+                'Content-Type': 'image/png',
+                'Cache-Control': CACHE_CONTROL
+              }
+            })
+          }
 
           imageResponse.headers.set('Cache-Control', CACHE_CONTROL)
           return imageResponse
