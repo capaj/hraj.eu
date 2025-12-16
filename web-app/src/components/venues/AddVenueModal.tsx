@@ -123,7 +123,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
       }
       : DEFAULT_FORM_DATA
 
-    const baseImages = initialData?.images || []
+    const baseImages = initialData?.photos || []
     const basePlan = initialData?.orientationPlan || ''
     const baseLocation =
       initialData?.lat && initialData?.lng
