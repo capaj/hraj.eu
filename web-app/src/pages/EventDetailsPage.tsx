@@ -57,7 +57,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
+  DropdownMenuSeparator
 } from '../components/ui/dropdown-menu'
 
 import { useLoaderData, useNavigate } from '@tanstack/react-router'
@@ -470,7 +471,20 @@ export const EventDetailsPage: React.FC = () => {
                     <Trans>Share</Trans>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuContent align="end" className="w-96">
+                  <div className="p-2">
+                    <div className="text-xs text-muted-foreground mb-2 px-1">
+                      <Trans>Preview</Trans>
+                    </div>
+                    <div className="relative aspect-[1200/630] w-full overflow-hidden rounded-md border bg-muted">
+                      <img
+                        src={`/api/og/event/${event.id}?v=${new Date(event.updatedAt).getTime()}`}
+                        alt="OG Preview"
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  </div>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <FacebookShare url={shareUrl} className="w-full flex items-center cursor-pointer">
                       <Facebook size={20} className="mr-2" />
@@ -731,7 +745,7 @@ export const EventDetailsPage: React.FC = () => {
                 <CardHeader>
                   <h2 className="text-xl font-semibold text-gray-900 flex items-center">
                     <CoinsIcon size={20} className="mr-2 text-primary-600" />
-                    <Trans>Payment Information</Trans>
+                    <Trans>Payment</Trans>
                   </h2>
                 </CardHeader>
                 <CardContent className="p-6">
@@ -1014,7 +1028,7 @@ export const EventDetailsPage: React.FC = () => {
             <CardHeader>
               <h2 className="text-xl font-semibold text-gray-900 flex items-center">
                 <House size={16} className="mr-2 text-primary-600" />
-                <Trans>Venue Information</Trans>
+                <Trans>Venue</Trans>
               </h2>
             </CardHeader>
             <CardContent className="p-6">

@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { ImageResponse, loadGoogleFont } from 'workers-og'
 import { getEventById } from '~/server-functions/getEventById'
 import { getVenues } from '~/server-functions/getVenues'
+import { getUsersByIds } from '~/server-functions/getUsersByIds'
 import { SPORTS } from '~/lib/constants'
 
 const CACHE_CONTROL = 'public, max-age=3600, s-maxage=86400'
@@ -61,8 +62,15 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
           const venues = await getVenues()
           const venue = venues.find((v: any) => v.id === event.venueId)
 
-          const sportName =
-            SPORTS.find((s) => s.id === event.sport)?.name ?? event.sport
+          // Fetch participants
+          const participantIds = event.participants.slice(0, 5)
+          const topParticipants = participantIds.length > 0
+            ? await getUsersByIds({ data: participantIds })
+            : []
+
+          const sportObj = SPORTS.find((s) => s.id === event.sport)
+          const sportName = sportObj?.name ?? event.sport
+          const sportIcon = sportObj?.icon ?? ''
 
           const start = (() => {
             const date = new Date(event.date)
@@ -84,6 +92,8 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
             }
           })()
 
+          const duration = event.duration ? `${event.duration} min` : ''
+
           const where = venue?.name
             ? `${venue.name}${venue.city ? `, ${venue.city}` : ''}`
             : 'TBA'
@@ -96,11 +106,24 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
             ? await urlToDataUri(photoUrl).catch(() => null)
             : null
 
+          // Fetch participant avatars
+          const avatarPromises = topParticipants.map(async (p: any) => {
+            if (p.image) {
+              // Ensure absolute URL if it's relative
+              const imgUrl = p.image.startsWith('http')
+                ? p.image
+                : new URL(p.image, origin).toString()
+              return await urlToDataUri(imgUrl).catch(() => null)
+            }
+            return null
+          })
+          const avatarDataUris = await Promise.all(avatarPromises)
+
           const fontData400 = await getInter400()
           const fontData700 = await getInter700()
 
           const title = (event.title || 'Event').trim()
-          const participants = event.participants?.length ?? 0
+          const participantsCount = event.participants?.length ?? 0
           const maxParticipants = event.maxParticipants ?? 0
 
           const imageResponse = new ImageResponse(
@@ -109,144 +132,147 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
                 width: '1200px',
                 height: '630px',
                 display: 'flex',
-                padding: '56px',
-                background:
-                  'linear-gradient(135deg, #0b1220 0%, #111827 45%, #0b1220 100%)',
-                color: 'white',
+                flexDirection: 'column',
                 fontFamily: 'Inter',
-                position: 'relative'
+                position: 'relative',
+                backgroundColor: '#111827',
+                color: 'white',
               }}
             >
+              {/* Background Image */}
+              {photoDataUri ? (
+                <img
+                  src={photoDataUri}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '1200px',
+                    height: '630px',
+                    objectFit: 'cover',
+                  }}
+                />
+              ) : null}
+
+              {/* Dark Overlay Gradient */}
               <div
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  background:
-                    'radial-gradient(circle at 20% 20%, rgba(59,130,246,0.28), transparent 40%), radial-gradient(circle at 80% 0%, rgba(16,185,129,0.18), transparent 40%), radial-gradient(circle at 80% 80%, rgba(168,85,247,0.18), transparent 40%)'
+                  background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0.95) 100%)',
                 }}
               />
 
+              {/* Content Container */}
               <div
                 style={{
-                  position: 'absolute',
-                  inset: 0,
-                  opacity: 0.08,
-                  backgroundImage:
-                    'linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px)',
-                  backgroundSize: '48px 48px'
-                }}
-              />
-
-              <div
-                style={{
+                  position: 'relative',
                   display: 'flex',
                   flexDirection: 'column',
+                  justifyContent: 'space-between',
                   width: '100%',
                   height: '100%',
-                  justifyContent: 'space-between',
-                  position: 'relative'
+                  padding: '60px',
                 }}
               >
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                {/* Top Section */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <div
-                      style={{
-                        fontSize: 22,
-                        letterSpacing: 0.5,
-                        opacity: 0.9
-                      }}
-                    >
-                      hraj.eu
+                    <div style={{ fontSize: 24, fontWeight: 700, opacity: 0.9 }}>hraj.eu</div>
+                  </div>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 12,
+                      padding: '8px 20px',
+                      background: 'rgba(255, 255, 255, 0.2)',
+                      backdropFilter: 'blur(10px)',
+                      borderRadius: '50px',
+                      fontSize: 24,
+                      fontWeight: 600,
+                      border: '1px solid rgba(255,255,255,0.3)',
+                    }}
+                  >
+                    {/* TODO: Use PNG icons for sports instead of emojis as they render poorly in OG images */}
+                    {/* <div style={{ fontSize: 24 }}>{sportIcon}</div> */}
+                    <div>{sportName}</div>
+                  </div>
+                </div>
+
+                {/* Bottom Section */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+                  {/* Title and Location */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <div style={{ fontSize: 72, fontWeight: 700, lineHeight: 1.1, textShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>
+                      {title}
                     </div>
-                    <div style={{ fontSize: 16, opacity: 0.75 }}>
-                      {sportName}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 16, fontSize: 28, opacity: 0.9 }}>
+                      <div>{where}</div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 28, fontWeight: 700, opacity: 0.9, marginTop: 4 }}>
+                      <div>{when}</div>
+                      {duration && (
+                        <>
+                          <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'white', opacity: 0.6 }} />
+                          <div>{duration}</div>
+                        </>
+                      )}
                     </div>
                   </div>
 
-                  {photoDataUri ? (
-                    <div
-                      style={{
-                        width: 148,
-                        height: 148,
-                        borderRadius: 24,
-                        overflow: 'hidden',
-                        border: '1px solid rgba(255,255,255,0.18)',
-                        boxShadow: '0 18px 40px rgba(0,0,0,0.35)',
-                        background: 'rgba(255,255,255,0.06)',
-                        display: 'flex'
-                      }}
-                    >
-                      <img
-                        src={photoDataUri}
+                  {/* Players and Status */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 12 }}>
+
+                    {/* Avatars + Count */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                      {/* Avatar Stack */}
+                      <div style={{ display: 'flex', flexDirection: 'row' }}>
+                        {topParticipants.map((p: any, i: number) => (
+                          <div
+                            key={p.id}
+                            style={{
+                              width: 56,
+                              height: 56,
+                              borderRadius: '50%',
+                              border: '3px solid #111827',
+                              marginLeft: i === 0 ? 0 : -18,
+                              overflow: 'hidden',
+                              background: '#374151',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: 20,
+                              fontWeight: 600,
+                              color: '#9CA3AF'
+                            }}
+                          >
+                            {avatarDataUris[i] ? (
+                              <img src={avatarDataUris[i]!} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            ) : (
+                              <div>{(p.name || '?').charAt(0).toUpperCase()}</div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Count Badge */}
+                      <div
                         style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover'
+                          display: 'flex',
+                          alignItems: 'center',
+                          padding: '12px 24px',
+                          background: 'rgba(59, 130, 246, 0.9)',
+                          borderRadius: '50px',
+                          fontWeight: 700,
+                          fontSize: 24,
+                          color: 'white',
+                          boxShadow: '0 4px 12px rgba(59, 130, 246, 0.4)',
                         }}
-                      />
+                      >
+                        {`${participantsCount}/${maxParticipants} Players`}
+                      </div>
                     </div>
-                  ) : null}
-                </div>
-
-                <div
-                  style={{ display: 'flex', flexDirection: 'column', gap: 18 }}
-                >
-                  <div
-                    style={{
-                      fontSize: 64,
-                      lineHeight: 1.06,
-                      fontWeight: 700,
-                      letterSpacing: -1
-                    }}
-                  >
-                    {title}
-                  </div>
-
-                  <div
-                    style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
-                  >
-                    <div style={{ fontSize: 26, opacity: 0.9 }}>{where}</div>
-                    <div style={{ fontSize: 22, opacity: 0.75 }}>{when}</div>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', gap: 14, alignItems: 'center' }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 10,
-                      padding: '10px 14px',
-                      borderRadius: 999,
-                      background: 'rgba(255,255,255,0.10)',
-                      border: '1px solid rgba(255,255,255,0.16)',
-                      fontSize: 18
-                    }}
-                  >
-                    <div style={{ opacity: 0.8 }}>Players</div>
-                    <div style={{ fontWeight: 700 }}>
-                      {participants}/{maxParticipants}
-                    </div>
-                  </div>
-
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      padding: '10px 14px',
-                      borderRadius: 999,
-                      background: 'rgba(59,130,246,0.18)',
-                      border: '1px solid rgba(59,130,246,0.35)',
-                      fontSize: 18
-                    }}
-                  >
-                    {new URL(`/events/${event.id}`, origin).toString()}
                   </div>
                 </div>
               </div>
