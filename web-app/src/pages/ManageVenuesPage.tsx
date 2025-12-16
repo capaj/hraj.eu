@@ -3,7 +3,7 @@ import { Card, CardContent } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { Badge } from '../components/ui/Badge'
 import { Venue } from '../types'
-import { getVenuesByUserId } from '~/server-functions/getVenuesByUserId'
+import { getVenuesForCurrentUser } from '~/server-functions/getVenuesForCurrentUser'
 import { useUser } from '~/lib/auth-client'
 import { AddVenueModal } from '../components/venues/AddVenueModal'
 import { Trans } from '@lingui/react/macro'
@@ -46,7 +46,7 @@ export const ManageVenuesPage: React.FC = () => {
 
     try {
       setIsLoading(true)
-      const userVenues = await getVenuesByUserId({ data: user.id })
+      const userVenues = await getVenuesForCurrentUser()
       setVenues(userVenues)
     } catch (error) {
       console.error('Failed to load venues:', error)

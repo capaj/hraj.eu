@@ -1,16 +1,39 @@
 import { createServerFn } from '@tanstack/react-start'
+import { getRequest } from '@tanstack/react-start/server'
+import { auth } from '~/lib/auth'
 import { Venue } from '../types'
 import { db } from '../../drizzle/db'
-import { venueT } from '../../drizzle/schema'
+import { venueT, user } from '../../drizzle/schema'
 import { eq } from 'drizzle-orm'
 
-export const getVenuesByUserId = createServerFn({ method: 'GET' })
-  .inputValidator((userId: string) => userId)
-  .handler(async ({ data: userId }) => {
-    const venuesFromDb = await db
-      .select()
-      .from(venueT)
-      .where(eq(venueT.createdBy, userId))
+const ADMIN_EMAILS = ['capajj@gmail.com']
+
+export const getVenuesForCurrentUser = createServerFn({ method: 'GET' })
+  .handler(async () => {
+    const request = getRequest()
+    const session = await auth.api.getSession({ headers: request.headers })
+
+    if (!session?.user?.id) {
+      throw new Error('You must be logged in to manage venues')
+    }
+
+    const userId = session.user.id
+
+    const userData = await db.query.user.findFirst({
+      where: eq(user.id, userId),
+      columns: {
+        email: true
+      }
+    })
+
+    const isAdmin = userData?.email && ADMIN_EMAILS.includes(userData.email)
+
+    const venuesFromDb = isAdmin
+      ? await db.select().from(venueT)
+      : await db
+          .select()
+          .from(venueT)
+          .where(eq(venueT.createdBy, userId))
 
     const venues = venuesFromDb.map((venue) => {
       return {
@@ -55,7 +78,7 @@ export const getVenuesByUserId = createServerFn({ method: 'GET' })
         isVerified: venue.isVerified || false,
         createdAt: new Date(venue.createdAt),
         updatedAt: new Date(venue.updatedAt)
-      } as Venue
+      } 
     })
 
     return venues
