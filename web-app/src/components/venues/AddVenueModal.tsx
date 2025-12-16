@@ -216,6 +216,10 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
     setLocation({ lat: details.lat, lng: details.lng })
   }
 
+  const handleLocationChange = (lat: number, lng: number) => {
+    setLocation({ lat, lng })
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -440,13 +444,17 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                 {/* Map Preview */}
                 {location && (
                   <div className="mt-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
                       Location Preview
                     </label>
+                    <p className="text-sm text-gray-500 mb-3">
+                      Drag the pin to mark the exact entrance to the pitch.
+                    </p>
                     <VenueMapPreview
                       lat={location.lat}
                       lng={location.lng}
                       className="h-64 w-full"
+                      onLocationChange={handleLocationChange}
                     />
                     <p className="text-xs text-gray-500 mt-2">
                       📍 Coordinates: {location.lat.toFixed(6)},{' '}

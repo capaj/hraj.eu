@@ -4,12 +4,14 @@ interface VenueMapPreviewProps {
   lat: number
   lng: number
   className?: string
+  onLocationChange?: (lat: number, lng: number) => void
 }
 
 export const VenueMapPreview: React.FC<VenueMapPreviewProps> = ({
   lat,
   lng,
-  className = ''
+  className = '',
+  onLocationChange
 }) => {
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<any>(null)
@@ -17,40 +19,44 @@ export const VenueMapPreview: React.FC<VenueMapPreviewProps> = ({
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  // Use a ref to store the latest onLocationChange callback
+  const onLocationChangeRef = useRef(onLocationChange)
   useEffect(() => {
+    onLocationChangeRef.current = onLocationChange
+
+    // Update dragging capability if callback availability changes
+    if (markerRef.current) {
+      if (onLocationChange) {
+        markerRef.current.dragging?.enable()
+      } else {
+        markerRef.current.dragging?.disable()
+      }
+    }
+  }, [onLocationChange])
+
+  // Initialize Map
+  useEffect(() => {
+    let isMounted = true
     const initMap = async () => {
-      if (!mapRef.current) return
+      if (!mapRef.current || mapInstanceRef.current) return
 
       try {
-        // Dynamically import Leaflet
         const L = await import('leaflet').then((m) => m.default || m)
 
-        // Import Leaflet CSS
         if (!document.querySelector('link[href*="leaflet.css"]')) {
           const link = document.createElement('link')
           link.rel = 'stylesheet'
-          link.href =
-            'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
+          link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
           document.head.appendChild(link)
         }
 
-        // Clean up existing map if any
-        if (mapInstanceRef.current) {
-          mapInstanceRef.current.remove()
-          mapInstanceRef.current = null
-        }
-
-        // Create the map
         const map = L.map(mapRef.current).setView([lat, lng], 15)
 
-        // Add OpenStreetMap tile layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
           maxZoom: 19
         }).addTo(map)
 
-        // Create custom marker icon
         const customIcon = L.divIcon({
           className: 'custom-venue-marker',
           html: `<div style="
@@ -70,20 +76,38 @@ export const VenueMapPreview: React.FC<VenueMapPreviewProps> = ({
           iconAnchor: [16, 16]
         })
 
-        // Add marker
-        const marker = L.marker([lat, lng], { icon: customIcon }).addTo(map)
+        const marker = L.marker([lat, lng], {
+          icon: customIcon,
+          draggable: !!onLocationChangeRef.current
+        }).addTo(map)
 
         mapInstanceRef.current = map
         markerRef.current = marker
 
-        // Small delay to ensure map renders properly
+        marker.on('dragend', (event: any) => {
+          const position = event.target.getLatLng()
+          if (onLocationChangeRef.current) {
+            onLocationChangeRef.current(position.lat, position.lng)
+          }
+        })
+
+        map.on('click', (e: any) => {
+          if (onLocationChangeRef.current) {
+            const { lat, lng } = e.latlng
+            marker.setLatLng([lat, lng])
+            onLocationChangeRef.current(lat, lng)
+          }
+        })
+
         setTimeout(() => {
-          map.invalidateSize()
-          setIsLoading(false)
+          if (isMounted) {
+            map.invalidateSize()
+            setIsLoading(false)
+          }
         }, 100)
       } catch (err) {
         console.error('Error initializing map:', err)
-        setError('Failed to load map')
+        if (isMounted) setError('Failed to load map')
         setIsLoading(false)
       }
     }
@@ -91,9 +115,27 @@ export const VenueMapPreview: React.FC<VenueMapPreviewProps> = ({
     initMap()
 
     return () => {
+      isMounted = false
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove()
         mapInstanceRef.current = null
+        markerRef.current = null
+      }
+    }
+  }, []) // Initialize only once
+
+  // Update Map Position
+  useEffect(() => {
+    if (mapInstanceRef.current && markerRef.current) {
+      const map = mapInstanceRef.current
+      const marker = markerRef.current
+      const currentLatLng = marker.getLatLng()
+
+      // Only update if significantly different
+      const epsilon = 0.000001
+      if (Math.abs(currentLatLng.lat - lat) > epsilon || Math.abs(currentLatLng.lng - lng) > epsilon) {
+        marker.setLatLng([lat, lng])
+        map.setView([lat, lng], map.getZoom())
       }
     }
   }, [lat, lng])
