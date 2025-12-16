@@ -3,7 +3,7 @@ import { getRequest } from '@tanstack/react-start/server'
 import { z } from 'zod'
 import { createInsertSchema } from 'drizzle-zod'
 import { eventT as eventTable } from '../../drizzle/schema'
-import { db } from 'drizzle/db'
+import { db } from '../../drizzle/db'
 import { auth } from './auth'
 
 const ClientEventSchema = z.object({

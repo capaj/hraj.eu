@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  h3@2.0.0-beta.5:
+    hash: 2bea0055a1dc9298cb3a52739f5aba08c0f002c58cadfde179c118b5e61947de
+    path: patches/h3@2.0.0-beta.5.patch
+
 importers:
 
   .:
@@ -30,8 +35,8 @@ importers:
         specifier: ^1.3.6
         version: 1.3.6(@tanstack/query-core@5.90.12)(@tanstack/react-query@5.90.12(react@19.2.3))(better-auth@1.4.7(@tanstack/react-start@1.141.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vite@7.3.0(@types/node@25.0.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6)))(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@libsql/client@0.15.15)(kysely@0.28.8))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.10))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@daveyplate/better-auth-ui':
-        specifier: ^3.3.1
-        version: 3.3.1(d33f9685b8a13096462288d39a78a74b)
+        specifier: ^3.3.3
+        version: 3.3.3(e6360707c36e39b18bfaec54df768afd)
       '@googlemaps/js-api-loader':
         specifier: ^2.0.2
         version: 2.0.2
@@ -100,7 +105,7 @@ importers:
         version: 0.45.1(@libsql/client@0.15.15)(kysely@0.28.8)
       drizzle-zod:
         specifier: ^0.8.3
-        version: 0.8.3(drizzle-orm@0.45.1(@libsql/client@0.15.15)(kysely@0.28.8))(zod@4.2.0)
+        version: 0.8.3(drizzle-orm@0.45.1(@libsql/client@0.15.15)(kysely@0.28.8))(zod@4.2.1)
       input-otp:
         specifier: ^1.4.2
         version: 1.4.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -141,12 +146,12 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0
       zod:
-        specifier: ^4.2.0
-        version: 4.2.0
+        specifier: ^4.2.1
+        version: 4.2.1
     devDependencies:
       '@cloudflare/vite-plugin':
-        specifier: ^1.17.1
-        version: 1.17.1(vite@7.3.0(@types/node@25.0.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6))(workerd@1.20251210.0)(wrangler@4.54.0)
+        specifier: ^1.18.0
+        version: 1.18.0(vite@7.3.0(@types/node@25.0.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6))(workerd@1.20251213.0)(wrangler@4.55.0)
       '@lingui/babel-plugin-lingui-macro':
         specifier: ^5.7.0
         version: 5.7.0(babel-plugin-macros@3.1.0)(typescript@5.9.3)
@@ -181,8 +186,8 @@ importers:
         specifier: ^2.12.9
         version: 2.12.9(@libsql/client@0.15.15)(drizzle-orm@0.45.1(@libsql/client@0.15.15)(kysely@0.28.8))
       rollup:
-        specifier: ^4.53.4
-        version: 4.53.4
+        specifier: ^4.53.5
+        version: 4.53.5
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
@@ -199,8 +204,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1(typescript@5.9.3)(vite@7.3.0(@types/node@25.0.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6))
       wrangler:
-        specifier: ^4.54.0
-        version: 4.54.0
+        specifier: ^4.55.0
+        version: 4.55.0
 
 packages:
 
@@ -419,11 +424,11 @@ packages:
       workerd:
         optional: true
 
-  '@cloudflare/vite-plugin@1.17.1':
-    resolution: {integrity: sha512-QHxTDhvJakWCs4mu7Q6fB02CPT5MvZkyxufwX7dCIDqLfav5ohIQ7+wdTU7AYwPJ7tF8/a82dBpwnt7+wHooXg==}
+  '@cloudflare/vite-plugin@1.18.0':
+    resolution: {integrity: sha512-qWDKPYI5qdcOlFSeNr3ePhy5vzEPu+bLGRpnvQhe6NR4q6Vq2cs/1+0si0EtPkbLBG/3xSmkNfLFXv19DBAJuQ==}
     peerDependencies:
       vite: ^6.1.0 || ^7.0.0
-      wrangler: ^4.54.0
+      wrangler: ^4.55.0
 
   '@cloudflare/workerd-darwin-64@1.20251109.0':
     resolution: {integrity: sha512-GAYXHOgPTJm6F+mOt0/Zf+rL+xPfMp8zAxGN4pqkzJ6QVQA/mNVMMuj22dI5x8+Ey+lCulKC3rNs4K3VE12hlA==}
@@ -431,8 +436,8 @@ packages:
     cpu: [x64]
     os: [darwin]
 
-  '@cloudflare/workerd-darwin-64@1.20251210.0':
-    resolution: {integrity: sha512-Nn9X1moUDERA9xtFdCQ2XpQXgAS9pOjiCxvOT8sVx9UJLAiBLkfSCGbpsYdarODGybXCpjRlc77Yppuolvt7oQ==}
+  '@cloudflare/workerd-darwin-64@1.20251213.0':
+    resolution: {integrity: sha512-29mPlP7xgyik85EHotrakuQur5WfuAR4tRAntRFwLEFnB88RB7br6Me9wb15itu/1l9nMyimZWhBMAfnEs5PQw==}
     engines: {node: '>=16'}
     cpu: [x64]
     os: [darwin]
@@ -443,8 +448,8 @@ packages:
     cpu: [arm64]
     os: [darwin]
 
-  '@cloudflare/workerd-darwin-arm64@1.20251210.0':
-    resolution: {integrity: sha512-Mg8iYIZQFnbevq/ls9eW/eneWTk/EE13Pej1MwfkY5et0jVpdHnvOLywy/o+QtMJFef1AjsqXGULwAneYyBfHw==}
+  '@cloudflare/workerd-darwin-arm64@1.20251213.0':
+    resolution: {integrity: sha512-gn4nIg7hbGyHxyNdVqDmSvgMfgytFr4Z/OXGp2ZorP1+OKeGLvfQ70LEEYY/kZwSsbOqEYDXyU6LzPj4n86NZQ==}
     engines: {node: '>=16'}
     cpu: [arm64]
     os: [darwin]
@@ -455,8 +460,8 @@ packages:
     cpu: [x64]
     os: [linux]
 
-  '@cloudflare/workerd-linux-64@1.20251210.0':
-    resolution: {integrity: sha512-kjC2fCZhZ2Gkm1biwk2qByAYpGguK5Gf5ic8owzSCUw0FOUfQxTZUT9Lp3gApxsfTLbbnLBrX/xzWjywH9QR4g==}
+  '@cloudflare/workerd-linux-64@1.20251213.0':
+    resolution: {integrity: sha512-zMO9tV4aGDZnRfsWg5MC1mbXaRdutDcMeqH5XMzGHsuKO66tbBipV38gX76PLqxKH+UfbE3Uo3jk3iqIuPEF3g==}
     engines: {node: '>=16'}
     cpu: [x64]
     os: [linux]
@@ -467,8 +472,8 @@ packages:
     cpu: [arm64]
     os: [linux]
 
-  '@cloudflare/workerd-linux-arm64@1.20251210.0':
-    resolution: {integrity: sha512-2IB37nXi7PZVQLa1OCuO7/6pNxqisRSO8DmCQ5x/3sezI5op1vwOxAcb1osAnuVsVN9bbvpw70HJvhKruFJTuA==}
+  '@cloudflare/workerd-linux-arm64@1.20251213.0':
+    resolution: {integrity: sha512-8pQk1dCzdyZdJXehIhxkFMTc5lTLxzqmxskCGlpbem/pWIPTAEjt25OFCxq5Z3iU/x/kI8tcQdYRYx77KS32mQ==}
     engines: {node: '>=16'}
     cpu: [arm64]
     os: [linux]
@@ -479,8 +484,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@cloudflare/workerd-windows-64@1.20251210.0':
-    resolution: {integrity: sha512-Uaz6/9XE+D6E7pCY4OvkCuJHu7HcSDzeGcCGY1HLhojXhHd7yL52c3yfiyJdS8hPatiAa0nn5qSI/42+aTdDSw==}
+  '@cloudflare/workerd-windows-64@1.20251213.0':
+    resolution: {integrity: sha512-QBwfyZXTzI2JHLS7ZEuVVMC81PAQyNxPdcv9Dxd8wvV4QYF7B97h9pUtaBnqUdlBwL6e3O8QniYkOl8c7bEFJw==}
     engines: {node: '>=16'}
     cpu: [x64]
     os: [win32]
@@ -498,8 +503,8 @@ packages:
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
 
-  '@daveyplate/better-auth-ui@3.3.1':
-    resolution: {integrity: sha512-BHy5S0E8jbex9DTeazoopStlqZcaxuCTwMTuIlURo89AdhJhWexjWSPkJbsBqsPMU0RA3NOf+dt+K60mAdi3SA==}
+  '@daveyplate/better-auth-ui@3.3.3':
+    resolution: {integrity: sha512-RguM4sdPMj2M9/VS3fzW2s6TvMgVBOXbyBknnsa55Dlkcqd7H71ePDTt5JKaGoAa121dR8gN2E8AlV5nRyE5ZA==}
     peerDependencies:
       '@better-auth/passkey': '>=1.4.6'
       '@captchafox/react': ^1.10.0
@@ -2536,113 +2541,113 @@ packages:
       rollup:
         optional: true
 
-  '@rollup/rollup-android-arm-eabi@4.53.4':
-    resolution: {integrity: sha512-PWU3Y92H4DD0bOqorEPp1Y0tbzwAurFmIYpjcObv5axGVOtcTlB0b2UKMd2echo08MgN7jO8WQZSSysvfisFSQ==}
+  '@rollup/rollup-android-arm-eabi@4.53.5':
+    resolution: {integrity: sha512-iDGS/h7D8t7tvZ1t6+WPK04KD0MwzLZrG0se1hzBjSi5fyxlsiggoJHwh18PCFNn7tG43OWb6pdZ6Y+rMlmyNQ==}
     cpu: [arm]
     os: [android]
 
-  '@rollup/rollup-android-arm64@4.53.4':
-    resolution: {integrity: sha512-Gw0/DuVm3rGsqhMGYkSOXXIx20cC3kTlivZeuaGt4gEgILivykNyBWxeUV5Cf2tDA2nPLah26vq3emlRrWVbng==}
+  '@rollup/rollup-android-arm64@4.53.5':
+    resolution: {integrity: sha512-wrSAViWvZHBMMlWk6EJhvg8/rjxzyEhEdgfMMjREHEq11EtJ6IP6yfcCH57YAEca2Oe3FNCE9DSTgU70EIGmVw==}
     cpu: [arm64]
     os: [android]
 
-  '@rollup/rollup-darwin-arm64@4.53.4':
-    resolution: {integrity: sha512-+w06QvXsgzKwdVg5qRLZpTHh1bigHZIqoIUPtiqh05ZiJVUQ6ymOxaPkXTvRPRLH88575ZCRSRM3PwIoNma01Q==}
+  '@rollup/rollup-darwin-arm64@4.53.5':
+    resolution: {integrity: sha512-S87zZPBmRO6u1YXQLwpveZm4JfPpAa6oHBX7/ghSiGH3rz/KDgAu1rKdGutV+WUI6tKDMbaBJomhnT30Y2t4VQ==}
     cpu: [arm64]
     os: [darwin]
 
-  '@rollup/rollup-darwin-x64@4.53.4':
-    resolution: {integrity: sha512-EB4Na9G2GsrRNRNFPuxfwvDRDUwQEzJPpiK1vo2zMVhEeufZ1k7J1bKnT0JYDfnPC7RNZ2H5YNQhW6/p2QKATw==}
+  '@rollup/rollup-darwin-x64@4.53.5':
+    resolution: {integrity: sha512-YTbnsAaHo6VrAczISxgpTva8EkfQus0VPEVJCEaboHtZRIb6h6j0BNxRBOwnDciFTZLDPW5r+ZBmhL/+YpTZgA==}
     cpu: [x64]
     os: [darwin]
 
-  '@rollup/rollup-freebsd-arm64@4.53.4':
-    resolution: {integrity: sha512-bldA8XEqPcs6OYdknoTMaGhjytnwQ0NClSPpWpmufOuGPN5dDmvIa32FygC2gneKK4A1oSx86V1l55hyUWUYFQ==}
+  '@rollup/rollup-freebsd-arm64@4.53.5':
+    resolution: {integrity: sha512-1T8eY2J8rKJWzaznV7zedfdhD1BqVs1iqILhmHDq/bqCUZsrMt+j8VCTHhP0vdfbHK3e1IQ7VYx3jlKqwlf+vw==}
     cpu: [arm64]
     os: [freebsd]
 
-  '@rollup/rollup-freebsd-x64@4.53.4':
-    resolution: {integrity: sha512-3T8GPjH6mixCd0YPn0bXtcuSXi1Lj+15Ujw2CEb7dd24j9thcKscCf88IV7n76WaAdorOzAgSSbuVRg4C8V8Qw==}
+  '@rollup/rollup-freebsd-x64@4.53.5':
+    resolution: {integrity: sha512-sHTiuXyBJApxRn+VFMaw1U+Qsz4kcNlxQ742snICYPrY+DDL8/ZbaC4DVIB7vgZmp3jiDaKA0WpBdP0aqPJoBQ==}
     cpu: [x64]
     os: [freebsd]
 
-  '@rollup/rollup-linux-arm-gnueabihf@4.53.4':
-    resolution: {integrity: sha512-UPMMNeC4LXW7ZSHxeP3Edv09aLsFUMaD1TSVW6n1CWMECnUIJMFFB7+XC2lZTdPtvB36tYC0cJWc86mzSsaviw==}
+  '@rollup/rollup-linux-arm-gnueabihf@4.53.5':
+    resolution: {integrity: sha512-dV3T9MyAf0w8zPVLVBptVlzaXxka6xg1f16VAQmjg+4KMSTWDvhimI/Y6mp8oHwNrmnmVl9XxJ/w/mO4uIQONA==}
     cpu: [arm]
     os: [linux]
 
-  '@rollup/rollup-linux-arm-musleabihf@4.53.4':
-    resolution: {integrity: sha512-H8uwlV0otHs5Q7WAMSoyvjV9DJPiy5nJ/xnHolY0QptLPjaSsuX7tw+SPIfiYH6cnVx3fe4EWFafo6gH6ekZKA==}
+  '@rollup/rollup-linux-arm-musleabihf@4.53.5':
+    resolution: {integrity: sha512-wIGYC1x/hyjP+KAu9+ewDI+fi5XSNiUi9Bvg6KGAh2TsNMA3tSEs+Sh6jJ/r4BV/bx/CyWu2ue9kDnIdRyafcQ==}
     cpu: [arm]
     os: [linux]
 
-  '@rollup/rollup-linux-arm64-gnu@4.53.4':
-    resolution: {integrity: sha512-BLRwSRwICXz0TXkbIbqJ1ibK+/dSBpTJqDClF61GWIrxTXZWQE78ROeIhgl5MjVs4B4gSLPCFeD4xML9vbzvCQ==}
+  '@rollup/rollup-linux-arm64-gnu@4.53.5':
+    resolution: {integrity: sha512-Y+qVA0D9d0y2FRNiG9oM3Hut/DgODZbU9I8pLLPwAsU0tUKZ49cyV1tzmB/qRbSzGvY8lpgGkJuMyuhH7Ma+Vg==}
     cpu: [arm64]
     os: [linux]
 
-  '@rollup/rollup-linux-arm64-musl@4.53.4':
-    resolution: {integrity: sha512-6bySEjOTbmVcPJAywjpGLckK793A0TJWSbIa0sVwtVGfe/Nz6gOWHOwkshUIAp9j7wg2WKcA4Snu7Y1nUZyQew==}
+  '@rollup/rollup-linux-arm64-musl@4.53.5':
+    resolution: {integrity: sha512-juaC4bEgJsyFVfqhtGLz8mbopaWD+WeSOYr5E16y+1of6KQjc0BpwZLuxkClqY1i8sco+MdyoXPNiCkQou09+g==}
     cpu: [arm64]
     os: [linux]
 
-  '@rollup/rollup-linux-loong64-gnu@4.53.4':
-    resolution: {integrity: sha512-U0ow3bXYJZ5MIbchVusxEycBw7bO6C2u5UvD31i5IMTrnt2p4Fh4ZbHSdc/31TScIJQYHwxbj05BpevB3201ug==}
+  '@rollup/rollup-linux-loong64-gnu@4.53.5':
+    resolution: {integrity: sha512-rIEC0hZ17A42iXtHX+EPJVL/CakHo+tT7W0pbzdAGuWOt2jxDFh7A/lRhsNHBcqL4T36+UiAgwO8pbmn3dE8wA==}
     cpu: [loong64]
     os: [linux]
 
-  '@rollup/rollup-linux-ppc64-gnu@4.53.4':
-    resolution: {integrity: sha512-iujDk07ZNwGLVn0YIWM80SFN039bHZHCdCCuX9nyx3Jsa2d9V/0Y32F+YadzwbvDxhSeVo9zefkoPnXEImnM5w==}
+  '@rollup/rollup-linux-ppc64-gnu@4.53.5':
+    resolution: {integrity: sha512-T7l409NhUE552RcAOcmJHj3xyZ2h7vMWzcwQI0hvn5tqHh3oSoclf9WgTl+0QqffWFG8MEVZZP1/OBglKZx52Q==}
     cpu: [ppc64]
     os: [linux]
 
-  '@rollup/rollup-linux-riscv64-gnu@4.53.4':
-    resolution: {integrity: sha512-MUtAktiOUSu+AXBpx1fkuG/Bi5rhlorGs3lw5QeJ2X3ziEGAq7vFNdWVde6XGaVqi0LGSvugwjoxSNJfHFTC0g==}
+  '@rollup/rollup-linux-riscv64-gnu@4.53.5':
+    resolution: {integrity: sha512-7OK5/GhxbnrMcxIFoYfhV/TkknarkYC1hqUw1wU2xUN3TVRLNT5FmBv4KkheSG2xZ6IEbRAhTooTV2+R5Tk0lQ==}
     cpu: [riscv64]
     os: [linux]
 
-  '@rollup/rollup-linux-riscv64-musl@4.53.4':
-    resolution: {integrity: sha512-btm35eAbDfPtcFEgaXCI5l3c2WXyzwiE8pArhd66SDtoLWmgK5/M7CUxmUglkwtniPzwvWioBKKl6IXLbPf2sQ==}
+  '@rollup/rollup-linux-riscv64-musl@4.53.5':
+    resolution: {integrity: sha512-GwuDBE/PsXaTa76lO5eLJTyr2k8QkPipAyOrs4V/KJufHCZBJ495VCGJol35grx9xryk4V+2zd3Ri+3v7NPh+w==}
     cpu: [riscv64]
     os: [linux]
 
-  '@rollup/rollup-linux-s390x-gnu@4.53.4':
-    resolution: {integrity: sha512-uJlhKE9ccUTCUlK+HUz/80cVtx2RayadC5ldDrrDUFaJK0SNb8/cCmC9RhBhIWuZ71Nqj4Uoa9+xljKWRogdhA==}
+  '@rollup/rollup-linux-s390x-gnu@4.53.5':
+    resolution: {integrity: sha512-IAE1Ziyr1qNfnmiQLHBURAD+eh/zH1pIeJjeShleII7Vj8kyEm2PF77o+lf3WTHDpNJcu4IXJxNO0Zluro8bOw==}
     cpu: [s390x]
     os: [linux]
 
-  '@rollup/rollup-linux-x64-gnu@4.53.4':
-    resolution: {integrity: sha512-jjEMkzvASQBbzzlzf4os7nzSBd/cvPrpqXCUOqoeCh1dQ4BP3RZCJk8XBeik4MUln3m+8LeTJcY54C/u8wb3DQ==}
+  '@rollup/rollup-linux-x64-gnu@4.53.5':
+    resolution: {integrity: sha512-Pg6E+oP7GvZ4XwgRJBuSXZjcqpIW3yCBhK4BcsANvb47qMvAbCjR6E+1a/U2WXz1JJxp9/4Dno3/iSJLcm5auw==}
     cpu: [x64]
     os: [linux]
 
-  '@rollup/rollup-linux-x64-musl@4.53.4':
-    resolution: {integrity: sha512-lu90KG06NNH19shC5rBPkrh6mrTpq5kviFylPBXQVpdEu0yzb0mDgyxLr6XdcGdBIQTH/UAhDJnL+APZTBu1aQ==}
+  '@rollup/rollup-linux-x64-musl@4.53.5':
+    resolution: {integrity: sha512-txGtluxDKTxaMDzUduGP0wdfng24y1rygUMnmlUJ88fzCCULCLn7oE5kb2+tRB+MWq1QDZT6ObT5RrR8HFRKqg==}
     cpu: [x64]
     os: [linux]
 
-  '@rollup/rollup-openharmony-arm64@4.53.4':
-    resolution: {integrity: sha512-dFDcmLwsUzhAm/dn0+dMOQZoONVYBtgik0VuY/d5IJUUb787L3Ko/ibvTvddqhb3RaB7vFEozYevHN4ox22R/w==}
+  '@rollup/rollup-openharmony-arm64@4.53.5':
+    resolution: {integrity: sha512-3DFiLPnTxiOQV993fMc+KO8zXHTcIjgaInrqlG8zDp1TlhYl6WgrOHuJkJQ6M8zHEcntSJsUp1XFZSY8C1DYbg==}
     cpu: [arm64]
     os: [openharmony]
 
-  '@rollup/rollup-win32-arm64-msvc@4.53.4':
-    resolution: {integrity: sha512-WvUpUAWmUxZKtRnQWpRKnLW2DEO8HB/l8z6oFFMNuHndMzFTJEXzaYJ5ZAmzNw0L21QQJZsUQFt2oPf3ykAD/w==}
+  '@rollup/rollup-win32-arm64-msvc@4.53.5':
+    resolution: {integrity: sha512-nggc/wPpNTgjGg75hu+Q/3i32R00Lq1B6N1DO7MCU340MRKL3WZJMjA9U4K4gzy3dkZPXm9E1Nc81FItBVGRlA==}
     cpu: [arm64]
     os: [win32]
 
-  '@rollup/rollup-win32-ia32-msvc@4.53.4':
-    resolution: {integrity: sha512-JGbeF2/FDU0x2OLySw/jgvkwWUo05BSiJK0dtuI4LyuXbz3wKiC1xHhLB1Tqm5VU6ZZDmAorj45r/IgWNWku5g==}
+  '@rollup/rollup-win32-ia32-msvc@4.53.5':
+    resolution: {integrity: sha512-U/54pTbdQpPLBdEzCT6NBCFAfSZMvmjr0twhnD9f4EIvlm9wy3jjQ38yQj1AGznrNO65EWQMgm/QUjuIVrYF9w==}
     cpu: [ia32]
     os: [win32]
 
-  '@rollup/rollup-win32-x64-gnu@4.53.4':
-    resolution: {integrity: sha512-zuuC7AyxLWLubP+mlUwEyR8M1ixW1ERNPHJfXm8x7eQNP4Pzkd7hS3qBuKBR70VRiQ04Kw8FNfRMF5TNxuZq2g==}
+  '@rollup/rollup-win32-x64-gnu@4.53.5':
+    resolution: {integrity: sha512-2NqKgZSuLH9SXBBV2dWNRCZmocgSOx8OJSdpRaEcRlIfX8YrKxUT6z0F1NpvDVhOsl190UFTRh2F2WDWWCYp3A==}
     cpu: [x64]
     os: [win32]
 
-  '@rollup/rollup-win32-x64-msvc@4.53.4':
-    resolution: {integrity: sha512-Sbx45u/Lbb5RyptSbX7/3deP+/lzEmZ0BTSHxwxN/IMOZDZf8S0AGo0hJD5n/LQssxb5Z3B4og4P2X6Dd8acCA==}
+  '@rollup/rollup-win32-x64-msvc@4.53.5':
+    resolution: {integrity: sha512-JRpZUhCfhZ4keB5v0fe02gQJy05GqboPOaxvjugW04RLSYYoB/9t2lx2u/tMs/Na/1NXfY8QYjgRljRpN+MjTQ==}
     cpu: [x64]
     os: [win32]
 
@@ -4391,8 +4396,8 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  miniflare@4.20251210.0:
-    resolution: {integrity: sha512-k6kIoXwGVqlPZb0hcn+X7BmnK+8BjIIkusQPY22kCo2RaQJ/LzAjtxHQdGXerlHSnJyQivDQsL6BJHMpQfUFyw==}
+  miniflare@4.20251213.0:
+    resolution: {integrity: sha512-/Or0LuRA6dQMKvL7nztPWNOVXosrJRBiO0BdJX9LUIesyeAUWIZMPFmP9XX+cdny2fIUcqYcG4DuoL5JHxj95w==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -4894,8 +4899,8 @@ packages:
       rollup:
         optional: true
 
-  rollup@4.53.4:
-    resolution: {integrity: sha512-YpXaaArg0MvrnJpvduEDYIp7uGOqKXbH9NsHGQ6SxKCOsNAjZF018MmxefFUulVP2KLtiGw1UvZbr+/ekjvlDg==}
+  rollup@4.53.5:
+    resolution: {integrity: sha512-iTNAbFSlRpcHeeWu73ywU/8KuU/LZmNCSxp6fjQkJBD3ivUb8tpDrXhIxEzA05HlYMEwmtaUnb3RP+YNv162OQ==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
@@ -5526,8 +5531,8 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
-  workerd@1.20251210.0:
-    resolution: {integrity: sha512-9MUUneP1BnRE9XAYi94FXxHmiLGbO75EHQZsgWqSiOXjoXSqJCw8aQbIEPxCy19TclEl/kHUFYce8ST2W+Qpjw==}
+  workerd@1.20251213.0:
+    resolution: {integrity: sha512-knLMSqmUKo7EO1wV69u8o2J+6RVDow3H5qK9f1tzk24fd4rEZXkR1cxFiYisfTRjk/Jl3/1URAkQRSDAiWE5RA==}
     engines: {node: '>=16'}
     hasBin: true
 
@@ -5541,12 +5546,12 @@ packages:
       '@cloudflare/workers-types':
         optional: true
 
-  wrangler@4.54.0:
-    resolution: {integrity: sha512-bANFsjDwJLbprYoBK+hUDZsVbUv2SqJd8QvArLIcZk+fPq4h/Ohtj5vkKXD3k0s2bD1DXLk08D+hYmeNH+xC6A==}
+  wrangler@4.55.0:
+    resolution: {integrity: sha512-50icmLX8UbNaq0FmFHbcvvOh7I6rDA/FyaMYRcNSl1iX0JwuKswezmmtYvYPxPTkbYz7FUYR8GPZLaT23uzFqw==}
     engines: {node: '>=20.0.0'}
     hasBin: true
     peerDependencies:
-      '@cloudflare/workers-types': ^4.20251210.0
+      '@cloudflare/workers-types': ^4.20251213.0
     peerDependenciesMeta:
       '@cloudflare/workers-types':
         optional: true
@@ -5629,8 +5634,8 @@ packages:
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
-  zod@4.2.0:
-    resolution: {integrity: sha512-Bd5fw9wlIhtqCCxotZgdTOMwGm1a0u75wARVEY9HMs1X17trvA/lMi4+MGK5EUfYkXVTbX8UDiDKW4OgzHVUZw==}
+  zod@4.2.1:
+    resolution: {integrity: sha512-0wZ1IRqGGhMP76gLqz8EyfBXKk0J2qo2+H3fi4mcUP/KtTocoX08nmIAHl1Z2kJIZbZee8KOpBCSNPRgauucjw==}
 
 snapshots:
 
@@ -5838,32 +5843,32 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@better-auth/core@1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.0))(jose@6.1.2)(kysely@0.28.8)(nanostores@1.0.1)':
+  '@better-auth/core@1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.2)(kysely@0.28.8)(nanostores@1.0.1)':
     dependencies:
       '@better-auth/utils': 0.3.0
       '@better-fetch/fetch': 1.1.21
       '@standard-schema/spec': 1.0.0
-      better-call: 1.1.5(zod@4.2.0)
+      better-call: 1.1.5(zod@4.2.1)
       jose: 6.1.2
       kysely: 0.28.8
       nanostores: 1.0.1
-      zod: 4.2.0
+      zod: 4.2.1
 
-  '@better-auth/passkey@1.4.7(@better-auth/core@1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.0))(jose@6.1.2)(kysely@0.28.8)(nanostores@1.0.1))(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-auth@1.4.7(@tanstack/react-start@1.141.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vite@7.3.0(@types/node@25.0.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6)))(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@libsql/client@0.15.15)(kysely@0.28.8))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.10))(better-call@1.1.5(zod@4.2.0))(nanostores@1.0.1)':
+  '@better-auth/passkey@1.4.7(@better-auth/core@1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.2)(kysely@0.28.8)(nanostores@1.0.1))(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-auth@1.4.7(@tanstack/react-start@1.141.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vite@7.3.0(@types/node@25.0.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6)))(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@libsql/client@0.15.15)(kysely@0.28.8))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.10))(better-call@1.1.5(zod@4.2.1))(nanostores@1.0.1)':
     dependencies:
-      '@better-auth/core': 1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.0))(jose@6.1.2)(kysely@0.28.8)(nanostores@1.0.1)
+      '@better-auth/core': 1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.2)(kysely@0.28.8)(nanostores@1.0.1)
       '@better-auth/utils': 0.3.0
       '@better-fetch/fetch': 1.1.21
       '@simplewebauthn/browser': 13.2.2
       '@simplewebauthn/server': 13.2.2
       better-auth: 1.4.7(@tanstack/react-start@1.141.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vite@7.3.0(@types/node@25.0.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6)))(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@libsql/client@0.15.15)(kysely@0.28.8))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.10)
-      better-call: 1.1.5(zod@4.2.0)
+      better-call: 1.1.5(zod@4.2.1)
       nanostores: 1.0.1
-      zod: 4.2.0
+      zod: 4.2.1
 
-  '@better-auth/telemetry@1.4.7(@better-auth/core@1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.0))(jose@6.1.2)(kysely@0.28.8)(nanostores@1.0.1))':
+  '@better-auth/telemetry@1.4.7(@better-auth/core@1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.2)(kysely@0.28.8)(nanostores@1.0.1))':
     dependencies:
-      '@better-auth/core': 1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.0))(jose@6.1.2)(kysely@0.28.8)(nanostores@1.0.1)
+      '@better-auth/core': 1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.2)(kysely@0.28.8)(nanostores@1.0.1)
       '@better-auth/utils': 0.3.0
       '@better-fetch/fetch': 1.1.21
 
@@ -5893,24 +5898,24 @@ snapshots:
     optionalDependencies:
       workerd: 1.20251109.0
 
-  '@cloudflare/unenv-preset@2.7.13(unenv@2.0.0-rc.24)(workerd@1.20251210.0)':
+  '@cloudflare/unenv-preset@2.7.13(unenv@2.0.0-rc.24)(workerd@1.20251213.0)':
     dependencies:
       unenv: 2.0.0-rc.24
     optionalDependencies:
-      workerd: 1.20251210.0
+      workerd: 1.20251213.0
 
-  '@cloudflare/vite-plugin@1.17.1(vite@7.3.0(@types/node@25.0.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6))(workerd@1.20251210.0)(wrangler@4.54.0)':
+  '@cloudflare/vite-plugin@1.18.0(vite@7.3.0(@types/node@25.0.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6))(workerd@1.20251213.0)(wrangler@4.55.0)':
     dependencies:
-      '@cloudflare/unenv-preset': 2.7.13(unenv@2.0.0-rc.24)(workerd@1.20251210.0)
+      '@cloudflare/unenv-preset': 2.7.13(unenv@2.0.0-rc.24)(workerd@1.20251213.0)
       '@remix-run/node-fetch-server': 0.8.1
       defu: 6.1.4
       get-port: 7.1.0
-      miniflare: 4.20251210.0
+      miniflare: 4.20251213.0
       picocolors: 1.1.1
       tinyglobby: 0.2.15
       unenv: 2.0.0-rc.24
       vite: 7.3.0(@types/node@25.0.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6)
-      wrangler: 4.54.0
+      wrangler: 4.55.0
       ws: 8.18.0
     transitivePeerDependencies:
       - bufferutil
@@ -5920,31 +5925,31 @@ snapshots:
   '@cloudflare/workerd-darwin-64@1.20251109.0':
     optional: true
 
-  '@cloudflare/workerd-darwin-64@1.20251210.0':
+  '@cloudflare/workerd-darwin-64@1.20251213.0':
     optional: true
 
   '@cloudflare/workerd-darwin-arm64@1.20251109.0':
     optional: true
 
-  '@cloudflare/workerd-darwin-arm64@1.20251210.0':
+  '@cloudflare/workerd-darwin-arm64@1.20251213.0':
     optional: true
 
   '@cloudflare/workerd-linux-64@1.20251109.0':
     optional: true
 
-  '@cloudflare/workerd-linux-64@1.20251210.0':
+  '@cloudflare/workerd-linux-64@1.20251213.0':
     optional: true
 
   '@cloudflare/workerd-linux-arm64@1.20251109.0':
     optional: true
 
-  '@cloudflare/workerd-linux-arm64@1.20251210.0':
+  '@cloudflare/workerd-linux-arm64@1.20251213.0':
     optional: true
 
   '@cloudflare/workerd-windows-64@1.20251109.0':
     optional: true
 
-  '@cloudflare/workerd-windows-64@1.20251210.0':
+  '@cloudflare/workerd-windows-64@1.20251213.0':
     optional: true
 
   '@cspotcode/source-map-support@0.8.1':
@@ -5959,9 +5964,9 @@ snapshots:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
-  '@daveyplate/better-auth-ui@3.3.1(d33f9685b8a13096462288d39a78a74b)':
+  '@daveyplate/better-auth-ui@3.3.3(e6360707c36e39b18bfaec54df768afd)':
     dependencies:
-      '@better-auth/passkey': 1.4.7(@better-auth/core@1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.0))(jose@6.1.2)(kysely@0.28.8)(nanostores@1.0.1))(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-auth@1.4.7(@tanstack/react-start@1.141.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vite@7.3.0(@types/node@25.0.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6)))(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@libsql/client@0.15.15)(kysely@0.28.8))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.10))(better-call@1.1.5(zod@4.2.0))(nanostores@1.0.1)
+      '@better-auth/passkey': 1.4.7(@better-auth/core@1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.2)(kysely@0.28.8)(nanostores@1.0.1))(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-auth@1.4.7(@tanstack/react-start@1.141.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vite@7.3.0(@types/node@25.0.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6)))(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@libsql/client@0.15.15)(kysely@0.28.8))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.10))(better-call@1.1.5(zod@4.2.1))(nanostores@1.0.1)
       '@better-fetch/fetch': 1.1.21
       '@captchafox/react': 1.10.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@daveyplate/better-auth-tanstack': 1.3.6(@tanstack/query-core@5.90.12)(@tanstack/react-query@5.90.12(react@19.2.3))(better-auth@1.4.7(@tanstack/react-start@1.141.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vite@7.3.0(@types/node@25.0.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6)))(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@libsql/client@0.15.15)(kysely@0.28.8))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.10))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -6003,7 +6008,7 @@ snapshots:
       tailwindcss: 4.1.18
       ua-parser-js: 2.0.7
       vaul: 1.1.2(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      zod: 4.2.0
+      zod: 4.2.1
     transitivePeerDependencies:
       - '@types/react'
       - '@types/react-dom'
@@ -7588,13 +7593,13 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.0-beta.53': {}
 
-  '@rollup/plugin-alias@5.1.1(rollup@4.53.4)':
+  '@rollup/plugin-alias@5.1.1(rollup@4.53.5)':
     optionalDependencies:
-      rollup: 4.53.4
+      rollup: 4.53.5
 
-  '@rollup/plugin-commonjs@28.0.9(rollup@4.53.4)':
+  '@rollup/plugin-commonjs@28.0.9(rollup@4.53.5)':
     dependencies:
-      '@rollup/pluginutils': 5.3.0(rollup@4.53.4)
+      '@rollup/pluginutils': 5.3.0(rollup@4.53.5)
       commondir: 1.0.1
       estree-walker: 2.0.2
       fdir: 6.5.0(picomatch@4.0.3)
@@ -7602,119 +7607,119 @@ snapshots:
       magic-string: 0.30.21
       picomatch: 4.0.3
     optionalDependencies:
-      rollup: 4.53.4
+      rollup: 4.53.5
 
-  '@rollup/plugin-inject@5.0.5(rollup@4.53.4)':
+  '@rollup/plugin-inject@5.0.5(rollup@4.53.5)':
     dependencies:
-      '@rollup/pluginutils': 5.3.0(rollup@4.53.4)
+      '@rollup/pluginutils': 5.3.0(rollup@4.53.5)
       estree-walker: 2.0.2
       magic-string: 0.30.21
     optionalDependencies:
-      rollup: 4.53.4
+      rollup: 4.53.5
 
-  '@rollup/plugin-json@6.1.0(rollup@4.53.4)':
+  '@rollup/plugin-json@6.1.0(rollup@4.53.5)':
     dependencies:
-      '@rollup/pluginutils': 5.3.0(rollup@4.53.4)
+      '@rollup/pluginutils': 5.3.0(rollup@4.53.5)
     optionalDependencies:
-      rollup: 4.53.4
+      rollup: 4.53.5
 
-  '@rollup/plugin-node-resolve@16.0.3(rollup@4.53.4)':
+  '@rollup/plugin-node-resolve@16.0.3(rollup@4.53.5)':
     dependencies:
-      '@rollup/pluginutils': 5.3.0(rollup@4.53.4)
+      '@rollup/pluginutils': 5.3.0(rollup@4.53.5)
       '@types/resolve': 1.20.2
       deepmerge: 4.3.1
       is-module: 1.0.0
       resolve: 1.22.11
     optionalDependencies:
-      rollup: 4.53.4
+      rollup: 4.53.5
 
-  '@rollup/plugin-replace@6.0.3(rollup@4.53.4)':
+  '@rollup/plugin-replace@6.0.3(rollup@4.53.5)':
     dependencies:
-      '@rollup/pluginutils': 5.3.0(rollup@4.53.4)
+      '@rollup/pluginutils': 5.3.0(rollup@4.53.5)
       magic-string: 0.30.21
     optionalDependencies:
-      rollup: 4.53.4
+      rollup: 4.53.5
 
-  '@rollup/plugin-terser@0.4.4(rollup@4.53.4)':
+  '@rollup/plugin-terser@0.4.4(rollup@4.53.5)':
     dependencies:
       serialize-javascript: 6.0.2
       smob: 1.5.0
       terser: 5.44.1
     optionalDependencies:
-      rollup: 4.53.4
+      rollup: 4.53.5
 
-  '@rollup/pluginutils@5.3.0(rollup@4.53.4)':
+  '@rollup/pluginutils@5.3.0(rollup@4.53.5)':
     dependencies:
       '@types/estree': 1.0.8
       estree-walker: 2.0.2
       picomatch: 4.0.3
     optionalDependencies:
-      rollup: 4.53.4
+      rollup: 4.53.5
 
-  '@rollup/rollup-android-arm-eabi@4.53.4':
+  '@rollup/rollup-android-arm-eabi@4.53.5':
     optional: true
 
-  '@rollup/rollup-android-arm64@4.53.4':
+  '@rollup/rollup-android-arm64@4.53.5':
     optional: true
 
-  '@rollup/rollup-darwin-arm64@4.53.4':
+  '@rollup/rollup-darwin-arm64@4.53.5':
     optional: true
 
-  '@rollup/rollup-darwin-x64@4.53.4':
+  '@rollup/rollup-darwin-x64@4.53.5':
     optional: true
 
-  '@rollup/rollup-freebsd-arm64@4.53.4':
+  '@rollup/rollup-freebsd-arm64@4.53.5':
     optional: true
 
-  '@rollup/rollup-freebsd-x64@4.53.4':
+  '@rollup/rollup-freebsd-x64@4.53.5':
     optional: true
 
-  '@rollup/rollup-linux-arm-gnueabihf@4.53.4':
+  '@rollup/rollup-linux-arm-gnueabihf@4.53.5':
     optional: true
 
-  '@rollup/rollup-linux-arm-musleabihf@4.53.4':
+  '@rollup/rollup-linux-arm-musleabihf@4.53.5':
     optional: true
 
-  '@rollup/rollup-linux-arm64-gnu@4.53.4':
+  '@rollup/rollup-linux-arm64-gnu@4.53.5':
     optional: true
 
-  '@rollup/rollup-linux-arm64-musl@4.53.4':
+  '@rollup/rollup-linux-arm64-musl@4.53.5':
     optional: true
 
-  '@rollup/rollup-linux-loong64-gnu@4.53.4':
+  '@rollup/rollup-linux-loong64-gnu@4.53.5':
     optional: true
 
-  '@rollup/rollup-linux-ppc64-gnu@4.53.4':
+  '@rollup/rollup-linux-ppc64-gnu@4.53.5':
     optional: true
 
-  '@rollup/rollup-linux-riscv64-gnu@4.53.4':
+  '@rollup/rollup-linux-riscv64-gnu@4.53.5':
     optional: true
 
-  '@rollup/rollup-linux-riscv64-musl@4.53.4':
+  '@rollup/rollup-linux-riscv64-musl@4.53.5':
     optional: true
 
-  '@rollup/rollup-linux-s390x-gnu@4.53.4':
+  '@rollup/rollup-linux-s390x-gnu@4.53.5':
     optional: true
 
-  '@rollup/rollup-linux-x64-gnu@4.53.4':
+  '@rollup/rollup-linux-x64-gnu@4.53.5':
     optional: true
 
-  '@rollup/rollup-linux-x64-musl@4.53.4':
+  '@rollup/rollup-linux-x64-musl@4.53.5':
     optional: true
 
-  '@rollup/rollup-openharmony-arm64@4.53.4':
+  '@rollup/rollup-openharmony-arm64@4.53.5':
     optional: true
 
-  '@rollup/rollup-win32-arm64-msvc@4.53.4':
+  '@rollup/rollup-win32-arm64-msvc@4.53.5':
     optional: true
 
-  '@rollup/rollup-win32-ia32-msvc@4.53.4':
+  '@rollup/rollup-win32-ia32-msvc@4.53.5':
     optional: true
 
-  '@rollup/rollup-win32-x64-gnu@4.53.4':
+  '@rollup/rollup-win32-x64-gnu@4.53.5':
     optional: true
 
-  '@rollup/rollup-win32-x64-msvc@4.53.4':
+  '@rollup/rollup-win32-x64-msvc@4.53.5':
     optional: true
 
   '@selderee/plugin-htmlparser2@0.11.0':
@@ -8042,7 +8047,7 @@ snapshots:
       '@tanstack/router-core': 1.141.2
       '@tanstack/start-client-core': 1.141.2
       '@tanstack/start-storage-context': 1.141.2
-      h3-v2: h3@2.0.0-beta.5
+      h3-v2: h3@2.0.0-beta.5(patch_hash=2bea0055a1dc9298cb3a52739f5aba08c0f002c58cadfde179c118b5e61947de)
       seroval: 1.4.0
       tiny-invariant: 1.3.3
     transitivePeerDependencies:
@@ -8166,10 +8171,10 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.3
 
-  '@vercel/nft@0.30.3(rollup@4.53.4)':
+  '@vercel/nft@0.30.3(rollup@4.53.5)':
     dependencies:
       '@mapbox/node-pre-gyp': 2.0.0
-      '@rollup/pluginutils': 5.3.0(rollup@4.53.4)
+      '@rollup/pluginutils': 5.3.0(rollup@4.53.5)
       acorn: 8.15.0
       acorn-import-attributes: 1.9.5(acorn@8.15.0)
       async-sema: 3.1.1
@@ -8312,18 +8317,18 @@ snapshots:
 
   better-auth@1.4.7(@tanstack/react-start@1.141.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vite@7.3.0(@types/node@25.0.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6)))(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@libsql/client@0.15.15)(kysely@0.28.8))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.10):
     dependencies:
-      '@better-auth/core': 1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.0))(jose@6.1.2)(kysely@0.28.8)(nanostores@1.0.1)
-      '@better-auth/telemetry': 1.4.7(@better-auth/core@1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.0))(jose@6.1.2)(kysely@0.28.8)(nanostores@1.0.1))
+      '@better-auth/core': 1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.2)(kysely@0.28.8)(nanostores@1.0.1)
+      '@better-auth/telemetry': 1.4.7(@better-auth/core@1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.2)(kysely@0.28.8)(nanostores@1.0.1))
       '@better-auth/utils': 0.3.0
       '@better-fetch/fetch': 1.1.21
       '@noble/ciphers': 2.0.1
       '@noble/hashes': 2.0.1
-      better-call: 1.1.5(zod@4.2.0)
+      better-call: 1.1.5(zod@4.2.1)
       defu: 6.1.4
       jose: 6.1.2
       kysely: 0.28.8
       nanostores: 1.0.1
-      zod: 4.2.0
+      zod: 4.2.1
     optionalDependencies:
       '@tanstack/react-start': 1.141.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vite@7.3.0(@types/node@25.0.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6))
       drizzle-kit: 0.31.8
@@ -8332,14 +8337,14 @@ snapshots:
       react-dom: 19.2.3(react@19.2.3)
       solid-js: 1.9.10
 
-  better-call@1.1.5(zod@4.2.0):
+  better-call@1.1.5(zod@4.2.1):
     dependencies:
       '@better-auth/utils': 0.3.0
       '@better-fetch/fetch': 1.1.21
       rou3: 0.7.10
       set-cookie-parser: 2.7.2
     optionalDependencies:
-      zod: 4.2.0
+      zod: 4.2.1
 
   binary-extensions@2.3.0: {}
 
@@ -8701,10 +8706,10 @@ snapshots:
       '@libsql/client': 0.15.15
       kysely: 0.28.8
 
-  drizzle-zod@0.8.3(drizzle-orm@0.45.1(@libsql/client@0.15.15)(kysely@0.28.8))(zod@4.2.0):
+  drizzle-zod@0.8.3(drizzle-orm@0.45.1(@libsql/client@0.15.15)(kysely@0.28.8))(zod@4.2.1):
     dependencies:
       drizzle-orm: 0.45.1(@libsql/client@0.15.15)(kysely@0.28.8)
-      zod: 4.2.0
+      zod: 4.2.1
 
   dts-bundle-generator@7.2.0:
     dependencies:
@@ -9076,7 +9081,7 @@ snapshots:
       ufo: 1.6.1
       uncrypto: 0.1.3
 
-  h3@2.0.0-beta.5:
+  h3@2.0.0-beta.5(patch_hash=2bea0055a1dc9298cb3a52739f5aba08c0f002c58cadfde179c118b5e61947de):
     dependencies:
       cookie-es: 2.0.0
       fetchdts: 0.1.7
@@ -9486,7 +9491,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  miniflare@4.20251210.0:
+  miniflare@4.20251213.0:
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       acorn: 8.14.0
@@ -9496,7 +9501,7 @@ snapshots:
       sharp: 0.33.5
       stoppable: 1.1.0
       undici: 7.14.0
-      workerd: 1.20251210.0
+      workerd: 1.20251213.0
       ws: 8.18.0
       youch: 4.1.0-beta.10
       zod: 3.22.3
@@ -9546,14 +9551,14 @@ snapshots:
   nitropack@2.12.9(@libsql/client@0.15.15)(drizzle-orm@0.45.1(@libsql/client@0.15.15)(kysely@0.28.8)):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.0
-      '@rollup/plugin-alias': 5.1.1(rollup@4.53.4)
-      '@rollup/plugin-commonjs': 28.0.9(rollup@4.53.4)
-      '@rollup/plugin-inject': 5.0.5(rollup@4.53.4)
-      '@rollup/plugin-json': 6.1.0(rollup@4.53.4)
-      '@rollup/plugin-node-resolve': 16.0.3(rollup@4.53.4)
-      '@rollup/plugin-replace': 6.0.3(rollup@4.53.4)
-      '@rollup/plugin-terser': 0.4.4(rollup@4.53.4)
-      '@vercel/nft': 0.30.3(rollup@4.53.4)
+      '@rollup/plugin-alias': 5.1.1(rollup@4.53.5)
+      '@rollup/plugin-commonjs': 28.0.9(rollup@4.53.5)
+      '@rollup/plugin-inject': 5.0.5(rollup@4.53.5)
+      '@rollup/plugin-json': 6.1.0(rollup@4.53.5)
+      '@rollup/plugin-node-resolve': 16.0.3(rollup@4.53.5)
+      '@rollup/plugin-replace': 6.0.3(rollup@4.53.5)
+      '@rollup/plugin-terser': 0.4.4(rollup@4.53.5)
+      '@vercel/nft': 0.30.3(rollup@4.53.5)
       archiver: 7.0.1
       c12: 3.3.2(magicast@0.5.1)
       chokidar: 4.0.3
@@ -9595,8 +9600,8 @@ snapshots:
       pkg-types: 2.3.0
       pretty-bytes: 7.1.0
       radix3: 1.1.2
-      rollup: 4.53.4
-      rollup-plugin-visualizer: 6.0.5(rollup@4.53.4)
+      rollup: 4.53.5
+      rollup-plugin-visualizer: 6.0.5(rollup@4.53.5)
       scule: 1.3.0
       semver: 7.7.3
       serve-placeholder: 2.0.2
@@ -10050,41 +10055,41 @@ snapshots:
 
   reusify@1.1.0: {}
 
-  rollup-plugin-visualizer@6.0.5(rollup@4.53.4):
+  rollup-plugin-visualizer@6.0.5(rollup@4.53.5):
     dependencies:
       open: 8.4.2
       picomatch: 4.0.3
       source-map: 0.7.6
       yargs: 17.7.2
     optionalDependencies:
-      rollup: 4.53.4
+      rollup: 4.53.5
 
-  rollup@4.53.4:
+  rollup@4.53.5:
     dependencies:
       '@types/estree': 1.0.8
     optionalDependencies:
-      '@rollup/rollup-android-arm-eabi': 4.53.4
-      '@rollup/rollup-android-arm64': 4.53.4
-      '@rollup/rollup-darwin-arm64': 4.53.4
-      '@rollup/rollup-darwin-x64': 4.53.4
-      '@rollup/rollup-freebsd-arm64': 4.53.4
-      '@rollup/rollup-freebsd-x64': 4.53.4
-      '@rollup/rollup-linux-arm-gnueabihf': 4.53.4
-      '@rollup/rollup-linux-arm-musleabihf': 4.53.4
-      '@rollup/rollup-linux-arm64-gnu': 4.53.4
-      '@rollup/rollup-linux-arm64-musl': 4.53.4
-      '@rollup/rollup-linux-loong64-gnu': 4.53.4
-      '@rollup/rollup-linux-ppc64-gnu': 4.53.4
-      '@rollup/rollup-linux-riscv64-gnu': 4.53.4
-      '@rollup/rollup-linux-riscv64-musl': 4.53.4
-      '@rollup/rollup-linux-s390x-gnu': 4.53.4
-      '@rollup/rollup-linux-x64-gnu': 4.53.4
-      '@rollup/rollup-linux-x64-musl': 4.53.4
-      '@rollup/rollup-openharmony-arm64': 4.53.4
-      '@rollup/rollup-win32-arm64-msvc': 4.53.4
-      '@rollup/rollup-win32-ia32-msvc': 4.53.4
-      '@rollup/rollup-win32-x64-gnu': 4.53.4
-      '@rollup/rollup-win32-x64-msvc': 4.53.4
+      '@rollup/rollup-android-arm-eabi': 4.53.5
+      '@rollup/rollup-android-arm64': 4.53.5
+      '@rollup/rollup-darwin-arm64': 4.53.5
+      '@rollup/rollup-darwin-x64': 4.53.5
+      '@rollup/rollup-freebsd-arm64': 4.53.5
+      '@rollup/rollup-freebsd-x64': 4.53.5
+      '@rollup/rollup-linux-arm-gnueabihf': 4.53.5
+      '@rollup/rollup-linux-arm-musleabihf': 4.53.5
+      '@rollup/rollup-linux-arm64-gnu': 4.53.5
+      '@rollup/rollup-linux-arm64-musl': 4.53.5
+      '@rollup/rollup-linux-loong64-gnu': 4.53.5
+      '@rollup/rollup-linux-ppc64-gnu': 4.53.5
+      '@rollup/rollup-linux-riscv64-gnu': 4.53.5
+      '@rollup/rollup-linux-riscv64-musl': 4.53.5
+      '@rollup/rollup-linux-s390x-gnu': 4.53.5
+      '@rollup/rollup-linux-x64-gnu': 4.53.5
+      '@rollup/rollup-linux-x64-musl': 4.53.5
+      '@rollup/rollup-openharmony-arm64': 4.53.5
+      '@rollup/rollup-win32-arm64-msvc': 4.53.5
+      '@rollup/rollup-win32-ia32-msvc': 4.53.5
+      '@rollup/rollup-win32-x64-gnu': 4.53.5
+      '@rollup/rollup-win32-x64-msvc': 4.53.5
       fsevents: 2.3.3
 
   rou3@0.7.10: {}
@@ -10615,7 +10620,7 @@ snapshots:
       fdir: 6.5.0(picomatch@4.0.3)
       picomatch: 4.0.3
       postcss: 8.5.6
-      rollup: 4.53.4
+      rollup: 4.53.5
       tinyglobby: 0.2.15
     optionalDependencies:
       '@types/node': 25.0.2
@@ -10668,13 +10673,13 @@ snapshots:
       '@cloudflare/workerd-linux-arm64': 1.20251109.0
       '@cloudflare/workerd-windows-64': 1.20251109.0
 
-  workerd@1.20251210.0:
+  workerd@1.20251213.0:
     optionalDependencies:
-      '@cloudflare/workerd-darwin-64': 1.20251210.0
-      '@cloudflare/workerd-darwin-arm64': 1.20251210.0
-      '@cloudflare/workerd-linux-64': 1.20251210.0
-      '@cloudflare/workerd-linux-arm64': 1.20251210.0
-      '@cloudflare/workerd-windows-64': 1.20251210.0
+      '@cloudflare/workerd-darwin-64': 1.20251213.0
+      '@cloudflare/workerd-darwin-arm64': 1.20251213.0
+      '@cloudflare/workerd-linux-64': 1.20251213.0
+      '@cloudflare/workerd-linux-arm64': 1.20251213.0
+      '@cloudflare/workerd-windows-64': 1.20251213.0
 
   wrangler@4.47.0:
     dependencies:
@@ -10692,16 +10697,16 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  wrangler@4.54.0:
+  wrangler@4.55.0:
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.1
-      '@cloudflare/unenv-preset': 2.7.13(unenv@2.0.0-rc.24)(workerd@1.20251210.0)
+      '@cloudflare/unenv-preset': 2.7.13(unenv@2.0.0-rc.24)(workerd@1.20251213.0)
       blake3-wasm: 2.1.5
       esbuild: 0.27.0
-      miniflare: 4.20251210.0
+      miniflare: 4.20251213.0
       path-to-regexp: 6.3.0
       unenv: 2.0.0-rc.24
-      workerd: 1.20251210.0
+      workerd: 1.20251213.0
     optionalDependencies:
       fsevents: 2.3.3
     transitivePeerDependencies:
@@ -10782,4 +10787,4 @@ snapshots:
 
   zod@3.25.76: {}
 
-  zod@4.2.0: {}
+  zod@4.2.1: {}

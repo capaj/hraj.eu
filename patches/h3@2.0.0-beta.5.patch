@@ -1,0 +1,30 @@
+diff --git a/dist/h3.mjs b/dist/h3.mjs
+index b3661a83fac88df69438c8c74dc74f2f45c1b273..7fee30dd5e2529e7d28afc3def536733e0fda2bc 100644
+--- a/dist/h3.mjs
++++ b/dist/h3.mjs
+@@ -259,8 +259,10 @@ var HTTPError = class HTTPError extends Error {
+ 			status: this.status,
+ 			statusText: this.statusText,
+ 			unhandled,
+-			message: unhandled ? "HTTPError" : this.message,
++			message: unhandled ? this.message || "HTTPError" : this.message,
+ 			data: unhandled ? void 0 : this.data,
++			stack: unhandled && this.stack ? this.stack : void 0,
++			cause: unhandled && this.cause ? (this.cause.stack || String(this.cause)) : void 0,
+ 			...unhandled ? void 0 : this.body
+ 		};
+ 	}
+@@ -387,10 +389,11 @@ function nullBody(method, status) {
+ 	return method === "HEAD" || status === 100 || status === 101 || status === 102 || status === 204 || status === 205 || status === 304;
+ }
+ function errorResponse(error, debug) {
++	const includeStack = debug || error.unhandled;
+ 	return new FastResponse(JSON.stringify({
+ 		...error.toJSON(),
+-		stack: debug && error.stack ? error.stack.split("\n").map((l) => l.trim()) : void 0
+-	}, void 0, debug ? 2 : void 0), {
++		stack: includeStack && error.stack ? error.stack.split("\n").map((l) => l.trim()) : void 0
++	}, void 0, includeStack ? 2 : void 0), {
+ 		status: error.status,
+ 		statusText: error.statusText,
+ 		headers: error.headers ? mergeHeaders$1(jsonHeaders, error.headers) : jsonHeaders
