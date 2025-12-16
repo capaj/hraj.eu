@@ -16,11 +16,19 @@ import { i18n } from '~/lib/i18n'
 type SortOption = 'date' | 'distance' | 'spots'
 
 export const DiscoverPage: React.FC = () => {
-  const { events: initialEvents, venues } = useLoaderData({ from: '/discover' })
+  const { events: initialEvents, venues, user } = useLoaderData({ from: '/discover' })
   const navigate = useNavigate()
   const session = authClient.useSession()
   const mapRef = useRef<EventMapRef>(null)
-  const [selectedSport, setSelectedSport] = useState<string>()
+
+  // Initialize with user's skills if available
+  const [selectedSports, setSelectedSports] = useState<string[]>(() => {
+    if (user?.skillLevels) {
+      return Object.keys(user.skillLevels)
+    }
+    return []
+  })
+
   const [selectedSkillLevel, setSelectedSkillLevel] = useState<string>()
   const [sortBy, setSortBy] = useState<SortOption>('date')
   const [userLocation, setUserLocation] = useState<{
@@ -80,7 +88,7 @@ export const DiscoverPage: React.FC = () => {
   const filteredAndSortedEvents = useMemo(() => {
     // First filter events
     let filtered = events.filter((event: Event) => {
-      if (selectedSport && event.sport !== selectedSport) return false
+      if (selectedSports.length > 0 && !selectedSports.includes(event.sport)) return false
       // Note: In a real app, we'd filter by skill level based on event requirements
       return true
     })
@@ -125,7 +133,7 @@ export const DiscoverPage: React.FC = () => {
     })
 
     return sorted
-  }, [events, selectedSport, selectedSkillLevel, sortBy, userLocation])
+  }, [events, selectedSports, selectedSkillLevel, sortBy, userLocation])
 
   const handleEventSelect = (_event: Event) => {
     // No-op: Map selection is now handled via popups
@@ -194,6 +202,14 @@ export const DiscoverPage: React.FC = () => {
       : `${distance.toFixed(1)}km`
   }
 
+  const handleSportToggle = (sportId: string) => {
+    setSelectedSports(prev =>
+      prev.includes(sportId)
+        ? prev.filter(id => id !== sportId)
+        : [...prev, sportId]
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-600 to-secondary-600 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -214,25 +230,24 @@ export const DiscoverPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Filters */}
-        <EventFilters
-          selectedSport={selectedSport}
-          selectedSkillLevel={selectedSkillLevel}
-          onSportChange={setSelectedSport}
-          onSkillLevelChange={setSelectedSkillLevel}
-        />
-
         {/* Results and Sort Controls */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
-          <p className="text-white/80">
-            {i18n._(
-              msg`{count} event{count, plural, one {} other {s}} found`.id,
-              { count: filteredAndSortedEvents.length }
-            )}
-          </p>
+          <EventFilters
+            selectedSports={selectedSports}
+            selectedSkillLevel={selectedSkillLevel}
+            onSportToggle={handleSportToggle}
+            onSkillLevelChange={setSelectedSkillLevel}
+            onClearSports={() => setSelectedSports([])}
+          />
 
           {/* Sort Dropdown */}
           <div className="flex items-center space-x-3">
+            <span className="text-white/80">
+              {i18n._(
+                msg`{count} event{count, plural, one {} other {s}} found`.id,
+                { count: filteredAndSortedEvents.length }
+              )}
+            </span>
             <ArrowUpDown size={16} className="text-white/80" />
             <span className="text-sm text-white font-medium">
               <Trans>Sort by:</Trans>
