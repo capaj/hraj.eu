@@ -40,8 +40,17 @@ export const VenueMapPreview: React.FC<VenueMapPreviewProps> = ({
     const initMap = async () => {
       if (!mapRef.current || mapInstanceRef.current) return
 
+      // Check if container already has a map (can happen with React StrictMode)
+      const container = mapRef.current as any
+      if (container._leaflet_id) return
+
       try {
         const L = await import('leaflet').then((m) => m.default || m)
+
+        // Re-check after async import (race condition with StrictMode)
+        if (!isMounted || !mapRef.current) return
+        const container = mapRef.current as any
+        if (container._leaflet_id) return
 
         if (!document.querySelector('link[href*="leaflet.css"]')) {
           const link = document.createElement('link')

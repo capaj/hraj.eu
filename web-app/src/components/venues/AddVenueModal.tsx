@@ -28,28 +28,30 @@ interface AddVenueModalProps {
   initialData?: Venue | null
 }
 
+const DEFAULT_FORM_DATA = {
+  name: '',
+  address: '',
+  city: '',
+  country: 'Czech Republic',
+  type: 'outdoor' as 'outdoor' | 'indoor' | 'mixed',
+  sports: [] as string[],
+  facilities: [] as string[],
+  description: '',
+  accessInstructions: '',
+  phone: '',
+  email: '',
+  website: '',
+  price: 0,
+  currency: 'CZK'
+}
+
 export const AddVenueModal: React.FC<AddVenueModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
   initialData
 }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    address: '',
-    city: '',
-    country: 'Czech Republic',
-    type: 'outdoor' as 'outdoor' | 'indoor' | 'mixed',
-    sports: [] as string[],
-    facilities: [] as string[],
-    description: '',
-    accessInstructions: '',
-    phone: '',
-    email: '',
-    website: '',
-    price: 0,
-    currency: 'CZK'
-  })
+  const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
 
   const [images, setImages] = useState<string[]>([])
   const [orientationPlan, setOrientationPlan] = useState<string>('')
@@ -93,32 +95,80 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
         setLocation({ lat: initialData.lat, lng: initialData.lng })
       }
     } else if (isOpen && !initialData) {
-      setFormData({
-        name: '',
-        address: '',
-        city: '',
-        country: 'Czech Republic',
-        type: 'outdoor',
-        sports: [],
-        facilities: [],
-        description: '',
-        accessInstructions: '',
-        phone: '',
-        email: '',
-        website: '',
-        price: 0,
-        currency: 'CZK'
-      })
+      setFormData(DEFAULT_FORM_DATA)
       setImages([])
       setOrientationPlan('')
       setLocation(null)
     }
   }, [isOpen, initialData])
 
+  const hasUnsavedChanges = () => {
+    // Determine expected base state
+    const baseFormData = initialData
+      ? {
+        name: initialData.name || '',
+        address: initialData.address || '',
+        city: initialData.city || '',
+        country: initialData.country || 'Czech Republic',
+        type: initialData.type || 'outdoor',
+        sports: initialData.sports || [],
+        facilities: initialData.facilities || [],
+        description: initialData.description || '',
+        accessInstructions: initialData.accessInstructions || '',
+        phone: initialData.contactInfo?.phone || '',
+        email: initialData.contactInfo?.email || '',
+        website: initialData.contactInfo?.website || '',
+        price: initialData.price || 0,
+        currency: initialData.currency || 'CZK'
+      }
+      : DEFAULT_FORM_DATA
+
+    const baseImages = initialData?.images || []
+    const basePlan = initialData?.orientationPlan || ''
+    const baseLocation =
+      initialData?.lat && initialData?.lng
+        ? { lat: initialData.lat, lng: initialData.lng }
+        : null
+
+    // Comparison helpers
+    const isDifferent = (a: any, b: any) =>
+      JSON.stringify(a) !== JSON.stringify(b)
+
+    if (isDifferent(formData, baseFormData)) return true
+    if (isDifferent(images, baseImages)) return true
+    if (orientationPlan !== basePlan) return true
+
+    // Location check
+    if (!baseLocation && !location) return false
+    if (!baseLocation && location) return true
+    if (baseLocation && !location) return true
+
+    // Both exist
+    const epsilon = 0.00001
+    if (Math.abs(baseLocation!.lat - location!.lat) > epsilon) return true
+    if (Math.abs(baseLocation!.lng - location!.lng) > epsilon) return true
+
+    return false
+  }
+
+  const handleClose = () => {
+    if (hasUnsavedChanges()) {
+      if (
+        window.confirm(
+          'You have unsaved changes. Are you sure you want to discard them?'
+        )
+      ) {
+        onClose()
+      }
+    } else {
+      onClose()
+    }
+  }
+
   useEffect(() => {
     const handleEscapeKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && isOpen && !isSubmitting) {
-        onClose()
+        handleClose()
       }
     }
 
@@ -129,7 +179,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
     return () => {
       document.removeEventListener('keydown', handleEscapeKey)
     }
-  }, [isOpen, isSubmitting, onClose])
+  }, [isOpen, isSubmitting, onClose, formData, images, orientationPlan, location])
 
 
 
@@ -350,7 +400,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                 </p>
               </div>
               <button
-                onClick={onClose}
+                onClick={handleClose}
                 className="text-gray-400 hover:text-gray-600 transition-colors"
                 disabled={isSubmitting}
               >
@@ -770,7 +820,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={onClose}
+                  onClick={handleClose}
                   disabled={isSubmitting}
                 >
                   Cancel
