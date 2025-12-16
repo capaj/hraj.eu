@@ -38,7 +38,7 @@ export const Header: React.FC = () => {
   }
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <header className="bg-white border-b border-gray-200 sticky top-0 z-[2000]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Mobile menu button */}
@@ -291,11 +291,10 @@ export const NotificationsDropdown = () => {
               userNotifications.map((notification) => (
                 <div
                   key={notification.id}
-                  className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 transition-colors ${
-                    !notification.isRead
+                  className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 transition-colors ${!notification.isRead
                       ? 'bg-blue-50 border-l-4 border-l-blue-500'
                       : ''
-                  }`}
+                    }`}
                 >
                   <div className="flex items-start space-x-3">
                     <div className="flex-shrink-0 mt-1">
@@ -305,11 +304,10 @@ export const NotificationsDropdown = () => {
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <p
-                            className={`text-sm ${
-                              !notification.isRead
+                            className={`text-sm ${!notification.isRead
                                 ? 'font-semibold text-gray-900'
                                 : 'text-gray-700'
-                            }`}
+                              }`}
                           >
                             {notification.title}
                           </p>
@@ -323,18 +321,18 @@ export const NotificationsDropdown = () => {
                               })}
                             </span>
                             {notification.eventId && (
-                            <span className="text-xs text-blue-600">
-                              • <Trans>Event</Trans> #{notification.eventId.slice(0, 8)}
-                            </span>
-                          )}
-                          {notification.fromUserId && (
-                            <span className="text-xs text-green-600">
-                              • <Trans>from User</Trans> #{notification.fromUserId.slice(0, 8)}
-                            </span>
-                          )}
+                              <span className="text-xs text-blue-600">
+                                • <Trans>Event</Trans> #{notification.eventId.slice(0, 8)}
+                              </span>
+                            )}
+                            {notification.fromUserId && (
+                              <span className="text-xs text-green-600">
+                                • <Trans>from User</Trans> #{notification.fromUserId.slice(0, 8)}
+                              </span>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex items-center space-x-1 ml-2">
+                        <div className="flex items-center space-x-1 ml-2">
                           {!notification.isRead && (
                             <button
                               onClick={() => handleMarkAsRead(notification.id)}
