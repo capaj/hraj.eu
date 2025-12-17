@@ -437,9 +437,7 @@ export const EventDetailsPage: React.FC = () => {
               <div className="text-4xl">{sport?.icon}</div>
               <div>
                 <h1 className="text-3xl font-bold text-white">{event.title}</h1>
-                <p className="text-lg text-white/80 mt-1">
-                  <Trans>Organized event</Trans>
-                </p>
+
                 {hasEventEnded && (
                   <Badge variant="default" size="md" className="mt-2">
                     <Trans>Event Completed</Trans>
