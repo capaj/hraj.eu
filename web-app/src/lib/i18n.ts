@@ -14,7 +14,6 @@ export function activateLocale(locale: AppLocale) {
   i18n.loadAndActivate({ locale, messages: MESSAGES[locale] })
 }
 
-// Ensure a locale is always set so `t`/`i18n._` calls never throw at runtime.
-activateLocale('en')
+activateLocale('cs')
 
 export { i18n }
