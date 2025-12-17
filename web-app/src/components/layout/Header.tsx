@@ -31,7 +31,7 @@ export const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { i18n } = useLingui()
 
-  const currentLocale = (i18n.locale as AppLocale) || 'en'
+  const currentLocale = (i18n.locale as AppLocale) ?? 'cs'
   const setLocale = (locale: AppLocale) => {
     activateLocale(locale)
     if (typeof window !== 'undefined') window.localStorage.setItem('locale', locale)
@@ -292,8 +292,8 @@ export const NotificationsDropdown = () => {
                 <div
                   key={notification.id}
                   className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 transition-colors ${!notification.isRead
-                      ? 'bg-blue-50 border-l-4 border-l-blue-500'
-                      : ''
+                    ? 'bg-blue-50 border-l-4 border-l-blue-500'
+                    : ''
                     }`}
                 >
                   <div className="flex items-start space-x-3">
@@ -305,8 +305,8 @@ export const NotificationsDropdown = () => {
                         <div className="flex-1">
                           <p
                             className={`text-sm ${!notification.isRead
-                                ? 'font-semibold text-gray-900'
-                                : 'text-gray-700'
+                              ? 'font-semibold text-gray-900'
+                              : 'text-gray-700'
                               }`}
                           >
                             {notification.title}
