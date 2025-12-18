@@ -1,20 +1,22 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { HomePage } from '../pages/HomePage'
-import { getUpcomingEvents } from '~/server-functions/getUpcomingEvents'
-import { getAppStats } from '~/server-functions/getAppStats'
+import { DiscoverPage } from '../pages/DiscoverPage'
+import { getEvents } from '~/server-functions/getEvents'
+import { getVenues } from '~/server-functions/getVenues'
+import { getUserById } from '~/server-functions/getUserById'
+import { authClient } from '~/lib/auth-client'
 
 export const Route = createFileRoute('/')({
   loader: async () => {
-    // Load data for home page - upcoming events and stats
-    const [upcomingEvents, stats] = await Promise.all([
-      getUpcomingEvents({ data: 3 }),
-      getAppStats()
-    ])
+    // Load all events and venues - filtering will be done client-side for now
+    const session = await authClient.getSession()
+    const [events, venues] = await Promise.all([getEvents(), getVenues()])
 
-    return {
-      upcomingEvents,
-      stats
+    let user = null
+    if (session.data?.user) {
+      user = await getUserById({ data: session.data.user.id })
     }
+
+    return { events, venues, user }
   },
-  component: HomePage
+  component: DiscoverPage
 })

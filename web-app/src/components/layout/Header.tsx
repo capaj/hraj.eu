@@ -60,12 +60,13 @@ export const Header: React.FC = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
             <Link
-              to="/discover"
+              to="/"
               className="transition-colors text-gray-700 hover:text-primary-600"
               activeProps={{ className: 'text-primary-600 font-medium' }}
             >
               <Trans>Discover</Trans>
             </Link>
+
             <Link
               to="/profile"
               className="transition-colors text-gray-700 hover:text-primary-600"
@@ -79,6 +80,13 @@ export const Header: React.FC = () => {
               activeProps={{ className: 'text-primary-600 font-medium' }}
             >
               <Trans>Leaderboard</Trans>
+            </Link>
+            <Link
+              to="/about"
+              className="transition-colors text-gray-700 hover:text-primary-600"
+              activeProps={{ className: 'text-primary-600 font-medium' }}
+            >
+              <Trans>About</Trans>
             </Link>
           </nav>
 
@@ -140,13 +148,14 @@ export const Header: React.FC = () => {
               </div>
 
               <Link
-                to="/discover"
+                to="/"
                 className="block transition-colors text-gray-700 hover:text-primary-600 py-2"
                 activeProps={{ className: 'text-primary-600 font-medium' }}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <Trans>Discover</Trans>
               </Link>
+
               <Link
                 to="/profile"
                 className="block transition-colors text-gray-700 hover:text-primary-600 py-2"
@@ -162,6 +171,14 @@ export const Header: React.FC = () => {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <Trans>Leaderboard</Trans>
+              </Link>
+              <Link
+                to="/about"
+                className="block transition-colors text-gray-700 hover:text-primary-600 py-2"
+                activeProps={{ className: 'text-primary-600 font-medium' }}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Trans>About</Trans>
               </Link>
               <Link
                 to="/create"

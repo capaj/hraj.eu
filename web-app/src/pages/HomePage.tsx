@@ -11,7 +11,7 @@ import { authClient } from '../lib/auth-client'
 import { i18n } from '~/lib/i18n'
 
 export const HomePage: React.FC = () => {
-  const { upcomingEvents: initialUpcomingEvents, stats } = useLoaderData({ from: '/' })
+  const { upcomingEvents: initialUpcomingEvents, stats } = useLoaderData({ from: '/about' })
   const navigate = useNavigate()
   const session = authClient.useSession()
   const [userLocation, setUserLocation] = useState<string>('')
@@ -127,7 +127,7 @@ export const HomePage: React.FC = () => {
                 </p>
               )}
             </div>
-            <Link to="/discover">
+            <Link to="/">
               <Button
                 variant="outline"
                 className="bg-white/10 border-white/20 text-white hover:bg-white/20"
@@ -177,7 +177,7 @@ export const HomePage: React.FC = () => {
       {/* Stats Section */}
       <section className="py-16 bg-black/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 text-center">
             <div>
               <div className="text-4xl font-bold text-white mb-2">
                 {stats.eventsCreated.toLocaleString()}
@@ -202,14 +202,14 @@ export const HomePage: React.FC = () => {
                 <Trans>Countries</Trans>
               </div>
             </div>
-            <div>
+            {/* <div>
               <div className="text-4xl font-bold text-white mb-2">
                 {stats.successRate}%
               </div>
               <div className="text-white/80">
                 <Trans>Success Rate</Trans>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -235,7 +235,7 @@ export const HomePage: React.FC = () => {
                   <Trans>Create Event</Trans>
                 </Button>
               </Link>
-              <Link to="/discover">
+              <Link to="/">
                 <Button
                   size="lg"
                   variant="outline"
