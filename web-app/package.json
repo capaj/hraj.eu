@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "ci:build": "vite build",
+    "ci:build": "vite build && lingui extract && lingui compile",
     "start": "vite start",
     "bump": "ncu -u && pnpm install",
     "migrate": "drizzle-kit migrate",

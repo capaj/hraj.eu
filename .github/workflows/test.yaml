@@ -10,13 +10,13 @@ on:
       - web-app/**/*.tsx
       - web-app/wrangler.*
       - pnpm-*.yaml
-      - .github/workflows/deploy.yaml
+      - .github/workflows/test.yaml
       - "**/package.json"
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
-    name: Deploy app
+    name: Test app
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -34,7 +34,7 @@ jobs:
         working-directory: web-app
         run: |
           cp .dev.vars.example .dev.vars
-      
+
       - name: Install deps
         run: pnpm install
 
