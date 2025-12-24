@@ -12,14 +12,19 @@ export const getEvents = createServerFn({ method: 'GET' })
         statuses: z
           .array(z.enum(eventStatuses))
           .optional(),
-        filterPastEvents: z.boolean().optional()
+        dateRange: z
+          .object({
+            from: z.string().optional(), // ISO datetime string
+            to: z.string().optional()    // ISO datetime string
+          })
+          .optional()
       })
       .optional()
       .parse(data)
   )
   .handler(async ({ data }) => {
     const statuses = data?.statuses
-    const filterPastEvents = data?.filterPastEvents ?? true // Default to true for map view
+    const dateRange = data?.dateRange
 
     // Build where conditions
     const conditions = []
@@ -31,12 +36,14 @@ export const getEvents = createServerFn({ method: 'GET' })
       conditions.push(not(eq(eventT.status, 'cancelled'))) // by default don't show cancelled events
     }
 
-    // Date/time filter: show events that start after (now - 8 hours)
-    if (filterPastEvents) {
-      const eightHoursAgo = new Date(Date.now() - 8 * 60 * 60 * 1000)
-      // Format as "YYYY-MM-DD HH:MM" to match SQLite datetime format
-      const cutoffDatetime = eightHoursAgo.toISOString().slice(0, 16).replace('T', ' ')
-      conditions.push(sql`${eventT.date} || ' ' || ${eventT.startTime} >= ${cutoffDatetime}`)
+    // Date/time range filter
+    if (dateRange?.from) {
+      const fromDatetime = dateRange.from.slice(0, 16).replace('T', ' ')
+      conditions.push(sql`${eventT.date} || ' ' || ${eventT.startTime} >= ${fromDatetime}`)
+    }
+    if (dateRange?.to) {
+      const toDatetime = dateRange.to.slice(0, 16).replace('T', ' ')
+      conditions.push(sql`${eventT.date} || ' ' || ${eventT.startTime} <= ${toDatetime}`)
     }
 
     const eventsFromDb = await db

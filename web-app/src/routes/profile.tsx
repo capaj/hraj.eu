@@ -15,8 +15,8 @@ export const Route = createFileRoute('/profile')({
       getUserNotifications({ data: mockUserId }),
       getEvents({
         data: {
-          statuses: ['open', 'confirmed', 'cancelled', 'completed'],
-          filterPastEvents: false // Show all events including old ones for profile
+          statuses: ['open', 'confirmed', 'cancelled', 'completed']
+          // No date range - show all events for profile
         }
       }),
       getVenues(),
