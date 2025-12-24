@@ -5,7 +5,11 @@ import { getEvents } from '~/server-functions/getEvents'
 export const Route = createFileRoute('/leaderboard')({
   loader: async () => {
     // Load all events and users for leaderboard calculations
-    const events = await getEvents()
+    const events = await getEvents({
+      data: {
+        filterPastEvents: false // Need all events for leaderboard calculations
+      }
+    })
     return { events }
   },
   component: Leaderboard

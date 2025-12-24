@@ -7,7 +7,7 @@ import { authClient } from '~/lib/auth-client'
 
 export const Route = createFileRoute('/')({
   loader: async () => {
-    // Load all events and venues - filtering will be done client-side for now
+    // Load all events and venues - events are filtered server-side to show only recent/upcoming
     const session = await authClient.getSession()
     const [events, venues] = await Promise.all([getEvents(), getVenues()])
 

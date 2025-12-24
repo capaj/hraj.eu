@@ -11,32 +11,38 @@ export const getEvents = createServerFn({ method: 'GET' })
       .object({
         statuses: z
           .array(z.enum(eventStatuses))
-          .optional()
+          .optional(),
+        filterPastEvents: z.boolean().optional()
       })
       .optional()
       .parse(data)
   )
   .handler(async ({ data }) => {
     const statuses = data?.statuses
+    const filterPastEvents = data?.filterPastEvents ?? true // Default to true for map view
 
-    // Calculate cutoff time: 8 hours ago
-    const eightHoursAgo = new Date(Date.now() - 8 * 60 * 60 * 1000)
-    // Format as "YYYY-MM-DD HH:MM" to match SQLite datetime format
-    const cutoffDatetime = eightHoursAgo.toISOString().slice(0, 16).replace('T', ' ')
+    // Build where conditions
+    const conditions = []
+
+    // Status filter
+    if (statuses && statuses.length > 0) {
+      conditions.push(inArray(eventT.status, statuses))
+    } else {
+      conditions.push(not(eq(eventT.status, 'cancelled'))) // by default don't show cancelled events
+    }
+
+    // Date/time filter: show events that start after (now - 8 hours)
+    if (filterPastEvents) {
+      const eightHoursAgo = new Date(Date.now() - 8 * 60 * 60 * 1000)
+      // Format as "YYYY-MM-DD HH:MM" to match SQLite datetime format
+      const cutoffDatetime = eightHoursAgo.toISOString().slice(0, 16).replace('T', ' ')
+      conditions.push(sql`${eventT.date} || ' ' || ${eventT.startTime} >= ${cutoffDatetime}`)
+    }
 
     const eventsFromDb = await db
       .select()
       .from(eventT)
-      .where(
-        and(
-          // Status filter
-          statuses && statuses.length > 0
-            ? inArray(eventT.status, statuses)
-            : not(eq(eventT.status, 'cancelled')), // by default don't show cancelled events
-          // Date/time filter: show events that start after (now - 8 hours)
-          sql`${eventT.date} || ' ' || ${eventT.startTime} >= ${cutoffDatetime}`
-        )
-      )
+      .where(and(...conditions))
 
     const eventsWithParticipants = await Promise.all(
       eventsFromDb.map(async (event) => {
