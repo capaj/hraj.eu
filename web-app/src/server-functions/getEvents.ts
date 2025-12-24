@@ -2,7 +2,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { Event } from '../types'
 import { db } from '../../drizzle/db'
 import { eventStatuses, eventT, participantT } from '../../drizzle/schema'
-import { eq, not, inArray } from 'drizzle-orm'
+import { eq, not, inArray, sql, and } from 'drizzle-orm'
 import { z } from 'zod'
 
 export const getEvents = createServerFn({ method: 'GET' })
@@ -19,13 +19,23 @@ export const getEvents = createServerFn({ method: 'GET' })
   .handler(async ({ data }) => {
     const statuses = data?.statuses
 
+    // Calculate cutoff time: 8 hours ago
+    const eightHoursAgo = new Date(Date.now() - 8 * 60 * 60 * 1000)
+    // Format as "YYYY-MM-DD HH:MM" to match SQLite datetime format
+    const cutoffDatetime = eightHoursAgo.toISOString().slice(0, 16).replace('T', ' ')
+
     const eventsFromDb = await db
       .select()
       .from(eventT)
       .where(
-        statuses && statuses.length > 0
-          ? inArray(eventT.status, statuses)
-          : not(eq(eventT.status, 'cancelled')) // by default don't show cancelled events
+        and(
+          // Status filter
+          statuses && statuses.length > 0
+            ? inArray(eventT.status, statuses)
+            : not(eq(eventT.status, 'cancelled')), // by default don't show cancelled events
+          // Date/time filter: show events that start after (now - 8 hours)
+          sql`${eventT.date} || ' ' || ${eventT.startTime} >= ${cutoffDatetime}`
+        )
       )
 
     const eventsWithParticipants = await Promise.all(
