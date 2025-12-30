@@ -3,4 +3,4 @@ packages:
   - cron/**
 
 patchedDependencies:
-  h3@2.0.0-beta.5: patches/h3@2.0.0-beta.5.patch
+  h3@2.0.1-rc.6: patches/h3@2.0.1-rc.6.patch

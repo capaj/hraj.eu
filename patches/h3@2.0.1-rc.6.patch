@@ -1,8 +1,8 @@
 diff --git a/dist/h3.mjs b/dist/h3.mjs
-index b3661a83fac88df69438c8c74dc74f2f45c1b273..7fee30dd5e2529e7d28afc3def536733e0fda2bc 100644
+index 3a20a57abc16e331a68e6a6c01e38fd80d381316..e82caec3a89137f005cdf549d852431c7757bcfd 100644
 --- a/dist/h3.mjs
 +++ b/dist/h3.mjs
-@@ -259,8 +259,10 @@ var HTTPError = class HTTPError extends Error {
+@@ -159,8 +159,10 @@ var HTTPError = class HTTPError extends Error {
  			status: this.status,
  			statusText: this.statusText,
  			unhandled,
@@ -14,7 +14,7 @@ index b3661a83fac88df69438c8c74dc74f2f45c1b273..7fee30dd5e2529e7d28afc3def536733
  			...unhandled ? void 0 : this.body
  		};
  	}
-@@ -387,10 +389,11 @@ function nullBody(method, status) {
+@@ -312,10 +314,11 @@ function nullBody(method, status) {
  	return method === "HEAD" || status === 100 || status === 101 || status === 102 || status === 204 || status === 205 || status === 304;
  }
  function errorResponse(error, debug) {
@@ -27,4 +27,4 @@ index b3661a83fac88df69438c8c74dc74f2f45c1b273..7fee30dd5e2529e7d28afc3def536733
 +	}, void 0, includeStack ? 2 : void 0), {
  		status: error.status,
  		statusText: error.statusText,
- 		headers: error.headers ? mergeHeaders$1(jsonHeaders, error.headers) : jsonHeaders
+ 		headers: error.headers ? mergeHeaders$1(jsonHeaders, error.headers) : new Headers(jsonHeaders)
