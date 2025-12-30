@@ -9,6 +9,7 @@ import 'leaflet/dist/leaflet.css'
 import { Event, Venue } from '../../types'
 import { SPORTS } from '../../lib/constants'
 import { format } from 'date-fns'
+import dayjs from 'dayjs'
 
 interface EventMapProps {
   events: Event[]
@@ -149,8 +150,24 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
           bounds.push([userLocation.lat, userLocation.lng])
         }
 
+        const oldestVisibleTime = dayjs().subtract(12, 'hour')
+        const visibleEvents = events.filter((event) => {
+          const eventStartTime = dayjs(event.date)
+          const [hours = 0, minutes = 0] = event.startTime
+            .split(':')
+            .map(Number)
+          const normalizedStartTime = eventStartTime
+            .hour(hours)
+            .minute(minutes)
+            .second(0)
+            .millisecond(0)
+          const eventEndTime = normalizedStartTime.add(event.duration, 'minute')
+
+          return eventEndTime.valueOf() >= oldestVisibleTime.valueOf()
+        })
+
         const eventsByVenue = new Map<string, Event[]>()
-        events.forEach((event) => {
+        visibleEvents.forEach((event) => {
           if (!event.venueId) return
           if (!eventsByVenue.has(event.venueId)) {
             eventsByVenue.set(event.venueId, [])
