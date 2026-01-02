@@ -109,6 +109,7 @@ export const Route = createFileRoute('/events/$eventId')({
         { property: 'og:image:width', content: '1200' },
         { property: 'og:image:height', content: '630' },
         { property: 'og:image:alt', content: ogTitle },
+        { property: 'fb:app_id', content: '311467912374535' },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: ogTitle },
         { name: 'twitter:description', content: description },
