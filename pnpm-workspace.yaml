@@ -2,5 +2,5 @@ packages:
   - web-app/**
   - cron/**
 
-patchedDependencies:
-  h3@2.0.1-rc.6: patches/h3@2.0.1-rc.6.patch
+# patchedDependencies:
+#   h3@2.0.1-rc.6: patches/h3@2.0.1-rc.6.patch
