@@ -10,6 +10,7 @@ import { Event, Venue } from '../../types'
 import { SPORTS } from '../../lib/constants'
 import { format } from 'date-fns'
 import dayjs from 'dayjs'
+import { t } from "@lingui/core/macro";
 
 interface EventMapProps {
   events: Event[]
@@ -251,7 +252,7 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
                 ? `
                     <div style="display: flex; align-items: center; font-size: 14px; color: #4b5563;">
                       <span style="margin-right: 8px;">💰</span>
-                      €${event.price} per person
+                      €${event.price} ${t`per person`}
                     </div>
                   `
                 : ''
@@ -261,13 +262,13 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
                   <span style="font-size: 12px; padding: 4px 8px; border-radius: 4px; background-color: ${spotsLeft > 0 ? '#dcfce7' : '#fef3c7'
               }; color: ${spotsLeft > 0 ? '#166534' : '#92400e'
               }; font-weight: 500;">
-                    ${spotsLeft > 0 ? `${spotsLeft} spots left` : 'Waitlist'}
+                    ${spotsLeft > 0 ? `${spotsLeft} spots left` : t`Waitlist`}
                   </span>
                   ${isJoined
                 ? `<button 
                         style="padding: 6px 12px; background-color: #e5e7eb; color: #374151; border: none; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: default;"
                       >
-                        You are playing
+                        ${t`You are playing`}
                       </button>`
                 : `<button 
                         onclick="window.joinEvent_${event.id}()"
@@ -275,7 +276,7 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
                         onmouseover="this.style.backgroundColor='#059669'"
                         onmouseout="this.style.backgroundColor='#10b981'"
                       >
-                        ${spotsLeft > 0 ? 'Join Game' : 'Join Waitlist'}
+                        ${spotsLeft > 0 ? t`Join Game` : t`Join Waitlist`}
                       </button>`
               } 
                 </div>

@@ -13,6 +13,7 @@ import { useUser } from '~/lib/auth-client'
 import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { i18n } from '~/lib/i18n'
+import { getEventDateTime } from '../utils/eventDateTime'
 
 export const PublicProfilePage: React.FC = () => {
 
@@ -30,20 +31,20 @@ export const PublicProfilePage: React.FC = () => {
   const upcomingEvents = events.filter(
     (event) =>
       (event.organizerId === user.id || event.participants.includes(user.id)) &&
-      isFuture(event.date) &&
+      isFuture(getEventDateTime(event)) &&
       event.status !== 'cancelled'
   )
 
   const pastEvents = events.filter(
     (event) =>
       (event.organizerId === user.id || event.participants.includes(user.id)) &&
-      (isPast(event.date) || event.status === 'cancelled')
+      (isPast(getEventDateTime(event)) || event.status === 'cancelled')
   )
 
   const savedEvents = events.filter(
     (event) =>
       savedEventIds.includes(event.id) &&
-      isFuture(event.date) &&
+      isFuture(getEventDateTime(event)) &&
       !event.participants.includes(user.id) // Not already joined
   )
 
@@ -191,7 +192,13 @@ export const PublicProfilePage: React.FC = () => {
                     ? pastEvents.map((event) => (
                       <EditableEventCard
                         key={event.id}
-                        event={event}
+                        event={
+                          isPast(getEventDateTime(event)) &&
+                          event.status !== 'cancelled' &&
+                          event.status !== 'completed'
+                            ? { ...event, status: 'completed' }
+                            : event
+                        }
                         venues={venues}
                         users={users}
                         currentUserId={user?.id}

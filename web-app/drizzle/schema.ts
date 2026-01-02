@@ -11,7 +11,7 @@ import { relations, sql } from 'drizzle-orm'
 import { createId } from '@paralleldrive/cuid2'
 export * from './auth-schema'
 import { user } from './auth-schema'
-import { SPORTS } from '~/lib/constants'
+import { SPORTS } from '../src/lib/constants'
 
 export const userSkillT = sqliteTable(
   'user_skill',
@@ -90,6 +90,11 @@ export const eventT = sqliteTable(
       mode: 'timestamp'
     }),
     cancellationReason: text('cancellation_reason'),
+
+    /**
+     * this is set by a CRON job
+     */
+    confirmedAt: integer('confirmed_at', { mode: 'timestamp' }),
 
     // recurring event fields
     /** when set, the event is recurring every N days */

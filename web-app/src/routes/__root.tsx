@@ -50,6 +50,16 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html>
       <head>
+        <script
+          type="module"
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (${import.meta.env.DEV}) {
+                import("react-grab");
+              }
+            `,
+          }}
+        />
         <HeadContent />
       </head>
       <body>

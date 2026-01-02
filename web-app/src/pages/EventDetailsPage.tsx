@@ -41,7 +41,7 @@ import {
   Edit,
   ChevronDown
 } from 'lucide-react'
-import { format, isPast, addHours } from 'date-fns'
+import { format, isPast, addMinutes } from 'date-fns'
 import { enUS, cs } from 'date-fns/locale'
 import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
@@ -67,6 +67,7 @@ import { joinEvent } from '~/server-functions/joinEvent'
 import { leaveEvent } from '~/server-functions/leaveEvent'
 import { getUserById } from '~/server-functions/getUserById'
 import { User } from '../types'
+import { getEventDateTime } from '../utils/eventDateTime'
 
 interface KarmaFeedback {
   userId: string
@@ -133,11 +134,17 @@ export const EventDetailsPage: React.FC = () => {
     event.idealParticipants &&
     event.participants.length >= event.idealParticipants
 
+  const getEventStartDateTime = () => {
+    if (!event) {
+      return new Date()
+    }
+    return getEventDateTime({ date: event.date, startTime: event.startTime })
+  }
+
   // Check if event has ended (event date + duration has passed)
-  const eventDateTime = new Date(event.date)
-  const [hours = 0, minutes = 0] = event.startTime.split(':').map(Number)
-  eventDateTime.setHours(hours, minutes, 0, 0)
-  const eventEndTime = addHours(eventDateTime, Math.ceil(event.duration / 60))
+  const eventStartTime = getEventStartDateTime()
+  const durationMinutes = Number(event.duration) || 0
+  const eventEndTime = addMinutes(eventStartTime, durationMinutes)
   const hasEventEnded = isPast(eventEndTime)
 
   // Get current user ID from session
@@ -186,9 +193,7 @@ export const EventDetailsPage: React.FC = () => {
   const getCancellationDeadline = () => {
     if (!event.cancellationDeadlineHours) return null
 
-    const eventDateTime = new Date(event.date)
-    const [hours = 0, minutes = 0] = event.startTime.split(':').map(Number)
-    eventDateTime.setHours(hours, minutes, 0, 0)
+    const eventDateTime = getEventStartDateTime()
 
     const deadlineTime = new Date(
       eventDateTime.getTime() - event.cancellationDeadlineHours * 60 * 60 * 1000
@@ -208,12 +213,10 @@ export const EventDetailsPage: React.FC = () => {
 
   const handleAddToCalendar = () => {
     // Parse the start time and create proper Date objects
-    const [hours = 0, minutes = 0] = event.startTime.split(':').map(Number)
-    const startDate = new Date(event.date)
-    startDate.setHours(hours, minutes, 0, 0)
+    const startDate = getEventStartDateTime()
 
     const endDate = new Date(startDate)
-    endDate.setMinutes(endDate.getMinutes() + event.duration)
+    endDate.setMinutes(endDate.getMinutes() + durationMinutes)
 
     const calendarEvent: CalendarEvent = {
       title: event.title,

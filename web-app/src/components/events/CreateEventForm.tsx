@@ -148,6 +148,21 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
         }
       }
 
+      // Auto-adjust min/ideal when max changes
+      if (field === 'maxParticipants') {
+        const v = value as number
+        if (Number.isFinite(v)) {
+          if (v >= 2) {
+            if (newData.idealParticipants > v) {
+              newData.idealParticipants = v
+            }
+            if (newData.minParticipants > v) {
+              newData.minParticipants = v
+            }
+          }
+        }
+      }
+
       return newData
     })
   }
@@ -207,20 +222,94 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     )
   }
 
-  const getTotalCancellationTime = () => {
+  const getTotalCancellationParts = () => {
     const totalMinutes =
       formData.cancellationHours * 60 + formData.cancellationMinutes
     if (totalMinutes < 60) {
-      return `${totalMinutes} minutes`
+      return { primary: `${totalMinutes} minutes`, secondary: '' }
     } else if (totalMinutes === 60) {
-      return '1 hour'
+      return { primary: '1 hour', secondary: '' }
     } else if (totalMinutes % 60 === 0) {
-      return `${Math.floor(totalMinutes / 60)} hours`
+      return {
+        primary: `${Math.floor(totalMinutes / 60)} hours`,
+        secondary: ''
+      }
     } else {
       const hours = Math.floor(totalMinutes / 60)
       const minutes = totalMinutes % 60
-      return `${hours} hour${hours > 1 ? 's' : ''} and ${minutes} minutes`
+      return {
+        primary: `${hours} hour${hours > 1 ? 's' : ''}`,
+        secondary: `${minutes} minutes`
+      }
     }
+  }
+
+  const getCancellationDeadlineTimeLabel = () => {
+    if (!formData.date || !formData.startTime) {
+      return null
+    }
+    const startDateTime = new Date(`${formData.date}T${formData.startTime}`)
+    if (Number.isNaN(startDateTime.getTime())) {
+      return null
+    }
+    const totalMinutes =
+      formData.cancellationHours * 60 + formData.cancellationMinutes
+    const deadlineTime = new Date(
+      startDateTime.getTime() - totalMinutes * 60 * 1000
+    )
+    const hours = deadlineTime.getHours().toString().padStart(2, '0')
+    const minutes = deadlineTime.getMinutes().toString().padStart(2, '0')
+    const timeLabel = `${hours}:${minutes}`
+    if (deadlineTime.toDateString() !== startDateTime.toDateString()) {
+      return `${timeLabel} (day before)`
+    }
+    return timeLabel
+  }
+
+  const getEndTimeLabel = () => {
+    if (!formData.startTime || !formData.duration) {
+      return null
+    }
+    const [hours, minutes] = formData.startTime.split(':').map(Number)
+    const durationMinutes = Number(formData.duration)
+    if (
+      !Number.isFinite(hours) ||
+      !Number.isFinite(minutes) ||
+      !Number.isFinite(durationMinutes)
+    ) {
+      return null
+    }
+    const totalMinutes = hours * 60 + minutes + durationMinutes
+    const dayOffset = Math.floor(totalMinutes / (24 * 60))
+    const endMinutes = totalMinutes % (24 * 60)
+    const endHours = Math.floor(endMinutes / 60)
+    const endMins = endMinutes % 60
+    const timeLabel = `${endHours.toString().padStart(2, '0')}:${endMins
+      .toString()
+      .padStart(2, '0')}`
+    if (dayOffset > 0) {
+      return `${timeLabel} (+${dayOffset} day${dayOffset > 1 ? 's' : ''})`
+    }
+    return timeLabel
+  }
+
+  const getPerPlayerCost = () => {
+    if (!formData.price) {
+      return null
+    }
+    const totalPrice = Number(formData.price)
+    if (!Number.isFinite(totalPrice) || totalPrice <= 0) {
+      return null
+    }
+    const participants = formData.idealParticipants || formData.minParticipants
+    if (!participants) {
+      return null
+    }
+    const perPlayer = totalPrice / participants
+    if (!Number.isFinite(perPlayer) || perPlayer <= 0) {
+      return null
+    }
+    return perPlayer
   }
 
   const getSkillLevelBadgeVariant = (level: SkillLevel) => {
@@ -251,6 +340,23 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   }
 
   const _selectedVenue = venues.find((v) => v.id === formData.venueId)
+  const participantsRangeMax = Number.isFinite(formData.maxParticipants)
+    ? Math.max(formData.maxParticipants, 2)
+    : 2
+  const cancellationTotalMinutes =
+    formData.cancellationHours * 60 + formData.cancellationMinutes
+  const cancellationSliderValue = Math.min(
+    1440,
+    Math.max(15, cancellationTotalMinutes)
+  )
+  const endTimeLabel = getEndTimeLabel()
+  const perPlayerCost = getPerPlayerCost()
+  const durationPresets = [60, 90, 120]
+  const cancellationTimeParts = getTotalCancellationParts()
+  const cancellationTimeInline = cancellationTimeParts.secondary
+    ? `${cancellationTimeParts.primary} ${cancellationTimeParts.secondary}`
+    : cancellationTimeParts.primary
+  const cancellationDeadlineTime = getCancellationDeadlineTimeLabel()
 
   return (
     <>
@@ -378,7 +484,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                 Date & Time
               </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Date *
@@ -404,21 +510,42 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Duration (minutes)
-                  </label>
+                <div className="md:col-span-2">
+                  <div className="flex items-center justify-between">
+                    <label
+                      htmlFor="durationRange"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Duration (minutes)
+                    </label>
+                    <span className="text-sm font-semibold text-gray-900">
+                      {formData.duration} min
+                    </span>
+                  </div>
                   <input
-                    type="number"
+                    id="durationRange"
+                    type="range"
                     value={formData.duration}
                     onChange={(e) =>
-                      handleChange('duration', parseInt(e.target.value))
+                      handleChange('duration', parseInt(e.target.value, 10))
                     }
                     min="30"
                     max="180"
-                    step="15"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    step="10"
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-600 mt-3"
                   />
+                  <div className="flex justify-between text-xs text-gray-500 mt-1">
+                    <span>30m</span>
+                    <span>60m</span>
+                    <span>120m</span>
+                    <span>180m</span>
+                  </div>
+                  {endTimeLabel && (
+                    <p className="text-xs text-gray-500 mt-1">
+                      Ends at {endTimeLabel}
+                    </p>
+                  )}
+
                 </div>
               </div>
             </div>
@@ -430,51 +557,88 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                 Participants
               </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Minimum Players *
-                  </label>
-                  <input
-                    type="number"
-                    required
-                    value={formData.minParticipants}
-                    onChange={(e) =>
-                      handleChange('minParticipants', parseInt(e.target.value))
-                    }
-                    min="2"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Required to confirm event
-                  </p>
-                  <p className="text-xs text-amber-700 mt-2">
-                    If fewer than the minimum number of players join by the
-                    cancellation deadline, the event will be automatically
-                    cancelled and all participants will be notified.
-                  </p>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div className="lg:col-span-2 space-y-4">
+                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                    <div className="flex items-center justify-between">
+                      <label
+                        htmlFor="minParticipants"
+                        className="text-sm font-medium text-gray-700"
+                      >
+                        Minimum Players *
+                      </label>
+                      <span className="text-lg font-semibold text-gray-900">
+                        {formData.minParticipants}
+                      </span>
+                    </div>
+                    <input
+                      id="minParticipants"
+                      type="range"
+                      value={formData.minParticipants}
+                      min="2"
+                      max={participantsRangeMax}
+                      step="1"
+                      onChange={(e) =>
+                        handleChange(
+                          'minParticipants',
+                          parseInt(e.target.value, 10)
+                        )
+                      }
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-600 mt-3"
+                    />
+                    <div className="flex justify-between text-xs text-gray-500 mt-1">
+                      <span>2</span>
+                      <span>{participantsRangeMax}</span>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-2">
+                      Required to confirm event
+                    </p>
+                    <p className="text-xs text-amber-700 mt-1">
+                      If fewer than the minimum number of players join by the
+                      cancellation deadline, the event will be automatically
+                      cancelled and all participants will be notified.
+                    </p>
+                  </div>
+
+                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                    <div className="flex items-center justify-between">
+                      <label
+                        htmlFor="idealParticipants"
+                        className="text-sm font-medium text-gray-700"
+                      >
+                        Ideal Players *
+                      </label>
+                      <span className="text-lg font-semibold text-gray-900">
+                        {formData.idealParticipants}
+                      </span>
+                    </div>
+                    <input
+                      id="idealParticipants"
+                      type="range"
+                      value={formData.idealParticipants}
+                      min={formData.minParticipants}
+                      max={participantsRangeMax}
+                      step="1"
+                      onChange={(e) =>
+                        handleChange(
+                          'idealParticipants',
+                          parseInt(e.target.value, 10)
+                        )
+                      }
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-600 mt-3"
+                    />
+                    <div className="flex justify-between text-xs text-gray-500 mt-1">
+                      <span>{formData.minParticipants}</span>
+                      <span>{participantsRangeMax}</span>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-2">
+                      Perfect number for the best game
+                    </p>
+                  </div>
+
+
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Ideal Players *
-                  </label>
-                  <input
-                    type="number"
-                    required
-                    value={formData.idealParticipants}
-                    onChange={(e) =>
-                      handleChange(
-                        'idealParticipants',
-                        parseInt(e.target.value)
-                      )
-                    }
-                    min={formData.minParticipants}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Perfect number for best game
-                  </p>
-                </div>
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Maximum Players *
@@ -493,6 +657,9 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                   <p className="text-xs text-blue-700 mt-2">
                     Any extra players will be put on a waitlist
                   </p>
+                  <p className="text-xs text-gray-500 mt-2">
+                    Tip: Increase max players to widen the sliders.
+                  </p>
                 </div>
               </div>
 
@@ -506,36 +673,41 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                   players?
                 </p>
 
-                <div className="max-w-md">
-                  <label className="block text-xs font-medium text-gray-600 mb-1">
-                    Hours
-                  </label>
+                <div className="w-full rounded-lg border border-gray-200 bg-gray-50 p-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-gray-700">
+                      Deadline
+                    </span>
+                    <div className="text-right text-gray-900">
+                      <div className="text-lg font-semibold leading-tight">
+                        {cancellationTimeParts.primary}
+                      </div>
+                      <div className="text-sm text-gray-600 min-h-[1.25rem]">
+                        {cancellationTimeParts.secondary}
+                      </div>
+                    </div>
+                  </div>
                   <input
-                    type="number"
-                    value={formData.cancellationHours}
+                    type="range"
+                    min="15"
+                    max="1440"
+                    step="15"
+                    value={cancellationSliderValue}
                     onChange={(e) => {
-                      let val = e.target.value
-                      if (val === '') {
-                        handleChange('cancellationHours', 0)
-                        return
-                      }
-                      if (val.startsWith('0') && val.length > 1) {
-                        val = val.replace(/^0+/, '') || '0'
-                      }
-                      const num = parseInt(val, 10)
-                      if (!isNaN(num) && num >= 0 && num <= 72) {
-                        handleChange('cancellationHours', num)
-                      }
+                      const total = parseInt(e.target.value, 10)
+                      const hours = Math.floor(total / 60)
+                      const minutes = total % 60
+                      handleChange('cancellationHours', hours)
+                      handleChange('cancellationMinutes', minutes)
                     }}
-                    onFocus={(e) => {
-                      if (e.target.value === '0') {
-                        e.target.select()
-                      }
-                    }}
-                    min="0"
-                    max="72"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-600 mt-3"
                   />
+                  <div className="flex justify-between text-xs text-gray-500 mt-1">
+                    <span>15m</span>
+                    <span>6h</span>
+                    <span>12h</span>
+                    <span>24h</span>
+                  </div>
                 </div>
 
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
@@ -545,8 +717,9 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                       className="text-blue-600 mr-2 mt-0.5 flex-shrink-0"
                     />
                     <div className="text-sm text-blue-800">
-                      <strong>Deadline:</strong> {getTotalCancellationTime()}{' '}
-                      before the event starts
+                      <strong>Deadline:</strong>{' '}
+                      {cancellationDeadlineTime ||
+                        `${cancellationTimeInline} before the event starts`}
                       {formData.date && formData.startTime && (
                         <div className="mt-1 text-blue-700">
                           We'll check for minimum players and decide whether to
@@ -714,6 +887,12 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                   <p className="text-xs text-gray-500 mt-1">
                     Will be divided by participant count
                   </p>
+                  {perPlayerCost && (
+                    <p className="text-xs text-gray-600 mt-2">
+                      ~{perPlayerCost.toFixed(2)} {formData.currency} per player
+                      (based on ideal players)
+                    </p>
+                  )}
                 </div>
                 <div className="md:col-span-3">
                   <label className="block text-sm font-medium text-gray-700 mb-2">

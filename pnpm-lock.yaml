@@ -21,6 +21,16 @@ importers:
         version: 2.6.1
 
   cron:
+    dependencies:
+      '@libsql/client':
+        specifier: ^0.15.15
+        version: 0.15.15
+      drizzle-orm:
+        specifier: ^0.45.1
+        version: 0.45.1(@libsql/client@0.15.15)(kysely@0.28.8)
+      resend:
+        specifier: ^6.6.0
+        version: 6.6.0(@react-email/render@2.0.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
     devDependencies:
       typescript:
         specifier: ^5.9.3
@@ -130,6 +140,9 @@ importers:
       react-dom:
         specifier: ^19.2.3
         version: 19.2.3(react@19.2.3)
+      react-grab:
+        specifier: ^0.0.97
+        version: 0.0.97(@types/react@19.2.7)(react@19.2.3)
       react-hook-form:
         specifier: ^7.69.0
         version: 7.69.0(react@19.2.3)
@@ -2760,6 +2773,11 @@ packages:
     peerDependencies:
       '@types/react': ^19.2.0
 
+  '@types/react-reconciler@0.28.9':
+    resolution: {integrity: sha512-HHM3nxyUZ3zAylX8ZEyrDNd2XZOnQ0D5XfunJF5FLQnZbHHYq4UWvW1QfelQNXv1ICNkwYhfxjwfnqivYB6bFg==}
+    peerDependencies:
+      '@types/react': '*'
+
   '@types/react@19.2.7':
     resolution: {integrity: sha512-MWtvHrGZLFttgeEj28VXHxpmwYbor/ATPYbBfSFZEIRK0ecCFLl2Qo55z52Hss+UV9CRN7trSeq1zbgx7YDWWg==}
 
@@ -2794,6 +2812,15 @@ packages:
       react-dom: ^18.0.0 || ^19.0.0
     peerDependenciesMeta:
       '@types/react':
+        optional: true
+
+  '@xstate/solid@2.0.0':
+    resolution: {integrity: sha512-ycGMMJWPtfnc+CGhUxxe664wTVr4M2NXEJx4EsShbcT5G0d2bP378AtAsVvVhSjr6W5+7Br6htDivND1I6DOfQ==}
+    peerDependencies:
+      solid-js: ^1.6.0
+      xstate: ^5.20.0
+    peerDependenciesMeta:
+      xstate:
         optional: true
 
   abbrev@3.0.1:
@@ -2994,6 +3021,11 @@ packages:
 
   bindings@1.5.0:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
+
+  bippy@0.5.28:
+    resolution: {integrity: sha512-n3UosYu2KoCQDeAw/zSyjoJksT2viBwGhmEgIdCcGXUQgQsmSJc1Hr7s9eneawAlTI2rbKV4gNFUOaotpLfdgA==}
+    peerDependencies:
+      react: '>=17.0.1'
 
   bl@4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}
@@ -4555,6 +4587,10 @@ packages:
     peerDependencies:
       react: '>=16.4.1'
 
+  react-grab@0.0.97:
+    resolution: {integrity: sha512-S//Am+iN8MEQhugocrHIScy7bK9MJAwNNRsK5Z9GGMEhEG0B7WpAXiVmj9dd+hH2sV6+f5D2MaGQOl7aFYMZpA==}
+    hasBin: true
+
   react-hook-form@7.69.0:
     resolution: {integrity: sha512-yt6ZGME9f4F6WHwevrvpAjh42HMvocuSnSIHUGycBqXIJdhqGSPQzTpGF+1NLREk/58IdPxEMfPcFCjlMhclGw==}
     engines: {node: '>=18.0.0'}
@@ -5404,6 +5440,9 @@ packages:
   xmlbuilder2@4.0.3:
     resolution: {integrity: sha512-bx8Q1STctnNaaDymWnkfQLKofs0mGNN7rLLapJlGuV3VlvegD7Ls4ggMjE3aUSWItCCzU0PEv45lI87iSigiCA==}
     engines: {node: '>=20.0'}
+
+  xstate@5.25.0:
+    resolution: {integrity: sha512-yyWzfhVRoTHNLjLoMmdwZGagAYfmnzpm9gPjlX2MhJZsDojXGqRxODDOi4BsgGRKD46NZRAdcLp6CKOyvQS0Bw==}
 
   y18n@5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
@@ -7773,6 +7812,10 @@ snapshots:
     dependencies:
       '@types/react': 19.2.7
 
+  '@types/react-reconciler@0.28.9(@types/react@19.2.7)':
+    dependencies:
+      '@types/react': 19.2.7
+
   '@types/react@19.2.7':
     dependencies:
       csstype: 3.2.3
@@ -7827,6 +7870,12 @@ snapshots:
       warning: 4.0.3
     optionalDependencies:
       '@types/react': 19.2.7
+
+  '@xstate/solid@2.0.0(solid-js@1.9.10)(xstate@5.25.0)':
+    dependencies:
+      solid-js: 1.9.10
+    optionalDependencies:
+      xstate: 5.25.0
 
   abbrev@3.0.1: {}
 
@@ -7971,6 +8020,13 @@ snapshots:
   bindings@1.5.0:
     dependencies:
       file-uri-to-path: 1.0.0
+
+  bippy@0.5.28(@types/react@19.2.7)(react@19.2.3):
+    dependencies:
+      '@types/react-reconciler': 0.28.9(@types/react@19.2.7)
+      react: 19.2.3
+    transitivePeerDependencies:
+      - '@types/react'
 
   bl@4.1.0:
     dependencies:
@@ -9530,6 +9586,16 @@ snapshots:
       react: 19.2.3
       react-async-script: 1.2.0(react@19.2.3)
 
+  react-grab@0.0.97(@types/react@19.2.7)(react@19.2.3):
+    dependencies:
+      '@xstate/solid': 2.0.0(solid-js@1.9.10)(xstate@5.25.0)
+      bippy: 0.5.28(@types/react@19.2.7)(react@19.2.3)
+      solid-js: 1.9.10
+      xstate: 5.25.0
+    transitivePeerDependencies:
+      - '@types/react'
+      - react
+
   react-hook-form@7.69.0(react@19.2.3):
     dependencies:
       react: 19.2.3
@@ -10351,6 +10417,8 @@ snapshots:
       '@oozcitak/infra': 2.0.2
       '@oozcitak/util': 10.0.0
       js-yaml: 4.1.1
+
+  xstate@5.25.0: {}
 
   y18n@5.0.8: {}
 

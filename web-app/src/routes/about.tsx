@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { HomePage } from '../pages/HomePage'
+import { AboutPage } from '../pages/HomePage'
 import { getUpcomingEvents } from '~/server-functions/getUpcomingEvents'
 import { getAppStats } from '~/server-functions/getAppStats'
 
@@ -16,5 +16,5 @@ export const Route = createFileRoute('/about')({
       stats
     }
   },
-  component: HomePage
+  component: AboutPage
 })

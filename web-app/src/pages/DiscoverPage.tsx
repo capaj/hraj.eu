@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef } from 'react'
 import { isPast, isFuture } from 'date-fns'
+import { getEventDateTime } from '../utils/eventDateTime'
 import { useLoaderData, useNavigate } from '@tanstack/react-router'
 import { EventCard } from '../components/events/EventCard'
 import { EventFilters } from '../components/events/EventFilters'
@@ -287,9 +288,9 @@ export const DiscoverPage: React.FC = () => {
               </h2>
             </div>
 
-            {filteredAndSortedEvents.filter(e => isFuture(e.date)).length > 0 ? (
+            {filteredAndSortedEvents.filter(e => isFuture(getEventDateTime(e))).length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredAndSortedEvents.filter(e => isFuture(e.date)).map((event, index) => {
+                {filteredAndSortedEvents.filter(e => isFuture(getEventDateTime(e))).map((event, index) => {
                   const distance = getEventDistance(event)
                   return (
                     <div
@@ -335,7 +336,7 @@ export const DiscoverPage: React.FC = () => {
           </div>
 
           {/* Past Events */}
-          {filteredAndSortedEvents.some(e => isPast(e.date)) && (
+          {filteredAndSortedEvents.some(e => isPast(getEventDateTime(e))) && (
             <div>
               <div className="flex items-center mb-6">
                 <History size={20} className="text-white/80 mr-2" />
@@ -345,7 +346,7 @@ export const DiscoverPage: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredAndSortedEvents.filter(e => isPast(e.date)).map((event) => {
+                {filteredAndSortedEvents.filter(e => isPast(getEventDateTime(e))).map((event) => {
                   return (
                     <div
                       key={event.id}

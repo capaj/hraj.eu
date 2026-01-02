@@ -10,6 +10,11 @@
 	"observability": {
 		"enabled": true
 	},
+	"vars": {
+		"APP_BASE_URL": "https://hraj.eu",
+		"SENDER_EMAIL": "noreply@hraj.eu",
+		"TURSO_DATABASE_URL": "libsql://hrajeu-capaj.aws-eu-west-1.turso.io"
+	},
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

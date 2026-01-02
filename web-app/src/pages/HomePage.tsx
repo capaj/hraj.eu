@@ -10,7 +10,7 @@ import { joinEvent } from '~/server-functions/joinEvent'
 import { authClient } from '../lib/auth-client'
 import { i18n } from '~/lib/i18n'
 
-export const HomePage: React.FC = () => {
+export const AboutPage: React.FC = () => {
   const { upcomingEvents: initialUpcomingEvents, stats } = useLoaderData({ from: '/about' })
   const navigate = useNavigate()
   const session = authClient.useSession()
@@ -97,82 +97,7 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-600 to-secondary-600">
-      {/* Popular Events in Your Area */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <h2 className="text-3xl font-bold text-white">
-                {userLocation ? (
-                  <Trans>Popular Events in {userLocation}</Trans>
-                ) : (
-                  <Trans>Popular Events</Trans>
-                )}
-              </h2>
-              {isLoadingLocation ? (
-                <div className="flex items-center mt-2 text-white/80">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  <span className="text-sm">
-                    <Trans>Finding events near you...</Trans>
-                  </span>
-                </div>
-              ) : (
-                <p className="text-white/80 mt-2 flex items-center">
-                  {upcomingEvents.length > 0 && (
-                    <span className="flex items-center">
-                      <MapPin size={16} className="mr-1" />
-                      <Trans>Showing events near your location</Trans>
-                    </span>
-                  )}
-                </p>
-              )}
-            </div>
-            <Link to="/">
-              <Button
-                variant="outline"
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-              >
-                <Trans>View All Events</Trans>
-              </Button>
-            </Link>
-          </div>
 
-          {upcomingEvents.length === 0 ? (
-            <div className="text-center py-16">
-              <div className="bg-white/10 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
-                <Plus size={32} className="text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-4">
-                <Trans>No Events Yet in Your Area</Trans>
-              </h3>
-              <p className="text-white/80 mb-8 max-w-md mx-auto">
-                <Trans>
-                  Be the first to bring your community together! Create an event
-                  and start building connections through sport.
-                </Trans>
-              </p>
-              <Link to="/create">
-                <Button size="lg" variant="secondary" className="text-lg">
-                  <Plus size={20} className="mr-2" />
-                  <Trans>Create new Event</Trans>
-                </Button>
-              </Link>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {upcomingEvents.map((event) => (
-                <EventCard
-                  key={event.id}
-                  event={event}
-                  onJoin={handleJoinEvent}
-                  isJoining={joiningEventId === event.id}
-                  currentUserId={session.data?.user?.id}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
 
       {/* Stats Section */}
       <section className="py-16 bg-black/20">
