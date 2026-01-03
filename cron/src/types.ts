@@ -23,6 +23,7 @@ export interface EventRow {
 	gameRules: string | null
 	venueName: string | null
 	venueAddress: string | null
+	confirmedCount: number
 }
 
 export interface ParticipantRow {

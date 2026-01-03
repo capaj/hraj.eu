@@ -25,7 +25,17 @@ export default {
 		const senderEmail = requireEnv(env, 'SENDER_EMAIL')
 		const today = new Date().toISOString().split('T')[0]
 		const baseUrl = (env.APP_BASE_URL || DEFAULT_BASE_URL).replace(/\/$/, '')
-		const confirmedCount = sql<number>`COUNT(${participantT.id})`
+		const confirmedCount = sql<number>`COUNT(${participantT.id})`.as('confirmed_count')
+		const confirmedCounts = db
+			.select({
+				eventId: participantT.eventId,
+				confirmedCount
+			})
+			.from(participantT)
+			.where(eq(participantT.status, 'confirmed'))
+			.groupBy(participantT.eventId)
+			.as('confirmed_counts')
+		const confirmedCountOrZero = sql<number>`COALESCE(${confirmedCounts.confirmedCount}, 0)`
 
 		const eventSelection = {
 			id: eventT.id,
@@ -43,48 +53,26 @@ export default {
 			paymentDetails: eventT.paymentDetails,
 			gameRules: eventT.gameRules,
 			venueName: venueT.name,
-			venueAddress: venueT.address
+			venueAddress: venueT.address,
+			confirmedCount: confirmedCountOrZero
 		}
-		const eventGroupBy = [
-			eventT.id,
-			eventT.title,
-			eventT.description,
-			eventT.sport,
-			eventT.date,
-			eventT.startTime,
-			eventT.duration,
-			eventT.minParticipants,
-			eventT.idealParticipants,
-			eventT.maxParticipants,
-			eventT.price,
-			eventT.currency,
-			eventT.paymentDetails,
-			eventT.gameRules,
-			venueT.name,
-			venueT.address
-		] as const
 
 		const eventsToConfirm = (await db
 			.select(eventSelection)
 			.from(eventT)
 			.leftJoin(venueT, eq(venueT.id, eventT.venueId))
-			.leftJoin(
-				participantT,
-				and(
-					eq(participantT.eventId, eventT.id),
-					eq(participantT.status, 'confirmed')
-				)
-			)
+			.leftJoin(confirmedCounts, eq(confirmedCounts.eventId, eventT.id))
 			.where(
 				and(
 					eq(eventT.status, 'open'),
 					isNull(eventT.confirmedAt),
-					gte(eventT.date, today)
+					gte(eventT.date, today),
+					sql`${confirmedCountOrZero} >= ${eventT.minParticipants}`
 				)
 			)
-			.groupBy(...eventGroupBy)
-			.having(sql`${confirmedCount} >= ${eventT.minParticipants}`)) as EventRow[]
+			) as EventRow[]
 
+		console.log(`found ${eventsToConfirm.length} events to confirm`)
 		if (!eventsToConfirm.length) {
 			console.log(`trigger fired at ${event.cron}: no events to confirm`)
 		}
@@ -152,24 +140,19 @@ export default {
 			.select(eventSelection)
 			.from(eventT)
 			.leftJoin(venueT, eq(venueT.id, eventT.venueId))
-			.leftJoin(
-				participantT,
-				and(
-					eq(participantT.eventId, eventT.id),
-					eq(participantT.status, 'confirmed')
-				)
-			)
+			.leftJoin(confirmedCounts, eq(confirmedCounts.eventId, eventT.id))
 			.where(
 				and(
 					eq(eventT.status, 'open'),
 					isNull(eventT.cancellationCheckRanAt),
 					gte(eventT.date, today),
-					cancellationDeadlineReached
+					cancellationDeadlineReached,
+					sql`${confirmedCountOrZero} < ${eventT.minParticipants}`
 				)
 			)
-			.groupBy(...eventGroupBy)
-			.having(sql`${confirmedCount} < ${eventT.minParticipants}`)) as EventRow[]
+			) as EventRow[]
 
+		console.log(`found ${eventsToCancel.length} events to cancel`)
 		for (const eventRow of eventsToCancel) {
 			const updated = await db
 				.update(eventT)

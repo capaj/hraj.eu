@@ -1,0 +1,1 @@
+ALTER TABLE `event` ADD `confirmed_at` integer;
