@@ -542,7 +542,7 @@ msgstr "Přetáhněte špendlík pro označení přesného vchodu na hřiště."
 
 #: src/pages/EventDetailsPage.tsx:465
 msgid "Duplicate Event"
-msgstr ""
+msgstr "Duplikovat událost"
 
 #: src/components/events/CreateEventForm.tsx:550
 msgid "Duration (minutes)"
@@ -966,7 +966,7 @@ msgstr "Pojďme si zahrát společně"
 
 #: src/pages/CreateEventPage.tsx:118
 msgid "Loading event details..."
-msgstr ""
+msgstr "Načítání detailů události..."
 
 #: src/components/events/CreateEventForm.tsx:469
 #: src/pages/ManageVenuesPage.tsx:251
@@ -1079,7 +1079,7 @@ msgstr "Začátečníci nebo rekreační hráči"
 
 #: src/pages/PublicProfilePage.tsx:197
 msgid "Newest First"
-msgstr ""
+msgstr "Nejnovější nejdříve"
 
 #: src/pages/UserProfilePage.tsx:660
 msgid "No bio provided"
@@ -1176,7 +1176,7 @@ msgstr "Oznámení"
 
 #: src/pages/PublicProfilePage.tsx:202
 msgid "Oldest First"
-msgstr ""
+msgstr "Nejstarší nejdříve"
 
 #: src/pages/EventDetailsPage.tsx:1012
 msgid "Open spot"
