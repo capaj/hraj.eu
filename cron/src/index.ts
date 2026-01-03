@@ -45,6 +45,24 @@ export default {
 			venueName: venueT.name,
 			venueAddress: venueT.address
 		}
+		const eventGroupBy = [
+			eventT.id,
+			eventT.title,
+			eventT.description,
+			eventT.sport,
+			eventT.date,
+			eventT.startTime,
+			eventT.duration,
+			eventT.minParticipants,
+			eventT.idealParticipants,
+			eventT.maxParticipants,
+			eventT.price,
+			eventT.currency,
+			eventT.paymentDetails,
+			eventT.gameRules,
+			venueT.name,
+			venueT.address
+		] as const
 
 		const eventsToConfirm = (await db
 			.select(eventSelection)
@@ -64,7 +82,7 @@ export default {
 					gte(eventT.date, today)
 				)
 			)
-			.groupBy(eventT.id)
+			.groupBy(...eventGroupBy)
 			.having(sql`${confirmedCount} >= ${eventT.minParticipants}`)) as EventRow[]
 
 		if (!eventsToConfirm.length) {
@@ -149,7 +167,7 @@ export default {
 					cancellationDeadlineReached
 				)
 			)
-			.groupBy(eventT.id)
+			.groupBy(...eventGroupBy)
 			.having(sql`${confirmedCount} < ${eventT.minParticipants}`)) as EventRow[]
 
 		for (const eventRow of eventsToCancel) {
