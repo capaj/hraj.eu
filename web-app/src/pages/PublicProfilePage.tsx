@@ -14,8 +14,10 @@ import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { i18n } from '~/lib/i18n'
 import { getEventDateTime } from '../utils/eventDateTime'
+import { ArrowDownWideNarrow, ArrowUpNarrowWide } from 'lucide-react'
 
 export const PublicProfilePage: React.FC = () => {
+  const [pastEventsSort, setPastEventsSort] = React.useState<'newest' | 'oldest'>('newest')
 
   const { notifications, events, venues, users } = useLoaderData({
     from: '/profile'
@@ -181,7 +183,29 @@ export const PublicProfilePage: React.FC = () => {
                       {pastEvents.length}
                     </Badge>
                   </div>
+
+                  {pastEvents.length > 0 && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setPastEventsSort(prev => prev === 'newest' ? 'oldest' : 'newest')}
+                      className="text-gray-500 hover:text-gray-900"
+                    >
+                      {pastEventsSort === 'newest' ? (
+                        <>
+                          <ArrowDownWideNarrow size={16} className="mr-2" />
+                          <Trans>Newest First</Trans>
+                        </>
+                      ) : (
+                        <>
+                          <ArrowUpNarrowWide size={16} className="mr-2" />
+                          <Trans>Oldest First</Trans>
+                        </>
+                      )}
+                    </Button>
+                  )}
                 </div>
+
                 <p className="text-gray-600 text-sm mt-1">
                   <Trans>Your sports history and achievements</Trans>
                 </p>
@@ -189,21 +213,27 @@ export const PublicProfilePage: React.FC = () => {
               <CardContent>
                 <div className="space-y-4">
                   {pastEvents.length > 0
-                    ? pastEvents.map((event) => (
-                      <EditableEventCard
-                        key={event.id}
-                        event={
-                          isPast(getEventDateTime(event)) &&
-                          event.status !== 'cancelled' &&
-                          event.status !== 'completed'
-                            ? { ...event, status: 'completed' }
-                            : event
-                        }
-                        venues={venues}
-                        users={users}
-                        currentUserId={user?.id}
-                      />
-                    ))
+                    ? pastEvents
+                      .sort((a, b) => {
+                        const dateA = getEventDateTime(a).getTime()
+                        const dateB = getEventDateTime(b).getTime()
+                        return pastEventsSort === 'newest' ? dateB - dateA : dateA - dateB
+                      })
+                      .map((event) => (
+                        <EditableEventCard
+                          key={event.id}
+                          event={
+                            isPast(getEventDateTime(event)) &&
+                              event.status !== 'cancelled' &&
+                              event.status !== 'completed'
+                              ? { ...event, status: 'completed' }
+                              : event
+                          }
+                          venues={venues}
+                          users={users}
+                          currentUserId={user?.id}
+                        />
+                      ))
                     : renderEmptyState(
                       <Trophy size={48} className="mx-auto" />,
                       i18n._(msg`No past events`),
@@ -218,6 +248,6 @@ export const PublicProfilePage: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   )
 }

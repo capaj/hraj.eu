@@ -57,13 +57,15 @@ interface CreateEventFormProps {
   onCancel: () => void
   initialData?: Partial<CreateEventFormData>
   onCancelEvent?: (reason?: string) => Promise<void> | void
+  isEdit?: boolean
 }
 
 export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   onSubmit,
   onCancel,
   initialData,
-  onCancelEvent
+  onCancelEvent,
+  isEdit = !!initialData
 }) => {
   // Calculate default date (one week from now) and format it for input
   const getDefaultDate = () => {
@@ -100,6 +102,33 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const [isLoadingVenues, setIsLoadingVenues] = useState(true)
 
   // Fetch venues from database
+  useEffect(() => {
+    if (initialData) {
+      setFormData((prev) => ({
+        ...prev,
+        title: initialData.title || prev.title,
+        sport: initialData.sport || prev.sport,
+        venueId: initialData.venueId || prev.venueId,
+        date: initialData.date || prev.date,
+        startTime: initialData.startTime || prev.startTime,
+        duration: initialData.duration || prev.duration,
+        minParticipants: initialData.minParticipants || prev.minParticipants,
+        idealParticipants: initialData.idealParticipants || prev.idealParticipants,
+        maxParticipants: initialData.maxParticipants || prev.maxParticipants,
+        cancellationHours: initialData.cancellationHours ?? prev.cancellationHours,
+        cancellationMinutes: initialData.cancellationMinutes ?? prev.cancellationMinutes,
+        price: initialData.price ?? prev.price,
+        currency: initialData.currency || prev.currency,
+        paymentDetails: initialData.paymentDetails || prev.paymentDetails,
+        gameRules: initialData.gameRules || prev.gameRules,
+        isPublic: initialData.isPublic ?? prev.isPublic,
+        allowedSkillLevels: initialData.allowedSkillLevels || prev.allowedSkillLevels,
+        requireSkillLevel: initialData.requireSkillLevel ?? prev.requireSkillLevel
+      }))
+    }
+  }, [initialData])
+
+
   useEffect(() => {
     const fetchVenues = async () => {
       try {
@@ -366,10 +395,10 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
       <Card className="max-w-4xl mx-auto animate-slide-up">
         <CardHeader>
           <h2 className="text-2xl font-bold text-gray-900">
-            {initialData ? <Trans>Edit Event</Trans> : <Trans>Create New Event</Trans>}
+            {isEdit ? <Trans>Edit Event</Trans> : <Trans>Create New Event</Trans>}
           </h2>
           <p className="text-gray-600">
-            {initialData
+            {isEdit
               ? <Trans>Update the details of your event</Trans>
               : <Trans>Fill in the details to organize your next game</Trans>}
           </p>
@@ -982,7 +1011,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                   <Trans>Close</Trans>
                 </Button>
                 <Button type="submit" variant="primary">
-                  {initialData ? <Trans>Update Event</Trans> : <Trans>Create Event</Trans>}
+                  {isEdit ? <Trans>Update Event</Trans> : <Trans>Create Event</Trans>}
                 </Button>
               </div>
             </div>

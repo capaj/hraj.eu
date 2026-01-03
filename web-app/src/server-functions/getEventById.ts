@@ -51,6 +51,7 @@ export const getEventById = createServerFn({ method: 'GET' })
         ? Math.floor(event.cancellationDeadlineMinutes / 60)
         : undefined,
       price: event.price || undefined,
+      currency: event.currency || 'CZK',
       paymentDetails: event.paymentDetails || undefined,
       gameRules: event.gameRules || undefined,
       cutoffTime: new Date(
