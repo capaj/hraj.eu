@@ -10,7 +10,7 @@
     "postinstall": "turbo postinstall"
   },
   "devDependencies": {
-    "oxlint": "^1.28.0",
-    "turbo": "^2.6.1"
+    "oxlint": "^1.36.0",
+    "turbo": "^2.7.2"
   }
 }

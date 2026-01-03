@@ -22,7 +22,7 @@
   "packageManager": "pnpm@10.27.0",
   "dependencies": {
     "@daveyplate/better-auth-tanstack": "^1.3.6",
-    "@daveyplate/better-auth-ui": "^3.3.10",
+    "@daveyplate/better-auth-ui": "^3.3.12",
     "@googlemaps/js-api-loader": "^2.0.2",
     "@hookform/resolvers": "^5.2.2",
     "@libsql/client": "^0.15.15",
@@ -54,7 +54,7 @@
     "offline-geocode-city": "^1.0.2",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-grab": "^0.0.97",
+    "react-grab": "^0.0.98",
     "react-hook-form": "^7.69.0",
     "react-share-kit": "^1.1.0",
     "resend": "^6.6.0",
