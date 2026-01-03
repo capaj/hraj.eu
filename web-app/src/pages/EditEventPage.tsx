@@ -6,6 +6,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { i18n } from '~/lib/i18n'
 import { msg } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 import { Event, SkillLevel } from '../types'
 
 interface EditEventPageProps {
@@ -81,16 +82,16 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
   }
 
   const handleCancelEvent = async () => {
-    if (!confirm('Are you sure you want to cancel this event? This action cannot be undone.')) {
+    if (!confirm(i18n._(msg`Are you sure you want to cancel this event? This action cannot be undone.`))) {
       return
     }
 
     try {
       await cancelEvent({ data: { eventId: event.id, reason: 'Cancelled by organizer' } })
-      toast.success('Event cancelled')
+      toast.success(i18n._(msg`Event cancelled`))
       navigate({ to: '/events/$eventId', params: { eventId: event.id } })
     } catch (error) {
-      toast.error('Failed to cancel event')
+      toast.error(i18n._(msg`Failed to cancel event`))
     }
   }
 
@@ -110,7 +111,7 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
           <div className="bg-white rounded-lg p-6 flex items-center space-x-4">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
             <span className="text-gray-900">
-              Updating event...
+              <Trans>Updating event...</Trans>
             </span>
           </div>
         </div>

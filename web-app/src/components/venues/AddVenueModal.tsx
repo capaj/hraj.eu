@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { Trans } from '@lingui/react/macro'
+import { msg } from '@lingui/core/macro'
+import { i18n } from '~/lib/i18n'
 import { Card, CardHeader, CardContent } from '../ui/Card'
 import { Button } from '../ui/Button'
 import { SPORTS, FACILITIES } from '../../lib/constants'
@@ -155,7 +158,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
     if (hasUnsavedChanges()) {
       if (
         window.confirm(
-          'You have unsaved changes. Are you sure you want to discard them?'
+          i18n._(msg`You have unsaved changes. Are you sure you want to discard them?`)
         )
       ) {
         onClose()
@@ -180,6 +183,25 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
       document.removeEventListener('keydown', handleEscapeKey)
     }
   }, [isOpen, isSubmitting, onClose, formData, images, orientationPlan, location])
+
+  const getFacilityName = (facility: string) => {
+    switch (facility) {
+      case 'parking':
+        return i18n._(msg`Parking`)
+      case 'wifi':
+        return i18n._(msg`WiFi`)
+      case 'cafe':
+        return i18n._(msg`Café`)
+      case 'showers':
+        return i18n._(msg`Showers`)
+      case 'equipment_rental':
+        return i18n._(msg`Equipment`)
+      case 'changing_rooms':
+        return i18n._(msg`Changing Rooms`)
+      default:
+        return facility
+    }
+  }
 
 
 
@@ -217,7 +239,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
       const errorMessage =
         error instanceof Error
           ? error.message
-          : 'Failed to upload images. Please try again.'
+          : i18n._(msg`Failed to upload images. Please try again.`)
       alert(errorMessage)
     } finally {
       setUploadingImage(false)
@@ -243,7 +265,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
       const errorMessage =
         error instanceof Error
           ? error.message
-          : 'Failed to upload orientation plan. Please try again.'
+          : i18n._(msg`Failed to upload orientation plan. Please try again.`)
       alert(errorMessage)
     } finally {
       setUploadingPlan(false)
@@ -279,7 +301,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
       !formData.address.trim() ||
       formData.sports.length === 0
     ) {
-      alert('Please fill in all required fields and select at least one sport.')
+      alert(i18n._(msg`Please fill in all required fields and select at least one sport.`))
       return
     }
 
@@ -375,8 +397,8 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
       )
       alert(
         initialData
-          ? 'Failed to update venue. Please try again.'
-          : 'Failed to create venue. Please try again.'
+          ? i18n._(msg`Failed to update venue. Please try again.`)
+          : i18n._(msg`Failed to create venue. Please try again.`)
       )
     } finally {
       setIsSubmitting(false)
@@ -400,10 +422,10 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">
-                  {initialData ? 'Edit Venue' : 'Add New Venue'}
+                  {initialData ? <Trans>Edit Venue</Trans> : <Trans>Add New Venue</Trans>}
                 </h2>
                 <p className="text-gray-600 mt-1">
-                  Help grow our community by adding a new sports venue
+                  <Trans>Help grow our community by adding a new sports venue</Trans>
                 </p>
               </div>
               <button
@@ -421,13 +443,13 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
               <div className="space-y-6">
                 <h3 className="text-lg font-semibold text-gray-900 flex items-center">
                   <MapPin size={20} className="mr-2 text-primary-600" />
-                  Basic Information
+                  <Trans>Basic Information</Trans>
                 </h3>
 
                 <div className="grid grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Venue Name *
+                      <Trans>Venue Name *</Trans>
                     </label>
                     <input
                       type="text"
@@ -435,13 +457,13 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                       value={formData.name}
                       onChange={(e) => handleChange('name', e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                      placeholder="e.g., Central Park Football Field"
+                      placeholder={i18n._(msg`e.g., Central Park Football Field`)}
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Venue Type *
+                      <Trans>Venue Type *</Trans>
                     </label>
                     <select
                       required
@@ -449,21 +471,21 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                       onChange={(e) => handleChange('type', e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     >
-                      <option value="outdoor">Outdoor</option>
-                      <option value="indoor">Indoor</option>
-                      <option value="mixed">Mixed (Indoor & Outdoor)</option>
+                      <option value="outdoor"><Trans>Outdoor</Trans></option>
+                      <option value="indoor"><Trans>Indoor</Trans></option>
+                      <option value="mixed"><Trans>Mixed (Indoor & Outdoor)</Trans></option>
                     </select>
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Address *
+                      <Trans>Address *</Trans>
                     </label>
                     <AddressAutocomplete
                       value={formData.address}
                       onChange={(value) => handleChange('address', value)}
                       onPlaceSelected={handlePlaceSelected}
-                      placeholder="Start typing to search for an address..."
+                      placeholder={i18n._(msg`Start typing to search for an address...`)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       required
                       apiKey={googleMapsApiKey}
@@ -472,7 +494,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      City *
+                      <Trans>City *</Trans>
                     </label>
                     <input
                       type="text"
@@ -480,13 +502,13 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                       value={formData.city}
                       onChange={(e) => handleChange('city', e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                      placeholder="Prague"
+                      placeholder={i18n._(msg`Prague`)}
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Country *
+                      <Trans>Country *</Trans>
                     </label>
                     <input
                       type="text"
@@ -502,10 +524,10 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                 {location && (
                   <div className="mt-6">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Location Preview
+                      <Trans>Location Preview</Trans>
                     </label>
                     <p className="text-sm text-gray-500 mb-3">
-                      Drag the pin to mark the exact entrance to the pitch.
+                      <Trans>Drag the pin to mark the exact entrance to the pitch.</Trans>
                     </p>
                     <VenueMapPreview
                       lat={location.lat}
@@ -524,26 +546,26 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
               {/* Sports */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Supported Sports *
+                  <Trans>Supported Sports *</Trans>
                 </label>
                 <TagInput
                   options={SPORTS}
                   selected={formData.sports}
                   onChange={(selected) => handleChange('sports', selected)}
-                  placeholder="Add sports..."
+                  placeholder={i18n._(msg`Add sports...`)}
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  Select at least one sport. You can add more later.
+                  <Trans>Select at least one sport. You can add more later.</Trans>
                 </p>
               </div>
 
               {/* Facilities */}
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Available Facilities
+                  <Trans>Available Facilities</Trans>
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Select all facilities available at this venue
+                  <Trans>Select all facilities available at this venue</Trans>
                 </p>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -563,7 +585,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                       />
                       <span className="ml-2 text-lg">{facility.icon}</span>
                       <span className="ml-2 text-sm font-medium text-gray-900">
-                        {facility.name}
+                        {getFacilityName(facility.id)}
                       </span>
                     </label>
                   ))}
@@ -574,10 +596,10 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-900 flex items-center">
                   <ImageIcon size={20} className="mr-2 text-primary-600" />
-                  Venue Images
+                  <Trans>Venue Images</Trans>
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Add photos to help players find and recognize the venue
+                  <Trans>Add photos to help players find and recognize the venue</Trans>
                 </p>
 
                 {/* Image Upload */}
@@ -585,8 +607,8 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                   <div className="text-center">
                     <Upload className="mx-auto mb-4 text-gray-400" size={48} />
                     <div className="text-sm text-gray-600 mb-4">
-                      <p className="font-medium">Upload venue photos</p>
-                      <p>JPG, PNG up to 10MB each</p>
+                      <p className="font-medium"><Trans>Upload venue photos</Trans></p>
+                      <p><Trans>JPG, PNG up to 10MB each</Trans></p>
                     </div>
 
                     <input
@@ -606,12 +628,12 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                       {uploadingImage ? (
                         <>
                           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                          Uploading...
+                          <Trans>Uploading...</Trans>
                         </>
                       ) : (
                         <>
                           <Upload size={16} className="mr-2" />
-                          Select Images
+                          <Trans>Select Images</Trans>
                         </>
                       )}
                     </label>
@@ -644,10 +666,10 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
               {/* Orientation Plan */}
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Orientation Plan (Optional)
+                  <Trans>Orientation Plan (Optional)</Trans>
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Upload a map or diagram showing how to access the playing area
+                  <Trans>Upload a map or diagram showing how to access the playing area</Trans>
                 </p>
 
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
@@ -668,12 +690,12 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                       {uploadingPlan ? (
                         <>
                           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600 mr-2"></div>
-                          Uploading...
+                          <Trans>Uploading...</Trans>
                         </>
                       ) : (
                         <>
                           <Upload size={16} className="mr-2" />
-                          Upload Orientation Plan
+                          <Trans>Upload Orientation Plan</Trans>
                         </>
                       )}
                     </label>
@@ -690,7 +712,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                           onClick={() => setOrientationPlan('')}
                           className="mt-2 text-red-600 hover:text-red-700 text-sm"
                         >
-                          Remove
+                          <Trans>Remove</Trans>
                         </button>
                       </div>
                     )}
@@ -702,7 +724,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
               <div className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Description
+                    <Trans>Description</Trans>
                   </label>
                   <textarea
                     value={formData.description}
@@ -711,13 +733,13 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                     }
                     rows={3}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    placeholder="Brief description of the venue..."
+                    placeholder={i18n._(msg`Brief description of the venue...`)}
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Access Instructions
+                    <Trans>Access Instructions</Trans>
                   </label>
                   <textarea
                     value={formData.accessInstructions}
@@ -726,7 +748,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                     }
                     rows={3}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    placeholder="How to find and access the playing area..."
+                    placeholder={i18n._(msg`How to find and access the playing area...`)}
                   />
                 </div>
               </div>
@@ -734,13 +756,13 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
               {/* Contact Information */}
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Contact Information (Optional)
+                  <Trans>Contact Information (Optional)</Trans>
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Phone
+                      <Trans>Phone</Trans>
                     </label>
                     <input
                       type="tel"
@@ -753,7 +775,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email
+                      <Trans>Email</Trans>
                     </label>
                     <input
                       type="email"
@@ -766,7 +788,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Website
+                      <Trans>Website</Trans>
                     </label>
                     <input
                       type="url"
@@ -783,16 +805,16 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-900 flex items-center">
                   <Euro size={20} className="mr-2 text-primary-600" />
-                  Pricing (Optional)
+                  <Trans>Pricing (Optional)</Trans>
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Typical hourly rates for this venue
+                  <Trans>Typical hourly rates for this venue</Trans>
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Price per Hour
+                      <Trans>Price per Hour</Trans>
                     </label>
                     <input
                       type="number"
@@ -807,7 +829,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Currency
+                      <Trans>Currency</Trans>
                     </label>
                     <select
                       value={formData.currency}
@@ -830,7 +852,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                   onClick={onClose}
                   disabled={isSubmitting}
                 >
-                  Cancel
+                  <Trans>Cancel</Trans>
                 </Button>
                 <Button
                   type="submit"
@@ -840,19 +862,19 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                   {isSubmitting ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      {initialData ? 'Updating Venue...' : 'Creating Venue...'}
+                      {initialData ? <Trans>Updating Venue...</Trans> : <Trans>Creating Venue...</Trans>}
                     </>
                   ) : (
                     <>
                       {initialData ? (
                         <>
                           <Edit size={16} className="mr-2" />
-                          Update Venue
+                          <Trans>Update Venue</Trans>
                         </>
                       ) : (
                         <>
                           <Plus size={16} className="mr-2" />
-                          Create Venue
+                          <Trans>Create Venue</Trans>
                         </>
                       )}
                     </>

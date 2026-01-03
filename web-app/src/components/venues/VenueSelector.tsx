@@ -4,6 +4,9 @@ import { Button } from '../ui/Button'
 import { Badge } from '../ui/Badge'
 import { Venue } from '../../types'
 import { SPORTS } from '../../lib/constants'
+import { Trans } from '@lingui/react/macro'
+import { msg } from '@lingui/core/macro'
+import { i18n } from '~/lib/i18n'
 import {
   MapPin,
   Plus,
@@ -84,17 +87,17 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
   const getFacilityLabel = (facility: string) => {
     switch (facility) {
       case 'parking':
-        return 'Parking'
+        return i18n._(msg`Parking`)
       case 'wifi':
-        return 'WiFi'
+        return i18n._(msg`WiFi`)
       case 'cafe':
-        return 'Café'
+        return i18n._(msg`Café`)
       case 'showers':
-        return 'Showers'
+        return i18n._(msg`Showers`)
       case 'equipment_rental':
-        return 'Equipment'
+        return i18n._(msg`Equipment`)
       case 'changing_rooms':
-        return 'Changing Rooms'
+        return i18n._(msg`Changing Rooms`)
       default:
         return facility
     }
@@ -125,7 +128,7 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
             />
             <input
               type="text"
-              placeholder="Search venues by name or location..."
+              placeholder={i18n._(msg`Search venues by name or location...`)}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -137,7 +140,7 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
             className="flex-shrink-0"
           >
             <Plus size={16} className="mr-2" />
-            Add New Venue
+            <Trans>Add New Venue</Trans>
           </Button>
         </div>
       )}
@@ -153,7 +156,7 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
                     {selectedVenue.name}
                   </h4>
                   <Badge variant="info" size="sm">
-                    Selected
+                    <Trans>Selected</Trans>
                   </Badge>
                   <Badge
                     variant="default"
@@ -227,7 +230,7 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
                           {venue.isVerified && (
                             <Badge variant="success" size="sm">
                               <Check size={12} className="mr-1" />
-                              Verified
+                              <Trans>Verified</Trans>
                             </Badge>
                           )}
                         </div>
@@ -285,7 +288,7 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
                         </div>
                       ))}
                       {venue.facilities.length > 4 && (
-                        <span>+{venue.facilities.length - 4} more</span>
+                        <span><Trans>+{venue.facilities.length - 4} more</Trans></span>
                       )}
                     </div>
 
@@ -295,7 +298,7 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
                         €{venue.priceRange.min}
                         {venue.priceRange.min !== venue.priceRange.max &&
                           `-€${venue.priceRange.max}`}
-                        <span className="text-gray-500"> per hour</span>
+                        <span className="text-gray-500"> <Trans>per hour</Trans></span>
                       </div>
                     )}
                   </div>
@@ -313,9 +316,9 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
                 className="w-full sm:w-auto"
               >
                 {showAllVenues ? (
-                  <>Show Less</>
+                  <Trans>Show Less</Trans>
                 ) : (
-                  <>Show All {venuesWithoutSelected.length} Venues</>
+                  <Trans>Show All {venuesWithoutSelected.length} Venues</Trans>
                 )}
               </Button>
             </div>
@@ -326,22 +329,30 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
             <div className="text-center py-8 text-gray-500">
               <MapPin size={48} className="mx-auto mb-4 text-gray-400" />
               <h3 className="text-lg font-medium text-gray-700 mb-2">
-                No venues found
+                <Trans>No venues found</Trans>
               </h3>
               <p className="text-sm text-gray-600 mb-4">
-                {searchTerm
-                  ? `No venues match "${searchTerm}"${sportFilter
-                    ? ` for ${SPORTS.find((s) => s.id === sportFilter)?.name}`
-                    : ''
-                  }`
-                  : `No venues available${sportFilter
-                    ? ` for ${SPORTS.find((s) => s.id === sportFilter)?.name}`
-                    : ''
-                  }`}
+                {(() => {
+                  const sportName = sportFilter ? SPORTS.find((s) => s.id === sportFilter)?.name : undefined;
+
+                  if (searchTerm) {
+                    if (sportName) {
+                      return i18n._(msg`No venues match "{searchTerm}" for {sportName}`, { searchTerm, sportName })
+                    } else {
+                      return i18n._(msg`No venues match "{searchTerm}"`, { searchTerm })
+                    }
+                  } else {
+                    if (sportName) {
+                      return i18n._(msg`No venues available for {sportName}`, { sportName })
+                    } else {
+                      return i18n._(msg`No venues available`)
+                    }
+                  }
+                })()}
               </p>
               <Button variant="primary" onClick={onAddVenue}>
                 <Plus size={16} className="mr-2" />
-                Add the First Venue
+                <Trans>Add the First Venue</Trans>
               </Button>
             </div>
           )}

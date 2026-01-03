@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { Trans } from '@lingui/react/macro'
+import { msg } from '@lingui/core/macro'
+import { i18n } from '~/lib/i18n'
 import { Card, CardHeader, CardContent } from '../ui/Card'
 import { Button } from '../ui/Button'
 import { Badge } from '../ui/Badge'
@@ -118,7 +121,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
 
     // Validate venue selection
     if (!formData.venueId) {
-      alert('Please select a venue for your event.')
+      alert(i18n._(msg`Please select a venue for your event.`))
       return
     }
 
@@ -218,7 +221,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
 
     console.log('New venue created:', newVenue)
     alert(
-      'Venue created successfully! It will be reviewed by our team before being made available to all users.'
+      i18n._(msg`Venue created successfully! It will be reviewed by our team before being made available to all users.`)
     )
   }
 
@@ -226,20 +229,21 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     const totalMinutes =
       formData.cancellationHours * 60 + formData.cancellationMinutes
     if (totalMinutes < 60) {
-      return { primary: `${totalMinutes} minutes`, secondary: '' }
+      return { primary: i18n._(msg`{totalMinutes} minutes`, { totalMinutes }), secondary: '' }
     } else if (totalMinutes === 60) {
-      return { primary: '1 hour', secondary: '' }
+      return { primary: i18n._(msg`1 hour`), secondary: '' }
     } else if (totalMinutes % 60 === 0) {
+      const hours = Math.floor(totalMinutes / 60)
       return {
-        primary: `${Math.floor(totalMinutes / 60)} hours`,
+        primary: i18n._(msg`{hours} hours`, { hours }),
         secondary: ''
       }
     } else {
       const hours = Math.floor(totalMinutes / 60)
       const minutes = totalMinutes % 60
       return {
-        primary: `${hours} hour${hours > 1 ? 's' : ''}`,
-        secondary: `${minutes} minutes`
+        primary: i18n._(msg`{hours} hour(s)`, { hours }),
+        secondary: i18n._(msg`{minutes} minutes`, { minutes })
       }
     }
   }
@@ -261,7 +265,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     const minutes = deadlineTime.getMinutes().toString().padStart(2, '0')
     const timeLabel = `${hours}:${minutes}`
     if (deadlineTime.toDateString() !== startDateTime.toDateString()) {
-      return `${timeLabel} (day before)`
+      return i18n._(msg`{timeLabel} (day before)`, { timeLabel })
     }
     return timeLabel
   }
@@ -288,7 +292,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
       .toString()
       .padStart(2, '0')}`
     if (dayOffset > 0) {
-      return `${timeLabel} (+${dayOffset} day${dayOffset > 1 ? 's' : ''})`
+      return i18n._(msg`{timeLabel} (+{dayOffset} day(s))`, { timeLabel, dayOffset })
     }
     return timeLabel
   }
@@ -327,15 +331,15 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
 
   const getSkillLevelDescription = (levels: SkillLevel[]) => {
     if (levels.length === 3) {
-      return 'All skill levels welcome'
+      return i18n._(msg`All skill levels welcome`)
     } else if (levels.length === 2) {
       const levelNames = levels
         .map((level) => SKILL_LEVELS.find((l) => l.id === level)?.name)
         .join(' and ')
-      return `${levelNames} players only`
+      return i18n._(msg`{levelNames} players only`, { levelNames })
     } else {
       const levelName = SKILL_LEVELS.find((l) => l.id === levels[0])?.name
-      return `${levelName} players only`
+      return i18n._(msg`{levelName} players only`, { levelName })
     }
   }
 
@@ -363,12 +367,12 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
       <Card className="max-w-4xl mx-auto animate-slide-up">
         <CardHeader>
           <h2 className="text-2xl font-bold text-gray-900">
-            {initialData ? 'Edit Event' : 'Create New Event'}
+            {initialData ? <Trans>Edit Event</Trans> : <Trans>Create New Event</Trans>}
           </h2>
           <p className="text-gray-600">
             {initialData
-              ? 'Update the details of your event'
-              : 'Fill in the details to organize your next game'}
+              ? <Trans>Update the details of your event</Trans>
+              : <Trans>Fill in the details to organize your next game</Trans>}
           </p>
         </CardHeader>
         <CardContent>
@@ -376,7 +380,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
             {/* Sport Selection */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Sport *
+                <Trans>Sport *</Trans>
               </label>
               <select
                 required
@@ -384,7 +388,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                 onChange={(e) => handleChange('sport', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               >
-                <option value="">Select a sport</option>
+                <option value=""><Trans>Select a sport</Trans></option>
                 {SPORTS.map((sport) => (
                   <option key={sport.id} value={sport.id}>
                     {sport.icon} {sport.name}
@@ -398,12 +402,12 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
               <div className="flex items-center justify-between flex-wrap gap-2">
                 <h3 className="text-lg font-semibold text-gray-900 flex items-center">
                   <MapPin size={20} className="mr-2" />
-                  Venue Selection
+                  <Trans>Venue Selection</Trans>
                 </h3>
                 {formData.sport && (
                   <div className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-1.5">
                     <span className="text-sm text-blue-800">
-                      Showing venues that support{' '}
+                      <Trans>Showing venues that support</Trans>{' '}
                       <strong>
                         {SPORTS.find((s) => s.id === formData.sport)?.name}
                       </strong>
@@ -422,20 +426,19 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                         className="text-amber-600 mr-2 mt-0.5 flex-shrink-0"
                       />
                       <div className="text-sm text-amber-800">
-                        <strong>Warning:</strong> The selected venue{' '}
-                        <strong>{_selectedVenue.name}</strong> does not support{' '}
+                        <strong><Trans>Warning:</Trans></strong> <Trans>The selected venue</Trans>{' '}
+                        <strong>{_selectedVenue.name}</strong> <Trans>does not support</Trans>{' '}
                         <strong>
                           {SPORTS.find((s) => s.id === formData.sport)?.name}
                         </strong>
-                        . Please select a different sport or choose a different
-                        venue.
+                        . <Trans>Please select a different sport or choose a different venue.</Trans>
                       </div>
                     </div>
                   </div>
                 )}
 
               {isLoadingVenues ? (
-                <div className="text-gray-500">Loading venues...</div>
+                <div className="text-gray-500"><Trans>Loading venues...</Trans></div>
               ) : (
                 <VenueSelector
                   venues={venues}
@@ -450,7 +453,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
             {/* Basic Info */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Event Title *
+                <Trans>Event Title *</Trans>
               </label>
               <input
                 type="text"
@@ -458,7 +461,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                 value={formData.title}
                 onChange={(e) => handleChange('title', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                placeholder="Sunday Football at the Park"
+                placeholder={i18n._(msg`Sunday Football at the Park`)}
               />
             </div>
 
@@ -466,14 +469,14 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-900 flex items-center">
                 <FileText size={20} className="mr-2" />
-                Game Rules (Optional)
+                <Trans>Game Rules (Optional)</Trans>
               </h3>
               <textarea
                 value={formData.gameRules}
                 onChange={(e) => handleChange('gameRules', e.target.value)}
                 rows={3}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                placeholder="No slide tackles, bring light/dark shirt, call your own fouls..."
+                placeholder={i18n._(msg`No slide tackles, bring light/dark shirt, call your own fouls...`)}
               />
             </div>
 
@@ -481,13 +484,13 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-900 flex items-center">
                 <Calendar size={20} className="mr-2" />
-                Date & Time
+                <Trans>Date & Time</Trans>
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Date *
+                    <Trans>Date *</Trans>
                   </label>
                   <input
                     type="date"
@@ -500,7 +503,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Start Time *
+                    <Trans>Start Time *</Trans>
                   </label>
                   <input
                     type="time"
@@ -516,10 +519,10 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                       htmlFor="durationRange"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Duration (minutes)
+                      <Trans>Duration (minutes)</Trans>
                     </label>
                     <span className="text-sm font-semibold text-gray-900">
-                      {formData.duration} min
+                      <Trans>{formData.duration} min</Trans>
                     </span>
                   </div>
                   <input
@@ -535,14 +538,14 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                     className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-600 mt-3"
                   />
                   <div className="flex justify-between text-xs text-gray-500 mt-1">
-                    <span>30m</span>
-                    <span>60m</span>
-                    <span>120m</span>
-                    <span>180m</span>
+                    <span><Trans>30m</Trans></span>
+                    <span><Trans>60m</Trans></span>
+                    <span><Trans>120m</Trans></span>
+                    <span><Trans>180m</Trans></span>
                   </div>
                   {endTimeLabel && (
                     <p className="text-xs text-gray-500 mt-1">
-                      Ends at {endTimeLabel}
+                      <Trans>Ends at {endTimeLabel}</Trans>
                     </p>
                   )}
 
@@ -554,7 +557,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-900 flex items-center">
                 <Users size={20} className="mr-2" />
-                Participants
+                <Trans>Participants</Trans>
               </h3>
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -565,7 +568,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                         htmlFor="minParticipants"
                         className="text-sm font-medium text-gray-700"
                       >
-                        Minimum Players *
+                        <Trans>Minimum Players *</Trans>
                       </label>
                       <span className="text-lg font-semibold text-gray-900">
                         {formData.minParticipants}
@@ -591,12 +594,12 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                       <span>{participantsRangeMax}</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-2">
-                      Required to confirm event
+                      <Trans>Required to confirm event</Trans>
                     </p>
                     <p className="text-xs text-amber-700 mt-1">
-                      If fewer than the minimum number of players join by the
-                      cancellation deadline, the event will be automatically
-                      cancelled and all participants will be notified.
+                      <Trans>If fewer than the minimum number of players join by the
+                        cancellation deadline, the event will be automatically
+                        cancelled and all participants will be notified.</Trans>
                     </p>
                   </div>
 
@@ -606,7 +609,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                         htmlFor="idealParticipants"
                         className="text-sm font-medium text-gray-700"
                       >
-                        Ideal Players *
+                        <Trans>Ideal Players *</Trans>
                       </label>
                       <span className="text-lg font-semibold text-gray-900">
                         {formData.idealParticipants}
@@ -632,7 +635,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                       <span>{participantsRangeMax}</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-2">
-                      Perfect number for the best game
+                      <Trans>Perfect number for the best game</Trans>
                     </p>
                   </div>
 
@@ -641,7 +644,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Maximum Players *
+                    <Trans>Maximum Players *</Trans>
                   </label>
                   <input
                     type="number"
@@ -653,12 +656,12 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                     min={formData.idealParticipants}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Maximum capacity</p>
+                  <p className="text-xs text-gray-500 mt-1"><Trans>Maximum capacity</Trans></p>
                   <p className="text-xs text-blue-700 mt-2">
-                    Any extra players will be put on a waitlist
+                    <Trans>Any extra players will be put on a waitlist</Trans>
                   </p>
                   <p className="text-xs text-gray-500 mt-2">
-                    Tip: Increase max players to widen the sliders.
+                    <Trans>Tip: Increase max players to widen the sliders.</Trans>
                   </p>
                 </div>
               </div>
@@ -666,17 +669,17 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
               {/* Cancellation Timing */}
               <div className="space-y-3">
                 <label className="block text-sm font-medium text-gray-700">
-                  Cancellation Deadline *
+                  <Trans>Cancellation Deadline *</Trans>
                 </label>
                 <p className="text-sm text-gray-600 mb-3">
-                  How long before the event should we check if there are enough
-                  players?
+                  <Trans>How long before the event should we check if there are enough
+                    players?</Trans>
                 </p>
 
                 <div className="w-full rounded-lg border border-gray-200 bg-gray-50 p-4">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium text-gray-700">
-                      Deadline
+                      <Trans>Deadline</Trans>
                     </span>
                     <div className="text-right text-gray-900">
                       <div className="text-lg font-semibold leading-tight">
@@ -717,13 +720,13 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                       className="text-blue-600 mr-2 mt-0.5 flex-shrink-0"
                     />
                     <div className="text-sm text-blue-800">
-                      <strong>Deadline:</strong>{' '}
+                      <strong><Trans>Deadline:</Trans></strong>{' '}
                       {cancellationDeadlineTime ||
-                        `${cancellationTimeInline} before the event starts`}
+                        <Trans>{cancellationTimeInline} before the event starts</Trans>}
                       {formData.date && formData.startTime && (
                         <div className="mt-1 text-blue-700">
-                          We'll check for minimum players and decide whether to
-                          proceed or cancel the event.
+                          <Trans>We'll check for minimum players and decide whether to
+                            proceed or cancel the event.</Trans>
                         </div>
                       )}
                     </div>
@@ -737,7 +740,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
               <div className="flex items-center justify-between">
                 <h4 className="text-md font-semibold text-gray-900 flex items-center">
                   <Shield size={18} className="mr-2 text-primary-600" />
-                  Skill Level Requirements
+                  <Trans>Skill Level Requirements</Trans>
                 </h4>
                 <Toggle
                   checked={formData.requireSkillLevel}
@@ -745,19 +748,19 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                     handleChange('requireSkillLevel', checked)
                   }
                 >
-                  Enforce skill level restrictions
+                  <Trans>Enforce skill level restrictions</Trans>
                 </Toggle>
               </div>
 
               {formData.requireSkillLevel ? (
                 <div className="space-y-4">
                   <p className="text-sm text-gray-600">
-                    Select which skill levels are allowed to join this event.
-                    Only players with these skill levels in{' '}
-                    {formData.sport
-                      ? SPORTS.find((s) => s.id === formData.sport)?.name
-                      : 'the selected sport'}{' '}
-                    will be able to join.
+                    <Trans>
+                      Select which skill levels are allowed to join this event.
+                      Only players with these skill levels in {formData.sport
+                        ? SPORTS.find((s) => s.id === formData.sport)?.name
+                        : 'the selected sport'} will be able to join.
+                    </Trans>
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -797,11 +800,11 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                             </div>
                             <div className="text-sm text-gray-500 mt-1">
                               {level.id === 'beginner' &&
-                                'New to the sport or casual players'}
+                                <Trans>New to the sport or casual players</Trans>}
                               {level.id === 'intermediate' &&
-                                'Regular players with some experience'}
+                                <Trans>Regular players with some experience</Trans>}
                               {level.id === 'advanced' &&
-                                'Experienced competitive players'}
+                                <Trans>Experienced competitive players</Trans>}
                             </div>
                           </div>
                         </label>
@@ -817,7 +820,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                         className="text-blue-600 mr-2 mt-0.5 flex-shrink-0"
                       />
                       <div className="text-sm text-blue-800">
-                        <p className="font-medium mb-1">Current Restriction</p>
+                        <p className="font-medium mb-1"><Trans>Current Restriction</Trans></p>
                         <p>
                           {getSkillLevelDescription(
                             formData.allowedSkillLevels
@@ -825,12 +828,12 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                         </p>
                         {formData.allowedSkillLevels.length < 3 && (
                           <p className="mt-2 text-blue-700">
-                            Players without the required skill level in{' '}
-                            {formData.sport
-                              ? SPORTS.find((s) => s.id === formData.sport)
-                                ?.name
-                              : 'this sport'}{' '}
-                            will not be able to join this event.
+                            <Trans>
+                              Players without the required skill level in {formData.sport
+                                ? SPORTS.find((s) => s.id === formData.sport)
+                                  ?.name
+                                : 'this sport'} will not be able to join this event.
+                            </Trans>
                           </p>
                         )}
                       </div>
@@ -846,12 +849,14 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                     />
                     <div className="text-sm text-gray-700">
                       <p className="font-medium mb-1">
-                        Open to All Skill Levels
+                        <Trans>Open to All Skill Levels</Trans>
                       </p>
                       <p>
-                        When skill level restrictions are disabled, players of
-                        any skill level can join your event. This is great for
-                        casual games and welcoming new players to the sport.
+                        <Trans>
+                          When skill level restrictions are disabled, players of
+                          any skill level can join your event. This is great for
+                          casual games and welcoming new players to the sport.
+                        </Trans>
                       </p>
                     </div>
                   </div>
@@ -863,12 +868,12 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-900 flex items-center">
                 <Euro size={20} className="mr-2" />
-                Payment (Optional)
+                <Trans>Payment (Optional)</Trans>
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                 <div className="md:col-span-4">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Total Price
+                    <Trans>Total Price</Trans>
                   </label>
                   <input
                     type="number"
@@ -885,18 +890,20 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                     placeholder="0"
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    Will be divided by participant count
+                    <Trans>Will be divided by participant count</Trans>
                   </p>
                   {perPlayerCost && (
                     <p className="text-xs text-gray-600 mt-2">
-                      ~{perPlayerCost.toFixed(2)} {formData.currency} per player
-                      (based on ideal players)
+                      <Trans>
+                        ~{perPlayerCost.toFixed(2)} {formData.currency} per player
+                        (based on ideal players)
+                      </Trans>
                     </p>
                   )}
                 </div>
                 <div className="md:col-span-3">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Currency
+                    <Trans>Currency</Trans>
                   </label>
                   <select
                     value={formData.currency}
@@ -910,7 +917,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                 </div>
                 <div className="md:col-span-5">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Payment Details
+                    <Trans>Payment Details</Trans>
                   </label>
                   <input
                     type="text"
@@ -919,7 +926,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                       handleChange('paymentDetails', e.target.value)
                     }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    placeholder="Revolut: @username or cash on spot"
+                    placeholder={i18n._(msg`Revolut: @username or cash on spot`)}
                   />
                 </div>
               </div>
@@ -928,7 +935,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
             {/* Visibility */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-900">
-                Visibility
+                <Trans>Visibility</Trans>
               </h3>
               <div className="flex items-center space-x-4">
                 <label className="flex items-center">
@@ -940,7 +947,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                     className="text-primary-600 focus:ring-primary-500"
                   />
                   <span className="ml-2 text-sm text-gray-700">
-                    Public (discoverable by everyone)
+                    <Trans>Public (discoverable by everyone)</Trans>
                   </span>
                 </label>
                 <label className="flex items-center">
@@ -952,7 +959,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                     className="text-primary-600 focus:ring-primary-500"
                   />
                   <span className="ml-2 text-sm text-gray-700">
-                    Private (invite-only)
+                    <Trans>Private (invite-only)</Trans>
                   </span>
                 </label>
               </div>
@@ -967,16 +974,16 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                     variant="danger"
                     onClick={() => setShowCancelConfirm(true)}
                   >
-                    Cancel Event
+                    <Trans>Cancel Event</Trans>
                   </Button>
                 )}
               </div>
               <div className="flex space-x-4">
                 <Button type="button" variant="outline" onClick={onCancel}>
-                  Close
+                  <Trans>Close</Trans>
                 </Button>
                 <Button type="submit" variant="primary">
-                  {initialData ? 'Update Event' : 'Create Event'}
+                  {initialData ? <Trans>Update Event</Trans> : <Trans>Create Event</Trans>}
                 </Button>
               </div>
             </div>
@@ -996,26 +1003,26 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[3060] p-4">
           <Card className="w-full max-w-md animate-fade-in">
             <CardHeader>
-              <h3 className="text-xl font-bold text-red-600">Cancel Event?</h3>
-              <p className="text-sm text-gray-600">Are you sure you want to cancel this event? This action cannot be undone.</p>
+              <h3 className="text-xl font-bold text-red-600"><Trans>Cancel Event?</Trans></h3>
+              <p className="text-sm text-gray-600"><Trans>Are you sure you want to cancel this event? This action cannot be undone.</Trans></p>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Cancellation Reason (Optional)
+                    <Trans>Cancellation Reason (Optional)</Trans>
                   </label>
                   <textarea
                     value={cancellationReason}
                     onChange={(e) => setCancellationReason(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    placeholder="e.g., Weather conditions, Insufficient players..."
+                    placeholder={i18n._(msg`e.g., Weather conditions, Insufficient players...`)}
                     rows={3}
                   />
                 </div>
                 <div className="flex justify-end space-x-3">
                   <Button variant="outline" onClick={() => setShowCancelConfirm(false)}>
-                    Keep Event
+                    <Trans>Keep Event</Trans>
                   </Button>
                   <Button
                     variant="danger"
@@ -1026,7 +1033,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                       }
                     }}
                   >
-                    Yes, Cancel Event
+                    <Trans>Yes, Cancel Event</Trans>
                   </Button>
                 </div>
               </div>

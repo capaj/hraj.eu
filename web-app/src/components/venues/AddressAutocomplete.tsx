@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { msg } from '@lingui/core/macro'
+import { i18n } from '~/lib/i18n'
 import { setOptions, importLibrary } from '@googlemaps/js-api-loader'
 
 let isGoogleMapsConfigured = false
@@ -25,11 +27,13 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
   value,
   onChange,
   onPlaceSelected,
-  placeholder = 'Enter address',
+  placeholder,
   className = '',
   required = false,
   apiKey
 }) => {
+  const defaultPlaceholder = i18n._(msg`Enter address`)
+  const finalPlaceholder = placeholder || defaultPlaceholder
   const inputRef = useRef<HTMLInputElement>(null)
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
@@ -155,7 +159,7 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
       type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder}
+      placeholder={finalPlaceholder}
       className={className}
       required={required}
       autoComplete="off"

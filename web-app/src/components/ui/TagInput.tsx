@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { msg } from '@lingui/core/macro'
+import { i18n } from '~/lib/i18n'
 import { Badge } from './Badge'
 import { X, ChevronDown } from 'lucide-react'
 import {
@@ -21,9 +23,11 @@ export const TagInput: React.FC<TagInputProps> = ({
   options,
   selected,
   onChange,
-  placeholder = 'Add...',
+  placeholder,
   className
 }) => {
+  const defaultPlaceholder = i18n._(msg`Add...`)
+  const finalPlaceholder = placeholder || defaultPlaceholder
   const [open, setOpen] = useState(false)
 
   const addTag = (tagId: string) => {
@@ -75,14 +79,14 @@ export const TagInput: React.FC<TagInputProps> = ({
               className="w-full border-0 focus-visible:ring-0 text-left text-gray-500 text-sm outline-none cursor-pointer flex items-center"
             >
               <span className="flex-1">
-                {availableOptions.length > 0 ? placeholder : 'All selected'}
+                {availableOptions.length > 0 ? finalPlaceholder : i18n._(msg`All selected`)}
               </span>
               <ChevronDown className="h-4 w-4" />
             </button>
           </DropdownMenuTrigger>
         </div>
       </div>
-      <DropdownMenuContent 
+      <DropdownMenuContent
         className="w-[200px] max-h-[300px] overflow-y-auto"
         align="start"
         sideOffset={4}
@@ -100,7 +104,7 @@ export const TagInput: React.FC<TagInputProps> = ({
           ))
         ) : (
           <div className="px-2 py-1.5 text-sm text-gray-500">
-            All options selected
+            {i18n._(msg`All options selected`)}
           </div>
         )}
       </DropdownMenuContent>
