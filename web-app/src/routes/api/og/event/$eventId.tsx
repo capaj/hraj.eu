@@ -277,11 +277,11 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
                         style={{
                           display: 'flex',
                           alignItems: 'center',
-                          padding: '12px 24px',
+                          padding: '16px 32px',
                           background: 'rgba(59, 130, 246, 0.9)',
                           borderRadius: '50px',
                           fontWeight: 700,
-                          fontSize: 24,
+                          fontSize: 32,
                           color: 'white',
                           boxShadow: '0 4px 12px rgba(59, 130, 246, 0.4)',
                         }}

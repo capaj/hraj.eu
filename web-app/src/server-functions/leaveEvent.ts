@@ -1,5 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
+import { deleteOgImageFromR2 } from './utils'
 import { z } from 'zod'
 import { db } from '../../drizzle/db'
 import { participantT } from '../../drizzle/schema'
@@ -37,6 +38,11 @@ export const leaveEvent = createServerFn({ method: 'POST' })
       )
 
     const participants = await getParticipants(data.eventId)
+
+    // Invalidate OG image cache, ignore if it errors
+    void deleteOgImageFromR2(data.eventId).catch((e) => {
+      console.error('Failed to delete OG image from R2:', e)
+    })
 
     return {
       status: 'left',

@@ -39,3 +39,13 @@ export async function uploadFileToR2(file: File, folder: string): Promise<string
   return `https://uploads.hraj.eu/${filename}`
 }
 
+export async function deleteOgImageFromR2(eventId: string): Promise<void> {
+  const bucket = env.hraj_eu_uploads
+  if (!bucket) {
+    console.warn('R2 bucket not available')
+    return
+  }
+  const key = `og-images/${eventId}.png`
+  await bucket.delete(key)
+}
+

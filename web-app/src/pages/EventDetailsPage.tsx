@@ -761,10 +761,16 @@ export const EventDetailsPage: React.FC = () => {
                     </div>
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-gray-700 text-lg">
-                        <Trans>Price per person({event.idealParticipants ?? event.minParticipants} people):</Trans>
+                        <Trans>Price per person({event.minParticipants > participantUsers.length ? event.minParticipants : participantUsers.length} people):</Trans>
                       </span>
                       <span className="font-bold text-2xl text-primary-600">
-                        {event.price / (event.idealParticipants ?? event.minParticipants)}{' '}
+                        {(
+                          event.price /
+                          Math.max(event.minParticipants, participantUsers.length)
+                        ).toLocaleString(undefined, {
+                          minimumFractionDigits: 0,
+                          maximumFractionDigits: 2,
+                        })}{' '}
                         {event.currency ?? 'CZK'}
                       </span>
                     </div>
