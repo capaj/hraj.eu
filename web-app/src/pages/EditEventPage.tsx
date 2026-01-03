@@ -5,8 +5,7 @@ import { cancelEvent } from '../server-functions/cancelEvent'
 import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { i18n } from '~/lib/i18n'
-import { msg } from '@lingui/core/macro'
-import { Trans } from '@lingui/react/macro'
+import { msg, Trans, t } from '@lingui/macro'
 import { Event, SkillLevel } from '../types'
 
 interface EditEventPageProps {

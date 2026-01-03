@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { msg } from '@lingui/core/macro'
+import { msg } from '@lingui/macro'
 import { i18n } from '~/lib/i18n'
 import { Badge } from './Badge'
 import { X, ChevronDown } from 'lucide-react'

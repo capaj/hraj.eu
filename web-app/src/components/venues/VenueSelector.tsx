@@ -4,8 +4,7 @@ import { Button } from '../ui/Button'
 import { Badge } from '../ui/Badge'
 import { Venue } from '../../types'
 import { SPORTS } from '../../lib/constants'
-import { Trans } from '@lingui/react/macro'
-import { msg } from '@lingui/core/macro'
+import { Trans, t, msg } from '@lingui/macro'
 import { i18n } from '~/lib/i18n'
 import {
   MapPin,
@@ -337,15 +336,15 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
 
                   if (searchTerm) {
                     if (sportName) {
-                      return i18n._(msg`No venues match "{searchTerm}" for {sportName}`, { searchTerm, sportName })
+                      return t(i18n)`No venues match "{searchTerm}" for {sportName}`
                     } else {
-                      return i18n._(msg`No venues match "{searchTerm}"`, { searchTerm })
+                      return t(i18n)`No venues match "{searchTerm}"`
                     }
                   } else {
                     if (sportName) {
-                      return i18n._(msg`No venues available for {sportName}`, { sportName })
+                      return t(i18n)`No venues available for {sportName}`
                     } else {
-                      return i18n._(msg`No venues available`)
+                      return t(i18n)`No venues available`
                     }
                   }
                 })()}

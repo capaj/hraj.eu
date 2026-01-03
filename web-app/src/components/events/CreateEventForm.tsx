@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Trans } from '@lingui/react/macro'
-import { msg } from '@lingui/core/macro'
+import { Trans, t, msg } from '@lingui/macro'
 import { i18n } from '~/lib/i18n'
 import { Card, CardHeader, CardContent } from '../ui/Card'
 import { Button } from '../ui/Button'
@@ -229,21 +228,21 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     const totalMinutes =
       formData.cancellationHours * 60 + formData.cancellationMinutes
     if (totalMinutes < 60) {
-      return { primary: i18n._(msg`{totalMinutes} minutes`, { totalMinutes }), secondary: '' }
+      return { primary: t(i18n)`{totalMinutes} minutes`, secondary: '' }
     } else if (totalMinutes === 60) {
-      return { primary: i18n._(msg`1 hour`), secondary: '' }
+      return { primary: t(i18n)`1 hour`, secondary: '' }
     } else if (totalMinutes % 60 === 0) {
       const hours = Math.floor(totalMinutes / 60)
       return {
-        primary: i18n._(msg`{hours} hours`, { hours }),
+        primary: t(i18n)`{hours} hours`,
         secondary: ''
       }
     } else {
       const hours = Math.floor(totalMinutes / 60)
       const minutes = totalMinutes % 60
       return {
-        primary: i18n._(msg`{hours} hour(s)`, { hours }),
-        secondary: i18n._(msg`{minutes} minutes`, { minutes })
+        primary: t(i18n)`{hours} hour(s)`,
+        secondary: t(i18n)`{minutes} minutes`
       }
     }
   }
@@ -265,7 +264,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     const minutes = deadlineTime.getMinutes().toString().padStart(2, '0')
     const timeLabel = `${hours}:${minutes}`
     if (deadlineTime.toDateString() !== startDateTime.toDateString()) {
-      return i18n._(msg`{timeLabel} (day before)`, { timeLabel })
+      return t(i18n)`{timeLabel} (day before)`
     }
     return timeLabel
   }
@@ -292,7 +291,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
       .toString()
       .padStart(2, '0')}`
     if (dayOffset > 0) {
-      return i18n._(msg`{timeLabel} (+{dayOffset} day(s))`, { timeLabel, dayOffset })
+      return t(i18n)`{timeLabel} (+{dayOffset} day(s))`
     }
     return timeLabel
   }
@@ -336,10 +335,10 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
       const levelNames = levels
         .map((level) => SKILL_LEVELS.find((l) => l.id === level)?.name)
         .join(' and ')
-      return i18n._(msg`{levelNames} players only`, { levelNames })
+      return t(i18n)`{levelNames} players only`
     } else {
       const levelName = SKILL_LEVELS.find((l) => l.id === levels[0])?.name
-      return i18n._(msg`{levelName} players only`, { levelName })
+      return t(i18n)`{levelName} players only`
     }
   }
 

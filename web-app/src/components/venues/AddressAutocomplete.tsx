@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { msg } from '@lingui/core/macro'
+import { msg } from '@lingui/macro'
 import { i18n } from '~/lib/i18n'
 import { setOptions, importLibrary } from '@googlemaps/js-api-loader'
 
