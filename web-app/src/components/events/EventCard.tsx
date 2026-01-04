@@ -3,11 +3,12 @@ import { Link } from '@tanstack/react-router';
 import { Card, CardContent } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
-import { Calendar, Clock, MapPin, Users, Euro, Target } from 'lucide-react';
+import { Calendar, Clock, MapPin, Users, Euro, Target, BadgeDollarSign } from 'lucide-react';
 import { Event, User, Venue } from '../../types';
 import { SPORTS } from '../../lib/constants';
 import { format, isPast } from 'date-fns';
 import { getEventDateTime } from '../../utils/eventDateTime';
+import { t } from "@lingui/core/macro";
 
 
 interface EventCardProps {
@@ -67,11 +68,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
               <h3 className="font-semibold text-gray-900 text-lg truncate">{event.title}</h3>
             </div>
           </div>
-          <div className="flex-shrink-0">
-            <Badge variant={participantStatus.variant} className="whitespace-nowrap">
-              {participantStatus.icon} {participantStatus.text}
-            </Badge>
-          </div>
+
         </div>
 
         <p className="text-gray-700 mb-4 flex-grow">{event.description}</p>
@@ -97,10 +94,14 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
                 <span className="text-gray-500 ml-1">(ideal: {event.idealParticipants})</span>
               )}
             </span>
+            <Badge variant={participantStatus.variant} className="whitespace-nowrap ml-2">
+              {participantStatus.icon} {participantStatus.text}
+            </Badge>
           </div>
           {event.price && (
             <div className="flex items-center text-sm text-gray-600">
-              {event.price} {event.currency} total for the venue
+              <BadgeDollarSign size={16} className="mr-2" />
+              {Math.ceil(event.price / (event.idealParticipants || event.maxParticipants))} {event.currency || 'CZK'} {t`per person`}
             </div>
           )}
         </div>

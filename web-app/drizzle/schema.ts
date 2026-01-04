@@ -70,7 +70,7 @@ export const eventT = sqliteTable(
       'cancellation_deadline_minutes'
     ).notNull(),
     price: real('price'),
-    currency: text('currency').default('CZK'),
+    currency: text('currency').default('CZK').notNull(),
     paymentDetails: text('payment_details'),
     gameRules: text('game_rules'),
     isPublic: integer('is_public', { mode: 'boolean' }).default(true).notNull(),

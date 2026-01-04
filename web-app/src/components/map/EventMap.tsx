@@ -248,13 +248,13 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
                   </div>
                   <div style="display: flex; align-items: center; font-size: 14px; color: #4b5563;">
                     <span style="margin-right: 8px;">👥</span>
-                    ${event.participants.length}/${event.maxParticipants} players
+                    ${event.participants.length}/${event.maxParticipants} ${t`players`}
                   </div>
                   ${event.price
                 ? `
                     <div style="display: flex; align-items: center; font-size: 14px; color: #4b5563;">
                       <span style="margin-right: 8px;">💰</span>
-                      €${event.price} ${t`per person`}
+                      ${Math.ceil(event.price / (event.idealParticipants || event.maxParticipants))} ${event.currency || 'CZK'} ${t`per person`}
                     </div>
                   `
                 : ''
