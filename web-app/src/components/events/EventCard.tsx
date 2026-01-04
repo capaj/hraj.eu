@@ -6,7 +6,9 @@ import { Button } from '../ui/Button';
 import { Calendar, Clock, MapPin, Users, Euro, Target } from 'lucide-react';
 import { Event, User, Venue } from '../../types';
 import { SPORTS } from '../../lib/constants';
-import { format } from 'date-fns';
+import { format, isPast } from 'date-fns';
+import { getEventDateTime } from '../../utils/eventDateTime';
+
 
 interface EventCardProps {
   event: Event;
@@ -18,6 +20,9 @@ interface EventCardProps {
 }
 
 export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onView, isJoining = false, currentUserId }) => {
+  const isPastEvent = isPast(getEventDateTime(event));
+  const isCancelled = event.status === 'cancelled';
+
 
   const sport = SPORTS.find(s => s.id === event.sport);
   const venue = venues?.find(v => v.id === event.venueId);
@@ -101,30 +106,38 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
         </div>
 
         <div className="flex items-center space-x-3 mt-auto">
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              onJoin?.(event.id);
-            }}
-            className="flex-1"
-            disabled={isJoining || isParticipant}
+          {!isPastEvent && !isCancelled && (
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                onJoin?.(event.id);
+              }}
+              className="flex-1"
+              disabled={isJoining || isParticipant}
+            >
+              {isParticipant
+                ? 'You are playing'
+                : isWaitlisted
+                  ? 'On Waitlist'
+                  : isJoining
+                    ? 'Joining...'
+                    : isSpotAvailable
+                      ? 'Join Game'
+                      : 'Join Waitlist'}
+            </Button>
+          )}
+          <Link
+            to="/events/$eventId"
+            params={{ eventId: event.id }}
+            onClick={(e) => e.stopPropagation()}
+            className={isPastEvent || isCancelled ? 'flex-1' : ''}
           >
-            {isParticipant
-              ? 'You are playing'
-              : isWaitlisted
-                ? 'On Waitlist'
-                : isJoining
-                  ? 'Joining...'
-                  : isSpotAvailable
-                    ? 'Join Game'
-                    : 'Join Waitlist'}
-          </Button>
-          <Link to="/events/$eventId" params={{ eventId: event.id }} onClick={(e) => e.stopPropagation()}>
             <Button
               variant="outline"
               size="sm"
+              className="w-full"
             >
               View Details
             </Button>

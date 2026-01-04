@@ -8,7 +8,9 @@ import React, {
 import 'leaflet/dist/leaflet.css'
 import { Event, Venue } from '../../types'
 import { SPORTS } from '../../lib/constants'
-import { format } from 'date-fns'
+import { format, isPast } from 'date-fns'
+import { getEventDateTime } from '../../utils/eventDateTime'
+
 import dayjs from 'dayjs'
 import { t } from "@lingui/core/macro";
 
@@ -264,13 +266,15 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
               }; font-weight: 500;">
                     ${spotsLeft > 0 ? `${spotsLeft} spots left` : t`Waitlist`}
                   </span>
-                  ${isJoined
-                ? `<button 
+                  ${(isPast(getEventDateTime(event)) || event.status === 'cancelled')
+                ? ''
+                : isJoined
+                  ? `<button 
                         style="padding: 6px 12px; background-color: #e5e7eb; color: #374151; border: none; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: default;"
                       >
                         ${t`You are playing`}
                       </button>`
-                : `<button 
+                  : `<button 
                         onclick="window.joinEvent_${event.id}()"
                         style="padding: 6px 12px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
                         onmouseover="this.style.backgroundColor='#059669'"
