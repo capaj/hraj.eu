@@ -16,6 +16,7 @@ export const Route = createFileRoute('/profile')({
       getEvents({
         data: {
           statuses: ['open', 'confirmed', 'cancelled', 'completed']
+          // No date range - show all events for profile
         }
       }),
       getVenues(),

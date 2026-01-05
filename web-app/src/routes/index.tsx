@@ -7,9 +7,19 @@ import { authClient } from '~/lib/auth-client'
 
 export const Route = createFileRoute('/')({
   loader: async () => {
-    // Load all events and venues - filtering will be done client-side for now
+    // Load all events and venues - events are filtered server-side to show only recent/upcoming
     const session = await authClient.getSession()
-    const [events, venues] = await Promise.all([getEvents(), getVenues()])
+    const eightHoursAgo = new Date(Date.now() - 8 * 60 * 60 * 1000)
+    const [events, venues] = await Promise.all([
+      getEvents({
+        data: {
+          dateRange: {
+            from: eightHoursAgo.toISOString() // Only show events from past 8 hours onwards
+          }
+        }
+      }),
+      getVenues()
+    ])
 
     let user = null
     if (session.data?.user) {
