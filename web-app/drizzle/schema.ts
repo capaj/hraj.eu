@@ -53,6 +53,7 @@ export const eventT = sqliteTable(
       .$defaultFn(() => createId())
       .primaryKey()
       .notNull(),
+    urlSlug: text('url_slug').notNull(),
     title: text('title').notNull(),
     description: text('description'),
     sport: text('sport').notNull(),
@@ -134,7 +135,8 @@ export const eventT = sqliteTable(
     organizerIdx: index('organizer_idx').on(table.organizerId),
     venueIdx: index('venue_idx').on(table.venueId),
     coreGroupIdx: index('core_group_idx').on(table.coreGroupId),
-    seriesIdIdx: index('series_id_idx').on(table.seriesId)
+    seriesIdIdx: index('series_id_idx').on(table.seriesId),
+    urlSlugIdx: uniqueIndex('event_url_slug_idx').on(table.urlSlug)
   })
 )
 

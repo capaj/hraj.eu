@@ -55,6 +55,7 @@ export interface Venue {
 
 export interface Event {
   id: string
+  urlSlug: string
   title: string
   description: string
   sport: string
