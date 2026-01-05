@@ -67,7 +67,8 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
 
           const participantsCount = event.participants?.length ?? 0
           const maxParticipants = event.maxParticipants ?? 0
-          const cacheKey = `og-images/${params.eventId}-${event.updatedAt.getTime()}-${participantsCount}.png`
+          const cachePrefix = `og-images/${params.eventId}-`
+          const cacheKey = `${cachePrefix}${event.updatedAt.getTime()}-${participantsCount}.png`
 
           if (bucket) {
             const existing = await bucket.get(cacheKey)
@@ -316,12 +317,23 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
 
           if (bucket) {
             const buffer = await imageResponse.arrayBuffer()
+            const existingCacheObjects = await bucket
+              .list({ prefix: cachePrefix })
+              .then((listResult) => listResult.objects.map((obj) => obj.key))
+              .catch(() => [])
+
             await bucket.put(cacheKey, buffer, {
               httpMetadata: {
                 contentType: 'image/png',
                 cacheControl: CACHE_CONTROL
               }
             })
+
+            await Promise.all(
+              existingCacheObjects
+                .filter((key) => key !== cacheKey)
+                .map((key) => bucket.delete(key))
+            )
 
             return new Response(buffer, {
               headers: {

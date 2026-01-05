@@ -45,7 +45,12 @@ export async function deleteOgImageFromR2(eventId: string): Promise<void> {
     console.warn('R2 bucket not available')
     return
   }
-  const key = `og-images/${eventId}.png`
-  await bucket.delete(key)
+  const prefix = `og-images/${eventId}-`
+  const existingKeys = await bucket
+    .list({ prefix })
+    .then((listResult) => listResult.objects.map((obj) => obj.key))
+    .catch(() => [])
+
+  await Promise.all(existingKeys.map((key) => bucket.delete(key)))
 }
 
