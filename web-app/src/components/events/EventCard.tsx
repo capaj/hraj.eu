@@ -94,9 +94,11 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
                 <span className="text-gray-500 ml-1">(ideal: {event.idealParticipants})</span>
               )}
             </span>
-            <Badge variant={participantStatus.variant} className="whitespace-nowrap ml-2">
-              {participantStatus.icon} {participantStatus.text}
-            </Badge>
+            {!isPastEvent && (
+              <Badge variant={participantStatus.variant} className="whitespace-nowrap ml-2">
+                {participantStatus.icon} {participantStatus.text}
+              </Badge>
+            )}
           </div>
           {event.price && (
             <div className="flex items-center text-sm text-gray-600">
