@@ -130,8 +130,8 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
             </Button>
           )}
           <Link
-            to="/events/$eventId"
-            params={{ eventId: event.id }}
+            to="/events/$eventSlug"
+            params={{ eventSlug: event.urlSlug }}
             onClick={(e) => e.stopPropagation()}
             className={isPastEvent || isCancelled ? 'flex-1' : ''}
           >

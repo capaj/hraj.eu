@@ -4,17 +4,17 @@ import { db } from '../../drizzle/db'
 import { eventT, participantT } from '../../drizzle/schema'
 import { eq } from 'drizzle-orm'
 
-export const getEventById = createServerFn({ method: 'GET' })
-  .inputValidator((eventId: string) => eventId)
-  .handler(async ({ data: eventId }) => {
+export const getEventBySlug = createServerFn({ method: 'GET' })
+  .inputValidator((slug: string) => slug)
+  .handler(async ({ data: slug }) => {
     const events = await db
       .select()
       .from(eventT)
-      .where(eq(eventT.id, eventId))
+      .where(eq(eventT.urlSlug, slug))
       .limit(1)
 
     if (!events || events.length === 0) {
-      throw new Error(`Event with id ${eventId} not found`)
+      throw new Error(`Event with slug ${slug} not found`)
     }
 
     const event = events[0]
