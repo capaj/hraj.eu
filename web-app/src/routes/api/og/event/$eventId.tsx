@@ -59,10 +59,18 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
       GET: async ({ request, params }) => {
         try {
           const bucket = env.hraj_eu_uploads
-          const key = `og-images/${params.eventId}.png`
+
+          const origin = new URL(request.url).origin
+          const event = await getEventById({ data: params.eventId })
+          const venues = await getVenues()
+          const venue = venues.find((v: any) => v.id === event.venueId)
+
+          const participantsCount = event.participants?.length ?? 0
+          const maxParticipants = event.maxParticipants ?? 0
+          const cacheKey = `og-images/${params.eventId}-${event.updatedAt.getTime()}-${participantsCount}.png`
 
           if (bucket) {
-            const existing = await bucket.get(key)
+            const existing = await bucket.get(cacheKey)
             if (existing) {
               return new Response(existing.body, {
                 headers: {
@@ -72,11 +80,6 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
               })
             }
           }
-
-          const origin = new URL(request.url).origin
-          const event = await getEventById({ data: params.eventId })
-          const venues = await getVenues()
-          const venue = venues.find((v: any) => v.id === event.venueId)
 
           // Fetch participants
           const participantIds = event.participants.slice(0, 5)
@@ -139,8 +142,6 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
           const fontData700 = await getInter700()
 
           const title = (event.title || 'Event').trim()
-          const participantsCount = event.participants?.length ?? 0
-          const maxParticipants = event.maxParticipants ?? 0
 
           const imageResponse = new ImageResponse(
             <div
@@ -315,7 +316,7 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
 
           if (bucket) {
             const buffer = await imageResponse.arrayBuffer()
-            await bucket.put(key, buffer, {
+            await bucket.put(cacheKey, buffer, {
               httpMetadata: {
                 contentType: 'image/png',
                 cacheControl: CACHE_CONTROL
