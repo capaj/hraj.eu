@@ -719,14 +719,14 @@ export const EventDetailsPage: React.FC = () => {
                         </div>
                       </div>
                     )}
-                    <div className="text-center p-2 bg-green-50 rounded-lg">
-                      <div className="text-xl font-bold text-green-900">
+                    <div className="text-center p-2 bg-orange-50 rounded-lg">
+                      <div className="text-xl font-bold text-orange-900">
                         {event.maxParticipants}
                       </div>
-                      <div className="text-xs text-green-600">
+                      <div className="text-xs text-orange-600">
                         <Trans>Maximum</Trans>
                       </div>
-                      <div className="hidden sm:block text-xs text-green-500 mt-1">
+                      <div className="hidden sm:block text-xs text-orange-500 mt-1">
                         <Trans>Full capacity</Trans>
                       </div>
                     </div>
