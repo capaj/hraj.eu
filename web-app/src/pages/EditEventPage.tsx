@@ -66,7 +66,7 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
         }
       })
       toast.success(i18n._(msg`Event updated successfully!`))
-      navigate({ to: '/events/$eventId', params: { eventId: event.id } })
+      navigate({ to: '/events/$eventSlug', params: { eventSlug: event.urlSlug } })
     } catch (err) {
       toast.error(
         err instanceof Error ? err.message : i18n._(msg`Failed to update event`)
@@ -77,7 +77,7 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
   }
 
   const handleCancel = () => {
-    navigate({ to: '/events/$eventId', params: { eventId: event.id } })
+    navigate({ to: '/events/$eventSlug', params: { eventSlug: event.urlSlug } })
   }
 
   const handleCancelEvent = async () => {
@@ -88,7 +88,7 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
     try {
       await cancelEvent({ data: { eventId: event.id, reason: 'Cancelled by organizer' } })
       toast.success(i18n._(msg`Event cancelled`))
-      navigate({ to: '/events/$eventId', params: { eventId: event.id } })
+      navigate({ to: '/events/$eventSlug', params: { eventSlug: event.urlSlug } })
     } catch (error) {
       toast.error(i18n._(msg`Failed to cancel event`))
     }

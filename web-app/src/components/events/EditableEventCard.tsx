@@ -183,7 +183,11 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
         </div>
 
         <div className="flex justify-end space-x-2">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: `/events/${event.id}` })}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate({ to: `/events/${event.urlSlug}` })}
+          >
             View Details
           </Button>
           {showSaveButton && (

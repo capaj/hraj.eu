@@ -32,6 +32,7 @@ export type CreateEventFormData = Omit<
   | 'createdAt'
   | 'updatedAt'
   | 'id'
+  | 'urlSlug'
   | 'price'
   | 'description'
   | 'paymentDetails'

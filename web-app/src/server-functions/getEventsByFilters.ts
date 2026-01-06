@@ -44,6 +44,7 @@ export const getEventsByFilters = createServerFn({ method: 'GET' })
 
         return {
           id: event.id,
+          urlSlug: event.urlSlug,
           title: event.title,
           description: event.description || '',
           sport: event.sport,

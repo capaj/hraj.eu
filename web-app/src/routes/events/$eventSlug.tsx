@@ -1,15 +1,15 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { EventDetailsPage } from '../../pages/EventDetailsPage'
-import { getEventById } from '~/server-functions/getEventById'
+import { getEventBySlug } from '~/server-functions/getEventBySlug'
 import { getVenues } from '~/server-functions/getVenues'
 import { getUserById } from '~/server-functions/getUserById'
 import { getUsersByIds } from '~/server-functions/getUsersByIds'
 import { getRequestOrigin } from '~/server-functions/getRequestOrigin'
 
-export const Route = createFileRoute('/events/$eventId')({
+export const Route = createFileRoute('/events/$eventSlug')({
   ssr: true,
   loader: async ({ params }) => {
-    const event = await getEventById({ data: params.eventId })
+    const event = await getEventBySlug({ data: params.eventSlug })
     const venues = await getVenues()
     const venue = venues.find((v: any) => v.id === event.venueId)
     const organizer = await getUserById({ data: event.organizerId })
@@ -33,7 +33,9 @@ export const Route = createFileRoute('/events/$eventId')({
     const venue = loaderData?.venue
     const origin = loaderData?.origin || 'https://hraj.eu'
 
-    const url = event?.id ? new URL(`/events/${event.id}`, origin).toString() : origin
+    const url = event?.urlSlug
+      ? new URL(`/events/${event.urlSlug}`, origin).toString()
+      : origin
 
     const ogImage = (() => {
       if (!event?.id) return `${origin}/android-chrome-512x512.png`
