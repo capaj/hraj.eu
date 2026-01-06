@@ -54,10 +54,19 @@ async function getParticipants(eventId: string) {
   const participants = await db
     .select({
       userId: participantT.userId,
-      status: participantT.status
+      status: participantT.status,
+      plusAttendees: participantT.plusAttendees
     })
     .from(participantT)
     .where(eq(participantT.eventId, eventId))
+
+  const participantPlusOnes = participants.reduce(
+    (acc, participant) => {
+      acc[participant.userId] = participant.plusAttendees || []
+      return acc
+    },
+    {} as Record<string, string[]>
+  )
 
   return {
     confirmed: participants
@@ -65,6 +74,7 @@ async function getParticipants(eventId: string) {
       .map((p) => p.userId),
     waitlisted: participants
       .filter((p) => p.status === 'waitlisted')
-      .map((p) => p.userId)
+      .map((p) => p.userId),
+    plusAttendees: participantPlusOnes
   }
 }

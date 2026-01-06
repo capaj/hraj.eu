@@ -8,7 +8,11 @@ import { auth } from '~/lib/auth'
 import { and, eq } from 'drizzle-orm'
 
 const JoinEventSchema = z.object({
-  eventId: z.string().min(1, 'Event ID is required')
+  eventId: z.string().min(1, 'Event ID is required'),
+  plusAttendees: z
+    .array(z.string().min(1, 'Guest name is required').trim())
+    .max(2, 'You can bring up to two guests')
+    .optional()
 })
 
 export const joinEvent = createServerFn({ method: 'POST' })
@@ -49,16 +53,19 @@ export const joinEvent = createServerFn({ method: 'POST' })
       (p) => p.userId === session.user.id
     )
 
-    if (
-      existingParticipant &&
-      (existingParticipant.status === 'confirmed' ||
-        existingParticipant.status === 'waitlisted')
-    ) {
-      return {
-        status: existingParticipant.status,
-        participants: await getParticipants(data.eventId)
-      }
-    }
+    const requestedPlusAttendees = (data.plusAttendees ??
+      existingParticipant?.plusAttendees ??
+      [])
+      .map((name) => name.trim())
+      .filter(Boolean)
+      .slice(0, 2)
+
+    const confirmedHeadcount = allParticipants
+      .filter((p) => p.status === 'confirmed')
+      .reduce((total, participant) => {
+        const extras = participant.plusAttendees?.length ?? 0
+        return total + 1 + extras
+      }, 0)
 
     const confirmedCount = allParticipants.filter(
       (p) => p.status === 'confirmed'
@@ -67,7 +74,24 @@ export const joinEvent = createServerFn({ method: 'POST' })
       (p) => p.status === 'waitlisted'
     ).length
 
-    const isSpotAvailable = confirmedCount < event.maxParticipants
+    const existingConfirmedLoad =
+      existingParticipant?.status === 'confirmed'
+        ? 1 + (existingParticipant.plusAttendees?.length ?? 0)
+        : 0
+
+    const availableSpots =
+      event.maxParticipants - (confirmedHeadcount - existingConfirmedLoad)
+
+    const requestedHeadcount = 1 + requestedPlusAttendees.length
+
+    if (
+      existingParticipant?.status === 'confirmed' &&
+      requestedHeadcount > availableSpots
+    ) {
+      throw new Error('Not enough spots for you and your guests right now.')
+    }
+
+    const isSpotAvailable = requestedHeadcount <= availableSpots
     const status = isSpotAvailable ? 'confirmed' : 'waitlisted'
     const ordinal =
       status === 'confirmed'
@@ -80,7 +104,8 @@ export const joinEvent = createServerFn({ method: 'POST' })
         .update(participantT)
         .set({
           status,
-          confirmedParticipantOrdinal: ordinal
+          confirmedParticipantOrdinal: ordinal,
+          plusAttendees: requestedPlusAttendees
         })
         .where(eq(participantT.id, existingParticipant.id))
     } else {
@@ -89,7 +114,8 @@ export const joinEvent = createServerFn({ method: 'POST' })
         eventId: data.eventId,
         userId: session.user.id,
         status,
-        confirmedParticipantOrdinal: ordinal
+        confirmedParticipantOrdinal: ordinal,
+        plusAttendees: requestedPlusAttendees
       })
     }
 
@@ -110,10 +136,19 @@ async function getParticipants(eventId: string) {
   const participants = await db
     .select({
       userId: participantT.userId,
-      status: participantT.status
+      status: participantT.status,
+      plusAttendees: participantT.plusAttendees
     })
     .from(participantT)
     .where(eq(participantT.eventId, eventId))
+
+  const participantPlusOnes = participants.reduce(
+    (acc, participant) => {
+      acc[participant.userId] = participant.plusAttendees || []
+      return acc
+    },
+    {} as Record<string, string[]>
+  )
 
   return {
     confirmed: participants
@@ -121,7 +156,8 @@ async function getParticipants(eventId: string) {
       .map((p) => p.userId),
     waitlisted: participants
       .filter((p) => p.status === 'waitlisted')
-      .map((p) => p.userId)
+      .map((p) => p.userId),
+    plusAttendees: participantPlusOnes
   }
 }
 

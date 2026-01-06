@@ -146,6 +146,10 @@ export const participantT = sqliteTable(
     userId: text('user_id')
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
+    plusAttendees: text('plus_attendees', { mode: 'json' })
+      .$type<string[]>()
+      .notNull()
+      .default(sql`json_array()`),
     status: text('status', {
       enum: ['confirmed', 'cancelled', 'waitlisted', 'invited', 'declined']
     })

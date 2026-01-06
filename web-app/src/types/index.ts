@@ -74,6 +74,7 @@ export interface Event {
   organizerId: string
   participants: string[]
   waitlist: string[]
+  participantPlusOnes: Record<string, string[]>
   status: 'draft' | 'open' | 'confirmed' | 'cancelled' | 'completed'
   allowedSkillLevels?: string[]
   requireSkillLevel?: boolean

@@ -18,6 +18,7 @@ import { CreateEventForm, CreateEventFormData } from './CreateEventForm'
 import { updateEvent } from '../../server-functions/updateEvent'
 import { cancelEvent } from '../../server-functions/cancelEvent'
 import { useRouter } from '@tanstack/react-router'
+import { getConfirmedHeadcount } from '../../utils/participants'
 
 interface EditableEventCardProps {
   event: Event & { participants: string[] }
@@ -45,6 +46,7 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
 
   const venue = venues.find((v) => v.id === event.venueId)
   const organizer = users.find((u) => u.id === event.organizerId)
+  const confirmedHeadcount = getConfirmedHeadcount(event)
 
   const handleEditSubmit = async (data: CreateEventFormData) => {
     setIsUpdating(true)
@@ -168,7 +170,7 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
           </div>
           <div className="flex items-center">
             <Users size={14} className="mr-2" />
-            {event.participants.length}/{event.maxParticipants}
+            {confirmedHeadcount}/{event.maxParticipants}
             {event.idealParticipants && (
               <span className="text-gray-500 ml-1">
                 (ideal: {event.idealParticipants})

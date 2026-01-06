@@ -10,6 +10,7 @@ import { Event, Venue } from '../../types'
 import { SPORTS } from '../../lib/constants'
 import { format, isPast } from 'date-fns'
 import { getEventDateTime } from '../../utils/eventDateTime'
+import { getConfirmedHeadcount } from '../../utils/participants'
 
 import dayjs from 'dayjs'
 import { t } from "@lingui/core/macro";
@@ -221,7 +222,8 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
             const sport = SPORTS.find((s) => s.id === event.sport)
             const isJoined =
               currentUserId && event.participants.includes(currentUserId)
-            const spotsLeft = event.maxParticipants - event.participants.length
+            const confirmedHeadcount = getConfirmedHeadcount(event)
+            const spotsLeft = event.maxParticipants - confirmedHeadcount
 
             const eventHtml = `
               <div style="${index > 0
@@ -248,7 +250,7 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
                   </div>
                   <div style="display: flex; align-items: center; font-size: 14px; color: #4b5563;">
                     <span style="margin-right: 8px;">👥</span>
-                    ${event.participants.length}/${event.maxParticipants} ${t`players`}
+                    ${confirmedHeadcount}/${event.maxParticipants} ${t`players`}
                   </div>
                   ${event.price
                 ? `
