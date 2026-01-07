@@ -50,6 +50,13 @@
       "when": 1767514435677,
       "tag": "0006_lovely_scorpion",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1767699363581,
+      "tag": "0007_plus_attendees",
+      "breakpoints": true
     }
   ]
 }

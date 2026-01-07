@@ -66,9 +66,11 @@ import { useLoaderData, useNavigate, useSearch } from '@tanstack/react-router'
 import { authClient } from '../lib/auth-client'
 import { joinEvent } from '~/server-functions/joinEvent'
 import { leaveEvent } from '~/server-functions/leaveEvent'
+import { updatePlusAttendees } from '~/server-functions/updatePlusAttendees'
 import { getUserById } from '~/server-functions/getUserById'
 import { User } from '../types'
 import { getEventDateTime } from '../utils/eventDateTime'
+import { getConfirmedHeadcount } from '../utils/participants'
 
 interface KarmaFeedback {
   userId: string
@@ -104,6 +106,8 @@ export const EventDetailsPage: React.FC = () => {
   )
   const [shareUrl, setShareUrl] = useState('')
   const [isParticipantsExpanded, setIsParticipantsExpanded] = useState(false)
+  const [plusAttendees, setPlusAttendees] = useState<string[]>([])
+  const [isUpdatingGuests, setIsUpdatingGuests] = useState(false)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -128,12 +132,12 @@ export const EventDetailsPage: React.FC = () => {
   }
 
   const sport = SPORTS.find((s) => s.id === event.sport)
-  const isSpotAvailable = event.participants.length < event.maxParticipants
-  const spotsLeft = event.maxParticipants - event.participants.length
-  const isMinimumReached = event.participants.length >= event.minParticipants
+  const confirmedHeadcount = getConfirmedHeadcount(event)
+  const isSpotAvailable = confirmedHeadcount < event.maxParticipants
+  const spotsLeft = Math.max(event.maxParticipants - confirmedHeadcount, 0)
+  const isMinimumReached = confirmedHeadcount >= event.minParticipants
   const isIdealReached =
-    event.idealParticipants &&
-    event.participants.length >= event.idealParticipants
+    event.idealParticipants && confirmedHeadcount >= event.idealParticipants
 
   const getEventStartDateTime = () => {
     if (!event) {
@@ -160,6 +164,15 @@ export const EventDetailsPage: React.FC = () => {
     .map((id) => participantsMap.get(id))
     .filter((user): user is NonNullable<typeof user> => user !== undefined)
 
+  useEffect(() => {
+    if (!currentUserId) {
+      setPlusAttendees([])
+      return
+    }
+
+    setPlusAttendees(event.participantPlusOnes?.[currentUserId] || [])
+  }, [currentUserId, event.participantPlusOnes, event.participants])
+
   const shouldShowWeather = venue?.type !== 'indoor'
 
   const getEventStatus = () => {
@@ -167,7 +180,7 @@ export const EventDetailsPage: React.FC = () => {
       return {
         variant: 'error' as const,
         text: i18n._(msg`Need {count} more players to confirm`.id, {
-          count: event.minParticipants - event.participants.length
+          count: event.minParticipants - confirmedHeadcount
         }),
         icon: <AlertTriangle size={16} className="mr-1" />
       }
@@ -181,7 +194,7 @@ export const EventDetailsPage: React.FC = () => {
       return {
         variant: 'warning' as const,
         text: i18n._(msg`Event confirmed - {count} more for ideal`.id, {
-          count: event.idealParticipants! - event.participants.length
+          count: event.idealParticipants! - confirmedHeadcount
         }),
         icon: <Target size={16} className="mr-1" />
       }
@@ -226,7 +239,7 @@ export const EventDetailsPage: React.FC = () => {
         '',
         i18n._(msg`Sport: {sportName}`.id, { sportName: sport?.name ?? '' }),
         i18n._(msg`Participants: {current}/{max}`.id, {
-          current: event.participants.length,
+          current: confirmedHeadcount,
           max: event.maxParticipants
         }),
         ...(event.idealParticipants
@@ -270,6 +283,20 @@ export const EventDetailsPage: React.FC = () => {
     downloadICalFile(icalContent, filename)
   }
 
+  const sanitizePlusAttendees = () => {
+    const trimmed = plusAttendees.map((name) => name.trim())
+    const hasAnyGuest = trimmed.some(Boolean)
+    const hasEmptyName = trimmed.some(
+      (name, index) => hasAnyGuest && plusAttendees[index] !== undefined && !name
+    )
+
+    if (hasEmptyName) {
+      throw new Error(i18n._(msg`Please enter a name for each guest.`))
+    }
+
+    return trimmed.filter(Boolean).slice(0, 2)
+  }
+
   const handleJoinEvent = async () => {
     if (!event) {
       return
@@ -283,13 +310,17 @@ export const EventDetailsPage: React.FC = () => {
 
     try {
       setIsJoining(true)
-      const response = await joinEvent({ data: { eventId: event.id } })
+      const cleanedPlusAttendees = sanitizePlusAttendees()
+      const response = await joinEvent({
+        data: { eventId: event.id, plusAttendees: cleanedPlusAttendees }
+      })
 
       if (response?.participants) {
         setEvent((prev) => ({
           ...prev,
           participants: response.participants.confirmed,
-          waitlist: response.participants.waitlisted
+          waitlist: response.participants.waitlisted,
+          participantPlusOnes: response.participants.plusAttendees
         }))
 
         const existingIds = new Set(participants.map((u) => u.id))
@@ -302,6 +333,13 @@ export const EventDetailsPage: React.FC = () => {
             newParticipantIds.map((id) => getUserById({ data: id }))
           )
           setParticipants((prev) => [...prev, ...newParticipants])
+        }
+
+        if (currentUserId) {
+          setPlusAttendees(
+            response.participants.plusAttendees[currentUserId] ||
+            cleanedPlusAttendees
+          )
         }
       }
 
@@ -338,10 +376,15 @@ export const EventDetailsPage: React.FC = () => {
         setEvent((prev) => ({
           ...prev,
           participants: response.participants.confirmed,
-          waitlist: response.participants.waitlisted
+          waitlist: response.participants.waitlisted,
+          participantPlusOnes: response.participants.plusAttendees
         }))
 
-        // Removed user is naturally filtered out from participants list render 
+        if (currentUserId) {
+          setPlusAttendees([])
+        }
+
+        // Removed user is naturally filtered out from participants list render
         // because event.participants (ids) is updated.
         // But we might want to keep the user object in `participants` state 
         // so we don't have to refetch if they rejoin? 
@@ -360,6 +403,49 @@ export const EventDetailsPage: React.FC = () => {
       toast.error(message)
     } finally {
       setIsJoining(false)
+    }
+  }
+
+  const handlePlusAttendeeChange = (index: number, value: string) => {
+    setPlusAttendees((prev) => {
+      const updated = [...prev]
+      updated[index] = value
+      return updated
+    })
+  }
+
+  const handleSavePlusAttendees = async () => {
+    if (!event || !currentUserId) return
+
+    try {
+      setIsUpdatingGuests(true)
+      const cleanedPlusAttendees = sanitizePlusAttendees()
+
+      const response = await updatePlusAttendees({
+        data: { eventId: event.id, plusAttendees: cleanedPlusAttendees }
+      })
+
+      if (response?.participants) {
+        setEvent((prev) => ({
+          ...prev,
+          participants: response.participants.confirmed,
+          waitlist: response.participants.waitlisted,
+          participantPlusOnes: response.participants.plusAttendees
+        }))
+        setPlusAttendees(
+          response.participants.plusAttendees[currentUserId] ||
+            cleanedPlusAttendees
+        )
+        toast.success(i18n._(msg`Guest list updated.`))
+      }
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : i18n._(msg`Failed to update guests. Please try again.`)
+      toast.error(message)
+    } finally {
+      setIsUpdatingGuests(false)
     }
   }
 
@@ -778,12 +864,16 @@ export const EventDetailsPage: React.FC = () => {
                     </div>
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-gray-700 text-lg">
-                        <Trans>Price per person({event.minParticipants > participantUsers.length ? event.minParticipants : participantUsers.length} people):</Trans>
+                        <Trans>
+                          Price per person(
+                          {Math.max(event.minParticipants, confirmedHeadcount)}
+                          people):
+                        </Trans>
                       </span>
                       <span className="font-bold text-2xl text-primary-600">
                         {(
                           event.price /
-                          Math.max(event.minParticipants, participantUsers.length)
+                          Math.max(event.minParticipants, confirmedHeadcount)
                         ).toLocaleString(undefined, {
                           minimumFractionDigits: 0,
                           maximumFractionDigits: 2,
@@ -849,7 +939,7 @@ export const EventDetailsPage: React.FC = () => {
                           : 'text-orange-500'
                           }`}
                       >
-                        {event.participants.length}
+                        {confirmedHeadcount}
                       </span>
                       <span className="text-xl text-gray-400 font-medium">
                         / {event.maxParticipants}
@@ -863,8 +953,7 @@ export const EventDetailsPage: React.FC = () => {
                         style={{
                           width: `${Math.min(
                             100,
-                            (event.participants.length / event.maxParticipants) *
-                            100
+                            (confirmedHeadcount / event.maxParticipants) * 100
                           )}%`
                         }}
                       />
@@ -878,6 +967,51 @@ export const EventDetailsPage: React.FC = () => {
                         {i18n._(msg`Ideal: {count} players`.id, {
                           count: event.idealParticipants
                         })}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center justify-between">
+                      <div className="text-sm font-medium text-gray-700 flex items-center">
+                        <Users size={16} className="mr-2 text-primary-600" />
+                        <Trans>Bringing guests?</Trans>
+                      </div>
+                      <span className="text-xs text-gray-500">
+                        <Trans>Up to 2 names</Trans>
+                      </span>
+                    </div>
+
+                    {[0, 1].map((index) => (
+                      <input
+                        key={index}
+                        type="text"
+                        value={plusAttendees[index] || ''}
+                        onChange={(e) =>
+                          handlePlusAttendeeChange(index, e.target.value)
+                        }
+                        placeholder={i18n._(
+                          msg`Guest {index, number} name (optional)`.id,
+                          { index: index + 1 }
+                        )}
+                        className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none"
+                      />
+                    ))}
+
+                    {isParticipant && (
+                      <div className="flex justify-end">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          disabled={isUpdatingGuests || isJoining}
+                          onClick={handleSavePlusAttendees}
+                        >
+                          {isUpdatingGuests ? (
+                            <Trans>Saving...</Trans>
+                          ) : (
+                            <Trans>Save guests</Trans>
+                          )}
+                        </Button>
                       </div>
                     )}
                   </div>
@@ -960,6 +1094,14 @@ export const EventDetailsPage: React.FC = () => {
                               karmaPoints: user?.karmaPoints ?? 0
                             })}
                           </div>
+                          {user?.id &&
+                            (event.participantPlusOnes?.[user.id]?.length ?? 0) >
+                            0 && (
+                              <div className="text-xs text-gray-500">
+                                <Trans>Guests:</Trans>{' '}
+                                {event.participantPlusOnes[user.id].join(', ')}
+                              </div>
+                            )}
                         </div>
                       </div>
 

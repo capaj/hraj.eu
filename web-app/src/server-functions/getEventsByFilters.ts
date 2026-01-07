@@ -29,7 +29,8 @@ export const getEventsByFilters = createServerFn({ method: 'GET' })
         const participants = await db
           .select({
             userId: participantT.userId,
-            status: participantT.status
+            status: participantT.status,
+            plusAttendees: participantT.plusAttendees
           })
           .from(participantT)
           .where(eq(participantT.eventId, event.id))
@@ -41,6 +42,14 @@ export const getEventsByFilters = createServerFn({ method: 'GET' })
         const waitlistedParticipants = participants
           .filter((p) => p.status === 'waitlisted')
           .map((p) => p.userId)
+
+        const participantPlusOnes = participants.reduce(
+          (acc, participant) => {
+            acc[participant.userId] = participant.plusAttendees || []
+            return acc
+          },
+          {} as Record<string, string[]>
+        )
 
         return {
           id: event.id,
@@ -68,6 +77,7 @@ export const getEventsByFilters = createServerFn({ method: 'GET' })
           organizerId: event.organizerId,
           participants: confirmedParticipants,
           waitlist: waitlistedParticipants,
+          participantPlusOnes,
           status: event.status as Event['status'],
           allowedSkillLevels: event.requiredSkillLevel
             ? [event.requiredSkillLevel]

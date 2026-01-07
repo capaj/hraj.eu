@@ -9,6 +9,7 @@ import { SPORTS } from '../../lib/constants';
 import { format, isPast } from 'date-fns';
 import { getEventDateTime } from '../../utils/eventDateTime';
 import { t } from "@lingui/core/macro";
+import { getConfirmedHeadcount } from '../../utils/participants';
 
 
 interface EventCardProps {
@@ -27,10 +28,11 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
 
   const sport = SPORTS.find(s => s.id === event.sport);
   const venue = venues?.find(v => v.id === event.venueId);
-  const isSpotAvailable = event.participants.length < event.maxParticipants;
-  const spotsLeft = event.maxParticipants - event.participants.length;
-  const isIdealReached = event.idealParticipants && event.participants.length >= event.idealParticipants;
-  const isMinimumReached = event.participants.length >= event.minParticipants;
+  const confirmedHeadcount = getConfirmedHeadcount(event);
+  const isSpotAvailable = confirmedHeadcount < event.maxParticipants;
+  const spotsLeft = event.maxParticipants - confirmedHeadcount;
+  const isIdealReached = event.idealParticipants && confirmedHeadcount >= event.idealParticipants;
+  const isMinimumReached = confirmedHeadcount >= event.minParticipants;
   const isParticipant = currentUserId ? event.participants.includes(currentUserId) : false;
   const isWaitlisted = currentUserId ? event.waitlist?.includes(currentUserId) : false;
 
@@ -38,7 +40,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
     if (!isMinimumReached) {
       return {
         variant: 'error' as const,
-        text: `Need ${event.minParticipants - event.participants.length} more to confirm`,
+        text: `Need ${event.minParticipants - confirmedHeadcount} more to confirm`,
         icon: '⚠️'
       };
     } else if (isIdealReached) {
@@ -50,7 +52,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
     } else {
       return {
         variant: 'warning' as const,
-        text: `${event.idealParticipants! - event.participants.length} to ideal`,
+        text: `${event.idealParticipants! - confirmedHeadcount} to ideal`,
         icon: '🎯'
       };
     }
@@ -89,7 +91,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
           <div className="flex items-center text-sm text-gray-600">
             <Users size={16} className="mr-2" />
             <span>
-              {event.participants.length}/{event.maxParticipants} players
+              {confirmedHeadcount}/{event.maxParticipants} players
               {event.idealParticipants && (
                 <span className="text-gray-500 ml-1">(ideal: {event.idealParticipants})</span>
               )}
