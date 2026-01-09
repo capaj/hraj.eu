@@ -16,6 +16,10 @@ export function createRouter() {
 let routerSingleton: ReturnType<typeof createRouter> | null = null
 
 export function getRouter() {
+  if (typeof window === 'undefined') {
+    return createRouter()
+  }
+
   if (!routerSingleton) {
     routerSingleton = createRouter()
   }
