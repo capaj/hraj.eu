@@ -40,7 +40,8 @@ import {
   Send,
   Edit,
   ChevronDown,
-  Copy
+  Copy,
+  Trash2
 } from 'lucide-react'
 import { format, isPast, addMinutes } from 'date-fns'
 import { enUS, cs } from 'date-fns/locale'
@@ -203,6 +204,29 @@ export const EventDetailsPage: React.FC = () => {
 
   const eventStatus = getEventStatus()
   const dateLocale = i18n.locale === 'cs' ? cs : enUS
+
+  let joinButtonText = i18n._(msg`Join Waitlist`)
+  if (isParticipant) {
+    joinButtonText = i18n._(msg`You are playing`)
+  } else if (isSpotAvailable) {
+    joinButtonText = i18n._(msg`Join Game`)
+  }
+
+  let venueTypeText = i18n._(msg`Outdoor venue`)
+  if (venue?.type === 'indoor') {
+    venueTypeText = i18n._(msg`Indoor venue`)
+  } else if (venue?.type === 'mixed') {
+    venueTypeText = i18n._(msg`Indoor & outdoor venue`)
+  }
+
+  let karmaPlaceholder = i18n._(
+    msg`Share your experience playing with this person...`
+  )
+  if (reportType === 'no-show') {
+    karmaPlaceholder = i18n._(msg`Please describe what happened...`)
+  } else if (reportType === 'bad-behavior') {
+    karmaPlaceholder = i18n._(msg`Please describe the behavior issue...`)
+  }
 
   const getCancellationDeadline = () => {
     if (!event.cancellationDeadlineHours) return null
@@ -408,11 +432,38 @@ export const EventDetailsPage: React.FC = () => {
 
   const handlePlusAttendeeChange = (index: number, value: string) => {
     setPlusAttendees((prev) => {
-      const updated = [...prev]
+      const updated = prev.slice()
       updated[index] = value
       return updated
     })
   }
+
+  const handleRemovePlusAttendee = (index: number) => {
+    setPlusAttendees((prev) => {
+      if (index < 0 || index >= prev.length) return prev
+      const updated = prev.slice()
+      updated.splice(index, 1)
+      return updated
+    })
+  }
+
+  const normalizePlusAttendees = (attendees: string[]) =>
+    attendees
+      .map((name) => name.trim())
+      .filter(Boolean)
+      .slice(0, 2)
+
+  const arePlusAttendeesEqual = (a: string[], b: string[]) =>
+    a.length === b.length && a.every((name, index) => name === b[index])
+
+  const savedPlusAttendees = currentUserId
+    ? (event.participantPlusOnes?.[currentUserId] ?? [])
+    : []
+
+  const isGuestsFormDirty = !arePlusAttendeesEqual(
+    normalizePlusAttendees(plusAttendees),
+    normalizePlusAttendees(savedPlusAttendees)
+  )
 
   const handleSavePlusAttendees = async () => {
     if (!event || !currentUserId) return
@@ -434,7 +485,7 @@ export const EventDetailsPage: React.FC = () => {
         }))
         setPlusAttendees(
           response.participants.plusAttendees[currentUserId] ||
-            cleanedPlusAttendees
+          cleanedPlusAttendees
         )
         toast.success(i18n._(msg`Guest list updated.`))
       }
@@ -983,19 +1034,29 @@ export const EventDetailsPage: React.FC = () => {
                     </div>
 
                     {[0, 1].map((index) => (
-                      <input
-                        key={index}
-                        type="text"
-                        value={plusAttendees[index] || ''}
-                        onChange={(e) =>
-                          handlePlusAttendeeChange(index, e.target.value)
-                        }
-                        placeholder={i18n._(
-                          msg`Guest {index, number} name (optional)`.id,
-                          { index: index + 1 }
-                        )}
-                        className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none"
-                      />
+                      <div key={index} className="relative">
+                        <input
+                          type="text"
+                          value={plusAttendees[index] || ''}
+                          onChange={(e) =>
+                            handlePlusAttendeeChange(index, e.target.value)
+                          }
+                          placeholder={i18n._(
+                            msg`Guest {index, number} name (optional)`.id,
+                            { index: index + 1 }
+                          )}
+                          className="w-full rounded-lg border border-gray-200 pl-3 pr-10 py-2 text-sm focus:border-primary-500 focus:outline-none"
+                        />
+                        <button
+                          type="button"
+                          className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed"
+                          disabled={index >= plusAttendees.length}
+                          onClick={() => handleRemovePlusAttendee(index)}
+                          aria-label={i18n._(msg`Remove`)}
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
                     ))}
 
                     {isParticipant && (
@@ -1003,7 +1064,11 @@ export const EventDetailsPage: React.FC = () => {
                         <Button
                           variant="outline"
                           size="sm"
-                          disabled={isUpdatingGuests || isJoining}
+                          disabled={
+                            isUpdatingGuests ||
+                            isJoining ||
+                            !isGuestsFormDirty
+                          }
                           onClick={handleSavePlusAttendees}
                         >
                           {isUpdatingGuests ? (
@@ -1023,11 +1088,7 @@ export const EventDetailsPage: React.FC = () => {
                     disabled={isJoining || isParticipant}
                     onClick={handleJoinEvent}
                   >
-                    {isParticipant
-                      ? i18n._(msg`You are playing`)
-                      : isSpotAvailable
-                        ? i18n._(msg`Join Game`)
-                        : i18n._(msg`Join Waitlist`)}
+                    {joinButtonText}
                   </Button>
 
                   <div className="text-xs text-gray-500 text-center">
@@ -1212,11 +1273,7 @@ export const EventDetailsPage: React.FC = () => {
                       </p>
                     </div>
                     <Badge variant="default">
-                      {venue.type === 'indoor'
-                        ? i18n._(msg`Indoor venue`)
-                        : venue.type === 'mixed'
-                          ? i18n._(msg`Indoor & outdoor venue`)
-                          : i18n._(msg`Outdoor venue`)}
+                      {venueTypeText}
                     </Badge>
                   </div>
 
@@ -1511,15 +1568,7 @@ export const EventDetailsPage: React.FC = () => {
                     onChange={(e) => setKarmaComment(e.target.value)}
                     rows={3}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    placeholder={
-                      reportType === 'no-show'
-                        ? i18n._(msg`Please describe what happened...`)
-                        : reportType === 'bad-behavior'
-                          ? i18n._(msg`Please describe the behavior issue...`)
-                          : i18n._(
-                            msg`Share your experience playing with this person...`
-                          )
-                    }
+                    placeholder={karmaPlaceholder}
                     required={reportType !== 'none'}
                   />
                 </div>
