@@ -10,12 +10,12 @@
 		"bump": "ncu -u"
 	},
 	"dependencies": {
-		"@libsql/client": "^0.15.15",
+		"@libsql/client": "^0.17.0",
 		"drizzle-orm": "^0.45.1",
-		"resend": "^6.6.0"
+		"resend": "^6.8.0"
 	},
 	"devDependencies": {
 		"typescript": "^5.9.3",
-		"wrangler": "^4.54.0"
+		"wrangler": "^4.59.3"
 	}
 }
