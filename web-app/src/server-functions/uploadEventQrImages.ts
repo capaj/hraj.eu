@@ -4,7 +4,8 @@ import { uploadFileToR2 } from './utils'
 const MAX_FILES_PER_REQUEST = 10
 const MAX_MB_PER_FILE = 10
 const MAX_BYTES_PER_FILE = MAX_MB_PER_FILE * 1024 * 1024
-const ALLOWED_MIME_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp'])
+const ALLOWED_MIME_TYPES = new Set(['image/png', 'image/jpeg', 'image/jpg', 'image/webp'])
+const ALLOWED_EXTENSIONS = new Set(['png', 'jpg', 'jpeg', 'webp'])
 
 export const uploadEventQrImages = createServerFn({ method: 'POST' })
   .inputValidator((formData: FormData) => formData)
@@ -32,6 +33,11 @@ export const uploadEventQrImages = createServerFn({ method: 'POST' })
     for (const file of nonEmptyFiles) {
       if (file.size > MAX_BYTES_PER_FILE) {
         throw new Error(`File too large (max ${MAX_MB_PER_FILE}MB): ${file.name}`)
+      }
+
+      const extension = file.name.split('.').pop()?.toLowerCase()
+      if (!extension || !ALLOWED_EXTENSIONS.has(extension)) {
+        throw new Error(`Unsupported image file extension: ${file.name}`)
       }
 
       if (!ALLOWED_MIME_TYPES.has(file.type)) {
