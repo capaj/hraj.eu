@@ -28,19 +28,25 @@ export const uploadEventQrImages = createServerFn({ method: 'POST' })
       throw new Error(`Too many files (max ${MAX_FILES_PER_REQUEST})`)
     }
 
+    const validationErrors: string[] = []
+
     for (const file of nonEmptyFiles) {
       if (file.size > MAX_BYTES_PER_FILE) {
-        throw new Error(`File too large (max ${MAX_MB_PER_FILE}MB): ${file.name}`)
+        validationErrors.push(`File too large (max ${MAX_MB_PER_FILE}MB): ${file.name}`)
       }
 
       const extension = file.name.split('.').pop()?.toLowerCase()
       if (!extension || !ALLOWED_EXTENSIONS.has(extension)) {
-        throw new Error(`Unsupported image file extension: ${file.name}`)
+        validationErrors.push(`Unsupported image file extension: ${file.name}`)
       }
 
       if (!ALLOWED_MIME_TYPES.has(file.type)) {
-        throw new Error(`Unsupported image type: ${file.type}`)
+        validationErrors.push(`Unsupported image type: ${file.type}`)
       }
+    }
+
+    if (validationErrors.length > 0) {
+      throw new Error(validationErrors.join('; '))
     }
 
     const uploadedUrls: string[] = []
