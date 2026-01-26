@@ -192,7 +192,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     const files = event.target.files
     if (!files) return
 
-    const remainingSlots = MAX_QR_IMAGES - formData.qrCodeImages.length
+    const remainingSlots = MAX_QR_IMAGES - new Set(formData.qrCodeImages).size
     if (remainingSlots <= 0) {
       alert(i18n._(t`You can upload a maximum of ${MAX_QR_IMAGES} QR code images.`))
       event.target.value = ''
@@ -233,17 +233,10 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     updateQrCodeImages((prev) => prev.filter((_, idx) => idx !== index))
   }
 
-  const handleChange = (field: keyof CreateEventFormData, value: unknown) => {
-    if (field === 'qrCodeImages') {
-      const incoming =
-        Array.isArray(value)
-          ? value.filter((url): url is string => typeof url === 'string')
-          : []
-
-      updateQrCodeImages(() => mergeQrCodeImageUrls([], incoming, MAX_QR_IMAGES))
-      return
-    }
-
+  const handleChange = (
+    field: Exclude<keyof CreateEventFormData, 'qrCodeImages'>,
+    value: unknown
+  ) => {
     setFormData((prev) => {
       const newData: CreateEventFormData = { ...prev, [field]: value as any }
 
