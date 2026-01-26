@@ -85,6 +85,7 @@ export const eventT = sqliteTable(
     })
       .default('open')
       .notNull(),
+    qrCodeImages: text('qr_code_images', { mode: 'json' }).$type<string[]>(),
 
     cancellationCheckRanAt: integer('cancellation_check_ran_at', {
       mode: 'timestamp'

@@ -39,6 +39,7 @@ import {
   MessageCircle,
   Send,
   Edit,
+  X,
   ChevronDown,
   Copy,
   Trash2
@@ -109,6 +110,7 @@ export const EventDetailsPage: React.FC = () => {
   const [isParticipantsExpanded, setIsParticipantsExpanded] = useState(false)
   const [plusAttendees, setPlusAttendees] = useState<string[]>([])
   const [isUpdatingGuests, setIsUpdatingGuests] = useState(false)
+  const [selectedQrImage, setSelectedQrImage] = useState<string | null>(null)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -894,6 +896,38 @@ export const EventDetailsPage: React.FC = () => {
               </CardContent>
             </Card>
 
+            {event.qrCodeImages && event.qrCodeImages.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <h2 className="text-xl font-semibold text-gray-900 flex items-center">
+                    <ImageIcon size={18} className="mr-2 text-primary-600" />
+                    <Trans>QR Codes</Trans>
+                  </h2>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <p className="text-sm text-gray-600 mb-4">
+                    <Trans>Click a QR code to view it larger.</Trans>
+                  </p>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {event.qrCodeImages.map((image, index) => (
+                      <button
+                        key={`${image}-${index}`}
+                        type="button"
+                        onClick={() => setSelectedQrImage(image)}
+                        className="relative rounded-lg overflow-hidden border border-gray-200 bg-gray-50 hover:shadow-md transition-shadow"
+                      >
+                        <img
+                          src={image}
+                          alt={i18n._(msg`QR code image ${index + 1}`)}
+                          className="w-full h-40 object-contain"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             {/* Payment Info */}
             {event.price && (
               <Card>
@@ -1454,6 +1488,32 @@ export const EventDetailsPage: React.FC = () => {
           </Card>
         )}
       </div>
+
+      {selectedQrImage && (
+        <div
+          className="fixed inset-0 z-[4000] bg-black/80 flex items-center justify-center p-4"
+          onClick={() => setSelectedQrImage(null)}
+        >
+          <div
+            className="relative max-w-4xl w-full"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setSelectedQrImage(null)}
+              className="absolute -top-12 right-0 text-white hover:text-gray-200"
+              aria-label={i18n._(msg`Close`)}
+            >
+              <X size={28} />
+            </button>
+            <img
+              src={selectedQrImage}
+              alt={i18n._(msg`QR code enlarged`)}
+              className="w-full max-h-[80vh] object-contain rounded-lg bg-white"
+            />
+          </div>
+        </div>
+      )}
 
       {/* Karma Feedback Modal */}
       {

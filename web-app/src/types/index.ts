@@ -78,6 +78,7 @@ export interface Event {
   status: 'draft' | 'open' | 'confirmed' | 'cancelled' | 'completed'
   allowedSkillLevels?: string[]
   requireSkillLevel?: boolean
+  qrCodeImages?: string[]
   createdAt: Date
   updatedAt: Date
 }

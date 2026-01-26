@@ -83,6 +83,7 @@ export const getEventsByFilters = createServerFn({ method: 'GET' })
             ? [event.requiredSkillLevel]
             : undefined,
           requireSkillLevel: !!event.requiredSkillLevel,
+          qrCodeImages: event.qrCodeImages || [],
           createdAt: new Date(event.createdAt),
           updatedAt: new Date(event.updatedAt)
         } as Event
