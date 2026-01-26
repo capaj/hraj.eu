@@ -28,8 +28,6 @@ export const uploadEventQrImages = createServerFn({ method: 'POST' })
       throw new Error(`Too many files (max ${MAX_FILES_PER_REQUEST})`)
     }
 
-    const uploadedUrls: string[] = []
-
     for (const file of nonEmptyFiles) {
       if (file.size > MAX_BYTES_PER_FILE) {
         throw new Error(`File too large (max ${MAX_MB_PER_FILE}MB): ${file.name}`)
@@ -43,7 +41,11 @@ export const uploadEventQrImages = createServerFn({ method: 'POST' })
       if (!ALLOWED_MIME_TYPES.has(file.type)) {
         throw new Error(`Unsupported image type: ${file.type}`)
       }
+    }
 
+    const uploadedUrls: string[] = []
+
+    for (const file of nonEmptyFiles) {
       const url = await uploadFileToR2(file, 'event-qr-codes')
       uploadedUrls.push(url)
     }
