@@ -116,7 +116,10 @@ export const EventDetailsPage: React.FC = () => {
 
   useEffect(() => {
     if (!selectedQrImage) {
-      previouslyFocusedElementRef.current?.focus?.()
+      const previouslyFocusedElement = previouslyFocusedElementRef.current
+      if (previouslyFocusedElement?.isConnected) {
+        previouslyFocusedElement.focus()
+      }
       previouslyFocusedElementRef.current = null
       return
     }

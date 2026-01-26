@@ -48,7 +48,6 @@ export const uploadEventQrImages = createServerFn({ method: 'POST' })
     if (validationErrors.length > 0) {
       throw new Error(validationErrors.join('; '))
     }
-
     const uploadedUrls: string[] = []
 
     for (const file of nonEmptyFiles) {
