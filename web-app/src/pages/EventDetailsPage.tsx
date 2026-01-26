@@ -129,7 +129,9 @@ export const EventDetailsPage: React.FC = () => {
     }
 
     if (!previouslyFocusedElementRef.current) {
-      previouslyFocusedElementRef.current = document.activeElement as HTMLElement | null
+      const activeElement = document.activeElement
+      previouslyFocusedElementRef.current =
+        activeElement instanceof HTMLElement ? activeElement : null
     }
 
     closeQrImageButtonRef.current?.focus()
