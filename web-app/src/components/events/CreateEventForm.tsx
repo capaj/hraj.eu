@@ -194,7 +194,8 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     const files = event.target.files
     if (!files) return
 
-    const remainingSlots = MAX_QR_IMAGES - new Set(formData.qrCodeImages).size
+    const currentUniqueCount = mergeQrCodeImageUrls([], formData.qrCodeImages, MAX_QR_IMAGES).length
+    const remainingSlots = MAX_QR_IMAGES - currentUniqueCount
     if (remainingSlots <= 0) {
       alert(i18n._(t`You can upload a maximum of ${MAX_QR_IMAGES} QR code images.`))
       event.target.value = ''
@@ -242,7 +243,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     value: CreateEventFormData[K]
   ) => {
     setFormData((prev) => {
-      const newData: CreateEventFormData = { ...prev, [field]: value } as CreateEventFormData
+      const newData = { ...prev, [field]: value } satisfies CreateEventFormData
 
       // Auto-adjust ideal and max when min changes
       if (field === 'minParticipants') {
