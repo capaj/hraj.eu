@@ -113,6 +113,7 @@ export const EventDetailsPage: React.FC = () => {
   const [selectedQrImage, setSelectedQrImage] = useState<string | null>(null)
   const closeQrImageButtonRef = useRef<HTMLButtonElement | null>(null)
   const previouslyFocusedElementRef = useRef<HTMLElement | null>(null)
+  const qrDialogRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     if (typeof window === 'undefined' || typeof document === 'undefined') {
@@ -139,6 +140,35 @@ export const EventDetailsPage: React.FC = () => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setSelectedQrImage(null)
+      }
+
+      if (e.key === 'Tab' && qrDialogRef.current) {
+        const focusable = Array.from(
+          qrDialogRef.current.querySelectorAll<HTMLElement>(
+            'a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"]),input:not([disabled]),select:not([disabled]),textarea:not([disabled])'
+          )
+        )
+
+        if (focusable.length === 0) {
+          return
+        }
+
+        const activeElement = document.activeElement
+        const currentIndex =
+          activeElement instanceof HTMLElement
+            ? focusable.indexOf(activeElement)
+            : -1
+
+        const nextIndex = e.shiftKey
+          ? currentIndex <= 0
+            ? focusable.length - 1
+            : currentIndex - 1
+          : currentIndex === focusable.length - 1
+            ? 0
+            : currentIndex + 1
+
+        e.preventDefault()
+        focusable[nextIndex]?.focus()
       }
     }
 
@@ -1535,6 +1565,7 @@ export const EventDetailsPage: React.FC = () => {
           onClick={() => setSelectedQrImage(null)}
         >
           <div
+            ref={qrDialogRef}
             className="relative max-w-4xl w-full"
             onClick={(event) => event.stopPropagation()}
           >
