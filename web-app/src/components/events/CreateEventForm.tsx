@@ -27,6 +27,7 @@ import {
 
 const MAX_QR_IMAGES = 10
 
+// Merges existing and incoming URLs, preserving existing order and ignoring incoming duplicates.
 function mergeQrCodeImageUrls(existing: string[], incoming: string[], limit: number): string[] {
   const next = [...existing, ...incoming]
   const unique: string[] = []
@@ -179,6 +180,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     onSubmit(formData)
   }
 
+  // `qrCodeImages` is managed via this helper only; `handleChange` intentionally excludes it.
   const updateQrCodeImages = (update: (prev: string[]) => string[]) => {
     setFormData((prev) => ({
       ...prev,
