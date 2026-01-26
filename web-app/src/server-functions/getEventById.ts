@@ -23,7 +23,8 @@ export const getEventById = createServerFn({ method: 'GET' })
       .select({
         userId: participantT.userId,
         status: participantT.status,
-        plusAttendees: participantT.plusAttendees
+        plusAttendees: participantT.plusAttendees,
+        markedAsPaidAt: participantT.markedAsPaidAt
       })
       .from(participantT)
       .where(eq(participantT.eventId, event.id))
@@ -35,6 +36,20 @@ export const getEventById = createServerFn({ method: 'GET' })
     const waitlistedParticipants = participants
       .filter((p) => p.status === 'waitlisted')
       .map((p) => p.userId)
+
+    const paidParticipants = participants
+      .filter((p) => p.markedAsPaidAt)
+      .map((p) => p.userId)
+
+    const paidParticipantsAt = participants.reduce(
+      (acc, participant) => {
+        if (participant.markedAsPaidAt) {
+          acc[participant.userId] = new Date(participant.markedAsPaidAt)
+        }
+        return acc
+      },
+      {} as Record<string, Date>
+    )
 
     const participantPlusOnes = participants.reduce(
       (acc, participant) => {
@@ -71,12 +86,15 @@ export const getEventById = createServerFn({ method: 'GET' })
       organizerId: event.organizerId,
       participants: confirmedParticipants,
       waitlist: waitlistedParticipants,
+      paidParticipants,
+      paidParticipantsAt,
       participantPlusOnes,
       status: event.status as Event['status'],
       allowedSkillLevels: event.requiredSkillLevel
         ? [event.requiredSkillLevel]
         : undefined,
       requireSkillLevel: !!event.requiredSkillLevel,
+      qrCodeImages: event.qrCodeImages || [],
       createdAt: new Date(event.createdAt),
       updatedAt: new Date(event.updatedAt)
     } as Event

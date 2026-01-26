@@ -27,7 +27,8 @@ const UpdateEventSchema = z.object({
   allowedSkillLevels: z
     .array(z.enum(['beginner', 'intermediate', 'advanced']))
     .optional(),
-  requireSkillLevel: z.boolean().optional()
+  requireSkillLevel: z.boolean().optional(),
+  qrCodeImages: z.array(z.string()).optional()
 })
 
 export type UpdateEventData = z.infer<typeof UpdateEventSchema>
@@ -99,6 +100,9 @@ export const updateEvent = createServerFn({ method: 'POST' })
       updates.paymentDetails = data.paymentDetails
     if (data.gameRules !== undefined) updates.gameRules = data.gameRules
     if (data.isPublic !== undefined) updates.isPublic = data.isPublic
+    if (data.qrCodeImages !== undefined) {
+      updates.qrCodeImages = data.qrCodeImages
+    }
 
     if (data.requireSkillLevel !== undefined) {
       if (data.requireSkillLevel) {

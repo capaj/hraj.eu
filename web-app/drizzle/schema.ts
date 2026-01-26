@@ -85,6 +85,7 @@ export const eventT = sqliteTable(
     })
       .default('open')
       .notNull(),
+    qrCodeImages: text('qr_code_images', { mode: 'json' }).$type<string[]>(),
 
     cancellationCheckRanAt: integer('cancellation_check_ran_at', {
       mode: 'timestamp'
@@ -149,7 +150,7 @@ export const participantT = sqliteTable(
     plusAttendees: text('plus_attendees', { mode: 'json' })
       .$type<string[]>()
       .notNull()
-      .default(sql`json_array()`),
+      .default(sql`'[]'`),
     status: text('status', {
       enum: ['confirmed', 'cancelled', 'waitlisted', 'invited', 'declined']
     })
@@ -158,6 +159,9 @@ export const participantT = sqliteTable(
     confirmedParticipantOrdinal: integer(
       'confirmed_participant_ordinal'
     ).notNull(), // 1 based index. We multiply karma points by event participation count - this. The first user who confirms gets 100% of the karma points.
+    paymentIntentRecordedAt: integer('payment_intent_recorded_at', { mode: 'timestamp' }),
+    // users typically mark themselves as paid
+    markedAsPaidAt: integer('marked_as_paid_at', { mode: 'timestamp' }),
     createdAt: integer('created_at', { mode: 'timestamp' })
       .default(sql`unixepoch()`)
       .notNull()

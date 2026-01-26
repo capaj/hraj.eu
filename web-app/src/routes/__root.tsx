@@ -6,6 +6,7 @@ import {
   Scripts
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { useEffect } from 'react'
 import { Header } from '../components/layout/Header'
 import { Providers } from '~/lib/providers'
 import appCss from '../styles/app.css?url'
@@ -35,6 +36,12 @@ export const Route = createRootRoute({
 })
 
 function RootComponent() {
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      void import('react-grab')
+    }
+  }, [])
+
   return (
     <RootDocument>
       <div className="min-h-screen bg-gray-50">
@@ -50,16 +57,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html>
       <head>
-        <script
-          type="module"
-          dangerouslySetInnerHTML={{
-            __html: `
-              if (${import.meta.env.DEV}) {
-                import("react-grab");
-              }
-            `,
-          }}
-        />
         <HeadContent />
       </head>
       <body>

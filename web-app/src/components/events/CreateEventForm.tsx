@@ -9,6 +9,7 @@ import { VenueSelector } from '../venues/VenueSelector'
 import { AddVenueModal } from '../venues/AddVenueModal'
 import { SPORTS, SKILL_LEVELS } from '../../lib/constants'
 import { getVenues } from '~/server-functions/getVenues'
+import { uploadEventQrImages } from '~/server-functions/uploadEventQrImages'
 import { Venue, type SkillLevel } from '../../types'
 import { eventT } from '../../../drizzle/schema'
 import {
@@ -19,8 +20,27 @@ import {
   FileText,
   Info,
   Shield,
-  AlertTriangle
+  AlertTriangle,
+  Image as ImageIcon,
+  X
 } from 'lucide-react'
+
+const MAX_QR_IMAGES = 10
+
+// Merges existing and incoming URLs, preserving existing order and ignoring incoming duplicates.
+function mergeQrCodeImageUrls(existing: string[], incoming: string[], limit: number): string[] {
+  const next = [...existing, ...incoming]
+  const unique: string[] = []
+  const seen = new Set<string>()
+
+  for (const url of next) {
+    if (seen.has(url)) continue
+    seen.add(url)
+    unique.push(url)
+  }
+
+  return unique.slice(0, limit)
+}
 
 export type CreateEventFormData = Omit<
   typeof eventT.$inferInsert,
@@ -50,6 +70,7 @@ export type CreateEventFormData = Omit<
   gameRules?: string
   venueId: string
   idealParticipants: number
+  qrCodeImages: string[]
 }
 
 interface CreateEventFormProps {
@@ -92,7 +113,8 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     gameRules: initialData?.gameRules || '',
     isPublic: initialData?.isPublic ?? true,
     allowedSkillLevels: initialData?.allowedSkillLevels || ['beginner', 'intermediate', 'advanced'],
-    requireSkillLevel: initialData?.requireSkillLevel || false
+    requireSkillLevel: initialData?.requireSkillLevel || false,
+    qrCodeImages: initialData?.qrCodeImages || []
   })
 
   const [showAddVenueModal, setShowAddVenueModal] = useState(false)
@@ -100,6 +122,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const [cancellationReason, setCancellationReason] = useState('')
   const [venues, setVenues] = useState<Venue[]>([])
   const [isLoadingVenues, setIsLoadingVenues] = useState(true)
+  const [isUploadingQrCodes, setIsUploadingQrCodes] = useState(false)
 
   // Fetch venues from database
   useEffect(() => {
@@ -123,7 +146,8 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
         gameRules: initialData.gameRules || prev.gameRules,
         isPublic: initialData.isPublic ?? prev.isPublic,
         allowedSkillLevels: initialData.allowedSkillLevels || prev.allowedSkillLevels,
-        requireSkillLevel: initialData.requireSkillLevel ?? prev.requireSkillLevel
+        requireSkillLevel: initialData.requireSkillLevel ?? prev.requireSkillLevel,
+        qrCodeImages: initialData.qrCodeImages || prev.qrCodeImages
       }))
     }
   }, [initialData])
@@ -156,9 +180,70 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     onSubmit(formData)
   }
 
-  const handleChange = (field: keyof CreateEventFormData, value: unknown) => {
+  // `qrCodeImages` is managed via this helper only; `handleChange` intentionally excludes it.
+  const updateQrCodeImages = (update: (prev: string[]) => string[]) => {
+    setFormData((prev) => ({
+      ...prev,
+      qrCodeImages: update(prev.qrCodeImages)
+    }))
+  }
+
+  const handleQrCodeUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const files = event.target.files
+    if (!files) return
+
+    const currentUniqueCount = mergeQrCodeImageUrls([], formData.qrCodeImages, MAX_QR_IMAGES).length
+    const remainingSlots = MAX_QR_IMAGES - currentUniqueCount
+    if (remainingSlots <= 0) {
+      alert(i18n._(t`You can upload a maximum of ${MAX_QR_IMAGES} QR code images.`))
+      event.target.value = ''
+      return
+    }
+
+    const selectedFiles = Array.from(files)
+    const filesToUpload = selectedFiles.slice(0, remainingSlots)
+
+    if (filesToUpload.length < selectedFiles.length) {
+      alert(i18n._(t`Only ${remainingSlots} more QR code images can be uploaded for this event.`))
+    }
+
+    setIsUploadingQrCodes(true)
+
+    try {
+      const payload = new FormData()
+      filesToUpload.forEach((file) => {
+        payload.append('images', file)
+      })
+
+      const result = await uploadEventQrImages({ data: payload })
+      updateQrCodeImages((prev) => mergeQrCodeImageUrls(prev, result.urls, MAX_QR_IMAGES))
+      event.target.value = ''
+    } catch (error) {
+      console.error('QR upload failed:', error)
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : i18n._(msg`Failed to upload images. Please try again.`)
+      alert(errorMessage)
+    } finally {
+      setIsUploadingQrCodes(false)
+    }
+  }
+
+  const handleRemoveQrCode = (index: number) => {
+    updateQrCodeImages((prev) => prev.filter((_, idx) => idx !== index))
+  }
+
+  const handleChange = <
+    K extends Exclude<keyof CreateEventFormData, 'qrCodeImages'>
+  >(
+    field: K,
+    value: CreateEventFormData[K]
+  ) => {
     setFormData((prev) => {
-      const newData: CreateEventFormData = { ...prev, [field]: value as any }
+      const newData = { ...prev, [field]: value } satisfies CreateEventFormData
 
       // Auto-adjust ideal and max when min changes
       if (field === 'minParticipants') {
@@ -507,6 +592,75 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                 placeholder={i18n._(msg`No slide tackles, bring light/dark shirt, call your own fouls...`)}
               />
             </div>
+
+            {isEdit && (
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <ImageIcon size={20} className="mr-2" />
+                  <Trans>QR Codes</Trans>
+                </h3>
+                <p className="text-sm text-gray-600">
+                  <Trans>
+                    Upload QR code images for check-in, payment, or event info.
+                  </Trans>
+                </p>
+                <div className="flex flex-wrap items-center gap-3">
+                  <input
+                    type="file"
+                    id="qr-code-upload"
+                    accept="image/*"
+                    multiple
+                    onChange={handleQrCodeUpload}
+                    disabled={isUploadingQrCodes}
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor="qr-code-upload"
+                    className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 cursor-pointer ${
+                      isUploadingQrCodes ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                  >
+                    {isUploadingQrCodes ? (
+                      <Trans>Uploading...</Trans>
+                    ) : (
+                      <Trans>Select Images</Trans>
+                    )}
+                  </label>
+                  <span className="text-xs text-gray-500">
+                    <Trans>JPG, PNG up to 10MB each</Trans>
+                  </span>
+                </div>
+
+                {formData.qrCodeImages.length > 0 ? (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {formData.qrCodeImages.map((image, index) => (
+                      <div
+                        key={`${image}-${index}`}
+                        className="relative rounded-lg overflow-hidden border border-gray-200 bg-gray-50"
+                      >
+                        <img
+                          src={image}
+                          alt={i18n._(msg`QR code image ${index + 1}`)}
+                          className="w-full h-40 object-contain"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveQrCode(index)}
+                          className="absolute top-2 right-2 bg-white/90 text-gray-600 hover:text-gray-900 rounded-full p-1 shadow-sm"
+                          aria-label={i18n._(msg`Remove`)}
+                        >
+                          <X size={14} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-500">
+                    <Trans>No QR codes uploaded yet.</Trans>
+                  </p>
+                )}
+              </div>
+            )}
 
             {/* Date & Time */}
             <div className="space-y-4">

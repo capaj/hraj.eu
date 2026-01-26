@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
@@ -34,16 +34,18 @@ import {
   Mail,
   Globe,
   Image as ImageIcon,
+  Loader2,
   Facebook,
   Twitter,
   MessageCircle,
   Send,
   Edit,
+  XCircle,
   ChevronDown,
   Copy,
   Trash2
 } from 'lucide-react'
-import { format, isPast, addMinutes } from 'date-fns'
+import { format, isPast, addMinutes, formatDistanceToNow } from 'date-fns'
 import { enUS, cs } from 'date-fns/locale'
 import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
@@ -69,6 +71,9 @@ import { joinEvent } from '~/server-functions/joinEvent'
 import { leaveEvent } from '~/server-functions/leaveEvent'
 import { updatePlusAttendees } from '~/server-functions/updatePlusAttendees'
 import { getUserById } from '~/server-functions/getUserById'
+import { recordPaymentIntent } from '~/server-functions/recordPaymentIntent'
+import { markParticipantAsPaid } from '~/server-functions/markParticipantAsPaid'
+import { unmarkParticipantAsPaid } from '~/server-functions/unmarkParticipantAsPaid'
 import { User } from '../types'
 import { getEventDateTime } from '../utils/eventDateTime'
 import { getConfirmedHeadcount } from '../utils/participants'
@@ -109,6 +114,101 @@ export const EventDetailsPage: React.FC = () => {
   const [isParticipantsExpanded, setIsParticipantsExpanded] = useState(false)
   const [plusAttendees, setPlusAttendees] = useState<string[]>([])
   const [isUpdatingGuests, setIsUpdatingGuests] = useState(false)
+  const [isMarkingPaid, setIsMarkingPaid] = useState(false)
+  const [selectedQrImage, setSelectedQrImage] = useState<string | null>(null)
+  const declinePaymentButtonRef = useRef<HTMLButtonElement | null>(null)
+  const previouslyFocusedElementRef = useRef<HTMLElement | null>(null)
+  const qrDialogRef = useRef<HTMLDivElement | null>(null)
+  const currentUserId = session.data?.user?.id
+
+  // Check if current user is a participant
+  const isParticipant = currentUserId
+    ? event.participants.includes(currentUserId)
+    : false
+
+  const participantsMap = new Map(participants.map((user) => [user.id, user]))
+
+  const participantUsersList = event.participants
+    .map((id) => participantsMap.get(id))
+    .filter((user): user is NonNullable<typeof user> => user !== undefined)
+
+  const paidParticipants = new Set(event.paidParticipants ?? [])
+  const isCurrentUserPaid = currentUserId
+    ? paidParticipants.has(currentUserId)
+    : false
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return
+    }
+
+    if (!selectedQrImage) {
+      const previouslyFocusedElement = previouslyFocusedElementRef.current
+      if (previouslyFocusedElement?.isConnected) {
+        previouslyFocusedElement.focus()
+      }
+      previouslyFocusedElementRef.current = null
+      return
+    }
+
+    if (!previouslyFocusedElementRef.current) {
+      const activeElement = document.activeElement
+      previouslyFocusedElementRef.current =
+        activeElement instanceof HTMLElement ? activeElement : null
+    }
+
+    declinePaymentButtonRef.current?.focus()
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isCurrentUserPaid) {
+        e.stopPropagation()
+        setSelectedQrImage(null)
+        return
+      }
+
+      if (e.key === 'Tab' && qrDialogRef.current) {
+        if (!qrDialogRef.current.contains(document.activeElement)) {
+          return
+        }
+
+        const focusable = Array.from(
+          qrDialogRef.current.querySelectorAll<HTMLElement>(
+            'a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"]),input:not([disabled]),select:not([disabled]),textarea:not([disabled])'
+          )
+        )
+
+        if (focusable.length === 0) {
+          return
+        }
+
+        const activeElement = document.activeElement
+        let currentIndex =
+          activeElement instanceof HTMLElement
+            ? focusable.indexOf(activeElement)
+            : -1
+
+        if (currentIndex === -1) {
+          currentIndex = 0
+        }
+
+        let nextIndex: number
+        if (e.shiftKey) {
+          nextIndex = currentIndex <= 0 ? focusable.length - 1 : currentIndex - 1
+        } else {
+          nextIndex = currentIndex === focusable.length - 1 ? 0 : currentIndex + 1
+        }
+
+        e.preventDefault()
+        focusable[nextIndex]?.focus()
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [isCurrentUserPaid, selectedQrImage])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -123,6 +223,26 @@ export const EventDetailsPage: React.FC = () => {
   useEffect(() => {
     setParticipants(participantUsers || [])
   }, [participantUsers])
+
+  useEffect(() => {
+    if (!selectedQrImage || !event || !currentUserId) {
+      return
+    }
+
+    if (!event.participants.includes(currentUserId)) {
+      return
+    }
+
+    const recordIntent = async () => {
+      try {
+        await recordPaymentIntent({ data: { eventId: event.id } })
+      } catch (error) {
+        console.error('Failed to record payment intent:', error)
+      }
+    }
+
+    recordIntent()
+  }, [selectedQrImage, event, currentUserId])
 
   if (!event) {
     return (
@@ -153,17 +273,7 @@ export const EventDetailsPage: React.FC = () => {
   const eventEndTime = addMinutes(eventStartTime, durationMinutes)
   const hasEventEnded = isPast(eventEndTime)
 
-  // Get current user ID from session
-  const currentUserId = session.data?.user?.id
-  const isParticipant = currentUserId
-    ? event.participants.includes(currentUserId)
-    : false
 
-  const participantsMap = new Map(participants.map((user) => [user.id, user]))
-
-  const participantUsersList = event.participants
-    .map((id) => participantsMap.get(id))
-    .filter((user): user is NonNullable<typeof user> => user !== undefined)
 
   useEffect(() => {
     if (!currentUserId) {
@@ -204,6 +314,22 @@ export const EventDetailsPage: React.FC = () => {
 
   const eventStatus = getEventStatus()
   const dateLocale = i18n.locale === 'cs' ? cs : enUS
+
+  const paidAtForCurrentUser = currentUserId
+    ? event.paidParticipantsAt?.[currentUserId]
+    : undefined
+
+  const paidStatusText = paidAtForCurrentUser
+    ? i18n._(
+      msg`Marked as paid {timeAgo}`.id,
+      {
+        timeAgo: formatDistanceToNow(new Date(paidAtForCurrentUser), {
+          addSuffix: true,
+          locale: dateLocale
+        })
+      }
+    )
+    : i18n._(msg`Marked as paid`)
 
   let joinButtonText = i18n._(msg`Join Waitlist`)
   if (isParticipant) {
@@ -497,6 +623,88 @@ export const EventDetailsPage: React.FC = () => {
       toast.error(message)
     } finally {
       setIsUpdatingGuests(false)
+    }
+  }
+
+  const handleMarkAsPaid = async () => {
+    if (!event) return
+
+    if (!currentUserId) {
+      toast.error(i18n._(msg`Please sign in to confirm payment.`))
+      navigate({ to: '/auth/$pathname', params: { pathname: 'sign-in' } })
+      return
+    }
+
+    if (!isParticipant) {
+      toast.error(i18n._(msg`You must join this event to confirm payment.`))
+      return
+    }
+
+    try {
+      setIsMarkingPaid(true)
+      const now = new Date()
+      await markParticipantAsPaid({ data: { eventId: event.id } })
+      setEvent((prev) => {
+        const paid = new Set(prev.paidParticipants ?? [])
+        paid.add(currentUserId)
+        const paidAt = { ...(prev.paidParticipantsAt ?? {}) }
+        paidAt[currentUserId] = now
+        return {
+          ...prev,
+          paidParticipants: Array.from(paid),
+          paidParticipantsAt: paidAt
+        }
+      })
+      toast.success(i18n._(msg`Payment marked as complete.`))
+      setSelectedQrImage(null)
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : i18n._(msg`Failed to update payment status. Please try again.`)
+      toast.error(message)
+    } finally {
+      setIsMarkingPaid(false)
+    }
+  }
+
+  const handleUnmarkPayment = async () => {
+    if (!event) return
+
+    if (!currentUserId || !isParticipant) {
+      setSelectedQrImage(null)
+      return
+    }
+
+    if (!isCurrentUserPaid) {
+      setSelectedQrImage(null)
+      return
+    }
+
+    try {
+      setIsMarkingPaid(true)
+      await unmarkParticipantAsPaid({ data: { eventId: event.id } })
+      setEvent((prev) => {
+        const paid = new Set(prev.paidParticipants ?? [])
+        paid.delete(currentUserId)
+        const paidAt = { ...(prev.paidParticipantsAt ?? {}) }
+        delete paidAt[currentUserId]
+        return {
+          ...prev,
+          paidParticipants: Array.from(paid),
+          paidParticipantsAt: paidAt
+        }
+      })
+      toast.success(i18n._(msg`Payment status cleared.`))
+      setSelectedQrImage(null)
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : i18n._(msg`Failed to update payment status. Please try again.`)
+      toast.error(message)
+    } finally {
+      setIsMarkingPaid(false)
     }
   }
 
@@ -894,6 +1102,38 @@ export const EventDetailsPage: React.FC = () => {
               </CardContent>
             </Card>
 
+            {event.qrCodeImages && event.qrCodeImages.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <h2 className="text-xl font-semibold text-gray-900 flex items-center">
+                    <ImageIcon size={18} className="mr-2 text-primary-600" />
+                    <Trans>QR Codes</Trans>
+                  </h2>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <p className="text-sm text-gray-600 mb-4">
+                    <Trans>Click a QR code to view it larger.</Trans>
+                  </p>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {event.qrCodeImages.map((image, index) => (
+                      <button
+                        key={`${image}-${index}`}
+                        type="button"
+                        onClick={() => setSelectedQrImage(image)}
+                        className="relative rounded-lg overflow-hidden border border-gray-200 bg-gray-50 hover:shadow-md transition-shadow"
+                      >
+                        <img
+                          src={image}
+                          alt={i18n._(msg`QR code image ${index + 1}`)}
+                          className="w-full h-40 object-contain"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             {/* Payment Info */}
             {event.price && (
               <Card>
@@ -1148,6 +1388,18 @@ export const EventDetailsPage: React.FC = () => {
                               <Badge variant="info" size="sm">
                                 <Trans>Organizer</Trans>
                               </Badge>
+                            )}
+                            {user?.id && paidParticipants.has(user.id) && (
+                              <span
+                                className="inline-flex items-center text-green-600"
+                                title={i18n._(msg`Paid`)}
+                                aria-label={i18n._(msg`Paid`)}
+                              >
+                                <CheckCircle size={14} />
+                                <span className="sr-only">
+                                  <Trans>Paid</Trans>
+                                </span>
+                              </span>
                             )}
                           </div>
                           <div className="text-sm text-gray-500">
@@ -1454,6 +1706,85 @@ export const EventDetailsPage: React.FC = () => {
           </Card>
         )}
       </div>
+
+      {selectedQrImage && (
+        <div
+          className="fixed inset-0 z-[4000] bg-black/80 flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="qr-code-dialog-title"
+          onClick={
+            isCurrentUserPaid ? () => setSelectedQrImage(null) : undefined
+          }
+        >
+          <div
+            ref={qrDialogRef}
+            className="relative max-w-4xl w-full"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <h2 id="qr-code-dialog-title" className="sr-only">
+              {i18n._(msg`QR code enlarged`)}
+            </h2>
+            <div className="bg-white rounded-lg p-4 sm:p-6">
+              <img
+                src={selectedQrImage}
+                alt={i18n._(msg`QR code enlarged`)}
+                className="w-full max-h-[55vh] sm:max-h-[70vh] object-contain rounded-lg bg-gray-50"
+              />
+              {isParticipant && (
+                <div className="mt-6 border-t border-gray-200 pt-4">
+                  {!isCurrentUserPaid && (
+                    <p className="text-center text-lg sm:text-xl font-semibold text-gray-900">
+                      <Trans>Have you paid?</Trans>
+                    </p>
+                  )}
+                  <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                    {!isCurrentUserPaid && (
+                      <Button
+                        variant="danger"
+                        size="lg"
+                        className="w-full py-6 text-xl sm:text-2xl"
+                        onClick={handleUnmarkPayment}
+                        disabled={isMarkingPaid}
+                        ref={declinePaymentButtonRef}
+                      >
+                        <XCircle size={24} className="mr-2" />
+                        <Trans>No I have not paid</Trans>
+                      </Button>
+                    )}
+                    {isCurrentUserPaid ? (
+                      <div className="flex items-center justify-center rounded-lg border border-emerald-200 bg-emerald-50 px-6 py-6 text-center text-lg sm:text-xl font-semibold text-emerald-700 sm:col-span-2">
+                        <CheckCircle size={24} className="mr-2" />
+                        <span>{paidStatusText}</span>
+                      </div>
+                    ) : (
+                      <Button
+                        variant="primary"
+                        size="lg"
+                        className="w-full py-6 text-xl sm:text-2xl"
+                        onClick={handleMarkAsPaid}
+                        disabled={isMarkingPaid}
+                      >
+                        {isMarkingPaid ? (
+                          <>
+                            <Loader2 size={24} className="mr-2 animate-spin" />
+                            <Trans>Saving...</Trans>
+                          </>
+                        ) : (
+                          <>
+                            <CheckCircle size={24} className="mr-2" />
+                            <Trans>Yes I have paid</Trans>
+                          </>
+                        )}
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Karma Feedback Modal */}
       {

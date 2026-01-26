@@ -34,7 +34,8 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
     gameRules: event.gameRules,
     isPublic: event.isPublic,
     allowedSkillLevels: (event.allowedSkillLevels as SkillLevel[]) || undefined,
-    requireSkillLevel: event.requireSkillLevel
+    requireSkillLevel: event.requireSkillLevel,
+    qrCodeImages: event.qrCodeImages || []
   }
 
   const handleSubmit = async (eventData: CreateEventFormData) => {
@@ -62,7 +63,8 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
           gameRules: eventData.gameRules,
           isPublic: Boolean(eventData.isPublic),
           allowedSkillLevels: eventData.allowedSkillLevels,
-          requireSkillLevel: Boolean(eventData.requireSkillLevel)
+          requireSkillLevel: Boolean(eventData.requireSkillLevel),
+          qrCodeImages: eventData.qrCodeImages
         }
       })
       toast.success(i18n._(msg`Event updated successfully!`))
