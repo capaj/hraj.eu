@@ -234,6 +234,16 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   }
 
   const handleChange = (field: keyof CreateEventFormData, value: unknown) => {
+    if (field === 'qrCodeImages') {
+      const incoming =
+        Array.isArray(value)
+          ? value.filter((url): url is string => typeof url === 'string')
+          : []
+
+      updateQrCodeImages(() => mergeQrCodeImageUrls([], incoming, MAX_QR_IMAGES))
+      return
+    }
+
     setFormData((prev) => {
       const newData: CreateEventFormData = { ...prev, [field]: value as any }
 
