@@ -139,10 +139,16 @@ export const EventDetailsPage: React.FC = () => {
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
+        e.stopPropagation()
         setSelectedQrImage(null)
+        return
       }
 
       if (e.key === 'Tab' && qrDialogRef.current) {
+        if (!qrDialogRef.current.contains(document.activeElement)) {
+          return
+        }
+
         const focusable = Array.from(
           qrDialogRef.current.querySelectorAll<HTMLElement>(
             'a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"]),input:not([disabled]),select:not([disabled]),textarea:not([disabled])'
@@ -154,10 +160,14 @@ export const EventDetailsPage: React.FC = () => {
         }
 
         const activeElement = document.activeElement
-        const currentIndex =
+        let currentIndex =
           activeElement instanceof HTMLElement
             ? focusable.indexOf(activeElement)
             : -1
+
+        if (currentIndex === -1) {
+          currentIndex = 0
+        }
 
         const nextIndex = e.shiftKey
           ? currentIndex <= 0
