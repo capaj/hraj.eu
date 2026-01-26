@@ -233,12 +233,14 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     updateQrCodeImages((prev) => prev.filter((_, idx) => idx !== index))
   }
 
-  const handleChange = (
-    field: Exclude<keyof CreateEventFormData, 'qrCodeImages'>,
-    value: unknown
+  const handleChange = <
+    K extends Exclude<keyof CreateEventFormData, 'qrCodeImages'>
+  >(
+    field: K,
+    value: CreateEventFormData[K]
   ) => {
     setFormData((prev) => {
-      const newData: CreateEventFormData = { ...prev, [field]: value as any }
+      const newData: CreateEventFormData = { ...prev, [field]: value } as CreateEventFormData
 
       // Auto-adjust ideal and max when min changes
       if (field === 'minParticipants') {
