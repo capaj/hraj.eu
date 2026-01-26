@@ -1111,25 +1111,33 @@ export const EventDetailsPage: React.FC = () => {
                   </h2>
                 </CardHeader>
                 <CardContent className="p-6">
-                  <p className="text-sm text-gray-600 mb-4">
-                    <Trans>Click a QR code to view it larger.</Trans>
-                  </p>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    {event.qrCodeImages.map((image, index) => (
-                      <button
-                        key={`${image}-${index}`}
-                        type="button"
-                        onClick={() => setSelectedQrImage(image)}
-                        className="relative rounded-lg overflow-hidden border border-gray-200 bg-gray-50 hover:shadow-md transition-shadow"
-                      >
-                        <img
-                          src={image}
-                          alt={i18n._(msg`QR code image ${index + 1}`)}
-                          className="w-full h-40 object-contain"
-                        />
-                      </button>
-                    ))}
-                  </div>
+                  {isParticipant ? (
+                    <>
+                      <p className="text-sm text-gray-600 mb-4">
+                        <Trans>Click a QR code to view it larger.</Trans>
+                      </p>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        {event.qrCodeImages.map((image, index) => (
+                          <button
+                            key={`${image}-${index}`}
+                            type="button"
+                            onClick={() => setSelectedQrImage(image)}
+                            className="relative rounded-lg overflow-hidden border border-gray-200 bg-gray-50 hover:shadow-md transition-shadow"
+                          >
+                            <img
+                              src={image}
+                              alt={i18n._(msg`QR code image ${index + 1}`)}
+                              className="w-full h-40 object-contain"
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <p className="text-sm text-gray-600">
+                      <Trans>QR codes are displayed only to participants.</Trans>
+                    </p>
+                  )}
                 </CardContent>
               </Card>
             )}
