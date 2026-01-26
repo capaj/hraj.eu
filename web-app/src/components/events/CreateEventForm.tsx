@@ -27,7 +27,7 @@ import {
 
 const MAX_QR_IMAGES = 10
 
-function mergeUniqueLimitedUrls(existing: string[], incoming: string[], limit: number): string[] {
+function mergeQrCodeImageUrls(existing: string[], incoming: string[], limit: number): string[] {
   const next = [...existing, ...incoming]
   const unique: string[] = []
   const seen = new Set<string>()
@@ -179,27 +179,43 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     onSubmit(formData)
   }
 
+  const updateQrCodeImages = (update: (prev: string[]) => string[]) => {
+    setFormData((prev) => ({
+      ...prev,
+      qrCodeImages: update(prev.qrCodeImages)
+    }))
+  }
+
   const handleQrCodeUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const files = event.target.files
     if (!files) return
 
+    const remainingSlots = MAX_QR_IMAGES - formData.qrCodeImages.length
+    if (remainingSlots <= 0) {
+      alert(i18n._(t`You can upload a maximum of ${MAX_QR_IMAGES} QR code images.`))
+      event.target.value = ''
+      return
+    }
+
+    const selectedFiles = Array.from(files)
+    const filesToUpload = selectedFiles.slice(0, remainingSlots)
+
+    if (filesToUpload.length < selectedFiles.length) {
+      alert(i18n._(t`Only ${remainingSlots} more QR code images can be uploaded for this event.`))
+    }
+
     setIsUploadingQrCodes(true)
 
     try {
       const payload = new FormData()
-      Array.from(files).forEach((file) => {
+      filesToUpload.forEach((file) => {
         payload.append('images', file)
       })
 
       const result = await uploadEventQrImages({ data: payload })
-      setFormData((prev) => {
-        return {
-          ...prev,
-          qrCodeImages: mergeUniqueLimitedUrls(prev.qrCodeImages, result.urls, MAX_QR_IMAGES)
-        }
-      })
+      updateQrCodeImages((prev) => mergeQrCodeImageUrls(prev, result.urls, MAX_QR_IMAGES))
       event.target.value = ''
     } catch (error) {
       console.error('QR upload failed:', error)
@@ -214,10 +230,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   }
 
   const handleRemoveQrCode = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      qrCodeImages: prev.qrCodeImages.filter((_, idx) => idx !== index)
-    }))
+    updateQrCodeImages((prev) => prev.filter((_, idx) => idx !== index))
   }
 
   const handleChange = (field: keyof CreateEventFormData, value: unknown) => {
