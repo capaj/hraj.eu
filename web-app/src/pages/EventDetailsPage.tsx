@@ -112,11 +112,19 @@ export const EventDetailsPage: React.FC = () => {
   const [isUpdatingGuests, setIsUpdatingGuests] = useState(false)
   const [selectedQrImage, setSelectedQrImage] = useState<string | null>(null)
   const closeQrImageButtonRef = useRef<HTMLButtonElement | null>(null)
+  const previouslyFocusedElementRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
-    if (!selectedQrImage) return
+    if (!selectedQrImage) {
+      previouslyFocusedElementRef.current?.focus?.()
+      previouslyFocusedElementRef.current = null
+      return
+    }
 
-    const previousActiveElement = document.activeElement as HTMLElement | null
+    if (!previouslyFocusedElementRef.current) {
+      previouslyFocusedElementRef.current = document.activeElement as HTMLElement | null
+    }
+
     closeQrImageButtonRef.current?.focus()
 
     const onKeyDown = (e: KeyboardEvent) => {
@@ -129,7 +137,6 @@ export const EventDetailsPage: React.FC = () => {
 
     return () => {
       window.removeEventListener('keydown', onKeyDown)
-      previousActiveElement?.focus?.()
     }
   }, [selectedQrImage])
 
@@ -1515,13 +1522,16 @@ export const EventDetailsPage: React.FC = () => {
           className="fixed inset-0 z-[4000] bg-black/80 flex items-center justify-center p-4"
           role="dialog"
           aria-modal="true"
-          aria-label={i18n._(msg`QR code enlarged`)}
+          aria-labelledby="qr-code-dialog-title"
           onClick={() => setSelectedQrImage(null)}
         >
           <div
             className="relative max-w-4xl w-full"
             onClick={(event) => event.stopPropagation()}
           >
+            <h2 id="qr-code-dialog-title" className="sr-only">
+              {i18n._(msg`QR code enlarged`)}
+            </h2>
             <button
               ref={closeQrImageButtonRef}
               type="button"
