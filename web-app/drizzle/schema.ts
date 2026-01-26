@@ -159,6 +159,9 @@ export const participantT = sqliteTable(
     confirmedParticipantOrdinal: integer(
       'confirmed_participant_ordinal'
     ).notNull(), // 1 based index. We multiply karma points by event participation count - this. The first user who confirms gets 100% of the karma points.
+    paymentIntentRecordedAt: integer('payment_intent_recorded_at', { mode: 'timestamp' }),
+    // users typically mark themselves as paid
+    markedAsPaidAt: integer('marked_as_paid_at', { mode: 'timestamp' }),
     createdAt: integer('created_at', { mode: 'timestamp' })
       .default(sql`unixepoch()`)
       .notNull()
