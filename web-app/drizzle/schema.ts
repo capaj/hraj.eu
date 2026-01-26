@@ -150,7 +150,7 @@ export const participantT = sqliteTable(
     plusAttendees: text('plus_attendees', { mode: 'json' })
       .$type<string[]>()
       .notNull()
-      .default(sql`json_array()`),
+      .default(sql`'[]'`),
     status: text('status', {
       enum: ['confirmed', 'cancelled', 'waitlisted', 'invited', 'declined']
     })

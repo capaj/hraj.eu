@@ -57,6 +57,13 @@
       "when": 1767699363581,
       "tag": "0007_plus_attendees",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1769431114621,
+      "tag": "0008_add-qr-code-images",
+      "breakpoints": true
     }
   ]
 }
