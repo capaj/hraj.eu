@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
@@ -111,6 +111,27 @@ export const EventDetailsPage: React.FC = () => {
   const [plusAttendees, setPlusAttendees] = useState<string[]>([])
   const [isUpdatingGuests, setIsUpdatingGuests] = useState(false)
   const [selectedQrImage, setSelectedQrImage] = useState<string | null>(null)
+  const closeQrImageButtonRef = useRef<HTMLButtonElement | null>(null)
+
+  useEffect(() => {
+    if (!selectedQrImage) return
+
+    const previousActiveElement = document.activeElement as HTMLElement | null
+    closeQrImageButtonRef.current?.focus()
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedQrImage(null)
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      previousActiveElement?.focus?.()
+    }
+  }, [selectedQrImage])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -1492,6 +1513,9 @@ export const EventDetailsPage: React.FC = () => {
       {selectedQrImage && (
         <div
           className="fixed inset-0 z-[4000] bg-black/80 flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label={i18n._(msg`QR code enlarged`)}
           onClick={() => setSelectedQrImage(null)}
         >
           <div
@@ -1499,6 +1523,7 @@ export const EventDetailsPage: React.FC = () => {
             onClick={(event) => event.stopPropagation()}
           >
             <button
+              ref={closeQrImageButtonRef}
               type="button"
               onClick={() => setSelectedQrImage(null)}
               className="absolute -top-12 right-0 text-white hover:text-gray-200"
