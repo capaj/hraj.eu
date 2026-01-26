@@ -399,7 +399,7 @@ msgstr "Město, země"
 
 #: src/pages/EventDetailsPage.tsx:1115
 msgid "Click a QR code to view it larger."
-msgstr ""
+msgstr "Kliknutím na QR kód jej zvětšíte."
 
 #: src/pages/DiscoverPage.tsx:231
 #~ msgid "Click markers to highlight events below"
@@ -761,7 +761,7 @@ msgstr "Nepodařilo se aktualizovat oznámení"
 #: src/pages/EventDetailsPage.tsx:664
 #: src/pages/EventDetailsPage.tsx:704
 msgid "Failed to update payment status. Please try again."
-msgstr ""
+msgstr "Nepodařilo se aktualizovat stav platby. Zkuste to prosím znovu."
 
 #: src/pages/UserProfilePage.tsx:118
 msgid "Failed to update profile"
@@ -874,7 +874,7 @@ msgstr "Hosté:"
 
 #: src/pages/EventDetailsPage.tsx:1738
 msgid "Have you paid?"
-msgstr ""
+msgstr "Máte zaplaceno?"
 
 #: src/pages/EventDetailsPage.tsx:1487
 msgid "Help build our community by giving karma to players who showed good sportsmanship, or report issues if needed."
@@ -1045,11 +1045,11 @@ msgstr "Označit jako přečtené"
 
 #: src/pages/EventDetailsPage.tsx:332
 msgid "Marked as paid"
-msgstr ""
+msgstr "Označeno jako zaplacené"
 
 #: src/pages/EventDetailsPage.tsx:324
 msgid "Marked as paid {timeAgo}"
-msgstr ""
+msgstr "Označeno jako zaplacené {timeAgo}"
 
 #: src/pages/EventDetailsPage.tsx:1072
 msgid "Maximum"
@@ -1231,7 +1231,7 @@ msgstr "Nejstarší nejdříve"
 
 #: src/components/events/CreateEventForm.tsx:209
 msgid "Only {remainingSlots} more QR code images can be uploaded for this event."
-msgstr ""
+msgstr "Pro tuto událost lze nahrát už jen {remainingSlots, plural, one {jeden další obrázek} few {{remainingSlots} další obrázky} other {{remainingSlots} dalších obrázků}} QR kódů."
 
 #: src/pages/EventDetailsPage.tsx:1467
 msgid "Open spot"
@@ -1278,7 +1278,7 @@ msgstr "Celková karma"
 #: src/pages/EventDetailsPage.tsx:1396
 #: src/pages/EventDetailsPage.tsx:1400
 msgid "Paid"
-msgstr ""
+msgstr "Zaplaceno"
 
 #: src/components/venues/AddVenueModal.tsx:190
 #: src/components/venues/VenueSelector.tsx:89
@@ -1324,11 +1324,11 @@ msgstr "Platební údaje:"
 
 #: src/pages/EventDetailsPage.tsx:658
 msgid "Payment marked as complete."
-msgstr ""
+msgstr "Platba byla označena jako dokončená."
 
 #: src/pages/EventDetailsPage.tsx:698
 msgid "Payment status cleared."
-msgstr ""
+msgstr "Stav platby byl vymazán."
 
 #: src/pages/EventDetailsPage.tsx:411
 msgid "Payment: {paymentDetails}"
@@ -1422,7 +1422,7 @@ msgstr "Vyberte prosím soubor s obrázkem"
 
 #: src/pages/EventDetailsPage.tsx:633
 msgid "Please sign in to confirm payment."
-msgstr ""
+msgstr "Pro potvrzení platby se prosím přihlaste."
 
 #: src/pages/EventDetailsPage.tsx:456
 msgid "Please sign in to join this event."
