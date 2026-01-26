@@ -5,7 +5,8 @@ export const uploadEventQrImages = createServerFn({ method: 'POST' })
   .inputValidator((formData: FormData) => formData)
   .handler(async ({ data: formData }) => {
     const MAX_FILES_PER_REQUEST = 10
-    const MAX_BYTES_PER_FILE = 10 * 1024 * 1024
+    const MAX_MB_PER_FILE = 10
+    const MAX_BYTES_PER_FILE = MAX_MB_PER_FILE * 1024 * 1024
     const ALLOWED_MIME_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp'])
 
     const entries = formData.getAll('images')
@@ -23,7 +24,7 @@ export const uploadEventQrImages = createServerFn({ method: 'POST' })
 
     for (const file of nonEmptyFiles) {
       if (file.size > MAX_BYTES_PER_FILE) {
-        throw new Error(`File too large (max 10MB): ${file.name}`)
+        throw new Error(`File too large (max ${MAX_MB_PER_FILE}MB): ${file.name}`)
       }
 
       if (!ALLOWED_MIME_TYPES.has(file.type)) {
