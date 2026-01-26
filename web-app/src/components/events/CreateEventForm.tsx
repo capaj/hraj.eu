@@ -25,6 +25,22 @@ import {
   X
 } from 'lucide-react'
 
+const MAX_QR_IMAGES = 10
+
+function mergeUniqueLimitedUrls(existing: string[], incoming: string[], limit: number): string[] {
+  const next = [...existing, ...incoming]
+  const unique: string[] = []
+  const seen = new Set<string>()
+
+  for (const url of next) {
+    if (seen.has(url)) continue
+    seen.add(url)
+    unique.push(url)
+  }
+
+  return unique.slice(0, limit)
+}
+
 export type CreateEventFormData = Omit<
   typeof eventT.$inferInsert,
   | 'cancellationDeadlineMinutes'
@@ -71,8 +87,6 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   onCancelEvent,
   isEdit = !!initialData
 }) => {
-  const MAX_QR_IMAGES = 10
-
   // Calculate default date (one week from now) and format it for input
   const getDefaultDate = () => {
     const date = new Date()
@@ -181,19 +195,9 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
 
       const result = await uploadEventQrImages({ data: payload })
       setFormData((prev) => {
-        const next = [...prev.qrCodeImages, ...result.urls]
-        const unique: string[] = []
-        const seen = new Set<string>()
-
-        for (const url of next) {
-          if (seen.has(url)) continue
-          seen.add(url)
-          unique.push(url)
-        }
-
         return {
           ...prev,
-          qrCodeImages: unique.slice(0, MAX_QR_IMAGES)
+          qrCodeImages: mergeUniqueLimitedUrls(prev.qrCodeImages, result.urls, MAX_QR_IMAGES)
         }
       })
       event.target.value = ''
