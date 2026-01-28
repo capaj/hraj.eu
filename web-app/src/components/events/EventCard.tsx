@@ -60,6 +60,14 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
 
   const participantStatus = getParticipantStatus();
 
+  const getJoinButtonText = () => {
+    if (isParticipant) return 'You are playing';
+    if (isWaitlisted) return 'On Waitlist';
+    if (isJoining) return 'Joining...';
+    if (isSpotAvailable) return 'Join Game';
+    return 'Join Waitlist';
+  };
+
   return (
     <Card hover className="animate-fade-in h-full flex flex-col cursor-pointer" onClick={() => onView?.(event.id)}>
       <CardContent className="p-6 flex flex-col h-full">
@@ -122,15 +130,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
               className="flex-1"
               disabled={isJoining || isParticipant}
             >
-              {isParticipant
-                ? 'You are playing'
-                : isWaitlisted
-                  ? 'On Waitlist'
-                  : isJoining
-                    ? 'Joining...'
-                    : isSpotAvailable
-                      ? 'Join Game'
-                      : 'Join Waitlist'}
+              {getJoinButtonText()}
             </Button>
           )}
           <Link
