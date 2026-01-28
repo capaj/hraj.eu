@@ -24,7 +24,8 @@ export const getEventById = createServerFn({ method: 'GET' })
         userId: participantT.userId,
         status: participantT.status,
         plusAttendees: participantT.plusAttendees,
-        markedAsPaidAt: participantT.markedAsPaidAt
+        markedAsPaidAt: participantT.markedAsPaidAt,
+        createdAt: participantT.createdAt
       })
       .from(participantT)
       .where(eq(participantT.eventId, event.id))
@@ -35,6 +36,7 @@ export const getEventById = createServerFn({ method: 'GET' })
 
     const waitlistedParticipants = participants
       .filter((p) => p.status === 'waitlisted')
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
       .map((p) => p.userId)
 
     const paidParticipants = participants
@@ -58,6 +60,16 @@ export const getEventById = createServerFn({ method: 'GET' })
       },
       {} as Record<string, string[]>
     )
+
+    const waitlistJoinedAt = participants
+      .filter((p) => p.status === 'waitlisted')
+      .reduce(
+        (acc, participant) => {
+          acc[participant.userId] = new Date(participant.createdAt)
+          return acc
+        },
+        {} as Record<string, Date>
+      )
 
     return {
       id: event.id,
@@ -89,6 +101,7 @@ export const getEventById = createServerFn({ method: 'GET' })
       paidParticipants,
       paidParticipantsAt,
       participantPlusOnes,
+      waitlistJoinedAt,
       status: event.status as Event['status'],
       allowedSkillLevels: event.requiredSkillLevel
         ? [event.requiredSkillLevel]

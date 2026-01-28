@@ -14,8 +14,8 @@ export const Route = createFileRoute('/events/$eventId')({
     const venue = venues.find((v: any) => v.id === event.venueId)
     const organizer = await getUserById({ data: event.organizerId })
     const origin = await getRequestOrigin()
-    
-    const participantIds = [...event.participants]
+
+    const participantIds = [...event.participants, ...(event.waitlist || [])]
     const participants = participantIds.length > 0
       ? await getUsersByIds({ data: participantIds })
       : []

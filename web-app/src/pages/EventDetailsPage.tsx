@@ -1506,6 +1506,83 @@ export const EventDetailsPage: React.FC = () => {
               </CardContent>
             </Card>
 
+            {/* Waitlist */}
+            {!isSpotAvailable && (event.waitlist?.length ?? 0) > 0 && (
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                      <Users size={18} className="mr-2" />
+                      <Trans>Waitlist</Trans>
+                    </h3>
+                    <Badge variant="default" size="sm">
+                      {event.waitlist?.length}
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <div className="space-y-3">
+                    {event.waitlist?.map((userId, index) => {
+                      const user = participantsMap.get(userId)
+                      const isMe = userId === currentUserId
+                      return (
+                        <div
+                          key={userId}
+                          className={`flex items-center justify-between p-3 rounded-lg ${isMe ? 'bg-blue-50 border border-blue-200' : 'bg-gray-50'
+                            }`}
+                        >
+                          <div className="flex items-center space-x-3">
+                            <div className="w-6 text-sm text-gray-400 font-medium">
+                              #{index + 1}
+                            </div>
+                            <UserAvatar
+                              user={user || {}}
+                              className="w-10 h-10"
+                            />
+                            <div className="flex-1">
+                              <div className={`font-medium ${isMe ? 'text-blue-700' : 'text-gray-900'}`}>
+                                {isMe ? i18n._(msg`You`) : (user?.name || i18n._(msg`Player`))}
+                              </div>
+                              {event.waitlistJoinedAt?.[userId] && (
+                                <div className="text-sm text-gray-500">
+                                  {i18n._(msg`Joined {timeAgo}`.id, {
+                                    timeAgo: formatDistanceToNow(new Date(event.waitlistJoinedAt[userId]), {
+                                      addSuffix: true,
+                                      locale: dateLocale
+                                    })
+                                  })}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          {/* Leave waitlist button for current user */}
+                          {!hasEventEnded && isMe && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                              onClick={handleLeaveEvent}
+                              disabled={isJoining}
+                            >
+                              <UserX size={16} className="mr-1" />
+                              <Trans>Leave</Trans>
+                            </Button>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-gray-200">
+                    <p className="text-sm text-gray-600">
+                      <Trans>
+                        Players on the waitlist will automatically be added when spots become available.
+                      </Trans>
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
           </div>
         </div>
 
