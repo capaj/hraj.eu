@@ -961,7 +961,7 @@ msgstr "Připojte se ke své první události"
 
 #: src/pages/EventDetailsPage.tsx:1548
 msgid "Joined {timeAgo}"
-msgstr ""
+msgstr "Připojil se {timeAgo}"
 
 #: src/components/events/CreateEventForm.tsx:630
 #: src/components/venues/AddVenueModal.tsx:611
@@ -1394,7 +1394,7 @@ msgstr "Potvrzených hráčů"
 
 #: src/pages/EventDetailsPage.tsx:1577
 msgid "Players on the waitlist will automatically be added when spots become available."
-msgstr ""
+msgstr "Hráči na čekací listině budou automaticky přidáni, jakmile se uvolní místa."
 
 #. placeholder {0}: formData.sport ? SPORTS.find((s) => s.id === formData.sport) ?.name : 'this sport'
 #: src/components/events/CreateEventForm.tsx:1013
