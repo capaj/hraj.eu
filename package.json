@@ -7,9 +7,11 @@
     "typecheck": "turbo typecheck",
     "bump": "turbo bump",
     "lingui": "cd web-app && pnpm lingui:extract && pnpm lingui:compile",
-    "postinstall": "turbo postinstall"
+    "postinstall": "turbo postinstall",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
     "oxlint": "^1.36.0",
     "turbo": "^2.7.2"
   }

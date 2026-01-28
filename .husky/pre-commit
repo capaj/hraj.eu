@@ -1,0 +1,57 @@
+#!/bin/sh
+
+# Run lingui extract first to get the latest strings
+cd web-app && pnpm lingui:extract 2>/dev/null
+
+# Path to the Czech translation file
+PO_FILE="app/locales/cs.po"
+
+# Count missing translations (empty msgstr following a non-empty msgid)
+# We use awk to properly parse msgid/msgstr pairs and exclude obsolete entries (starting with #~)
+MISSING_COUNT=$(awk '
+  /^msgid "/ && !/^#~/ { 
+    msgid = $0
+    sub(/^msgid "/, "", msgid)
+    sub(/"$/, "", msgid)
+  }
+  /^msgstr ""$/ && msgid != "" { count++ }
+  END { print count+0 }
+' "$PO_FILE")
+
+if [ "$MISSING_COUNT" -eq 0 ]; then
+  echo "✅ No missing Czech translations found."
+  exit 0
+fi
+
+echo "⚠️  Found $MISSING_COUNT missing Czech translations in $PO_FILE"
+echo "🤖 Spawning Claude CLI to translate in the background..."
+
+# Run Claude CLI translation in the background
+# After translation completes, run lingui commands, stage, and commit
+(
+  cd "$(git rev-parse --show-toplevel)" || exit 1
+  
+  # Build the prompt for Claude
+  PROMPT="Please translate the missing Czech translations in web-app/app/locales/cs.po. 
+Look for entries where msgstr is empty (msgstr \"\") and fill in the Czech translation.
+Keep the same format, preserve any placeholders like {variable} or {count, plural, ...}.
+The context is a sports event organizing web application called hraj.eu.
+Only modify the msgstr lines that are empty, do not change anything else."
+
+  # Run Claude CLI with haiku 4.5 model
+  claude --model claude-3-5-haiku-latest -p "$PROMPT" 2>/dev/null
+  
+  # Run lingui extract and compile
+  pnpm lingui
+  
+  # Stage all changes
+  git add -A
+  
+  # Commit with i18n message
+  git commit -m "i18n" --no-verify
+  
+  echo "✅ i18n translation commit completed!"
+) &
+
+# Allow the main commit to proceed
+exit 0
