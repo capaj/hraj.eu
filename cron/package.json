@@ -12,10 +12,10 @@
 	"dependencies": {
 		"@libsql/client": "^0.17.0",
 		"drizzle-orm": "^0.45.1",
-		"resend": "^6.8.0"
+		"resend": "^6.9.1"
 	},
 	"devDependencies": {
 		"typescript": "^5.9.3",
-		"wrangler": "^4.60.0"
+		"wrangler": "^4.61.0"
 	}
 }
