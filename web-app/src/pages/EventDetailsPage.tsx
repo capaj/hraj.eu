@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
@@ -74,7 +74,8 @@ import { getUserById } from '~/server-functions/getUserById'
 import { recordPaymentIntent } from '~/server-functions/recordPaymentIntent'
 import { markParticipantAsPaid } from '~/server-functions/markParticipantAsPaid'
 import { unmarkParticipantAsPaid } from '~/server-functions/unmarkParticipantAsPaid'
-import { User } from '../types'
+import { addEventComment } from '~/server-functions/addEventComment'
+import { EventComment, User } from '../types'
 import { getEventDateTime } from '../utils/eventDateTime'
 import { getConfirmedHeadcount } from '../utils/participants'
 
@@ -86,6 +87,113 @@ interface KarmaFeedback {
   badBehavior?: boolean
 }
 
+const escapeRegExp = (value: string) =>
+  value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+const buildMentionRegex = (names: string[]) => {
+  if (names.length === 0) return null
+  const escapedNames = names
+    .map((name) => name.trim())
+    .filter(Boolean)
+    .sort((a, b) => b.length - a.length)
+    .map((name) => escapeRegExp(name))
+  if (escapedNames.length === 0) return null
+  return new RegExp(`@(${escapedNames.join('|')})`, 'gi')
+}
+
+const renderMentions = (text: string, mentionRegex: RegExp | null) => {
+  if (!mentionRegex) return [text]
+  mentionRegex.lastIndex = 0
+  const nodes: React.ReactNode[] = []
+  let lastIndex = 0
+  let match: RegExpExecArray | null
+  while ((match = mentionRegex.exec(text)) !== null) {
+    const matchIndex = match.index
+    if (matchIndex > lastIndex) {
+      nodes.push(text.slice(lastIndex, matchIndex))
+    }
+    nodes.push(
+      <span
+        key={`mention-${matchIndex}-${match[0]}`}
+        className="font-semibold text-primary-600"
+      >
+        {match[0]}
+      </span>
+    )
+    lastIndex = matchIndex + match[0].length
+  }
+  if (lastIndex < text.length) {
+    nodes.push(text.slice(lastIndex))
+  }
+  return nodes
+}
+
+const renderMarkdownSegments = (
+  text: string,
+  mentionRegex: RegExp | null
+): React.ReactNode[] => {
+  const patterns = [
+    { type: 'bold', regex: /\*\*(.+?)\*\*/s },
+    { type: 'underline', regex: /__(.+?)__/s },
+    { type: 'italic', regex: /\*(.+?)\*/s }
+  ]
+
+  let earliestMatch:
+    | { type: string; match: RegExpExecArray; index: number }
+    | undefined
+
+  for (const pattern of patterns) {
+    const match = pattern.regex.exec(text)
+    if (match && (earliestMatch === undefined || match.index < earliestMatch.index)) {
+      earliestMatch = { type: pattern.type, match, index: match.index }
+    }
+  }
+
+  if (!earliestMatch) {
+    return renderMentions(text, mentionRegex)
+  }
+
+  const before = text.slice(0, earliestMatch.index)
+  const after = text.slice(earliestMatch.index + earliestMatch.match[0].length)
+  const inner = earliestMatch.match[1]
+
+  const nodes: React.ReactNode[] = []
+  if (before) {
+    nodes.push(...renderMentions(before, mentionRegex))
+  }
+
+  const innerNodes = renderMarkdownSegments(inner, mentionRegex)
+
+  if (earliestMatch.type === 'bold') {
+    nodes.push(<strong key={`bold-${earliestMatch.index}`}>{innerNodes}</strong>)
+  } else if (earliestMatch.type === 'underline') {
+    nodes.push(
+      <span key={`underline-${earliestMatch.index}`} className="underline">
+        {innerNodes}
+      </span>
+    )
+  } else if (earliestMatch.type === 'italic') {
+    nodes.push(<em key={`italic-${earliestMatch.index}`}>{innerNodes}</em>)
+  }
+
+  if (after) {
+    nodes.push(...renderMarkdownSegments(after, mentionRegex))
+  }
+
+  return nodes
+}
+
+const renderCommentContent = (content: string, mentionRegex: RegExp | null) => {
+  const lines = content.split(/\r?\n/)
+  return lines.flatMap((line, index) => {
+    const nodes = renderMarkdownSegments(line, mentionRegex)
+    if (index < lines.length - 1) {
+      nodes.push(<br key={`line-break-${index}`} />)
+    }
+    return nodes
+  })
+}
+
 
 
 export const EventDetailsPage: React.FC = () => {
@@ -93,7 +201,8 @@ export const EventDetailsPage: React.FC = () => {
     event: initialEvent,
     venue,
     organizer,
-    participants: participantUsers
+    participants: participantUsers,
+    comments: initialComments
   } = useLoaderData({ from: '/events/$eventId' })
   const navigate = useNavigate()
   const session = authClient.useSession()
@@ -110,6 +219,11 @@ export const EventDetailsPage: React.FC = () => {
   const [participants, setParticipants] = useState<User[]>(
     participantUsers || []
   )
+  const [comments, setComments] = useState<EventComment[]>(
+    initialComments || []
+  )
+  const [commentInput, setCommentInput] = useState('')
+  const [isSubmittingComment, setIsSubmittingComment] = useState(false)
   const [shareUrl, setShareUrl] = useState('')
   const [isParticipantsExpanded, setIsParticipantsExpanded] = useState(false)
   const [plusAttendees, setPlusAttendees] = useState<string[]>([])
@@ -136,6 +250,19 @@ export const EventDetailsPage: React.FC = () => {
   const isCurrentUserPaid = currentUserId
     ? paidParticipants.has(currentUserId)
     : false
+
+  const mentionableUsers = useMemo(() => {
+    const users = [...participants]
+    if (organizer && !users.find((user) => user.id === organizer.id)) {
+      users.push(organizer)
+    }
+    return users
+  }, [participants, organizer])
+
+  const mentionRegex = useMemo(() => {
+    const names = mentionableUsers.map((user) => user.name).filter(Boolean)
+    return buildMentionRegex(names)
+  }, [mentionableUsers])
 
   useEffect(() => {
     if (typeof window === 'undefined' || typeof document === 'undefined') {
@@ -218,11 +345,16 @@ export const EventDetailsPage: React.FC = () => {
 
   useEffect(() => {
     setEvent(initialEvent)
+    setCommentInput('')
   }, [initialEvent])
 
   useEffect(() => {
     setParticipants(participantUsers || [])
   }, [participantUsers])
+
+  useEffect(() => {
+    setComments(initialComments || [])
+  }, [initialComments])
 
   useEffect(() => {
     if (!selectedQrImage || !event || !currentUserId) {
@@ -553,6 +685,37 @@ export const EventDetailsPage: React.FC = () => {
       toast.error(message)
     } finally {
       setIsJoining(false)
+    }
+  }
+
+  const handleSubmitComment = async () => {
+    if (!event?.id) return
+    if (!currentUserId) {
+      toast.error(i18n._(msg`Please sign in to comment on this event.`))
+      return
+    }
+
+    const trimmed = commentInput.trim()
+    if (!trimmed) {
+      toast.error(i18n._(msg`Please enter a comment before submitting.`))
+      return
+    }
+
+    try {
+      setIsSubmittingComment(true)
+      const newComment = await addEventComment({
+        data: { eventId: event.id, content: trimmed }
+      })
+      setComments((prev) => [...prev, newComment])
+      setCommentInput('')
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : i18n._(msg`Failed to add comment. Please try again.`)
+      toast.error(message)
+    } finally {
+      setIsSubmittingComment(false)
     }
   }
 
@@ -1503,6 +1666,102 @@ export const EventDetailsPage: React.FC = () => {
                     </div>
                   </div>
                 )}
+              </CardContent>
+            </Card>
+
+            {/* Comments */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                    <MessageCircle size={18} className="mr-2" />
+                    <Trans>Comments</Trans>
+                  </h3>
+                  <Badge variant="default" size="sm">
+                    {comments.length}
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="space-y-4">
+                  {comments.length === 0 ? (
+                    <p className="text-sm text-gray-500">
+                      <Trans>Be the first to leave a comment.</Trans>
+                    </p>
+                  ) : (
+                    comments.map((comment) => (
+                      <div
+                        key={comment.id}
+                        className="flex items-start gap-3 rounded-lg bg-gray-50 p-4"
+                      >
+                        <UserAvatar
+                          user={comment.user}
+                          className="w-10 h-10"
+                        />
+                        <div className="flex-1 space-y-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="font-medium text-gray-900">
+                              {comment.user.name}
+                            </span>
+                            <span className="text-xs text-gray-500">
+                              {formatDistanceToNow(new Date(comment.createdAt), {
+                                addSuffix: true,
+                                locale: dateLocale
+                              })}
+                            </span>
+                          </div>
+                          <div className="text-sm text-gray-700 leading-relaxed">
+                            {renderCommentContent(comment.content, mentionRegex)}
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                <div className="mt-6 border-t border-gray-200 pt-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <Trans>Leave a comment</Trans>
+                  </label>
+                  <textarea
+                    value={commentInput}
+                    onChange={(e) => setCommentInput(e.target.value)}
+                    placeholder={i18n._(
+                      msg`Share updates, ask questions, or tag players with @Name.`
+                    )}
+                    className="w-full rounded-lg border border-gray-200 p-3 text-sm focus:border-primary-500 focus:outline-none"
+                    rows={4}
+                    disabled={!currentUserId || isSubmittingComment}
+                  />
+                  <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <p className="text-xs text-gray-500">
+                      <Trans>
+                        Supports **bold**, *italic*, __underline__, and @mentions.
+                      </Trans>
+                    </p>
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={handleSubmitComment}
+                      disabled={
+                        !currentUserId ||
+                        isSubmittingComment ||
+                        !commentInput.trim()
+                      }
+                    >
+                      {isSubmittingComment ? (
+                        <Trans>Posting...</Trans>
+                      ) : (
+                        <Trans>Post comment</Trans>
+                      )}
+                    </Button>
+                  </div>
+                  {!currentUserId && (
+                    <p className="mt-2 text-xs text-gray-500">
+                      <Trans>Sign in to join the conversation.</Trans>
+                    </p>
+                  )}
+                </div>
               </CardContent>
             </Card>
 

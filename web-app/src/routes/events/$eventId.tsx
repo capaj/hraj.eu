@@ -5,6 +5,7 @@ import { getVenues } from '~/server-functions/getVenues'
 import { getUserById } from '~/server-functions/getUserById'
 import { getUsersByIds } from '~/server-functions/getUsersByIds'
 import { getRequestOrigin } from '~/server-functions/getRequestOrigin'
+import { getEventComments } from '~/server-functions/getEventComments'
 
 export const Route = createFileRoute('/events/$eventId')({
   ssr: true,
@@ -19,13 +20,15 @@ export const Route = createFileRoute('/events/$eventId')({
     const participants = participantIds.length > 0
       ? await getUsersByIds({ data: participantIds })
       : []
+    const comments = await getEventComments({ data: event.id })
 
     return {
       event,
       venue,
       organizer,
       participants,
-      origin
+      origin,
+      comments
     }
   },
   head: ({ loaderData }) => {
