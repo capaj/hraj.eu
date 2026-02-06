@@ -124,6 +124,30 @@ export const eventT = sqliteTable(
   })
 )
 
+export const eventCommentT = sqliteTable(
+  'event_comment',
+  {
+    id: text('id')
+      .$defaultFn(() => createId())
+      .primaryKey()
+      .notNull(),
+    eventId: text('event_id')
+      .notNull()
+      .references(() => eventT.id, { onDelete: 'cascade' }),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    content: text('content').notNull(),
+    createdAt: integer('created_at', { mode: 'timestamp' })
+      .default(sql`unixepoch()`)
+      .notNull()
+  },
+  (table) => ({
+    eventIdIdx: index('event_comment_event_id_idx').on(table.eventId),
+    userIdIdx: index('event_comment_user_id_idx').on(table.userId)
+  })
+)
+
 export const eventRelations = relations(eventT, ({ one, many }) => ({
   organizer: one(user, {
     fields: [eventT.organizerId],
@@ -134,7 +158,8 @@ export const eventRelations = relations(eventT, ({ one, many }) => ({
     fields: [eventT.venueId],
     references: [venueT.id]
   }),
-  participants: many(participantT)
+  participants: many(participantT),
+  comments: many(eventCommentT)
 }))
 
 export const participantT = sqliteTable(
@@ -319,7 +344,19 @@ export const userRelations = relations(user, ({ many }) => ({
   organizedEvents: many(eventT, { relationName: 'organizer' }),
   participatedEvents: many(participantT),
   createdVenues: many(venueT),
-  notifications: many(notificationT)
+  notifications: many(notificationT),
+  eventComments: many(eventCommentT)
+}))
+
+export const eventCommentRelations = relations(eventCommentT, ({ one }) => ({
+  event: one(eventT, {
+    fields: [eventCommentT.eventId],
+    references: [eventT.id]
+  }),
+  user: one(user, {
+    fields: [eventCommentT.userId],
+    references: [user.id]
+  })
 }))
 
 export const eventFeedbackT = sqliteTable(

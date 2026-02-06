@@ -106,6 +106,15 @@ export interface Notification {
   createdAt: Date
 }
 
+export interface EventComment {
+  id: string
+  eventId: string
+  userId: string
+  content: string
+  createdAt: Date
+  user: Pick<User, 'id' | 'name' | 'image'>
+}
+
 export type SkillLevel = 'beginner' | 'intermediate' | 'advanced'
 export type SportType =
   | 'football'
