@@ -2,6 +2,9 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
+import { GiphyPicker } from '../components/ui/GiphyPicker'
+import { MentionDropdown } from '../components/ui/MentionDropdown'
+import { Tooltip, TooltipTrigger, TooltipContent } from '../components/ui/tooltip'
 import { WeatherWidget } from '../components/weather/WeatherWidget'
 import { SPORTS, FACILITIES } from '../lib/constants'
 import { UserAvatar } from '../components/user/UserAvatar'
@@ -43,7 +46,8 @@ import {
   XCircle,
   ChevronDown,
   Copy,
-  Trash2
+  Trash2,
+  Info
 } from 'lucide-react'
 import { format, isPast, addMinutes, formatDistanceToNow } from 'date-fns'
 import { enUS, cs } from 'date-fns/locale'
@@ -75,6 +79,8 @@ import { recordPaymentIntent } from '~/server-functions/recordPaymentIntent'
 import { markParticipantAsPaid } from '~/server-functions/markParticipantAsPaid'
 import { unmarkParticipantAsPaid } from '~/server-functions/unmarkParticipantAsPaid'
 import { addEventComment } from '~/server-functions/addEventComment'
+import { deleteEventComment } from '~/server-functions/deleteEventComment'
+import { editEventComment } from '~/server-functions/editEventComment'
 import { EventComment, User } from '../types'
 import { getEventDateTime } from '../utils/eventDateTime'
 import { getConfirmedHeadcount } from '../utils/participants'
@@ -183,12 +189,37 @@ const renderMarkdownSegments = (
   return nodes
 }
 
+const isGifUrl = (text: string): boolean => {
+  const trimmed = text.trim()
+  return /^https?:\/\/.*\.(gif|webp)(\?.*)?$/i.test(trimmed) ||
+    /^https?:\/\/media[0-9]*\.giphy\.com\//i.test(trimmed)
+}
+
 const renderCommentContent = (content: string, mentionRegex: RegExp | null) => {
   const lines = content.split(/\r?\n/)
-  return lines.flatMap((line, index) => {
+  return lines.flatMap((line, lineIndex) => {
+    const trimmedLine = line.trim()
+
+    // Check if the entire line is a GIF URL
+    if (isGifUrl(trimmedLine)) {
+      const nodes: React.ReactNode[] = [
+        <img
+          key={`gif-${lineIndex}`}
+          src={trimmedLine}
+          alt="GIF"
+          className="max-w-full max-h-64 rounded-lg mt-2"
+          loading="lazy"
+        />
+      ]
+      if (lineIndex < lines.length - 1) {
+        nodes.push(<br key={`line-break-${lineIndex}`} />)
+      }
+      return nodes
+    }
+
     const nodes = renderMarkdownSegments(line, mentionRegex)
-    if (index < lines.length - 1) {
-      nodes.push(<br key={`line-break-${index}`} />)
+    if (lineIndex < lines.length - 1) {
+      nodes.push(<br key={`line-break-${lineIndex}`} />)
     }
     return nodes
   })
@@ -224,6 +255,18 @@ export const EventDetailsPage: React.FC = () => {
   )
   const [commentInput, setCommentInput] = useState('')
   const [isSubmittingComment, setIsSubmittingComment] = useState(false)
+  const [showGifPicker, setShowGifPicker] = useState(false)
+  const [editingCommentId, setEditingCommentId] = useState<string | null>(null)
+  const [editingCommentContent, setEditingCommentContent] = useState('')
+  const [isDeletingComment, setIsDeletingComment] = useState<string | null>(null)
+  const [isEditingComment, setIsEditingComment] = useState(false)
+  const [mentionState, setMentionState] = useState<{
+    isActive: boolean
+    query: string
+    startIndex: number
+    position: { top: number; left: number }
+  } | null>(null)
+  const commentTextareaRef = useRef<HTMLTextAreaElement>(null)
   const [shareUrl, setShareUrl] = useState('')
   const [isParticipantsExpanded, setIsParticipantsExpanded] = useState(false)
   const [plusAttendees, setPlusAttendees] = useState<string[]>([])
@@ -716,6 +759,56 @@ export const EventDetailsPage: React.FC = () => {
       toast.error(message)
     } finally {
       setIsSubmittingComment(false)
+    }
+  }
+
+  const handleEditComment = async (commentId: string) => {
+    if (!currentUserId) return
+
+    const trimmed = editingCommentContent.trim()
+    if (!trimmed) {
+      toast.error(i18n._(msg`Comment cannot be empty.`))
+      return
+    }
+
+    try {
+      setIsEditingComment(true)
+      const updatedComment = await editEventComment({
+        data: { commentId, content: trimmed }
+      })
+      setComments((prev) =>
+        prev.map((c) => (c.id === commentId ? updatedComment : c))
+      )
+      setEditingCommentId(null)
+      setEditingCommentContent('')
+      toast.success(i18n._(msg`Comment updated.`))
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : i18n._(msg`Failed to update comment. Please try again.`)
+      toast.error(message)
+    } finally {
+      setIsEditingComment(false)
+    }
+  }
+
+  const handleDeleteComment = async (commentId: string) => {
+    if (!currentUserId) return
+
+    try {
+      setIsDeletingComment(commentId)
+      await deleteEventComment({ data: { commentId } })
+      setComments((prev) => prev.filter((c) => c.id !== commentId))
+      toast.success(i18n._(msg`Comment deleted.`))
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : i18n._(msg`Failed to delete comment. Please try again.`)
+      toast.error(message)
+    } finally {
+      setIsDeletingComment(null)
     }
   }
 
@@ -1669,102 +1762,6 @@ export const EventDetailsPage: React.FC = () => {
               </CardContent>
             </Card>
 
-            {/* Comments */}
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-                    <MessageCircle size={18} className="mr-2" />
-                    <Trans>Comments</Trans>
-                  </h3>
-                  <Badge variant="default" size="sm">
-                    {comments.length}
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent className="p-6">
-                <div className="space-y-4">
-                  {comments.length === 0 ? (
-                    <p className="text-sm text-gray-500">
-                      <Trans>Be the first to leave a comment.</Trans>
-                    </p>
-                  ) : (
-                    comments.map((comment) => (
-                      <div
-                        key={comment.id}
-                        className="flex items-start gap-3 rounded-lg bg-gray-50 p-4"
-                      >
-                        <UserAvatar
-                          user={comment.user}
-                          className="w-10 h-10"
-                        />
-                        <div className="flex-1 space-y-1">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <span className="font-medium text-gray-900">
-                              {comment.user.name}
-                            </span>
-                            <span className="text-xs text-gray-500">
-                              {formatDistanceToNow(new Date(comment.createdAt), {
-                                addSuffix: true,
-                                locale: dateLocale
-                              })}
-                            </span>
-                          </div>
-                          <div className="text-sm text-gray-700 leading-relaxed">
-                            {renderCommentContent(comment.content, mentionRegex)}
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-
-                <div className="mt-6 border-t border-gray-200 pt-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <Trans>Leave a comment</Trans>
-                  </label>
-                  <textarea
-                    value={commentInput}
-                    onChange={(e) => setCommentInput(e.target.value)}
-                    placeholder={i18n._(
-                      msg`Share updates, ask questions, or tag players with @Name.`
-                    )}
-                    className="w-full rounded-lg border border-gray-200 p-3 text-sm focus:border-primary-500 focus:outline-none"
-                    rows={4}
-                    disabled={!currentUserId || isSubmittingComment}
-                  />
-                  <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                    <p className="text-xs text-gray-500">
-                      <Trans>
-                        Supports **bold**, *italic*, __underline__, and @mentions.
-                      </Trans>
-                    </p>
-                    <Button
-                      variant="primary"
-                      size="sm"
-                      onClick={handleSubmitComment}
-                      disabled={
-                        !currentUserId ||
-                        isSubmittingComment ||
-                        !commentInput.trim()
-                      }
-                    >
-                      {isSubmittingComment ? (
-                        <Trans>Posting...</Trans>
-                      ) : (
-                        <Trans>Post comment</Trans>
-                      )}
-                    </Button>
-                  </div>
-                  {!currentUserId && (
-                    <p className="mt-2 text-xs text-gray-500">
-                      <Trans>Sign in to join the conversation.</Trans>
-                    </p>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-
             {/* Waitlist */}
             {!isSpotAvailable && (event.waitlist?.length ?? 0) > 0 && (
               <Card>
@@ -1844,6 +1841,284 @@ export const EventDetailsPage: React.FC = () => {
 
           </div>
         </div>
+
+        {/* Comments - Full Width */}
+        <Card className="mt-8">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                <MessageCircle size={18} className="mr-2" />
+                <Trans>Comments</Trans>
+              </h3>
+              <Badge variant="default" size="sm">
+                {comments.length}
+              </Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="space-y-4">
+              {comments.length === 0 ? (
+                <p className="text-sm text-gray-500">
+                  <Trans>Be the first to leave a comment.</Trans>
+                </p>
+              ) : (
+                comments.map((comment) => (
+                  <div
+                    key={comment.id}
+                    className="flex items-start gap-3 rounded-lg bg-gray-50 p-4"
+                  >
+                    <UserAvatar
+                      user={comment.user}
+                      className="w-10 h-10"
+                    />
+                    <div className="flex-1 space-y-1">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-medium text-gray-900">
+                            {comment.user.name}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            {formatDistanceToNow(new Date(comment.createdAt), {
+                              addSuffix: true,
+                              locale: dateLocale
+                            })}
+                          </span>
+                        </div>
+                        {currentUserId === comment.userId && (
+                          <div className="flex items-center gap-1">
+                            {editingCommentId === comment.id ? (
+                              <>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setEditingCommentId(null)
+                                    setEditingCommentContent('')
+                                  }}
+                                  className="p-1 text-gray-400 hover:text-gray-600 rounded"
+                                  title={i18n._(msg`Cancel`)}
+                                >
+                                  <XCircle size={16} />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleEditComment(comment.id)}
+                                  disabled={isEditingComment}
+                                  className="p-1 text-primary-600 hover:text-primary-700 rounded disabled:opacity-50"
+                                  title={i18n._(msg`Save`)}
+                                >
+                                  {isEditingComment ? (
+                                    <Loader2 size={16} className="animate-spin" />
+                                  ) : (
+                                    <CheckCircle size={16} />
+                                  )}
+                                </button>
+                              </>
+                            ) : (
+                              <>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setEditingCommentId(comment.id)
+                                    setEditingCommentContent(comment.content)
+                                  }}
+                                  className="p-1 text-gray-400 hover:text-gray-600 rounded"
+                                  title={i18n._(msg`Edit`)}
+                                >
+                                  <Edit size={16} />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteComment(comment.id)}
+                                  disabled={isDeletingComment === comment.id}
+                                  className="p-1 text-gray-400 hover:text-red-600 rounded disabled:opacity-50"
+                                  title={i18n._(msg`Delete`)}
+                                >
+                                  {isDeletingComment === comment.id ? (
+                                    <Loader2 size={16} className="animate-spin" />
+                                  ) : (
+                                    <Trash2 size={16} />
+                                  )}
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      {editingCommentId === comment.id ? (
+                        <textarea
+                          value={editingCommentContent}
+                          onChange={(e) => setEditingCommentContent(e.target.value)}
+                          className="w-full rounded-lg border border-gray-200 p-2 text-sm focus:border-primary-500 focus:outline-none"
+                          rows={3}
+                          autoFocus
+                        />
+                      ) : (
+                        <div className="text-sm text-gray-700 leading-relaxed">
+                          {renderCommentContent(comment.content, mentionRegex)}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            <div className="mt-6 border-t border-gray-200 pt-4">
+              <div className='flex align-baseline'>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <Trans>Leave a comment</Trans>
+                </label>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      type="button"
+                      className="p-1 text-gray-400 hover:text-gray-600 rounded"
+                    >
+                      <Info size={16} />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="max-w-xs">
+                    <Trans>
+                      Supports **bold**, *italic*, __underline__, @mentions, and GIFs.
+                    </Trans>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+              <div className="relative">
+                <textarea
+                  ref={commentTextareaRef}
+                  value={commentInput}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    const cursorPos = e.target.selectionStart
+                    setCommentInput(value)
+
+                    // Detect @ mentions
+                    const textBeforeCursor = value.slice(0, cursorPos)
+                    const mentionMatch = textBeforeCursor.match(/@(\w*)$/)
+
+                    if (mentionMatch) {
+                      const query = mentionMatch[1]
+                      const startIndex = cursorPos - mentionMatch[0].length
+
+                      // Get cursor position for dropdown placement
+                      const textarea = e.target
+                      const lineHeight = parseInt(
+                        getComputedStyle(textarea).lineHeight
+                      )
+                      const lines = textBeforeCursor.split('\n')
+                      const currentLineIndex = lines.length - 1
+                      const top = (currentLineIndex + 1) * lineHeight + 8
+
+                      setMentionState({
+                        isActive: true,
+                        query,
+                        startIndex,
+                        position: { top, left: 12 }
+                      })
+                    } else {
+                      setMentionState(null)
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    // Let MentionDropdown handle arrow keys and enter when active
+                    if (
+                      mentionState?.isActive &&
+                      ['ArrowDown', 'ArrowUp', 'Enter', 'Tab', 'Escape'].includes(
+                        e.key
+                      )
+                    ) {
+                      // MentionDropdown will handle these via document listener
+                    }
+                  }}
+                  onBlur={() => {
+                    // Delay closing to allow click on dropdown
+                    setTimeout(() => setMentionState(null), 150)
+                  }}
+                  placeholder={i18n._(
+                    msg`Share updates, ask questions, or tag players with @Name.`
+                  )}
+                  className="w-full rounded-lg border border-gray-200 p-3 pb-10 text-sm focus:border-primary-500 focus:outline-none"
+                  rows={4}
+                  disabled={!currentUserId || isSubmittingComment}
+                />
+                {mentionState?.isActive && (
+                  <MentionDropdown
+                    users={mentionableUsers}
+                    searchQuery={mentionState.query}
+                    position={mentionState.position}
+                    onSelect={(user) => {
+                      const before = commentInput.slice(0, mentionState.startIndex)
+                      const after = commentInput.slice(
+                        mentionState.startIndex + mentionState.query.length + 1
+                      )
+                      const newValue = `${before}@${user.name} ${after}`
+                      setCommentInput(newValue)
+                      setMentionState(null)
+
+                      // Refocus textarea and set cursor position
+                      setTimeout(() => {
+                        const newCursorPos = before.length + user.name.length + 2
+                        commentTextareaRef.current?.focus()
+                        commentTextareaRef.current?.setSelectionRange(
+                          newCursorPos,
+                          newCursorPos
+                        )
+                      }, 0)
+                    }}
+                    onClose={() => setMentionState(null)}
+                  />
+                )}
+                <div className="absolute bottom-2 left-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowGifPicker(!showGifPicker)}
+                    disabled={!currentUserId || isSubmittingComment}
+                    className="px-2 py-1 text-xs font-bold text-gray-500 hover:text-primary-600 hover:bg-gray-100 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    title={i18n._(msg`Add GIF`)}
+                  >
+                    GIF
+                  </button>
+                  {showGifPicker && (
+                    <GiphyPicker
+                      onSelect={(gifUrl) => {
+                        setCommentInput((prev) =>
+                          prev ? `${prev}\n${gifUrl}` : gifUrl
+                        )
+                        setShowGifPicker(false)
+                      }}
+                      onClose={() => setShowGifPicker(false)}
+                    />
+                  )}
+                </div>
+              </div>
+              <div className="mt-2 flex items-center justify-between">
+
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={handleSubmitComment}
+                  disabled={
+                    !currentUserId ||
+                    isSubmittingComment ||
+                    !commentInput.trim()
+                  }
+                >
+                  {isSubmittingComment ? (
+                    <Trans>Posting...</Trans>
+                  ) : (
+                    <Trans>Post comment</Trans>
+                  )}
+                </Button>
+              </div>
+              {!currentUserId && (
+                <p className="mt-2 text-xs text-gray-500">
+                  <Trans>Sign in to join the conversation.</Trans>
+                </p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Venue Information - Full Width */}
         {venue && (
