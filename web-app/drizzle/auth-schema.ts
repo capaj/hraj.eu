@@ -15,6 +15,9 @@ export const user = sqliteTable('user', {
   location: text('location'),
   bio: text('bio'),
   notificationPreferences: text('notification_preferences', { mode: 'json' }).$type<Record<string, boolean>>(),
+  emailNotificationsDisabled: integer('email_notifications_disabled', { mode: 'boolean' })
+    .$defaultFn(() => false)
+    .notNull(),
   city: text('city'),
   country: text('country'),
   revolutTag: text('revolut_tag'),

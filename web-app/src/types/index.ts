@@ -7,6 +7,7 @@ export interface User {
   karmaPoints: number
   skillLevels: Record<string, 'beginner' | 'intermediate' | 'advanced'>
   notificationPreferences: Record<string, boolean> // sportId -> enabled
+  emailNotificationsDisabled?: boolean
   preferredCurrency: string
   location?: string
   revTag?: string

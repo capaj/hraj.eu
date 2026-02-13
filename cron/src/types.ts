@@ -27,6 +27,9 @@ export interface EventRow {
 }
 
 export interface ParticipantRow {
+	id: string
 	email: string
 	name: string | null
+	notificationPreferences: Record<string, boolean> | null
+	emailNotificationsDisabled: boolean
 }

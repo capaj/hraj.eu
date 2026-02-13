@@ -1,10 +1,18 @@
 import { Resend } from 'resend'
-import { and, eq, gte, isNull, sql } from 'drizzle-orm'
+import { and, eq, gte, inArray, isNull, sql } from 'drizzle-orm'
 import { db } from '../../web-app/drizzle/db'
-import { eventT, participantT, user, venueT } from '../../web-app/drizzle/schema'
+import {
+	eventCommentT,
+	eventT,
+	participantT,
+	user,
+	venueT
+} from '../../web-app/drizzle/schema'
 import { sendCancellationEmail } from './email/sendCancellationEmail'
+import { sendCommentNotificationEmail } from './email/sendCommentNotificationEmail'
 import { sendConfirmationEmail } from './email/sendConfirmationEmail'
 import type { Env, EventRow, ParticipantRow } from './types'
+import { areEmailNotificationsEnabled } from '../../web-app/src/lib/notificationPreferences'
 
 const LOCATION_FALLBACK = 'Location TBD'
 const DEFAULT_BASE_URL = 'https://hraj.eu'
@@ -14,7 +22,7 @@ export default {
 	async fetch(req) {
 		const url = new URL(req.url)
 		url.pathname = '/__scheduled'
-		url.searchParams.append('cron', '*/30 * * * *')
+		url.searchParams.append('cron', '0 * * * *')
 		return new Response(
 			`To test the scheduled handler, ensure you have used the "--test-scheduled" then try running "curl ${url.href}".`
 		)
@@ -69,8 +77,7 @@ export default {
 					gte(eventT.date, today),
 					sql`${confirmedCountOrZero} >= ${eventT.minParticipants}`
 				)
-			)
-			) as EventRow[]
+			)) as EventRow[]
 
 		console.log(`found ${eventsToConfirm.length} events to confirm`)
 		if (!eventsToConfirm.length) {
@@ -95,16 +102,14 @@ export default {
 			}
 
 			const participants = await getConfirmedParticipants(eventRow.id)
-			const location = formatLocation(
-				eventRow.venueName,
-				eventRow.venueAddress
-			)
+			const location = formatLocation(eventRow.venueName, eventRow.venueAddress)
 			const calendarEvent = toCalendarEvent(eventRow, location)
 			const icalContent = generateICalEvent(calendarEvent)
 			const icsFilename = `${slugify(eventRow.title || 'event')}.ics`
 			const eventUrl = `${baseUrl}/events/${eventRow.id}`
+			const emailEligibleParticipants = participants.filter(canReceiveEmails)
 
-			for (const attendee of participants) {
+			for (const attendee of emailEligibleParticipants) {
 				if (!attendee.email) {
 					continue
 				}
@@ -130,7 +135,7 @@ export default {
 			}
 
 			console.log(
-				`Confirmed event ${eventRow.id} and emailed ${participants.length} attendees`
+				`Confirmed event ${eventRow.id} and emailed ${emailEligibleParticipants.length}/${participants.length} attendees`
 			)
 		}
 
@@ -149,8 +154,7 @@ export default {
 					cancellationDeadlineReached,
 					sql`${confirmedCountOrZero} < ${eventT.minParticipants}`
 				)
-			)
-			) as EventRow[]
+			)) as EventRow[]
 
 		console.log(`found ${eventsToCancel.length} events to cancel`)
 		for (const eventRow of eventsToCancel) {
@@ -175,13 +179,11 @@ export default {
 			}
 
 			const participants = await getConfirmedParticipants(eventRow.id)
-			const location = formatLocation(
-				eventRow.venueName,
-				eventRow.venueAddress
-			)
+			const location = formatLocation(eventRow.venueName, eventRow.venueAddress)
 			const eventUrl = `${baseUrl}/events/${eventRow.id}`
+			const emailEligibleParticipants = participants.filter(canReceiveEmails)
 
-			for (const attendee of participants) {
+			for (const attendee of emailEligibleParticipants) {
 				if (!attendee.email) {
 					continue
 				}
@@ -206,20 +208,129 @@ export default {
 			}
 
 			console.log(
-				`Cancelled event ${eventRow.id} and emailed ${participants.length} attendees`
+				`Cancelled event ${eventRow.id} and emailed ${emailEligibleParticipants.length}/${participants.length} attendees`
 			)
+		}
+
+		const commentsToNotify = await db
+			.select({
+				id: eventCommentT.id,
+				eventId: eventCommentT.eventId,
+				userId: eventCommentT.userId,
+				content: eventCommentT.content,
+				createdAt: eventCommentT.createdAt,
+				eventTitle: eventT.title,
+				authorName: user.name
+			})
+			.from(eventCommentT)
+			.innerJoin(eventT, eq(eventT.id, eventCommentT.eventId))
+			.innerJoin(user, eq(user.id, eventCommentT.userId))
+			.where(and(isNull(eventCommentT.notifiedAt), gte(eventT.date, today)))
+			.orderBy(eventCommentT.createdAt)
+
+		console.log(`found ${commentsToNotify.length} event comments to notify`)
+		if (commentsToNotify.length) {
+			const commentsByEvent = new Map<string, typeof commentsToNotify>()
+			for (const comment of commentsToNotify) {
+				const current = commentsByEvent.get(comment.eventId) ?? []
+				current.push(comment)
+				commentsByEvent.set(comment.eventId, current)
+			}
+
+			const sentCommentIds = new Set<string>()
+
+			for (const [eventId, eventComments] of commentsByEvent) {
+				const participants = await getConfirmedParticipants(eventId)
+				const receiversById = new Map(
+					participants
+						.filter(canReceiveEmails)
+						.map((participant) => [participant.id, participant])
+				)
+
+				const commentsByRecipient = new Map<
+					string,
+					Array<{
+						authorName: string
+						content: string
+						createdAt: Date
+					}>
+				>()
+
+				for (const eventComment of eventComments) {
+					for (const [participantId] of receiversById) {
+						if (participantId === eventComment.userId) {
+							continue
+						}
+						const recipientComments = commentsByRecipient.get(participantId) ?? []
+						recipientComments.push({
+							authorName: eventComment.authorName?.trim() || 'Someone',
+							content: eventComment.content,
+							createdAt: eventComment.createdAt
+						})
+						commentsByRecipient.set(participantId, recipientComments)
+					}
+				}
+
+				for (const [participantId, comments] of commentsByRecipient) {
+					const participant = receiversById.get(participantId)
+					if (!participant?.email || comments.length === 0) {
+						continue
+					}
+
+					try {
+						await sendCommentNotificationEmail({
+							resend,
+							from: senderEmail,
+							to: participant.email,
+							name: participant.name,
+							eventTitle: eventComments[0].eventTitle,
+							eventUrl: `${baseUrl}/events/${eventId}`,
+							comments
+						})
+					} catch (error) {
+						console.error(
+							`Failed to send comment digest for event ${eventId} to ${participant.email}`,
+							error
+						)
+					}
+				}
+
+				if (commentsByRecipient.size > 0) {
+					eventComments.forEach((eventComment) => sentCommentIds.add(eventComment.id))
+				}
+			}
+
+			if (sentCommentIds.size > 0) {
+				await db
+					.update(eventCommentT)
+					.set({ notifiedAt: new Date() })
+					.where(inArray(eventCommentT.id, Array.from(sentCommentIds)))
+
+				console.log(`marked ${sentCommentIds.size} comments as notified`)
+			}
 		}
 	}
 } satisfies ExportedHandler<Env>
 
 async function getConfirmedParticipants(eventId: string): Promise<ParticipantRow[]> {
 	return db
-		.select({ email: user.email, name: user.name })
+		.select({
+			id: user.id,
+			email: user.email,
+			name: user.name,
+			notificationPreferences: user.notificationPreferences,
+		emailNotificationsDisabled: user.emailNotificationsDisabled
+		})
 		.from(participantT)
 		.innerJoin(user, eq(user.id, participantT.userId))
-		.where(
-			and(eq(participantT.eventId, eventId), eq(participantT.status, 'confirmed'))
-		)
+		.where(and(eq(participantT.eventId, eventId), eq(participantT.status, 'confirmed')))
+}
+
+function canReceiveEmails(participant: ParticipantRow): boolean {
+	return areEmailNotificationsEnabled(
+		participant.notificationPreferences,
+		participant.emailNotificationsDisabled
+	)
 }
 
 function requireEnv(env: Env, key: keyof Env): string {
