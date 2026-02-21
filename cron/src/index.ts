@@ -17,6 +17,10 @@ import { areEmailNotificationsEnabled, normalizeEmailLocale } from '../../web-ap
 const LOCATION_FALLBACK = 'Location TBD'
 const DEFAULT_BASE_URL = 'https://hraj.eu'
 const CANCELLATION_REASON = 'Minimum participants not reached'
+const CANCELLATION_REASON_BY_LOCALE = {
+	en: CANCELLATION_REASON,
+	cs: 'Nebyl dosažen minimální počet účastníků'
+} as const
 
 export default {
 	async fetch(req) {
@@ -331,7 +335,7 @@ async function getConfirmedParticipants(eventId: string): Promise<ParticipantRow
 }
 
 function getCancellationReason(locale: 'en' | 'cs'): string {
-	return locale === 'cs' ? 'Nebyl dosažen minimální počet účastníků' : CANCELLATION_REASON
+	return CANCELLATION_REASON_BY_LOCALE[locale]
 }
 
 function canReceiveEmails(participant: ParticipantRow): boolean {

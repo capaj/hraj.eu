@@ -8,6 +8,52 @@ interface CommentDigestItem {
 	createdAt: Date
 }
 
+const COMMENT_DIGEST_TEMPLATES = {
+	en: {
+		greeting: (name: string | null) => (name ? `Hi ${name},` : 'Hi,'),
+		subject: (count: number, eventTitle: string) =>
+			`${count} new ${count === 1 ? 'comment' : 'comments'} on ${eventTitle}`,
+		headingPrefix: 'New comments on',
+		intro: (count: number, eventTitle: string) =>
+			`There are <strong>${count}</strong> new ${
+				count === 1 ? 'comment' : 'comments'
+			} on <strong>${escapeHtml(eventTitle)}</strong>.`,
+		extra: (count: number) =>
+			`+ ${count} more new ${count === 1 ? 'comment' : 'comments'} in this digest.`,
+		openDiscussion: 'Open event discussion',
+		optOutLine:
+			'You can opt out of all email notifications from your profile settings.',
+		plainIntro: (count: number, eventTitle: string) =>
+			`There are ${count} new ${count === 1 ? 'comment' : 'comments'} on ${eventTitle}.`,
+		plainMore: (count: number) =>
+			`... and ${count} more comments.`,
+		plainOpen: (eventUrl: string) => `View event discussion: ${eventUrl}`,
+		dateLocale: 'en-GB'
+	},
+	cs: {
+		greeting: (name: string | null) => (name ? `Ahoj ${name},` : 'Ahoj,'),
+		subject: (count: number, eventTitle: string) =>
+			`${count} nové ${count === 1 ? 'komentář' : 'komentáře'} u ${eventTitle}`,
+		headingPrefix: 'Nové komentáře u události',
+		intro: (count: number, eventTitle: string) =>
+			`U události <strong>${escapeHtml(eventTitle)}</strong> přibyly <strong>${count}</strong> nové ${
+				count === 1 ? 'komentář' : 'komentáře'
+			}.`,
+		extra: (count: number) =>
+			`+ dalších ${count} ${count === 1 ? 'komentář' : 'komentářů'} v tomto souhrnu.`,
+		openDiscussion: 'Otevřít diskuzi události',
+		optOutLine:
+			'V nastavení profilu se můžeš odhlásit ze všech e-mailových notifikací.',
+		plainIntro: (count: number, eventTitle: string) =>
+			`K události ${eventTitle} přibyly ${count} nové ${
+				count === 1 ? 'komentář' : 'komentáře'
+			}.`,
+		plainMore: (count: number) => `... a dalších ${count} komentářů.`,
+		plainOpen: (eventUrl: string) => `Zobrazit diskuzi události: ${eventUrl}`,
+		dateLocale: 'cs-CZ'
+	}
+} as const
+
 export async function sendCommentNotificationEmail({
 	resend,
 	from,
@@ -27,62 +73,35 @@ export async function sendCommentNotificationEmail({
 	comments: CommentDigestItem[]
 	locale: EmailLocale
 }) {
-	const isCzech = locale === 'cs'
-	const greeting = name
-		? isCzech
-			? `Ahoj ${name},`
-			: `Hi ${name},`
-		: isCzech
-			? 'Ahoj,'
-			: 'Hi,'
-	const commentWord = comments.length === 1
-		? isCzech
-			? 'komentář'
-			: 'comment'
-		: isCzech
-			? 'komentáře'
-			: 'comments'
-	const subject = isCzech
-		? `${comments.length} nové ${commentWord} u ${eventTitle}`
-		: `${comments.length} new ${commentWord} on ${eventTitle}`
+	const template = COMMENT_DIGEST_TEMPLATES[locale]
+	const greeting = template.greeting(name)
 	const previewComments = comments.slice(0, 5)
 	const plainText = [
 		greeting,
 		'',
-		isCzech
-			? `K události ${eventTitle} přibyly ${comments.length} nové ${commentWord}.`
-			: `There are ${comments.length} new ${commentWord} on ${eventTitle}.`,
+		template.plainIntro(comments.length, eventTitle),
 		'',
 		...previewComments.map(
 			(comment, index) =>
 				`${index + 1}. ${comment.authorName} (${comment.createdAt.toISOString()} UTC): ${comment.content}`
 		),
 		comments.length > previewComments.length
-			? isCzech
-				? `... a dalších ${comments.length - previewComments.length} komentářů.`
-				: `... and ${comments.length - previewComments.length} more comments.`
+			? template.plainMore(comments.length - previewComments.length)
 			: null,
 		'',
-		isCzech
-			? `Zobrazit diskuzi události: ${eventUrl}`
-			: `View event discussion: ${eventUrl}`,
-		isCzech
-			? 'V nastavení profilu se můžeš odhlásit ze všech e-mailových notifikací.'
-			: 'You can opt out of all email notifications from your profile settings.'
+		template.plainOpen(eventUrl),
+		template.optOutLine
 	]
 		.filter((line): line is string => Boolean(line))
 		.join('\n')
 
 	const commentsHtml = previewComments
 		.map((comment) => {
-			const createdAt = comment.createdAt.toLocaleString(
-				isCzech ? 'cs-CZ' : 'en-GB',
-				{
-					dateStyle: 'medium',
-					timeStyle: 'short',
-					timeZone: 'UTC'
-				}
-			)
+			const createdAt = comment.createdAt.toLocaleString(template.dateLocale, {
+				dateStyle: 'medium',
+				timeStyle: 'short',
+				timeZone: 'UTC'
+			})
 			return `
 				<div style="margin: 0 0 14px; padding: 12px; border: 1px solid #e6e6e6; border-radius: 8px; background: #fafafa;">
 					<div style="font-size: 12px; color: #666; margin-bottom: 8px;">
@@ -97,36 +116,24 @@ export async function sendCommentNotificationEmail({
 
 	const html = `
 		<div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto;">
-			<h2>${isCzech ? 'Nové komentáře u události' : 'New comments on'} ${escapeHtml(eventTitle)}</h2>
+			<h2>${template.headingPrefix} ${escapeHtml(eventTitle)}</h2>
 			<p>${escapeHtml(greeting)}</p>
-			<p>${
-				isCzech
-					? `U události <strong>${escapeHtml(eventTitle)}</strong> přibyly <strong>${comments.length}</strong> nové ${commentWord}.`
-					: `There are <strong>${comments.length}</strong> new ${commentWord} on <strong>${escapeHtml(eventTitle)}</strong>.`
-			}</p>
+			<p>${template.intro(comments.length, eventTitle)}</p>
 			${commentsHtml}
 			${
 				extraCount > 0
-					? `<p style="color: #666;">${
-							isCzech
-								? `+ dalších ${extraCount} ${extraCount === 1 ? 'komentář' : 'komentářů'} v tomto souhrnu.`
-								: `+ ${extraCount} more new ${extraCount === 1 ? 'comment' : 'comments'} in this digest.`
-						}</p>`
+					? `<p style="color: #666;">${template.extra(extraCount)}</p>`
 					: ''
 			}
-			<p><a href="${eventUrl}">${isCzech ? 'Otevřít diskuzi události' : 'Open event discussion'}</a></p>
-			<p style="margin: 0; color: #666; font-size: 12px;">${
-				isCzech
-					? 'V nastavení profilu se můžeš odhlásit ze všech e-mailových notifikací.'
-					: 'You can opt out of all email notifications from your profile settings.'
-			}</p>
+			<p><a href="${eventUrl}">${template.openDiscussion}</a></p>
+			<p style="margin: 0; color: #666; font-size: 12px;">${template.optOutLine}</p>
 		</div>
 	`
 
 	const response = await resend.emails.send({
 		from,
 		to,
-		subject,
+		subject: template.subject(comments.length, eventTitle),
 		html,
 		text: plainText
 	})
