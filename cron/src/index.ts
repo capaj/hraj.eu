@@ -12,7 +12,7 @@ import { sendCancellationEmail } from './email/sendCancellationEmail'
 import { sendCommentNotificationEmail } from './email/sendCommentNotificationEmail'
 import { sendConfirmationEmail } from './email/sendConfirmationEmail'
 import type { Env, EventRow, ParticipantRow } from './types'
-import { areEmailNotificationsEnabled } from '../../web-app/src/lib/notificationPreferences'
+import { areEmailNotificationsEnabled, normalizeEmailLocale } from '../../web-app/src/lib/notificationPreferences'
 
 const LOCATION_FALLBACK = 'Location TBD'
 const DEFAULT_BASE_URL = 'https://hraj.eu'
@@ -124,7 +124,8 @@ export default {
 						location,
 						eventUrl,
 						icalContent,
-						icsFilename
+						icsFilename,
+					locale: normalizeEmailLocale(attendee.preferredLanguage)
 					})
 				} catch (error) {
 					console.error(
@@ -197,7 +198,8 @@ export default {
 						event: eventRow,
 						location,
 						eventUrl,
-						reason: CANCELLATION_REASON
+						reason: getCancellationReason(normalizeEmailLocale(attendee.preferredLanguage)),
+					locale: normalizeEmailLocale(attendee.preferredLanguage)
 					})
 				} catch (error) {
 					console.error(
@@ -285,7 +287,8 @@ export default {
 							name: participant.name,
 							eventTitle: eventComments[0].eventTitle,
 							eventUrl: `${baseUrl}/events/${eventId}`,
-							comments
+							comments,
+					locale: normalizeEmailLocale(participant.preferredLanguage)
 						})
 					} catch (error) {
 						console.error(
@@ -319,11 +322,16 @@ async function getConfirmedParticipants(eventId: string): Promise<ParticipantRow
 			email: user.email,
 			name: user.name,
 			notificationPreferences: user.notificationPreferences,
-		emailNotificationsDisabled: user.emailNotificationsDisabled
+			emailNotificationsDisabled: user.emailNotificationsDisabled,
+			preferredLanguage: user.preferredLanguage
 		})
 		.from(participantT)
 		.innerJoin(user, eq(user.id, participantT.userId))
 		.where(and(eq(participantT.eventId, eventId), eq(participantT.status, 'confirmed')))
+}
+
+function getCancellationReason(locale: 'en' | 'cs'): string {
+	return locale === 'cs' ? 'Nebyl dosažen minimální počet účastníků' : CANCELLATION_REASON
 }
 
 function canReceiveEmails(participant: ParticipantRow): boolean {

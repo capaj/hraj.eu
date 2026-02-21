@@ -15,7 +15,8 @@ const UpdateUserProfileSchema = z.object({
   bankAccount: z.string().optional(),
   image: z.string().optional(),
   notificationPreferences: z.record(z.string(), z.boolean()).optional(),
-  emailNotificationsDisabled: z.boolean().optional()
+  emailNotificationsDisabled: z.boolean().optional(),
+  preferredLanguage: z.enum(['en', 'cs']).optional()
 })
 
 export const updateUserProfile = createServerFn({ method: 'POST' })

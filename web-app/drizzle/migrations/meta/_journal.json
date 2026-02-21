@@ -85,6 +85,13 @@
       "when": 1770793787579,
       "tag": "0011_email_notifications_and_comment_digest",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1771683214586,
+      "tag": "0012_user_preferred_language",
+      "breakpoints": true
     }
   ]
 }

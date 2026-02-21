@@ -25,6 +25,7 @@ import { formatDistanceToNow } from 'date-fns'
 import { UserButton } from '../user/UserButton'
 import { authClient } from '~/lib/auth-client'
 import { activateLocale, type AppLocale } from '~/lib/i18n'
+import { updateUserProfile } from '~/server-functions/updateUserProfile'
 
 export const Header: React.FC = () => {
   const session = authClient.useSession()
@@ -35,6 +36,16 @@ export const Header: React.FC = () => {
   const setLocale = (locale: AppLocale) => {
     activateLocale(locale)
     if (typeof window !== 'undefined') window.localStorage.setItem('locale', locale)
+
+    if (session.data?.user) {
+      updateUserProfile({
+        data: {
+          preferredLanguage: locale
+        }
+      }).catch((error) => {
+        console.error('Failed to persist preferred language:', error)
+      })
+    }
   }
 
   return (

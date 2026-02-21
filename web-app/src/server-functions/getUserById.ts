@@ -37,6 +37,7 @@ export const getUserById = createServerFn({ method: 'GET' })
       skillLevels,
       notificationPreferences: user.notificationPreferences ?? {},
       emailNotificationsDisabled: user.emailNotificationsDisabled ?? false,
+      preferredLanguage: user.preferredLanguage === 'en' ? 'en' : 'cs',
       preferredCurrency: user.preferredCurrency || 'CZK',
       location:
         user.city && user.country ? `${user.city}, ${user.country}` : undefined,

@@ -32,4 +32,5 @@ export interface ParticipantRow {
 	name: string | null
 	notificationPreferences: Record<string, boolean> | null
 	emailNotificationsDisabled: boolean
+	preferredLanguage: string | null
 }

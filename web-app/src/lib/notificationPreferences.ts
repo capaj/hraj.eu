@@ -10,3 +10,10 @@ export function areEmailNotificationsEnabled(
 
   return notificationPreferences?.[EMAIL_NOTIFICATIONS_DISABLED_KEY] !== true
 }
+
+
+export type EmailLocale = 'en' | 'cs'
+
+export function normalizeEmailLocale(preferredLanguage?: string | null): EmailLocale {
+  return preferredLanguage === 'en' ? 'en' : 'cs'
+}

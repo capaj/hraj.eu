@@ -8,6 +8,7 @@ export interface User {
   skillLevels: Record<string, 'beginner' | 'intermediate' | 'advanced'>
   notificationPreferences: Record<string, boolean> // sportId -> enabled
   emailNotificationsDisabled?: boolean
+  preferredLanguage?: 'en' | 'cs'
   preferredCurrency: string
   location?: string
   revTag?: string

@@ -1,5 +1,6 @@
 import type { Resend } from 'resend'
 import type { EventRow } from '../types'
+import type { EmailLocale } from '../../../web-app/src/lib/notificationPreferences'
 import { encodeBase64, escapeHtml } from './utils'
 
 export async function sendConfirmationEmail({
@@ -11,7 +12,8 @@ export async function sendConfirmationEmail({
 	location,
 	eventUrl,
 	icalContent,
-	icsFilename
+	icsFilename,
+	locale
 }: {
 	resend: Resend
 	from: string
@@ -22,35 +24,51 @@ export async function sendConfirmationEmail({
 	eventUrl: string
 	icalContent: string
 	icsFilename: string
+	locale: EmailLocale
 }) {
-	const greeting = name ? `Hi ${name},` : 'Hi,'
+	const isCzech = locale === 'cs'
+	const greeting = name
+		? isCzech
+			? `Ahoj ${name},`
+			: `Hi ${name},`
+		: isCzech
+			? 'Ahoj,'
+			: 'Hi,'
 	const when = `${event.date} ${event.startTime} (${event.duration} min)`
 	const description = event.description?.trim()
 	const plainText = [
 		greeting,
 		'',
-		`Your event is confirmed: ${event.title}`,
-		`When: ${when}`,
-		`Where: ${location}`,
+		isCzech
+			? `Tvá událost je potvrzena: ${event.title}`
+			: `Your event is confirmed: ${event.title}`,
+		isCzech ? `Kdy: ${when}` : `When: ${when}`,
+		isCzech ? `Kde: ${location}` : `Where: ${location}`,
 		description ? '' : null,
 		description || null,
 		'',
-		'We attached a calendar file so you can add it to Google Calendar.',
-		`View event: ${eventUrl}`
+		isCzech
+			? 'Přiložili jsme soubor kalendáře, který si můžeš přidat do Google Kalendáře.'
+			: 'We attached a calendar file so you can add it to Google Calendar.',
+		isCzech ? `Zobrazit událost: ${eventUrl}` : `View event: ${eventUrl}`
 	]
 		.filter((line): line is string => Boolean(line))
 		.join('\n')
 
 	const html = `
     <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto;">
-      <h2>Event confirmed</h2>
+      <h2>${isCzech ? 'Událost potvrzena' : 'Event confirmed'}</h2>
       <p>${escapeHtml(greeting)}</p>
-      <p><strong>${escapeHtml(event.title)}</strong> is confirmed.</p>
-      <p><strong>When:</strong> ${escapeHtml(when)}</p>
-      <p><strong>Where:</strong> ${escapeHtml(location)}</p>
+      <p><strong>${escapeHtml(event.title)}</strong> ${isCzech ? 'je potvrzena.' : 'is confirmed.'}</p>
+      <p><strong>${isCzech ? 'Kdy' : 'When'}:</strong> ${escapeHtml(when)}</p>
+      <p><strong>${isCzech ? 'Kde' : 'Where'}:</strong> ${escapeHtml(location)}</p>
       ${description ? `<p>${escapeHtml(description)}</p>` : ''}
-      <p>We attached a calendar file so you can add it to Google Calendar.</p>
-      <p><a href="${eventUrl}">View event</a></p>
+      <p>${
+				isCzech
+					? 'Přiložili jsme soubor kalendáře, který si můžeš přidat do Google Kalendáře.'
+					: 'We attached a calendar file so you can add it to Google Calendar.'
+			}</p>
+      <p><a href="${eventUrl}">${isCzech ? 'Zobrazit událost' : 'View event'}</a></p>
     </div>
   `
 
@@ -58,7 +76,9 @@ export async function sendConfirmationEmail({
 	const response = await resend.emails.send({
 		from,
 		to,
-		subject: `Event confirmed: ${event.title}`,
+		subject: isCzech
+			? `Událost potvrzena: ${event.title}`
+			: `Event confirmed: ${event.title}`,
 		html,
 		text: plainText,
 		attachments: [

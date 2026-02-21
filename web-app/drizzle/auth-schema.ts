@@ -18,6 +18,7 @@ export const user = sqliteTable('user', {
   emailNotificationsDisabled: integer('email_notifications_disabled', { mode: 'boolean' })
     .$defaultFn(() => false)
     .notNull(),
+  preferredLanguage: text('preferred_language').default('cs').notNull(),
   city: text('city'),
   country: text('country'),
   revolutTag: text('revolut_tag'),
