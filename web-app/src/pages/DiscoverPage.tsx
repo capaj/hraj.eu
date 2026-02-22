@@ -99,10 +99,8 @@ export const DiscoverPage: React.FC = () => {
     const sorted = [...filtered].sort((a, b) => {
       switch (sortBy) {
         case 'date':
-          // Sort by date, then by start time
-          const dateCompare = a.date.getTime() - b.date.getTime()
-          if (dateCompare !== 0) return dateCompare
-          return a.startTime.localeCompare(b.startTime)
+          // Keep backend-provided chronological order (upcoming asc, past desc)
+          return 0
 
         case 'distance':
           if (!userLocation) return 0
@@ -136,6 +134,16 @@ export const DiscoverPage: React.FC = () => {
 
     return sorted
   }, [events, selectedSports, selectedSkillLevel, sortBy, userLocation])
+
+  const upcomingEvents = useMemo(
+    () => filteredAndSortedEvents.filter(e => isFuture(getEventDateTime(e))),
+    [filteredAndSortedEvents]
+  )
+
+  const pastEvents = useMemo(
+    () => filteredAndSortedEvents.filter(e => isPast(getEventDateTime(e))),
+    [filteredAndSortedEvents]
+  )
 
   const handleEventSelect = (_event: Event) => {
     // No-op: Map selection is now handled via popups
@@ -290,9 +298,9 @@ export const DiscoverPage: React.FC = () => {
               </h2>
             </div>
 
-            {filteredAndSortedEvents.filter(e => isFuture(getEventDateTime(e))).length > 0 ? (
+            {upcomingEvents.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredAndSortedEvents.filter(e => isFuture(getEventDateTime(e))).map((event, index) => {
+                {upcomingEvents.map((event, index) => {
                   const distance = getEventDistance(event)
                   return (
                     <div
@@ -338,7 +346,7 @@ export const DiscoverPage: React.FC = () => {
           </div>
 
           {/* Past Events */}
-          {filteredAndSortedEvents.some(e => isPast(getEventDateTime(e))) && (
+          {pastEvents.length > 0 && (
             <div>
               <div className="flex items-center mb-6">
                 <History size={20} className="text-white/80 mr-2" />
@@ -348,7 +356,7 @@ export const DiscoverPage: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredAndSortedEvents.filter(e => isPast(getEventDateTime(e))).map((event) => {
+                {pastEvents.map((event) => {
                   return (
                     <div
                       key={event.id}
