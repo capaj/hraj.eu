@@ -2,7 +2,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { Event } from '../types'
 import { db } from '../../drizzle/db'
 import { eventStatuses, eventT, participantT } from '../../drizzle/schema'
-import { eq, not, inArray } from 'drizzle-orm'
+import { eq, not, inArray, sql } from 'drizzle-orm'
 import { z } from 'zod'
 
 export const getEvents = createServerFn({ method: 'GET' })
@@ -19,6 +19,8 @@ export const getEvents = createServerFn({ method: 'GET' })
   .handler(async ({ data }) => {
     const statuses = data?.statuses
 
+    const eventDateTimeSql = sql`datetime(${eventT.date} || ' ' || ${eventT.startTime})`
+
     const eventsFromDb = await db
       .select()
       .from(eventT)
@@ -27,6 +29,12 @@ export const getEvents = createServerFn({ method: 'GET' })
           ? inArray(eventT.status, statuses)
           : not(eq(eventT.status, 'cancelled')) // by default don't show cancelled events
       )
+      .orderBy(
+        sql`CASE WHEN ${eventDateTimeSql} < datetime('now') THEN 1 ELSE 0 END`,
+        sql`CASE WHEN ${eventDateTimeSql} >= datetime('now') THEN ${eventDateTimeSql} END ASC`,
+        sql`CASE WHEN ${eventDateTimeSql} < datetime('now') THEN ${eventDateTimeSql} END DESC`
+      )
+      .limit(50)
 
     const eventsWithParticipants = await Promise.all(
       eventsFromDb.map(async (event) => {
