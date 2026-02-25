@@ -140,7 +140,8 @@ export const eventCommentT = sqliteTable(
     content: text('content').notNull(),
     createdAt: integer('created_at', { mode: 'timestamp' })
       .default(sql`unixepoch()`)
-      .notNull()
+      .notNull(),
+    notifiedAt: integer('notified_at', { mode: 'timestamp' })
   },
   (table) => ({
     eventIdIdx: index('event_comment_event_id_idx').on(table.eventId),

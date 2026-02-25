@@ -14,7 +14,9 @@ const UpdateUserProfileSchema = z.object({
   revolutTag: z.string().optional(),
   bankAccount: z.string().optional(),
   image: z.string().optional(),
-  notificationPreferences: z.record(z.string(), z.boolean()).optional()
+  notificationPreferences: z.record(z.string(), z.boolean()).optional(),
+  emailNotificationsDisabled: z.boolean().optional(),
+  preferredLanguage: z.enum(['en', 'cs']).optional()
 })
 
 export const updateUserProfile = createServerFn({ method: 'POST' })

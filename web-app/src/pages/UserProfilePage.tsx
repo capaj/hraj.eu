@@ -53,6 +53,7 @@ export const UserProfile: React.FC = () => {
     karmaPoints: userFromLoader.karmaPoints ?? 0,
     skillLevels: userFromLoader.skillLevels ?? {},
     notificationPreferences: userFromLoader.notificationPreferences ?? {},
+    emailNotificationsDisabled: userFromLoader.emailNotificationsDisabled ?? false,
     preferredCurrency: userFromLoader.preferredCurrency ?? 'EUR',
     location: userFromLoader.location ?? '',
     revTag: userFromLoader.revTag ?? '',
@@ -244,6 +245,29 @@ export const UserProfile: React.FC = () => {
           return newChanges
         })
       }
+    }
+  }
+
+
+  const handleEmailNotificationsDisabledChange = async (disabled: boolean) => {
+    setEditedUser((prev) => ({ ...prev, emailNotificationsDisabled: disabled }))
+
+    try {
+      await updateUserProfile({
+        data: {
+          emailNotificationsDisabled: disabled
+        }
+      })
+
+      setUser((prev) => ({ ...prev, emailNotificationsDisabled: disabled }))
+      toast.success(i18n._(msg`Email notification settings updated`))
+    } catch (error) {
+      console.error('Failed to update email notification setting:', error)
+      toast.error(i18n._(msg`Failed to update notification`))
+      setEditedUser((prev) => ({
+        ...prev,
+        emailNotificationsDisabled: user.emailNotificationsDisabled
+      }))
     }
   }
 
@@ -1160,6 +1184,33 @@ export const UserProfile: React.FC = () => {
             </Card>
           </div>
         </div>
+
+
+        <Card className="mt-8">
+          <CardHeader>
+            <h3 className="text-xl font-semibold text-gray-900 flex items-center">
+              <Bell size={20} className="mr-2" />
+              Email Notifications
+            </h3>
+            <p className="text-gray-600 text-sm mt-1">
+              Turn off all event emails including event status updates and new comment digests.
+            </p>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between rounded-lg border border-gray-200 p-4">
+              <div>
+                <div className="font-medium text-gray-900">Receive event emails</div>
+                <div className="text-sm text-gray-600 mt-1">
+                  Includes confirmation/cancellation updates and comment notifications.
+                </div>
+              </div>
+              <Toggle
+                checked={!Boolean(editedUser.emailNotificationsDisabled)}
+                onChange={(enabled) => handleEmailNotificationsDisabledChange(!enabled)}
+              />
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Sports & Skill Levels - Full Width with Two-Column Grid */}
         <Card className="mt-8">

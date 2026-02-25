@@ -1,6 +1,40 @@
 import type { Resend } from 'resend'
 import type { EventRow } from '../types'
+import type { EmailLocale } from '../../../web-app/src/lib/notificationPreferences'
 import { encodeBase64, escapeHtml } from './utils'
+
+const CONFIRMATION_TEMPLATES = {
+	en: {
+		greeting: (name: string | null) => (name ? `Hi ${name},` : 'Hi,'),
+		subject: (eventTitle: string) => `Event confirmed: ${eventTitle}`,
+		heading: 'Event confirmed',
+		confirmedSentence: 'is confirmed.',
+		whenLabel: 'When',
+		whereLabel: 'Where',
+		calendarLine:
+			'We attached a calendar file so you can add it to Google Calendar.',
+		viewEvent: 'View event',
+		textConfirmed: (eventTitle: string) => `Your event is confirmed: ${eventTitle}`,
+		textWhen: (when: string) => `When: ${when}`,
+		textWhere: (where: string) => `Where: ${where}`,
+		textViewEvent: (url: string) => `View event: ${url}`
+	},
+	cs: {
+		greeting: (name: string | null) => (name ? `Ahoj ${name},` : 'Ahoj,'),
+		subject: (eventTitle: string) => `Událost potvrzena: ${eventTitle}`,
+		heading: 'Událost potvrzena',
+		confirmedSentence: 'je potvrzena.',
+		whenLabel: 'Kdy',
+		whereLabel: 'Kde',
+		calendarLine:
+			'Přiložili jsme soubor kalendáře, který si můžeš přidat do Google Kalendáře.',
+		viewEvent: 'Zobrazit událost',
+		textConfirmed: (eventTitle: string) => `Tvá událost je potvrzena: ${eventTitle}`,
+		textWhen: (when: string) => `Kdy: ${when}`,
+		textWhere: (where: string) => `Kde: ${where}`,
+		textViewEvent: (url: string) => `Zobrazit událost: ${url}`
+	}
+} as const
 
 export async function sendConfirmationEmail({
 	resend,
@@ -11,7 +45,8 @@ export async function sendConfirmationEmail({
 	location,
 	eventUrl,
 	icalContent,
-	icsFilename
+	icsFilename,
+	locale
 }: {
 	resend: Resend
 	from: string
@@ -22,35 +57,37 @@ export async function sendConfirmationEmail({
 	eventUrl: string
 	icalContent: string
 	icsFilename: string
+	locale: EmailLocale
 }) {
-	const greeting = name ? `Hi ${name},` : 'Hi,'
+	const template = CONFIRMATION_TEMPLATES[locale]
+	const greeting = template.greeting(name)
 	const when = `${event.date} ${event.startTime} (${event.duration} min)`
 	const description = event.description?.trim()
 	const plainText = [
 		greeting,
 		'',
-		`Your event is confirmed: ${event.title}`,
-		`When: ${when}`,
-		`Where: ${location}`,
+		template.textConfirmed(event.title),
+		template.textWhen(when),
+		template.textWhere(location),
 		description ? '' : null,
 		description || null,
 		'',
-		'We attached a calendar file so you can add it to Google Calendar.',
-		`View event: ${eventUrl}`
+		template.calendarLine,
+		template.textViewEvent(eventUrl)
 	]
 		.filter((line): line is string => Boolean(line))
 		.join('\n')
 
 	const html = `
     <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto;">
-      <h2>Event confirmed</h2>
+      <h2>${template.heading}</h2>
       <p>${escapeHtml(greeting)}</p>
-      <p><strong>${escapeHtml(event.title)}</strong> is confirmed.</p>
-      <p><strong>When:</strong> ${escapeHtml(when)}</p>
-      <p><strong>Where:</strong> ${escapeHtml(location)}</p>
+      <p><strong>${escapeHtml(event.title)}</strong> ${template.confirmedSentence}</p>
+      <p><strong>${template.whenLabel}:</strong> ${escapeHtml(when)}</p>
+      <p><strong>${template.whereLabel}:</strong> ${escapeHtml(location)}</p>
       ${description ? `<p>${escapeHtml(description)}</p>` : ''}
-      <p>We attached a calendar file so you can add it to Google Calendar.</p>
-      <p><a href="${eventUrl}">View event</a></p>
+      <p>${template.calendarLine}</p>
+      <p><a href="${eventUrl}">${template.viewEvent}</a></p>
     </div>
   `
 
@@ -58,7 +95,7 @@ export async function sendConfirmationEmail({
 	const response = await resend.emails.send({
 		from,
 		to,
-		subject: `Event confirmed: ${event.title}`,
+		subject: template.subject(event.title),
 		html,
 		text: plainText,
 		attachments: [

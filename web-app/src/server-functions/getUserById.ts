@@ -35,7 +35,9 @@ export const getUserById = createServerFn({ method: 'GET' })
       image: user.image || undefined,
       karmaPoints: user.karmaPoints || 0,
       skillLevels,
-      notificationPreferences: {}, // notifications logic is separate
+      notificationPreferences: user.notificationPreferences ?? {},
+      emailNotificationsDisabled: user.emailNotificationsDisabled ?? false,
+      preferredLanguage: user.preferredLanguage === 'en' ? 'en' : 'cs',
       preferredCurrency: user.preferredCurrency || 'CZK',
       location:
         user.city && user.country ? `${user.city}, ${user.country}` : undefined,
