@@ -1,19 +1,51 @@
 import { createServerFn } from '@tanstack/react-start'
+import { getRequest } from '@tanstack/react-start/server'
 import { Event } from '../types'
 import { db } from '../../drizzle/db'
-import { eventT, participantT } from '../../drizzle/schema'
-import { and, eq, gte, not } from 'drizzle-orm'
+import { coreGroupMemberT, eventT, participantT } from '../../drizzle/schema'
+import { and, eq, gte, inArray, isNull, lte, not, or } from 'drizzle-orm'
+import { auth } from '~/lib/auth'
 
 export const getUpcomingEvents = createServerFn({ method: 'GET' })
   .inputValidator((limit?: number) => limit || 3)
   .handler(async ({ data: limit }) => {
+    const request = getRequest()
+    const session = await auth.api.getSession({ headers: request.headers })
+    const viewerId = session?.user?.id
+
     const today = new Date().toISOString().split('T')[0]
+    const now = new Date()
+
+    let memberCoreGroupIds: string[] = []
+    if (viewerId) {
+      const memberships = await db
+        .select({ coreGroupId: coreGroupMemberT.coreGroupId })
+        .from(coreGroupMemberT)
+        .where(eq(coreGroupMemberT.userId, viewerId))
+
+      memberCoreGroupIds = memberships.map((membership) => membership.coreGroupId)
+    }
+
+    const visibilityClause =
+      memberCoreGroupIds.length > 0
+        ? or(
+            isNull(eventT.coreGroupExclusiveUntil),
+            lte(eventT.coreGroupExclusiveUntil, now),
+            inArray(eventT.coreGroupId, memberCoreGroupIds)
+          )
+        : or(isNull(eventT.coreGroupExclusiveUntil), lte(eventT.coreGroupExclusiveUntil, now))
 
     const eventsFromDb = await db
       .select()
       .from(eventT)
-      .where(and(gte(eventT.date, today), eq(eventT.isPublic, true), not(eq(eventT.status, 'cancelled'))))
-
+      .where(
+        and(
+          gte(eventT.date, today),
+          eq(eventT.isPublic, true),
+          not(eq(eventT.status, 'cancelled')),
+          visibilityClause
+        )
+      )
       .limit(limit)
 
     const eventsWithParticipants = await Promise.all(

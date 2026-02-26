@@ -6,7 +6,8 @@ import {
   PlusCircleIcon,
   SettingsIcon,
   UserRoundPlus,
-  Building2
+  Building2,
+  Users
 } from 'lucide-react'
 import {
   type ComponentProps,
@@ -187,6 +188,12 @@ export function UserButton({
                   <DropdownMenuItem>
                     <Building2 />
                     Manage Venues
+                  </DropdownMenuItem>
+                </Link>
+                <Link to="/manage-core-groups" className="cursor-pointer">
+                  <DropdownMenuItem>
+                    <Users />
+                    Manage Core Groups
                   </DropdownMenuItem>
                 </Link>
                 <Link to="/user-profile" className="cursor-pointer">

@@ -82,6 +82,10 @@ export interface Event {
   allowedSkillLevels?: string[]
   requireSkillLevel?: boolean
   qrCodeImages?: string[]
+  coreGroupId?: string
+  coreGroupName?: string
+  coreGroupUserIds?: string[]
+  coreGroupExclusiveUntil?: Date
   createdAt: Date
   updatedAt: Date
 }

@@ -78,6 +78,13 @@
       "when": 1769981107747,
       "tag": "0010_event_comments",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1772003418904,
+      "tag": "0011_core_groups",
+      "breakpoints": true
     }
   ]
 }

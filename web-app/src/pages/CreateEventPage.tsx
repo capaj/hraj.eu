@@ -46,7 +46,9 @@ export const CreateEvent: React.FC = () => {
       gameRules: duplicateEvent.gameRules,
       isPublic: duplicateEvent.isPublic,
       allowedSkillLevels: (duplicateEvent.allowedSkillLevels as any) || undefined,
-      requireSkillLevel: duplicateEvent.requireSkillLevel
+      requireSkillLevel: duplicateEvent.requireSkillLevel,
+      coreGroupId: duplicateEvent.coreGroupId,
+      coreGroupExclusiveUntil: duplicateEvent.coreGroupExclusiveUntil
     }
   } else if (search?.duplicate) {
     try {
@@ -80,7 +82,9 @@ export const CreateEvent: React.FC = () => {
           gameRules: eventData.gameRules,
           isPublic: Boolean(eventData.isPublic),
           allowedSkillLevels: eventData.allowedSkillLevels,
-          requireSkillLevel: Boolean(eventData.requireSkillLevel)
+          requireSkillLevel: Boolean(eventData.requireSkillLevel),
+          coreGroupId: eventData.enableCoreGroup ? eventData.coreGroupId : undefined,
+          coreGroupExclusiveHours: eventData.enableCoreGroup ? Number(eventData.coreGroupExclusiveHours) : undefined
         }
       })
       console.log('Event created:', created)
