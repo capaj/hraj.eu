@@ -461,15 +461,15 @@ msgstr "Pro změnu e-mailu kontaktujte podporu"
 
 #: src/components/events/CreateEventForm.tsx:1202
 msgid "Core group"
-msgstr ""
+msgstr "Základní skupina"
 
 #: src/components/events/CreateEventForm.tsx:1184
 msgid "Core Group Early Access"
-msgstr ""
+msgstr "Časný přístup pro základní skupinu"
 
 #: src/components/events/CreateEventForm.tsx:205
 msgid "Core group window must be between 2 hours and 14 days."
-msgstr ""
+msgstr "Okno pro základní skupinu musí být mezi 2 hodinami a 14 dny."
 
 #: src/pages/HomePage.tsx:127
 msgid "Countries"
@@ -481,7 +481,7 @@ msgstr "Země *"
 
 #: src/pages/ManageCoreGroupsPage.tsx:99
 msgid "Create and edit reusable groups for early event access."
-msgstr ""
+msgstr "Vytvářejte a upravujte opakovaně používané skupiny pro časný přístup k událostem."
 
 #: src/components/events/CreateEventForm.tsx:1265
 #: src/components/layout/Header.tsx:116
@@ -497,7 +497,7 @@ msgstr "Vytvářejte události s integrací plateb, vyvažováním týmů a auto
 
 #: src/pages/ManageCoreGroupsPage.tsx:114
 msgid "Create Group"
-msgstr ""
+msgstr "Vytvořit skupinu"
 
 #: src/pages/HomePage.tsx:157
 #~ msgid "Create new Event"
@@ -567,7 +567,7 @@ msgstr "Smazat oznámení"
 
 #: src/pages/ManageCoreGroupsPage.tsx:82
 msgid "Delete this core group?"
-msgstr ""
+msgstr "Smazat tuto základní skupinu?"
 
 #: src/components/venues/AddVenueModal.tsx:727
 msgid "Description"
@@ -625,7 +625,7 @@ msgstr "např. nepřízeň počasí, nedostatek hráčů..."
 
 #: src/components/events/CreateEventForm.tsx:1227
 msgid "Early access duration from now (hours)"
-msgstr ""
+msgstr "Doba trvání časného přístupu od teď (hodiny)"
 
 #: src/pages/LeaderboardPage.tsx:652
 msgid "Earn Points For:"
@@ -648,7 +648,7 @@ msgstr "Upravit událost"
 
 #: src/pages/ManageCoreGroupsPage.tsx:114
 msgid "Edit Group"
-msgstr ""
+msgstr "Upravit skupinu"
 
 #: src/pages/UserProfilePage.tsx:567
 msgid "Edit Profile"
@@ -668,7 +668,7 @@ msgstr "E-mailová adresa"
 
 #: src/components/events/CreateEventForm.tsx:1193
 msgid "Enable private preview for selected users before public visibility"
-msgstr ""
+msgstr "Povolit soukromý náhled pro vybrané uživatele před veřejnou viditelností"
 
 #: src/components/events/CreateEventForm.tsx:760
 msgid "Ends at {endTimeLabel}"
@@ -955,7 +955,7 @@ msgstr "Dobré sportovní chování"
 
 #: src/pages/ManageCoreGroupsPage.tsx:120
 msgid "Group name"
-msgstr ""
+msgstr "Název skupiny"
 
 #: src/pages/EventDetailsPage.tsx:1549
 msgid "Guest {index, number} name (optional)"
@@ -1116,7 +1116,7 @@ msgstr "Načítám místa..."
 
 #: src/pages/ManageCoreGroupsPage.tsx:176
 msgid "Loading..."
-msgstr ""
+msgstr "Načítání..."
 
 #: src/pages/EventDetailsPage.tsx:1276
 #: src/pages/UserProfilePage.tsx:617
@@ -1139,11 +1139,11 @@ msgstr "Ztratíte body za:"
 
 #: src/pages/ManageCoreGroupsPage.tsx:97
 msgid "Manage Core Groups"
-msgstr ""
+msgstr "Spravovat základní skupiny"
 
 #: src/components/events/CreateEventForm.tsx:1208
 msgid "Manage groups"
-msgstr ""
+msgstr "Spravovat skupiny"
 
 #: src/pages/ManageVenuesPage.tsx:233
 msgid "Manage Venues"
@@ -1187,11 +1187,11 @@ msgstr "Členem od"
 
 #: src/pages/ManageCoreGroupsPage.tsx:188
 msgid "members"
-msgstr ""
+msgstr "členů"
 
 #: src/pages/ManageCoreGroupsPage.tsx:132
 msgid "Members"
-msgstr ""
+msgstr "Členové"
 
 #: src/pages/EventDetailsPage.tsx:1304
 msgid "Minimum"
@@ -1236,7 +1236,7 @@ msgstr "Nahlášení negativního chování (-10 bodů)"
 
 #: src/pages/ManageCoreGroupsPage.tsx:104
 msgid "New Group"
-msgstr ""
+msgstr "Nová skupina"
 
 #: src/pages/UserProfilePage.tsx:399
 msgid "New password must be at least 8 characters long."
@@ -1272,7 +1272,7 @@ msgstr "Žádné GIFy nenalezeny"
 
 #: src/pages/ManageCoreGroupsPage.tsx:178
 msgid "No groups yet. Create your first one."
-msgstr ""
+msgstr "Zatím žádné skupiny. Vytvořte si svou první!"
 
 #: src/pages/EventDetailsPage.tsx:2371
 msgid "No I have not paid"
@@ -1560,11 +1560,11 @@ msgstr "Vyplňte prosím všechna povinná pole a vyberte alespoň jeden sport."
 
 #: src/pages/ManageCoreGroupsPage.tsx:58
 msgid "Please provide a group name."
-msgstr ""
+msgstr "Zadejte prosím název skupiny."
 
 #: src/components/events/CreateEventForm.tsx:201
 msgid "Please select a core group."
-msgstr ""
+msgstr "Vyberte prosím základní skupinu."
 
 #: src/components/events/CreateEventForm.tsx:577
 msgid "Please select a different sport or choose a different venue."
@@ -1580,7 +1580,7 @@ msgstr "Vyberte prosím soubor s obrázkem"
 
 #: src/pages/ManageCoreGroupsPage.tsx:63
 msgid "Please select at least one member."
-msgstr ""
+msgstr "Vyberte prosím alespoň jednoho člena."
 
 #: src/pages/EventDetailsPage.tsx:737
 msgid "Please sign in to comment on this event."
@@ -1790,7 +1790,7 @@ msgstr "Hledat místa podle názvu nebo polohy..."
 
 #: src/components/events/CreateEventForm.tsx:1216
 msgid "Select a core group"
-msgstr ""
+msgstr "Vybrat základní skupinu"
 
 #: src/components/events/CreateEventForm.tsx:534
 msgid "Select a sport"
@@ -1820,7 +1820,7 @@ msgstr "Vybráno"
 
 #: src/components/events/CreateEventForm.tsx:1240
 msgid "Set from 2 hours up to 14 days (336 hours), counted from now."
-msgstr ""
+msgstr "Nastavte od 2 hodin do 14 dnů (336 hodin), počítáno od teď."
 
 #: src/pages/EventDetailsPage.tsx:1090
 msgid "Share"
@@ -2192,7 +2192,7 @@ msgstr "Vaše dokončené události se zobrazí zde."
 
 #: src/pages/ManageCoreGroupsPage.tsx:172
 msgid "Your Groups"
-msgstr ""
+msgstr "Vaše skupiny"
 
 #: src/pages/EventDetailsPage.tsx:680
 msgid "Your request was received."
