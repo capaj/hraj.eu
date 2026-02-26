@@ -35,7 +35,9 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
     isPublic: event.isPublic,
     allowedSkillLevels: (event.allowedSkillLevels as SkillLevel[]) || undefined,
     requireSkillLevel: event.requireSkillLevel,
-    qrCodeImages: event.qrCodeImages || []
+    qrCodeImages: event.qrCodeImages || [],
+    coreGroupId: event.coreGroupId,
+    coreGroupExclusiveUntil: event.coreGroupExclusiveUntil
   }
 
   const handleSubmit = async (eventData: CreateEventFormData) => {
@@ -64,7 +66,10 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
           isPublic: Boolean(eventData.isPublic),
           allowedSkillLevels: eventData.allowedSkillLevels,
           requireSkillLevel: Boolean(eventData.requireSkillLevel),
-          qrCodeImages: eventData.qrCodeImages
+          coreGroupId: eventData.enableCoreGroup ? eventData.coreGroupId : undefined,
+          coreGroupExclusiveHours: eventData.enableCoreGroup ? Number(eventData.coreGroupExclusiveHours) : undefined,
+          qrCodeImages: eventData.qrCodeImages,
+          clearCoreGroup: !eventData.enableCoreGroup
         }
       })
       toast.success(i18n._(msg`Event updated successfully!`))

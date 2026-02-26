@@ -9,6 +9,7 @@ import { VenueSelector } from '../venues/VenueSelector'
 import { AddVenueModal } from '../venues/AddVenueModal'
 import { SPORTS, SKILL_LEVELS } from '../../lib/constants'
 import { getVenues } from '~/server-functions/getVenues'
+import { getCoreGroups } from '~/server-functions/getCoreGroups'
 import { uploadEventQrImages } from '~/server-functions/uploadEventQrImages'
 import { Venue, type SkillLevel } from '../../types'
 import { eventT } from '../../../drizzle/schema'
@@ -71,6 +72,9 @@ export type CreateEventFormData = Omit<
   venueId: string
   idealParticipants: number
   qrCodeImages: string[]
+  enableCoreGroup: boolean
+  coreGroupId: string
+  coreGroupExclusiveHours: number
 }
 
 interface CreateEventFormProps {
@@ -114,13 +118,19 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     isPublic: initialData?.isPublic ?? true,
     allowedSkillLevels: initialData?.allowedSkillLevels || ['beginner', 'intermediate', 'advanced'],
     requireSkillLevel: initialData?.requireSkillLevel || false,
-    qrCodeImages: initialData?.qrCodeImages || []
+    qrCodeImages: initialData?.qrCodeImages || [],
+    enableCoreGroup: Boolean(initialData?.coreGroupId),
+    coreGroupId: initialData?.coreGroupId || '',
+    coreGroupExclusiveHours: initialData?.coreGroupExclusiveUntil
+      ? Math.min(24 * 14, Math.max(2, Math.round((new Date(initialData.coreGroupExclusiveUntil).getTime() - Date.now()) / (60 * 60 * 1000))))
+      : 48
   })
 
   const [showAddVenueModal, setShowAddVenueModal] = useState(false)
   const [showCancelConfirm, setShowCancelConfirm] = useState(false)
   const [cancellationReason, setCancellationReason] = useState('')
   const [venues, setVenues] = useState<Venue[]>([])
+  const [coreGroups, setCoreGroups] = useState<Array<{ id: string; name: string; userIds: string[] }>>([])
   const [isLoadingVenues, setIsLoadingVenues] = useState(true)
   const [isUploadingQrCodes, setIsUploadingQrCodes] = useState(false)
 
@@ -147,7 +157,12 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
         isPublic: initialData.isPublic ?? prev.isPublic,
         allowedSkillLevels: initialData.allowedSkillLevels || prev.allowedSkillLevels,
         requireSkillLevel: initialData.requireSkillLevel ?? prev.requireSkillLevel,
-        qrCodeImages: initialData.qrCodeImages || prev.qrCodeImages
+        qrCodeImages: initialData.qrCodeImages || prev.qrCodeImages,
+        enableCoreGroup: initialData.coreGroupId ? true : prev.enableCoreGroup,
+        coreGroupId: initialData.coreGroupId || prev.coreGroupId,
+        coreGroupExclusiveHours: initialData.coreGroupExclusiveUntil
+          ? Math.min(24 * 14, Math.max(2, Math.round((new Date(initialData.coreGroupExclusiveUntil).getTime() - Date.now()) / (60 * 60 * 1000))))
+          : prev.coreGroupExclusiveHours
       }))
     }
   }, [initialData])
@@ -157,8 +172,12 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     const fetchVenues = async () => {
       try {
         setIsLoadingVenues(true)
-        const venuesData = await getVenues()
+        const [venuesData, coreGroupsData] = await Promise.all([
+          getVenues(),
+          getCoreGroups()
+        ])
         setVenues(venuesData)
+        setCoreGroups(coreGroupsData)
       } catch (error) {
         console.error('Failed to load venues:', error)
       } finally {
@@ -175,6 +194,17 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     if (!formData.venueId) {
       alert(i18n._(msg`Please select a venue for your event.`))
       return
+    }
+
+    if (formData.enableCoreGroup) {
+      if (!formData.coreGroupId) {
+        alert(i18n._(msg`Please select a core group.`))
+        return
+      }
+      if (formData.coreGroupExclusiveHours < 2 || formData.coreGroupExclusiveHours > 24 * 14) {
+        alert(i18n._(msg`Core group window must be between 2 hours and 14 days.`))
+        return
+      }
     }
 
     onSubmit(formData)
@@ -1145,6 +1175,73 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                   </span>
                 </label>
               </div>
+            </div>
+
+
+            {/* Core Group Early Access */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-gray-900">
+                <Trans>Core Group Early Access</Trans>
+              </h3>
+              <label className="flex items-center gap-2 text-sm text-gray-700">
+                <input
+                  type="checkbox"
+                  checked={formData.enableCoreGroup}
+                  onChange={(e) => handleChange('enableCoreGroup', e.target.checked)}
+                  className="text-primary-600 focus:ring-primary-500"
+                />
+                <Trans>Enable private preview for selected users before public visibility</Trans>
+              </label>
+
+              {formData.enableCoreGroup && (
+                <div className="space-y-4 rounded-lg border border-gray-200 p-4 bg-gray-50">
+
+                  <div>
+                    <div className="flex items-center justify-between gap-3">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <Trans>Core group</Trans>
+                      </label>
+                      <a
+                        href="/manage-core-groups"
+                        className="text-sm text-primary-600 hover:underline"
+                      >
+                        <Trans>Manage groups</Trans>
+                      </a>
+                    </div>
+                    <select
+                      value={formData.coreGroupId}
+                      onChange={(e) => handleChange('coreGroupId', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    >
+                      <option value=""><Trans>Select a core group</Trans></option>
+                      {coreGroups.map((group) => (
+                        <option key={group.id} value={group.id}>
+                          {group.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <Trans>Early access duration from now (hours)</Trans>
+                    </label>
+                    <input
+                      type="number"
+                      min={2}
+                      max={24 * 14}
+                      value={formData.coreGroupExclusiveHours}
+                      onChange={(e) =>
+                        handleChange('coreGroupExclusiveHours', Number(e.target.value || 2))
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      <Trans>Set from 2 hours up to 14 days (336 hours), counted from now.</Trans>
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Actions */}

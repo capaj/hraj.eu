@@ -1,5 +1,5 @@
-import { eventStatuses, eventT, participantT } from '../../drizzle/schema'
-import { eq, not, inArray, sql } from 'drizzle-orm'
+import { coreGroupMemberT, eventStatuses, eventT, participantT } from '../../drizzle/schema'
+import { and, eq, inArray, isNull, lte, not, or, sql } from 'drizzle-orm'
 
 export type GetEventsInput = {
   statuses?: Array<(typeof eventStatuses)[number]>
@@ -7,19 +7,44 @@ export type GetEventsInput = {
 
 export async function getEventsHandler(
   db: any,
-  data?: GetEventsInput
+  data?: GetEventsInput,
+  viewerId?: string
 ): Promise<any[]> {
   const statuses = data?.statuses
 
   const eventDateTimeSql = sql`datetime(${eventT.date} || ' ' || ${eventT.startTime})`
 
+  const memberCoreGroupIds = viewerId
+    ? (
+        await db
+          .select({ coreGroupId: coreGroupMemberT.coreGroupId })
+          .from(coreGroupMemberT)
+          .where(eq(coreGroupMemberT.userId, viewerId))
+      ).map((membership: any) => membership.coreGroupId)
+    : []
+
+  const visibilityClause =
+    memberCoreGroupIds.length > 0
+      ? or(
+          isNull(eventT.coreGroupExclusiveUntil),
+          lte(eventT.coreGroupExclusiveUntil, new Date()),
+          inArray(eventT.coreGroupId, memberCoreGroupIds)
+        )
+      : or(
+          isNull(eventT.coreGroupExclusiveUntil),
+          lte(eventT.coreGroupExclusiveUntil, new Date())
+        )
+
   const eventsFromDb = await db
     .select()
     .from(eventT)
     .where(
-      statuses && statuses.length > 0
-        ? inArray(eventT.status, statuses)
-        : not(eq(eventT.status, 'cancelled'))
+      and(
+        statuses && statuses.length > 0
+          ? inArray(eventT.status, statuses)
+          : not(eq(eventT.status, 'cancelled')),
+        visibilityClause
+      )
     )
     .orderBy(
       sql`CASE WHEN ${eventDateTimeSql} < datetime('now') THEN 1 ELSE 0 END`,

@@ -74,6 +74,18 @@ export const eventT = sqliteTable(
     paymentDetails: text('payment_details'),
     gameRules: text('game_rules'),
     isPublic: integer('is_public', { mode: 'boolean' }).default(true).notNull(),
+    coreGroupId: text('core_group_id').references(() => coreGroupT.id, {
+      onDelete: 'set null'
+    }),
+    /**
+     * absolute timestamp when an event becomes visible to everyone.
+     * while this is in the future, only members of `coreGroupId` can see the event.
+     * it is computed from the configured early-access hours relative to now (creation/update time),
+     * not relative to the event start datetime.
+     */
+    coreGroupExclusiveUntil: integer('core_group_exclusive_until', {
+      mode: 'timestamp'
+    }),
     organizerId: text('organizer_id')
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
@@ -120,7 +132,62 @@ export const eventT = sqliteTable(
     sportDateIdx: index('sport_date_idx').on(table.sport, table.date),
     organizerIdx: index('organizer_idx').on(table.organizerId),
     venueIdx: index('venue_idx').on(table.venueId),
+    coreGroupIdx: index('core_group_idx').on(table.coreGroupId),
     seriesIdIdx: index('series_id_idx').on(table.seriesId)
+  })
+)
+
+export const coreGroupT = sqliteTable(
+  'core_group',
+  {
+    id: text('id')
+      .$defaultFn(() => createId())
+      .primaryKey()
+      .notNull(),
+    name: text('name').notNull(),
+    createdBy: text('created_by')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    createdAt: integer('created_at', { mode: 'timestamp' })
+      .default(sql`unixepoch()`)
+      .notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp' })
+      .default(sql`unixepoch()`)
+      .$onUpdate(() => new Date())
+      .notNull()
+  },
+  (table) => ({
+    createdByIdx: index('core_group_created_by_idx').on(table.createdBy),
+    creatorNameIdx: uniqueIndex('core_group_creator_name_idx').on(
+      table.createdBy,
+      table.name
+    )
+  })
+)
+
+export const coreGroupMemberT = sqliteTable(
+  'core_group_member',
+  {
+    id: text('id')
+      .$defaultFn(() => createId())
+      .primaryKey()
+      .notNull(),
+    coreGroupId: text('core_group_id')
+      .notNull()
+      .references(() => coreGroupT.id, { onDelete: 'cascade' }),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    createdAt: integer('created_at', { mode: 'timestamp' })
+      .default(sql`unixepoch()`)
+      .notNull()
+  },
+  (table) => ({
+    groupUserIdx: uniqueIndex('core_group_user_idx').on(
+      table.coreGroupId,
+      table.userId
+    ),
+    userIdx: index('core_group_member_user_idx').on(table.userId)
   })
 )
 
@@ -158,8 +225,32 @@ export const eventRelations = relations(eventT, ({ one, many }) => ({
     fields: [eventT.venueId],
     references: [venueT.id]
   }),
+  coreGroup: one(coreGroupT, {
+    fields: [eventT.coreGroupId],
+    references: [coreGroupT.id]
+  }),
   participants: many(participantT),
   comments: many(eventCommentT)
+}))
+
+export const coreGroupRelations = relations(coreGroupT, ({ one, many }) => ({
+  creator: one(user, {
+    fields: [coreGroupT.createdBy],
+    references: [user.id]
+  }),
+  members: many(coreGroupMemberT),
+  events: many(eventT)
+}))
+
+export const coreGroupMemberRelations = relations(coreGroupMemberT, ({ one }) => ({
+  coreGroup: one(coreGroupT, {
+    fields: [coreGroupMemberT.coreGroupId],
+    references: [coreGroupT.id]
+  }),
+  user: one(user, {
+    fields: [coreGroupMemberT.userId],
+    references: [user.id]
+  })
 }))
 
 export const participantT = sqliteTable(

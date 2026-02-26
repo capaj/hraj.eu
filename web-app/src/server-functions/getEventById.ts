@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 import { Event } from '../types'
 import { db } from '../../drizzle/db'
-import { eventT, participantT } from '../../drizzle/schema'
+import { coreGroupMemberT, coreGroupT, eventT, participantT } from '../../drizzle/schema'
 import { eq } from 'drizzle-orm'
 
 export const getEventById = createServerFn({ method: 'GET' })
@@ -71,6 +71,27 @@ export const getEventById = createServerFn({ method: 'GET' })
         {} as Record<string, Date>
       )
 
+
+    let coreGroupName: string | undefined
+    let coreGroupUserIds: string[] | undefined
+
+    if (event.coreGroupId) {
+      const coreGroup = await db
+        .select({ id: coreGroupT.id, name: coreGroupT.name })
+        .from(coreGroupT)
+        .where(eq(coreGroupT.id, event.coreGroupId))
+        .limit(1)
+
+      coreGroupName = coreGroup[0]?.name
+
+      const coreMembers = await db
+        .select({ userId: coreGroupMemberT.userId })
+        .from(coreGroupMemberT)
+        .where(eq(coreGroupMemberT.coreGroupId, event.coreGroupId))
+
+      coreGroupUserIds = coreMembers.map((member) => member.userId)
+    }
+
     return {
       id: event.id,
       title: event.title,
@@ -108,6 +129,12 @@ export const getEventById = createServerFn({ method: 'GET' })
         : undefined,
       requireSkillLevel: !!event.requiredSkillLevel,
       qrCodeImages: event.qrCodeImages || [],
+      coreGroupId: event.coreGroupId || undefined,
+      coreGroupName,
+      coreGroupUserIds,
+      coreGroupExclusiveUntil: event.coreGroupExclusiveUntil
+        ? new Date(event.coreGroupExclusiveUntil)
+        : undefined,
       createdAt: new Date(event.createdAt),
       updatedAt: new Date(event.updatedAt)
     } as Event

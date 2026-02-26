@@ -1,8 +1,10 @@
 import { createServerFn } from '@tanstack/react-start'
+import { getRequest } from '@tanstack/react-start/server'
 import { Event } from '../types'
 import { db } from '../../drizzle/db'
-import { eventT, participantT } from '../../drizzle/schema'
-import { eq } from 'drizzle-orm'
+import { coreGroupMemberT, eventT, participantT } from '../../drizzle/schema'
+import { and, eq, inArray, isNull, lte, or } from 'drizzle-orm'
+import { auth } from '~/lib/auth'
 
 export const getEventsByFilters = createServerFn({ method: 'GET' })
   .inputValidator(
@@ -10,19 +12,42 @@ export const getEventsByFilters = createServerFn({ method: 'GET' })
       filters
   )
   .handler(async ({ data: filters }) => {
-    let query = db.select().from(eventT)
+    const request = getRequest()
+    const session = await auth.api.getSession({ headers: request.headers })
+    const viewerId = session?.user?.id
+
+    const memberCoreGroupIds = viewerId
+      ? (
+          await db
+            .select({ coreGroupId: coreGroupMemberT.coreGroupId })
+            .from(coreGroupMemberT)
+            .where(eq(coreGroupMemberT.userId, viewerId))
+        ).map((membership) => membership.coreGroupId)
+      : []
+
+    const visibilityClause =
+      memberCoreGroupIds.length > 0
+        ? or(
+            isNull(eventT.coreGroupExclusiveUntil),
+            lte(eventT.coreGroupExclusiveUntil, new Date()),
+            inArray(eventT.coreGroupId, memberCoreGroupIds)
+          )
+        : or(
+            isNull(eventT.coreGroupExclusiveUntil),
+            lte(eventT.coreGroupExclusiveUntil, new Date())
+          )
+
+    const whereConditions = [visibilityClause]
 
     if (filters.sport) {
-      query = query.where(eq(eventT.sport, filters.sport)) as any
+      whereConditions.push(eq(eventT.sport, filters.sport))
     }
 
     if (filters.skillLevel) {
-      query = query.where(
-        eq(eventT.requiredSkillLevel, filters.skillLevel as any)
-      ) as any
+      whereConditions.push(eq(eventT.requiredSkillLevel, filters.skillLevel as any))
     }
 
-    const eventsFromDb = await query
+    const eventsFromDb = await db.select().from(eventT).where(and(...whereConditions))
 
     const eventsWithParticipants = await Promise.all(
       eventsFromDb.map(async (event) => {

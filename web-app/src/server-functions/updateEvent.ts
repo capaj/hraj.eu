@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
 import { z } from 'zod'
-import { eventT } from '../../drizzle/schema'
+import { coreGroupT, eventT } from '../../drizzle/schema'
 import { db } from 'drizzle/db'
 import { auth } from '~/lib/auth'
 import { eq, and } from 'drizzle-orm'
@@ -28,7 +28,10 @@ const UpdateEventSchema = z.object({
     .array(z.enum(['beginner', 'intermediate', 'advanced']))
     .optional(),
   requireSkillLevel: z.boolean().optional(),
-  qrCodeImages: z.array(z.string()).optional()
+  qrCodeImages: z.array(z.string()).optional(),
+  coreGroupId: z.string().min(1).optional(),
+  coreGroupExclusiveHours: z.number().int().min(2).max(24 * 14).optional(),
+  clearCoreGroup: z.boolean().optional()
 })
 
 export type UpdateEventData = z.infer<typeof UpdateEventSchema>
@@ -64,7 +67,32 @@ export const updateEvent = createServerFn({ method: 'POST' })
       throw new Error('You can only update events you organized')
     }
 
+    const organizerId = session.user.id
     const updates: Partial<typeof eventT.$inferInsert> = {}
+
+    if (data.clearCoreGroup) {
+      updates.coreGroupId = null
+      updates.coreGroupExclusiveUntil = null
+    } else if (data.coreGroupId) {
+      const group = await db.query.coreGroupT.findFirst({
+        where: and(
+          eq(coreGroupT.id, data.coreGroupId),
+          eq(coreGroupT.createdBy, organizerId)
+        )
+      })
+
+      if (!group) {
+        throw new Error('Selected core group does not exist')
+      }
+
+      updates.coreGroupId = group.id
+      if (data.coreGroupExclusiveHours !== undefined) {
+        const now = new Date()
+        updates.coreGroupExclusiveUntil = new Date(
+          now.getTime() + data.coreGroupExclusiveHours * 60 * 60 * 1000
+        )
+      }
+    }
 
     if (data.title) updates.title = data.title
     if (data.sport) updates.sport = data.sport
@@ -93,8 +121,8 @@ export const updateEvent = createServerFn({ method: 'POST' })
           ? data.price
           : null
     }
-    
-    if (data.currency) updates.currency = data.currency;
+
+    if (data.currency) updates.currency = data.currency
 
     if (data.paymentDetails !== undefined)
       updates.paymentDetails = data.paymentDetails
