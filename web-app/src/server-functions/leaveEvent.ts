@@ -3,9 +3,9 @@ import { getRequest } from '@tanstack/react-start/server'
 import { deleteOgImageFromR2 } from './utils'
 import { z } from 'zod'
 import { db } from '../../drizzle/db'
-import { participantT } from '../../drizzle/schema'
+import { eventT, participantT } from '../../drizzle/schema'
 import { auth } from '~/lib/auth'
-import { and, eq } from 'drizzle-orm'
+import { and, asc, eq } from 'drizzle-orm'
 
 const LeaveEventSchema = z.object({
   eventId: z.string().min(1, 'Event ID is required')
@@ -27,15 +27,63 @@ export const leaveEvent = createServerFn({ method: 'POST' })
       throw new Error('You must be signed in to leave an event')
     }
 
-    await db
-      .update(participantT)
-      .set({ status: 'cancelled' })
-      .where(
-        and(
-          eq(participantT.eventId, data.eventId),
-          eq(participantT.userId, session.user.id)
+    await db.transaction(async (tx) => {
+      await tx
+        .update(participantT)
+        .set({ status: 'cancelled' })
+        .where(
+          and(
+            eq(participantT.eventId, data.eventId),
+            eq(participantT.userId, session.user.id)
+          )
         )
+
+      const [event] = await tx
+        .select({ maxParticipants: eventT.maxParticipants })
+        .from(eventT)
+        .where(eq(eventT.id, data.eventId))
+        .limit(1)
+
+      if (!event) {
+        return
+      }
+
+      const participants = await tx
+        .select({
+          id: participantT.id,
+          status: participantT.status,
+          plusAttendees: participantT.plusAttendees
+        })
+        .from(participantT)
+        .where(eq(participantT.eventId, data.eventId))
+        .orderBy(asc(participantT.createdAt))
+
+      let confirmedHeadcount = participants
+        .filter((participant) => participant.status === 'confirmed')
+        .reduce((total, participant) => {
+          return total + 1 + (participant.plusAttendees?.length ?? 0)
+        }, 0)
+
+      const waitlistedParticipants = participants.filter(
+        (participant) => participant.status === 'waitlisted'
       )
+
+      for (const waitlistedParticipant of waitlistedParticipants) {
+        const participantHeadcount =
+          1 + (waitlistedParticipant.plusAttendees?.length ?? 0)
+
+        if (confirmedHeadcount + participantHeadcount > event.maxParticipants) {
+          break
+        }
+
+        await tx
+          .update(participantT)
+          .set({ status: 'confirmed' })
+          .where(eq(participantT.id, waitlistedParticipant.id))
+
+        confirmedHeadcount += participantHeadcount
+      }
+    })
 
     const participants = await getParticipants(data.eventId)
 
