@@ -1,5 +1,4 @@
 node_modules
 .turbo
 web-app/tsconfig.tsbuildinfo
-
 .DS_Store

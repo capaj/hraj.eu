@@ -6,8 +6,8 @@
   "sideEffects": false,
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
-    "ci:build": "vite build && lingui extract && lingui compile",
+    "build": "pnpm lingui:extract && pnpm lingui:compile && vite build",
+    "ci:build": "pnpm run build",
     "start": "vite start",
     "bump": "ncu -u && pnpm install",
     "migrate": "drizzle-kit migrate",
