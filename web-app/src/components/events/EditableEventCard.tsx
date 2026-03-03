@@ -54,7 +54,32 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
       await updateEvent({
         data: {
           id: event.id,
-          ...data
+          title: data.title,
+          sport: data.sport,
+          venueId: data.venueId,
+          date: data.date,
+          startTime: data.startTime,
+          duration: Number(data.duration),
+          minParticipants: Number(data.minParticipants),
+          idealParticipants: data.idealParticipants
+            ? Number(data.idealParticipants)
+            : undefined,
+          maxParticipants: Number(data.maxParticipants),
+          cancellationHours: Number(data.cancellationHours ?? 0),
+          cancellationMinutes: Number(data.cancellationMinutes ?? 0),
+          price: data.price,
+          currency: data.currency,
+          paymentDetails: data.paymentDetails,
+          gameRules: data.gameRules,
+          isPublic: Boolean(data.isPublic),
+          allowedSkillLevels: data.allowedSkillLevels,
+          requireSkillLevel: Boolean(data.requireSkillLevel),
+          coreGroupId: data.enableCoreGroup ? data.coreGroupId : undefined,
+          coreGroupExclusiveHours: data.enableCoreGroup
+            ? Number(data.coreGroupExclusiveHours)
+            : undefined,
+          clearCoreGroup: !data.enableCoreGroup,
+          qrCodeImages: data.qrCodeImages
         }
       })
       setIsEditOpen(false)
@@ -108,7 +133,10 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
     gameRules: event.gameRules || '',
     isPublic: event.isPublic,
     allowedSkillLevels: (event.allowedSkillLevels as any) || ['beginner', 'intermediate', 'advanced'],
-    requireSkillLevel: event.requireSkillLevel || false
+    requireSkillLevel: event.requireSkillLevel || false,
+    qrCodeImages: event.qrCodeImages || [],
+    coreGroupId: event.coreGroupId,
+    coreGroupExclusiveUntil: event.coreGroupExclusiveUntil
   }
 
   // Correction for cancellation time if needed using standard calculation
