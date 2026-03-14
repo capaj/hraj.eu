@@ -2,7 +2,7 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import { defineConfig } from 'vite'
 import tsConfigPaths from 'vite-tsconfig-paths'
 import tailwindcss from '@tailwindcss/vite'
-import { lingui } from '@lingui/vite-plugin'
+import macrosPlugin from 'vite-plugin-babel-macros'
 import viteReact from '@vitejs/plugin-react'
 import { cloudflare } from '@cloudflare/vite-plugin'
 import path from 'node:path'
@@ -14,14 +14,11 @@ export default defineConfig({
       ignored: ['**/src/routeTree.gen.ts', '**/.tanstack/**']
     }
   },
-  optimizeDeps: {
-    exclude: ['@lingui/macro', '@lingui/core/macro', '@lingui/react/macro']
-  },
   environments: {
     ssr: {
       optimizeDeps: {
         include: ['@libsql/client'],
-        exclude: ['@lingui/macro', '@lingui/core/macro', '@lingui/react/macro']
+        noDiscovery: true
       }
     }
   },
@@ -55,12 +52,8 @@ export default defineConfig({
     cloudflare({ viteEnvironment: { name: 'ssr' } }),
 
     tanstackStart(),
-    viteReact({
-      babel: {
-        plugins: ['macros']
-      }
-    }),
-    lingui(),
+    macrosPlugin(),
+    viteReact(),
     tailwindcss()
   ]
 })
