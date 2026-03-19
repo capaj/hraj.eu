@@ -1145,8 +1145,13 @@ export const EventDetailsPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-6">
-            {/* Status and Description */}
+            {/* Event Details */}
             <Card>
+              <CardHeader>
+                <h2 className="text-xl font-semibold text-gray-900">
+                  <Trans>Event Details</Trans>
+                </h2>
+              </CardHeader>
               <CardContent className="p-6">
                 <div className="mb-4">
                   {event.status === 'cancelled' ? (
@@ -1220,19 +1225,6 @@ export const EventDetailsPage: React.FC = () => {
                     </div>
                   </div>
                 )}
-
-                {/* Add to Calendar Button */}
-              </CardContent>
-            </Card>
-
-            {/* Event Details */}
-            <Card>
-              <CardHeader>
-                <h2 className="text-xl font-semibold text-gray-900">
-                  <Trans>Event Details</Trans>
-                </h2>
-              </CardHeader>
-              <CardContent className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
