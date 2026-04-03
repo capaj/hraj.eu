@@ -33,6 +33,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
   const spotsLeft = event.maxParticipants - confirmedHeadcount;
   const isIdealReached = event.idealParticipants && confirmedHeadcount >= event.idealParticipants;
   const isMinimumReached = confirmedHeadcount >= event.minParticipants;
+  const isBelowMinimum = confirmedHeadcount < event.minParticipants;
   const isParticipant = currentUserId ? event.participants.includes(currentUserId) : false;
   const isWaitlisted = currentUserId ? event.waitlist?.includes(currentUserId) : false;
 
@@ -61,6 +62,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
   const participantStatus = getParticipantStatus();
 
   const getJoinButtonText = () => {
+    if (isParticipant && isBelowMinimum) return 'You would like to participate';
     if (isParticipant) return 'You are playing';
     if (isWaitlisted) return 'On Waitlist';
     if (isJoining) return 'Joining...';
