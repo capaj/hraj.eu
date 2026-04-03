@@ -47,24 +47,32 @@ export async function getEventsHandler(
 
   const eventsFromDb =
     pastEventsLimit && pastEventsLimit > 0
-      ? [
-          ...(
-            await db
-              .select()
-              .from(eventT)
-              .where(and(baseWhereClause, sql`${eventDateTimeSql} >= datetime('now')`))
-              .orderBy(eventDateTimeSql)
-              .limit(50)
-          ),
-          ...(
-            await db
-              .select()
-              .from(eventT)
-              .where(and(baseWhereClause, sql`${eventDateTimeSql} < datetime('now')`))
-              .orderBy(sql`${eventDateTimeSql} DESC`)
-              .limit(pastEventsLimit)
+      ? await db
+          .select()
+          .from(eventT)
+          .where(
+            and(
+              baseWhereClause,
+              or(
+                sql`${eventDateTimeSql} >= datetime('now')`,
+                inArray(
+                  eventT.id,
+                  db
+                    .select({ id: eventT.id })
+                    .from(eventT)
+                    .where(and(baseWhereClause, sql`${eventDateTimeSql} < datetime('now')`))
+                    .orderBy(sql`${eventDateTimeSql} DESC`)
+                    .limit(pastEventsLimit)
+                )
+              )
+            )
           )
-        ]
+          .orderBy(
+            sql`CASE WHEN ${eventDateTimeSql} < datetime('now') THEN 1 ELSE 0 END`,
+            sql`CASE WHEN ${eventDateTimeSql} >= datetime('now') THEN ${eventDateTimeSql} END ASC`,
+            sql`CASE WHEN ${eventDateTimeSql} < datetime('now') THEN ${eventDateTimeSql} END DESC`
+          )
+          .limit(50 + pastEventsLimit)
       : await db
           .select()
           .from(eventT)
