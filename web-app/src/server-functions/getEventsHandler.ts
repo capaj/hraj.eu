@@ -3,6 +3,7 @@ import { and, eq, inArray, isNull, lte, not, or, sql } from 'drizzle-orm'
 
 export type GetEventsInput = {
   statuses?: Array<(typeof eventStatuses)[number]>
+  pastEventsLimit?: number
 }
 
 export async function getEventsHandler(
@@ -35,23 +36,45 @@ export async function getEventsHandler(
           lte(eventT.coreGroupExclusiveUntil, new Date())
         )
 
-  const eventsFromDb = await db
-    .select()
-    .from(eventT)
-    .where(
-      and(
-        statuses && statuses.length > 0
-          ? inArray(eventT.status, statuses)
-          : not(eq(eventT.status, 'cancelled')),
-        visibilityClause
-      )
-    )
-    .orderBy(
-      sql`CASE WHEN ${eventDateTimeSql} < datetime('now') THEN 1 ELSE 0 END`,
-      sql`CASE WHEN ${eventDateTimeSql} >= datetime('now') THEN ${eventDateTimeSql} END ASC`,
-      sql`CASE WHEN ${eventDateTimeSql} < datetime('now') THEN ${eventDateTimeSql} END DESC`
-    )
-    .limit(50)
+  const baseWhereClause = and(
+    statuses && statuses.length > 0
+      ? inArray(eventT.status, statuses)
+      : not(eq(eventT.status, 'cancelled')),
+    visibilityClause
+  )
+
+  const pastEventsLimit = data?.pastEventsLimit
+
+  const eventsFromDb =
+    pastEventsLimit && pastEventsLimit > 0
+      ? [
+          ...(
+            await db
+              .select()
+              .from(eventT)
+              .where(and(baseWhereClause, sql`${eventDateTimeSql} >= datetime('now')`))
+              .orderBy(eventDateTimeSql)
+              .limit(50)
+          ),
+          ...(
+            await db
+              .select()
+              .from(eventT)
+              .where(and(baseWhereClause, sql`${eventDateTimeSql} < datetime('now')`))
+              .orderBy(sql`${eventDateTimeSql} DESC`)
+              .limit(pastEventsLimit)
+          )
+        ]
+      : await db
+          .select()
+          .from(eventT)
+          .where(baseWhereClause)
+          .orderBy(
+            sql`CASE WHEN ${eventDateTimeSql} < datetime('now') THEN 1 ELSE 0 END`,
+            sql`CASE WHEN ${eventDateTimeSql} >= datetime('now') THEN ${eventDateTimeSql} END ASC`,
+            sql`CASE WHEN ${eventDateTimeSql} < datetime('now') THEN ${eventDateTimeSql} END DESC`
+          )
+          .limit(50)
 
   const eventsWithParticipants = await Promise.all(
     eventsFromDb.map(async (event: any) => {

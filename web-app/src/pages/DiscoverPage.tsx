@@ -16,6 +16,7 @@ import { i18n } from '~/lib/i18n'
 import { getConfirmedHeadcount } from '../utils/participants'
 
 type SortOption = 'date' | 'distance' | 'spots'
+const MAX_PAST_EVENTS = 12
 
 export const DiscoverPage: React.FC = () => {
   const { events: initialEvents, venues, user } = useLoaderData({ from: '/' })
@@ -141,7 +142,14 @@ export const DiscoverPage: React.FC = () => {
   )
 
   const pastEvents = useMemo(
-    () => filteredAndSortedEvents.filter(e => isPast(getEventDateTime(e))),
+    () =>
+      filteredAndSortedEvents
+        .filter(e => isPast(getEventDateTime(e)))
+        .sort(
+          (a, b) =>
+            getEventDateTime(b).getTime() - getEventDateTime(a).getTime()
+        )
+        .slice(0, MAX_PAST_EVENTS),
     [filteredAndSortedEvents]
   )
 
