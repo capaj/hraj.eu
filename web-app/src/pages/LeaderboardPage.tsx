@@ -28,6 +28,8 @@ type LeaderboardType =
   | 'events-joined'
   | 'monthly'
 
+const MAX_LEADERBOARD_USERS = 25
+
 export const Leaderboard: React.FC = () => {
   const [selectedType, setSelectedType] = useState<LeaderboardType>('karma')
   const [selectedSport, setSelectedSport] = useState<string | undefined>(
@@ -42,7 +44,7 @@ export const Leaderboard: React.FC = () => {
     const fetchUsers = async () => {
       try {
         setIsLoading(true)
-        const usersData = await getUsers()
+        const usersData = await getUsers({ data: { limit: MAX_LEADERBOARD_USERS } })
         setUsers(usersData)
       } catch (error) {
         console.error('Failed to load users:', error)
@@ -154,6 +156,7 @@ export const Leaderboard: React.FC = () => {
   }
 
   const leaderboardData = generateLeaderboardData(selectedType, selectedSport)
+  const displayedLeaderboardData = leaderboardData.slice(0, MAX_LEADERBOARD_USERS)
 
   const getRankIcon = (position: number) => {
     switch (position) {
@@ -428,9 +431,9 @@ export const Leaderboard: React.FC = () => {
             </div>
           </CardHeader>
           <CardContent className="p-0">
-            {leaderboardData.length > 0 ? (
+            {displayedLeaderboardData.length > 0 ? (
               <div className="divide-y divide-gray-200">
-                {leaderboardData.map((user, index) => {
+                {displayedLeaderboardData.map((user, index) => {
                   const position = index + 1
                   const isTopThree = position <= 3
 
@@ -577,7 +580,7 @@ export const Leaderboard: React.FC = () => {
         </Card>
 
         {/* Stats Cards */}
-        {leaderboardData.length > 0 && (
+        {displayedLeaderboardData.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
             <Card className="text-center">
               <CardContent className="p-6">
@@ -585,7 +588,7 @@ export const Leaderboard: React.FC = () => {
                   <Crown className="text-yellow-600" size={24} />
                 </div>
                 <div className="text-2xl font-bold text-gray-900 mb-1">
-                  {leaderboardData[0]?.name || i18n._(msg`N/A`)}
+                  {displayedLeaderboardData[0]?.name || i18n._(msg`N/A`)}
                 </div>
                 <div className="text-sm text-gray-600">
                   {selectedSport
@@ -605,7 +608,7 @@ export const Leaderboard: React.FC = () => {
                   <Users className="text-blue-600" size={24} />
                 </div>
                 <div className="text-2xl font-bold text-gray-900 mb-1">
-                  {leaderboardData.length}
+                  {displayedLeaderboardData.length}
                 </div>
                 <div className="text-sm text-gray-600">
                   {selectedSport
@@ -626,8 +629,8 @@ export const Leaderboard: React.FC = () => {
                 </div>
                 <div className="text-2xl font-bold text-gray-900 mb-1">
                   {Math.round(
-                    leaderboardData.reduce((sum, user) => sum + user.score, 0) /
-                    leaderboardData.length
+                    displayedLeaderboardData.reduce((sum, user) => sum + user.score, 0) /
+                      displayedLeaderboardData.length
                   )}
                 </div>
                 <div className="text-sm text-gray-600">
