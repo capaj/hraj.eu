@@ -38,8 +38,6 @@ import {
   Globe,
   Image as ImageIcon,
   Loader2,
-  Facebook,
-  Twitter,
   MessageCircle,
   Send,
   Edit,
@@ -224,6 +222,28 @@ const renderCommentContent = (content: string, mentionRegex: RegExp | null) => {
     return nodes
   })
 }
+
+const FacebookIcon = ({ className = '' }: { className?: string }) => (
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className={className}
+    fill="currentColor"
+  >
+    <path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.52 1.49-3.91 3.77-3.91 1.09 0 2.23.2 2.23.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.77l-.44 2.91h-2.33V22C18.34 21.24 22 17.08 22 12.06z" />
+  </svg>
+)
+
+const TwitterIcon = ({ className = '' }: { className?: string }) => (
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className={className}
+    fill="currentColor"
+  >
+    <path d="M18.9 2.25h3.07l-6.7 7.66 7.88 10.43h-6.17l-4.83-6.32-5.53 6.32H3.55l7.17-8.2L3.16 2.25h6.33l4.37 5.78 5.04-5.78zm-1.08 16.25h1.7L8.57 3.99H6.75L17.82 18.5z" />
+  </svg>
+)
 
 
 
@@ -1106,13 +1126,13 @@ export const EventDetailsPage: React.FC = () => {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <FacebookShare url={shareUrl} className="w-full flex items-center cursor-pointer">
-                      <Facebook size={20} className="mr-2" />
+                      <FacebookIcon className="mr-2 size-5" />
                       <span>Facebook</span>
                     </FacebookShare>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <TwitterShare url={shareUrl} title={event.title} className="w-full flex items-center cursor-pointer">
-                      <Twitter size={20} className="mr-2" />
+                      <TwitterIcon className="mr-2 size-5" />
                       <span>Twitter</span>
                     </TwitterShare>
                   </DropdownMenuItem>

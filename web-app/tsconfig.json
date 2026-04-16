@@ -15,7 +15,6 @@
     "target": "ES2022",
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
     "paths": {
       "drizzle/*": ["./drizzle/*"],
       "~/*": ["./src/*"]
