@@ -63,6 +63,10 @@ msgstr ""
 msgid "{count} spots"
 msgstr ""
 
+#: src/components/events/EventCard.tsx:102
+msgid "{daysLeft, plural, one {in # day} few {in # days} many {in # days} other {in # days}}"
+msgstr ""
+
 #: src/components/events/CreateEventForm.tsx:388
 msgid "{hours} hour(s)"
 msgstr ""
@@ -1092,12 +1096,12 @@ msgid "Important"
 msgstr ""
 
 #: src/components/events/EventCard.tsx:104
-msgid "in {daysLeft} days"
-msgstr ""
+#~ msgid "in {daysLeft} days"
+#~ msgstr ""
 
 #: src/components/events/EventCard.tsx:104
-msgid "in 1 day"
-msgstr ""
+#~ msgid "in 1 day"
+#~ msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:475
 msgid "Indoor"
@@ -1565,7 +1569,7 @@ msgstr ""
 msgid "per hour"
 msgstr ""
 
-#: src/components/events/EventCard.tsx:140
+#: src/components/events/EventCard.tsx:144
 #: src/components/map/EventMap.tsx:259
 msgid "per person"
 msgstr ""
@@ -2072,7 +2076,7 @@ msgstr ""
 msgid "Tips for {sport}"
 msgstr ""
 
-#: src/components/events/EventCard.tsx:109
+#: src/components/events/EventCard.tsx:113
 msgid "today"
 msgstr ""
 

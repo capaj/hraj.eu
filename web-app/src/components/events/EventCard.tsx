@@ -9,7 +9,7 @@ import { SPORTS } from '../../lib/constants';
 import { format, isPast, differenceInCalendarDays } from 'date-fns';
 import { enUS, cs } from 'date-fns/locale';
 import { getEventDateTime } from '../../utils/eventDateTime';
-import { t } from "@lingui/core/macro";
+import { t, plural } from "@lingui/core/macro";
 import { i18n } from '../../lib/i18n';
 import { getConfirmedHeadcount } from '../../utils/participants';
 
@@ -99,10 +99,14 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
             {(() => {
               const daysLeft = differenceInCalendarDays(event.date, new Date());
               if (daysLeft > 0) {
+                const label = plural(daysLeft, {
+                  one: 'in # day',
+                  few: 'in # days',
+                  many: 'in # days',
+                  other: 'in # days',
+                });
                 return (
-                  <span className="mr-2 font-medium text-gray-800">
-                    {daysLeft === 1 ? t`in 1 day` : t`in ${daysLeft} days`}
-                  </span>
+                  <span className="mr-2 font-medium text-gray-800">{label}</span>
                 );
               }
               if (daysLeft === 0) {

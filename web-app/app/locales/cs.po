@@ -63,6 +63,10 @@ msgstr "{count} bod{count, plural, one {} few {y} other {ů}} tento měsíc"
 msgid "{count} spots"
 msgstr "{count} míst"
 
+#: src/components/events/EventCard.tsx:102
+msgid "{daysLeft, plural, one {in # day} few {in # days} many {in # days} other {in # days}}"
+msgstr ""
+
 #: src/components/events/CreateEventForm.tsx:388
 msgid "{hours} hour(s)"
 msgstr "{hours} hod."
@@ -1092,12 +1096,12 @@ msgid "Important"
 msgstr "Důležité"
 
 #: src/components/events/EventCard.tsx:104
-msgid "in {daysLeft} days"
-msgstr "za {daysLeft} dní"
+#~ msgid "in {daysLeft} days"
+#~ msgstr "za {daysLeft} dní"
 
 #: src/components/events/EventCard.tsx:104
-msgid "in 1 day"
-msgstr "za 1 den"
+#~ msgid "in 1 day"
+#~ msgstr "za 1 den"
 
 #: src/components/venues/AddVenueModal.tsx:475
 msgid "Indoor"
@@ -1565,7 +1569,7 @@ msgstr "Čeká na schválení"
 msgid "per hour"
 msgstr "za hodinu"
 
-#: src/components/events/EventCard.tsx:140
+#: src/components/events/EventCard.tsx:144
 #: src/components/map/EventMap.tsx:259
 msgid "per person"
 msgstr "za osobu"
@@ -2072,7 +2076,7 @@ msgstr "Tip: Zvyšte max. počet hráčů pro rozšíření posuvníků."
 msgid "Tips for {sport}"
 msgstr "Tipy pro {sport}"
 
-#: src/components/events/EventCard.tsx:109
+#: src/components/events/EventCard.tsx:113
 msgid "today"
 msgstr "dnes"
 
