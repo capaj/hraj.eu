@@ -6,9 +6,11 @@ import { Button } from '../ui/Button';
 import { Calendar, Clock, MapPin, Users, Euro, Target, BadgeDollarSign } from 'lucide-react';
 import { Event, User, Venue } from '../../types';
 import { SPORTS } from '../../lib/constants';
-import { format, isPast } from 'date-fns';
+import { format, isPast, differenceInCalendarDays } from 'date-fns';
+import { enUS, cs } from 'date-fns/locale';
 import { getEventDateTime } from '../../utils/eventDateTime';
 import { t } from "@lingui/core/macro";
+import { i18n } from '../../lib/i18n';
 import { getConfirmedHeadcount } from '../../utils/participants';
 
 
@@ -24,6 +26,7 @@ interface EventCardProps {
 export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onView, isJoining = false, currentUserId }) => {
   const isPastEvent = isPast(getEventDateTime(event));
   const isCancelled = event.status === 'cancelled';
+  const dateLocale = i18n.locale === 'cs' ? cs : enUS;
 
 
   const sport = SPORTS.find(s => s.id === event.sport);
@@ -77,7 +80,12 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
           <div className="flex items-center space-x-3 min-w-0 flex-1">
             <div className="text-2xl flex-shrink-0">{sport?.icon}</div>
             <div className="min-w-0 flex-1">
-              <h3 className="font-semibold text-gray-900 text-lg truncate">{event.title}</h3>
+              <h3 className="font-semibold text-gray-900 text-lg truncate">
+                {event.title}
+                <span className="text-gray-500 font-normal ml-2">
+                  {format(event.date, 'd.M.', { locale: dateLocale })}
+                </span>
+              </h3>
             </div>
           </div>
 
@@ -88,7 +96,21 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
         <div className="space-y-2 mb-6">
           <div className="flex items-center text-sm text-gray-600">
             <Calendar size={16} className="mr-2" />
-            {format(event.date, 'EEEE, MMMM d, yyyy')}
+            {(() => {
+              const daysLeft = differenceInCalendarDays(event.date, new Date());
+              if (daysLeft > 0) {
+                return (
+                  <span className="mr-2 font-medium text-gray-800">
+                    {daysLeft === 1 ? t`in 1 day` : t`in ${daysLeft} days`}
+                  </span>
+                );
+              }
+              if (daysLeft === 0) {
+                return <span className="mr-2 font-medium text-gray-800">{t`today`}</span>;
+              }
+              return null;
+            })()}
+            {format(event.date, 'PPPP', { locale: dateLocale })}
           </div>
           <div className="flex items-center text-sm text-gray-600">
             <Clock size={16} className="mr-2" />

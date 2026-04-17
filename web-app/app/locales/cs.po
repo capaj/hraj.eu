@@ -1091,6 +1091,14 @@ msgstr "Obrázek musí být menší než 5 MB"
 msgid "Important"
 msgstr "Důležité"
 
+#: src/components/events/EventCard.tsx:104
+msgid "in {daysLeft} days"
+msgstr ""
+
+#: src/components/events/EventCard.tsx:104
+msgid "in 1 day"
+msgstr ""
+
 #: src/components/venues/AddVenueModal.tsx:475
 msgid "Indoor"
 msgstr "Uvnitř"
@@ -1557,7 +1565,7 @@ msgstr "Čeká na schválení"
 msgid "per hour"
 msgstr "za hodinu"
 
-#: src/components/events/EventCard.tsx:118
+#: src/components/events/EventCard.tsx:140
 #: src/components/map/EventMap.tsx:259
 msgid "per person"
 msgstr "za osobu"
@@ -2063,6 +2071,10 @@ msgstr "Tip: Zvyšte max. počet hráčů pro rozšíření posuvníků."
 #: src/components/weather/WeatherWidget.tsx:464
 msgid "Tips for {sport}"
 msgstr "Tipy pro {sport}"
+
+#: src/components/events/EventCard.tsx:109
+msgid "today"
+msgstr ""
 
 #: src/pages/LeaderboardPage.tsx:246
 msgid "Top performers this month"

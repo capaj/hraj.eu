@@ -1091,6 +1091,14 @@ msgstr ""
 msgid "Important"
 msgstr ""
 
+#: src/components/events/EventCard.tsx:104
+msgid "in {daysLeft} days"
+msgstr ""
+
+#: src/components/events/EventCard.tsx:104
+msgid "in 1 day"
+msgstr ""
+
 #: src/components/venues/AddVenueModal.tsx:475
 msgid "Indoor"
 msgstr ""
@@ -1557,7 +1565,7 @@ msgstr ""
 msgid "per hour"
 msgstr ""
 
-#: src/components/events/EventCard.tsx:118
+#: src/components/events/EventCard.tsx:140
 #: src/components/map/EventMap.tsx:259
 msgid "per person"
 msgstr ""
@@ -2062,6 +2070,10 @@ msgstr ""
 
 #: src/components/weather/WeatherWidget.tsx:464
 msgid "Tips for {sport}"
+msgstr ""
+
+#: src/components/events/EventCard.tsx:109
+msgid "today"
 msgstr ""
 
 #: src/pages/LeaderboardPage.tsx:246
