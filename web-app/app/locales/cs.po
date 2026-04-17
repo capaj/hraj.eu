@@ -65,7 +65,7 @@ msgstr "{count} míst"
 
 #: src/components/events/EventCard.tsx:102
 msgid "{daysLeft, plural, one {in # day} few {in # days} many {in # days} other {in # days}}"
-msgstr ""
+msgstr "{daysLeft, plural, one {za # den} few {za # dny} many {za # dní} other {za # dní}}"
 
 #: src/components/events/CreateEventForm.tsx:388
 msgid "{hours} hour(s)"
