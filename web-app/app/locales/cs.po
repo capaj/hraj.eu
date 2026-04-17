@@ -1093,11 +1093,11 @@ msgstr "Důležité"
 
 #: src/components/events/EventCard.tsx:104
 msgid "in {daysLeft} days"
-msgstr ""
+msgstr "za {daysLeft} dní"
 
 #: src/components/events/EventCard.tsx:104
 msgid "in 1 day"
-msgstr ""
+msgstr "za 1 den"
 
 #: src/components/venues/AddVenueModal.tsx:475
 msgid "Indoor"
@@ -2074,7 +2074,7 @@ msgstr "Tipy pro {sport}"
 
 #: src/components/events/EventCard.tsx:109
 msgid "today"
-msgstr ""
+msgstr "dnes"
 
 #: src/pages/LeaderboardPage.tsx:246
 msgid "Top performers this month"
