@@ -13,8 +13,13 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/DiscoverPage.tsx:295
+#: src/pages/DiscoverPage.tsx:303
 msgid "(sorted by {label})"
+msgstr ""
+
+#. placeholder {0}: weather.windSpeed
+#: src/components/weather/WeatherWidget.tsx:439
+msgid "{0} km/h"
 msgstr ""
 
 #. placeholder {0}: formData.duration
@@ -26,35 +31,35 @@ msgstr ""
 msgid "{cancellationTimeInline} before the event starts"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:120
+#: src/pages/LeaderboardPage.tsx:122
 msgid "{count} {sportName} events joined"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:101
+#: src/pages/LeaderboardPage.tsx:103
 msgid "{count} {sportName} events organized"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:258
+#: src/pages/DiscoverPage.tsx:266
 msgid "{count} event{count, plural, one {} other {s}} found"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:124
+#: src/pages/LeaderboardPage.tsx:126
 msgid "{count} events joined"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:105
+#: src/pages/LeaderboardPage.tsx:107
 msgid "{count} events organized"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:139
+#: src/pages/LeaderboardPage.tsx:141
 msgid "{count} points in {sportName} this month"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:143
+#: src/pages/LeaderboardPage.tsx:145
 msgid "{count} points this month"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:318
+#: src/pages/DiscoverPage.tsx:326
 msgid "{count} spots"
 msgstr ""
 
@@ -66,7 +71,7 @@ msgstr ""
 msgid "{hours} hours"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:76
+#: src/pages/LeaderboardPage.tsx:78
 msgid "{karma} karma in {sportName}"
 msgstr ""
 
@@ -74,7 +79,7 @@ msgstr ""
 msgid "{karmaPoints} karma"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:82
+#: src/pages/LeaderboardPage.tsx:84
 msgid "{karmaPoints} karma points"
 msgstr ""
 
@@ -98,31 +103,31 @@ msgstr ""
 msgid "{name} photo {index}"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:234
+#: src/pages/LeaderboardPage.tsx:237
 msgid "{sportName} - Most active event organizers"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:238
+#: src/pages/LeaderboardPage.tsx:241
 msgid "{sportName} - Most active participants"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:242
+#: src/pages/LeaderboardPage.tsx:245
 msgid "{sportName} - Top performers this month"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:223
+#: src/pages/LeaderboardPage.tsx:226
 msgid "{sportName} - Top players by sport-specific karma points earned"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:226
+#: src/pages/LeaderboardPage.tsx:229
 msgid "{sportName} - Top players by total karma points earned"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:592
+#: src/pages/LeaderboardPage.tsx:595
 msgid "{sportName} Champion"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:612
+#: src/pages/LeaderboardPage.tsx:615
 msgid "{sportName} Players"
 msgstr ""
 
@@ -138,7 +143,7 @@ msgstr ""
 msgid "{timeLabel} (day before)"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:401
+#: src/pages/LeaderboardPage.tsx:404
 msgid "{title} Leaderboard"
 msgstr ""
 
@@ -204,7 +209,7 @@ msgid "Account Security"
 msgstr ""
 
 #: src/pages/HomePage.tsx:119
-#: src/pages/LeaderboardPage.tsx:617
+#: src/pages/LeaderboardPage.tsx:620
 msgid "Active Players"
 msgstr ""
 
@@ -262,8 +267,8 @@ msgstr ""
 msgid "All skill levels welcome"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:343
-#: src/pages/LeaderboardPage.tsx:367
+#: src/pages/LeaderboardPage.tsx:346
+#: src/pages/LeaderboardPage.tsx:370
 msgid "All Sports"
 msgstr ""
 
@@ -284,7 +289,7 @@ msgstr ""
 msgid "Are you sure you want to cancel this event? This action cannot be undone."
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:661
+#: src/pages/LeaderboardPage.tsx:664
 msgid "Attending events (+5 points)"
 msgstr ""
 
@@ -292,8 +297,8 @@ msgstr ""
 msgid "Available Facilities"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:194
-#: src/pages/DiscoverPage.tsx:278
+#: src/pages/DiscoverPage.tsx:202
+#: src/pages/DiscoverPage.tsx:286
 msgid "Available Spots"
 msgstr ""
 
@@ -301,8 +306,12 @@ msgstr ""
 msgid "Average player"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:634
+#: src/pages/LeaderboardPage.tsx:637
 msgid "Average Score"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:312
+msgid "Avoid outdoor play during thunderstorms"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1057
@@ -374,7 +383,7 @@ msgstr ""
 msgid "Cancel Event?"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:684
+#: src/pages/LeaderboardPage.tsx:687
 msgid "Canceling events last minute (-3 points)"
 msgstr ""
 
@@ -390,8 +399,12 @@ msgstr ""
 msgid "Cancellation Reason (Optional)"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:278
+#: src/pages/LeaderboardPage.tsx:281
 msgid "Celebrate our most active community members and see how you rank among fellow sports enthusiasts"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:274
+msgid "Challenging conditions"
 msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:200
@@ -423,6 +436,10 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+#: src/components/weather/WeatherWidget.tsx:106
+msgid "Cold with snow"
+msgstr ""
+
 #: src/pages/EventDetailsPage.tsx:2525
 msgid "Comment (optional)"
 msgstr ""
@@ -443,12 +460,20 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:275
+#: src/pages/LeaderboardPage.tsx:278
 msgid "Community Leaderboard"
 msgstr ""
 
 #: src/pages/HomePage.tsx:207
 msgid "Connect with like-minded players, earn karma points, and climb the leaderboards."
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:286
+msgid "Consider bringing waterproof gear"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:300
+msgid "Consider sun protection"
 msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:759
@@ -457,6 +482,14 @@ msgstr ""
 
 #: src/pages/UserProfilePage.tsx:611
 msgid "Contact support to change email"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:104
+msgid "Cool and rainy"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:98
+msgid "Cool but sunny"
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:1202
@@ -469,6 +502,10 @@ msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:205
 msgid "Core group window must be between 2 hours and 14 days."
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:152
+msgid "Could not find location for weather forecast"
 msgstr ""
 
 #: src/pages/HomePage.tsx:127
@@ -486,7 +523,7 @@ msgstr ""
 #: src/components/events/CreateEventForm.tsx:1265
 #: src/components/layout/Header.tsx:116
 #: src/components/layout/Header.tsx:190
-#: src/pages/DiscoverPage.tsx:393
+#: src/pages/DiscoverPage.tsx:401
 #: src/pages/HomePage.tsx:160
 msgid "Create Event"
 msgstr ""
@@ -528,7 +565,7 @@ msgstr ""
 msgid "Currency updated"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:597
+#: src/pages/LeaderboardPage.tsx:600
 msgid "Current Champion"
 msgstr ""
 
@@ -541,9 +578,9 @@ msgid "Date *"
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:699
-#: src/pages/DiscoverPage.tsx:190
-#: src/pages/DiscoverPage.tsx:196
-#: src/pages/DiscoverPage.tsx:272
+#: src/pages/DiscoverPage.tsx:198
+#: src/pages/DiscoverPage.tsx:204
+#: src/pages/DiscoverPage.tsx:280
 #: src/pages/EventDetailsPage.tsx:1253
 msgid "Date & Time"
 msgstr ""
@@ -594,8 +631,8 @@ msgstr ""
 msgid "Discover sports events near you with advanced filtering by sport, skill level, and location."
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:192
-#: src/pages/DiscoverPage.tsx:275
+#: src/pages/DiscoverPage.tsx:200
+#: src/pages/DiscoverPage.tsx:283
 msgid "Distance"
 msgstr ""
 
@@ -605,6 +642,10 @@ msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:530
 msgid "Drag the pin to mark the exact entrance to the pitch."
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:304
+msgid "Dress warmly and allow extra warm-up time"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1086
@@ -627,7 +668,7 @@ msgstr ""
 msgid "Early access duration from now (hours)"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:652
+#: src/pages/LeaderboardPage.tsx:655
 msgid "Earn Points For:"
 msgstr ""
 
@@ -743,11 +784,11 @@ msgstr ""
 msgid "Events Created"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:208
+#: src/pages/LeaderboardPage.tsx:211
 msgid "Events Joined"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:206
+#: src/pages/LeaderboardPage.tsx:209
 msgid "Events Organized"
 msgstr ""
 
@@ -809,6 +850,10 @@ msgstr ""
 
 #: src/components/ui/GiphyPicker.tsx:59
 msgid "Failed to load GIFs"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:229
+msgid "Failed to load weather data"
 msgstr ""
 
 #: src/pages/UserProfilePage.tsx:447
@@ -893,11 +938,15 @@ msgstr ""
 msgid "Feedback Type"
 msgstr ""
 
+#: src/components/weather/WeatherWidget.tsx:288
+msgid "Field/court may be slippery"
+msgstr ""
+
 #: src/components/events/CreateEventForm.tsx:518
 msgid "Fill in the details to organize your next game"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:324
+#: src/pages/LeaderboardPage.tsx:327
 msgid "Filter by Sport"
 msgstr ""
 
@@ -912,6 +961,10 @@ msgstr ""
 #: src/pages/HomePage.tsx:116
 #~ msgid "Finding events near you..."
 #~ msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:102
+msgid "Foggy conditions"
+msgstr ""
 
 #: src/components/layout/Header.tsx:347
 msgid "from User"
@@ -949,6 +1002,10 @@ msgstr ""
 msgid "Give Positive Karma"
 msgstr ""
 
+#: src/components/weather/WeatherWidget.tsx:265
+msgid "Good conditions"
+msgstr ""
+
 #: src/pages/EventDetailsPage.tsx:2515
 msgid "Good sportsmanship"
 msgstr ""
@@ -981,11 +1038,19 @@ msgstr ""
 msgid "Help grow our community by adding a new sports venue"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:669
+#: src/pages/LeaderboardPage.tsx:672
 msgid "Helping new players (+2 points)"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:645
+#: src/components/weather/WeatherWidget.tsx:308
+msgid "High humidity - take breaks as needed"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:96
+msgid "Hot and sunny"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:648
 msgid "How Karma Points Work"
 msgstr ""
 
@@ -995,6 +1060,10 @@ msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:751
 msgid "How to find and access the playing area..."
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:429
+msgid "Humidity:"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1328
@@ -1088,7 +1157,7 @@ msgstr ""
 msgid "Leaderboard"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:291
+#: src/pages/LeaderboardPage.tsx:294
 msgid "Leaderboard Categories"
 msgstr ""
 
@@ -1114,6 +1183,10 @@ msgstr ""
 msgid "Loading venues..."
 msgstr ""
 
+#: src/components/weather/WeatherWidget.tsx:339
+msgid "Loading weather data..."
+msgstr ""
+
 #: src/pages/ManageCoreGroupsPage.tsx:176
 msgid "Loading..."
 msgstr ""
@@ -1133,7 +1206,7 @@ msgstr ""
 msgid "Location TBD"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:675
+#: src/pages/LeaderboardPage.tsx:678
 msgid "Lose Points For:"
 msgstr ""
 
@@ -1209,11 +1282,11 @@ msgstr ""
 msgid "Mixed (Indoor & Outdoor)"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:235
+#: src/pages/LeaderboardPage.tsx:238
 msgid "Most active event organizers"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:239
+#: src/pages/LeaderboardPage.tsx:242
 msgid "Most active participants"
 msgstr ""
 
@@ -1222,7 +1295,7 @@ msgstr ""
 msgid "My Events"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:588
+#: src/pages/LeaderboardPage.tsx:591
 msgid "N/A"
 msgstr ""
 
@@ -1230,7 +1303,7 @@ msgstr ""
 msgid "Need {count} more players to confirm"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:688
+#: src/pages/LeaderboardPage.tsx:691
 msgid "Negative behavior reports (-10 points)"
 msgstr ""
 
@@ -1258,7 +1331,7 @@ msgstr ""
 msgid "No bio provided"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:387
+#: src/pages/DiscoverPage.tsx:395
 msgid "No events found"
 msgstr ""
 
@@ -1294,12 +1367,12 @@ msgstr ""
 msgid "No phone number available"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:560
+#: src/pages/LeaderboardPage.tsx:563
 msgid "No players found"
 msgstr ""
 
 #. placeholder {0}: SPORTS.find((s) => s.id === selectedSport)?.name ?? ''
-#: src/pages/LeaderboardPage.tsx:563
+#: src/pages/LeaderboardPage.tsx:566
 msgid "No players have skill levels recorded for {0}."
 msgstr ""
 
@@ -1319,7 +1392,7 @@ msgstr ""
 msgid "No upcoming events"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:342
+#: src/pages/DiscoverPage.tsx:350
 msgid "No upcoming events found."
 msgstr ""
 
@@ -1351,7 +1424,7 @@ msgstr ""
 msgid "No-show reports will deduct karma points and may affect future event participation."
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:680
+#: src/pages/LeaderboardPage.tsx:683
 msgid "No-shows without notice (-5 points)"
 msgstr ""
 
@@ -1388,7 +1461,7 @@ msgstr ""
 msgid "Organizer"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:657
+#: src/pages/LeaderboardPage.tsx:660
 msgid "Organizing successful events (+10 points)"
 msgstr ""
 
@@ -1408,8 +1481,12 @@ msgstr ""
 msgid "Outdoor venue"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:204
+#: src/pages/LeaderboardPage.tsx:207
 msgid "Overall Karma"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:100
+msgid "Overcast with clouds"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1671
@@ -1435,7 +1512,7 @@ msgstr ""
 msgid "Password changed successfully!"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:354
+#: src/pages/DiscoverPage.tsx:362
 #: src/pages/PublicProfilePage.tsx:180
 msgid "Past Events"
 msgstr ""
@@ -1480,9 +1557,13 @@ msgstr ""
 msgid "per hour"
 msgstr ""
 
-#: src/components/events/EventCard.tsx:116
+#: src/components/events/EventCard.tsx:118
 #: src/components/map/EventMap.tsx:259
 msgid "per person"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:262
+msgid "Perfect for sports!"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1331
@@ -1509,6 +1590,10 @@ msgstr ""
 msgid "Photos & Orientation"
 msgstr ""
 
+#: src/components/weather/WeatherWidget.tsx:269
+msgid "Playable conditions"
+msgstr ""
+
 #: src/pages/EventDetailsPage.tsx:1812
 msgid "Player"
 msgstr ""
@@ -1532,6 +1617,10 @@ msgstr ""
 #. placeholder {0}: formData.sport ? SPORTS.find((s) => s.id === formData.sport) ?.name : 'this sport'
 #: src/components/events/CreateEventForm.tsx:1043
 msgid "Players without the required skill level in {0} will not be able to join this event."
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:97
+msgid "Pleasant and sunny"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:549
@@ -1610,7 +1699,7 @@ msgstr ""
 #~ msgid "Popular Events in {userLocation}"
 #~ msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:665
+#: src/pages/LeaderboardPage.tsx:668
 msgid "Positive feedback from players (+3 points)"
 msgstr ""
 
@@ -1691,6 +1780,10 @@ msgstr ""
 msgid "QR codes are displayed only to participants."
 msgstr ""
 
+#: src/components/weather/WeatherWidget.tsx:453
+msgid "Rain chance:"
+msgstr ""
+
 #: src/pages/EventDetailsPage.tsx:1725
 msgid "Rate"
 msgstr ""
@@ -1709,6 +1802,11 @@ msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:2492
 msgid "Rating"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:359
+#: src/components/weather/WeatherWidget.tsx:400
+msgid "Refresh"
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:1017
@@ -1864,7 +1962,7 @@ msgstr ""
 msgid "Skill Level Requirements"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:264
+#: src/pages/DiscoverPage.tsx:272
 msgid "Sort by:"
 msgstr ""
 
@@ -1872,7 +1970,7 @@ msgstr ""
 msgid "Sport *"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:700
+#: src/pages/LeaderboardPage.tsx:703
 msgid "Sport-Specific Rankings"
 msgstr ""
 
@@ -1892,6 +1990,10 @@ msgstr ""
 msgid "Start typing to search for an address..."
 msgstr ""
 
+#: src/components/weather/WeatherWidget.tsx:299
+msgid "Stay hydrated - bring extra water"
+msgstr ""
+
 #: src/pages/EventDetailsPage.tsx:2586
 msgid "Submitting..."
 msgstr ""
@@ -1902,6 +2004,10 @@ msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:607
 msgid "Sunday Football at the Park"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:445
+msgid "Sunset:"
 msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:549
@@ -1942,23 +2048,31 @@ msgstr ""
 msgid "This event will be automatically cancelled if we don't reach the minimum of {0} players by <0>{1}</0>."
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:210
+#: src/pages/LeaderboardPage.tsx:213
 msgid "This Month"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:108
+msgid "Thunderstorm expected"
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:876
 msgid "Tip: Increase max players to widen the sliders."
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:243
+#: src/components/weather/WeatherWidget.tsx:464
+msgid "Tips for {sport}"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:246
 msgid "Top performers this month"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:230
+#: src/pages/LeaderboardPage.tsx:233
 msgid "Top players by sport-specific karma points earned"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:231
+#: src/pages/LeaderboardPage.tsx:234
 msgid "Top players by total karma points earned"
 msgstr ""
 
@@ -1966,8 +2080,12 @@ msgstr ""
 msgid "Total Price"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:390
+#: src/pages/DiscoverPage.tsx:398
 msgid "Try adjusting your filters or create a new event."
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:378
+msgid "Try again"
 msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:811
@@ -1978,7 +2096,7 @@ msgstr ""
 msgid "Up to 2 names"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:293
+#: src/pages/DiscoverPage.tsx:301
 #: src/pages/PublicProfilePage.tsx:87
 msgid "Upcoming Events"
 msgstr ""
@@ -1995,7 +2113,7 @@ msgstr ""
 msgid "Update Venue"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:425
+#: src/pages/LeaderboardPage.tsx:428
 msgid "Updated daily"
 msgstr ""
 
@@ -2074,7 +2192,7 @@ msgstr ""
 msgid "View all notifications"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:572
+#: src/pages/LeaderboardPage.tsx:575
 msgid "View All Sports"
 msgstr ""
 
@@ -2095,6 +2213,10 @@ msgstr ""
 msgid "Waitlist"
 msgstr ""
 
+#: src/components/weather/WeatherWidget.tsx:104
+msgid "Warm with rain showers"
+msgstr ""
+
 #: src/components/events/CreateEventForm.tsx:572
 msgid "Warning:"
 msgstr ""
@@ -2103,13 +2225,32 @@ msgstr ""
 msgid "We'll check for minimum players and decide whether to proceed or cancel the event."
 msgstr ""
 
+#: src/components/weather/WeatherWidget.tsx:481
+msgid "Weather data provided by Open-Meteo"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:372
+msgid "Weather data unavailable"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:331
+#: src/components/weather/WeatherWidget.tsx:354
+#: src/components/weather/WeatherWidget.tsx:395
+msgid "Weather Forecast"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:167
+#: src/components/weather/WeatherWidget.tsx:184
+msgid "Weather forecast is not available for this date"
+msgstr ""
+
 #: src/components/venues/AddVenueModal.tsx:791
 #: src/pages/ManageVenuesPage.tsx:201
 msgid "Website"
 msgstr ""
 
 #. placeholder {0}: SPORTS.find((s) => s.id === selectedSport)?.name ?? ''
-#: src/pages/LeaderboardPage.tsx:704
+#: src/pages/LeaderboardPage.tsx:707
 msgid "When filtering by {0}, rankings show karma points and activities specifically related to this sport. Only players with recorded skill levels in this sport are included in the rankings."
 msgstr ""
 
@@ -2128,6 +2269,14 @@ msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:1105
 msgid "Will be divided by participant count"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:294
+msgid "Wind may affect ball/shuttlecock trajectory"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:436
+msgid "Wind:"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:2407

@@ -13,9 +13,14 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/DiscoverPage.tsx:295
+#: src/pages/DiscoverPage.tsx:303
 msgid "(sorted by {label})"
 msgstr "(seřazeno podle {label})"
+
+#. placeholder {0}: weather.windSpeed
+#: src/components/weather/WeatherWidget.tsx:439
+msgid "{0} km/h"
+msgstr ""
 
 #. placeholder {0}: formData.duration
 #: src/components/events/CreateEventForm.tsx:737
@@ -26,35 +31,35 @@ msgstr "{0} min"
 msgid "{cancellationTimeInline} before the event starts"
 msgstr "{cancellationTimeInline} před začátkem události"
 
-#: src/pages/LeaderboardPage.tsx:120
+#: src/pages/LeaderboardPage.tsx:122
 msgid "{count} {sportName} events joined"
 msgstr "{count} událost{count, plural, one {} few {i} other {í}} ({sportName}) – účast"
 
-#: src/pages/LeaderboardPage.tsx:101
+#: src/pages/LeaderboardPage.tsx:103
 msgid "{count} {sportName} events organized"
 msgstr "{count} událost{count, plural, one {} few {i} other {í}} ({sportName}) – zorganizováno"
 
-#: src/pages/DiscoverPage.tsx:258
+#: src/pages/DiscoverPage.tsx:266
 msgid "{count} event{count, plural, one {} other {s}} found"
 msgstr "Nalezeno {count} událost{count, plural, one {} few {i} other {í}}"
 
-#: src/pages/LeaderboardPage.tsx:124
+#: src/pages/LeaderboardPage.tsx:126
 msgid "{count} events joined"
 msgstr "{count} událost{count, plural, one {} few {i} other {í}} – účast"
 
-#: src/pages/LeaderboardPage.tsx:105
+#: src/pages/LeaderboardPage.tsx:107
 msgid "{count} events organized"
 msgstr "{count} událost{count, plural, one {} few {i} other {í}} – zorganizováno"
 
-#: src/pages/LeaderboardPage.tsx:139
+#: src/pages/LeaderboardPage.tsx:141
 msgid "{count} points in {sportName} this month"
 msgstr "{count} bod{count, plural, one {} few {y} other {ů}} v {sportName} tento měsíc"
 
-#: src/pages/LeaderboardPage.tsx:143
+#: src/pages/LeaderboardPage.tsx:145
 msgid "{count} points this month"
 msgstr "{count} bod{count, plural, one {} few {y} other {ů}} tento měsíc"
 
-#: src/pages/DiscoverPage.tsx:318
+#: src/pages/DiscoverPage.tsx:326
 msgid "{count} spots"
 msgstr "{count} míst"
 
@@ -66,7 +71,7 @@ msgstr "{hours} hod."
 msgid "{hours} hours"
 msgstr "{hours} hod."
 
-#: src/pages/LeaderboardPage.tsx:76
+#: src/pages/LeaderboardPage.tsx:78
 msgid "{karma} karma in {sportName}"
 msgstr "{karma} karmy v {sportName}"
 
@@ -74,7 +79,7 @@ msgstr "{karma} karmy v {sportName}"
 msgid "{karmaPoints} karma"
 msgstr "{karmaPoints} karma"
 
-#: src/pages/LeaderboardPage.tsx:82
+#: src/pages/LeaderboardPage.tsx:84
 msgid "{karmaPoints} karma points"
 msgstr "{karmaPoints} bodů karmy"
 
@@ -98,31 +103,31 @@ msgstr "{name} orientační plán"
 msgid "{name} photo {index}"
 msgstr "{name} foto {index}"
 
-#: src/pages/LeaderboardPage.tsx:234
+#: src/pages/LeaderboardPage.tsx:237
 msgid "{sportName} - Most active event organizers"
 msgstr "{sportName} – nejaktivnější organizátoři"
 
-#: src/pages/LeaderboardPage.tsx:238
+#: src/pages/LeaderboardPage.tsx:241
 msgid "{sportName} - Most active participants"
 msgstr "{sportName} – nejaktivnější účastníci"
 
-#: src/pages/LeaderboardPage.tsx:242
+#: src/pages/LeaderboardPage.tsx:245
 msgid "{sportName} - Top performers this month"
 msgstr "{sportName} – nejlepší tento měsíc"
 
-#: src/pages/LeaderboardPage.tsx:223
+#: src/pages/LeaderboardPage.tsx:226
 msgid "{sportName} - Top players by sport-specific karma points earned"
 msgstr "{sportName} – nejlepší hráči podle karmy za tento sport"
 
-#: src/pages/LeaderboardPage.tsx:226
+#: src/pages/LeaderboardPage.tsx:229
 msgid "{sportName} - Top players by total karma points earned"
 msgstr "{sportName} – nejlepší hráči podle celkové karmy"
 
-#: src/pages/LeaderboardPage.tsx:592
+#: src/pages/LeaderboardPage.tsx:595
 msgid "{sportName} Champion"
 msgstr "Šampion {sportName}"
 
-#: src/pages/LeaderboardPage.tsx:612
+#: src/pages/LeaderboardPage.tsx:615
 msgid "{sportName} Players"
 msgstr "Hráči {sportName}"
 
@@ -138,7 +143,7 @@ msgstr "{timeLabel} (+{dayOffset} dnů)"
 msgid "{timeLabel} (day before)"
 msgstr "{timeLabel} (den předem)"
 
-#: src/pages/LeaderboardPage.tsx:401
+#: src/pages/LeaderboardPage.tsx:404
 msgid "{title} Leaderboard"
 msgstr "Žebříček: {title}"
 
@@ -204,7 +209,7 @@ msgid "Account Security"
 msgstr "Zabezpečení účtu"
 
 #: src/pages/HomePage.tsx:119
-#: src/pages/LeaderboardPage.tsx:617
+#: src/pages/LeaderboardPage.tsx:620
 msgid "Active Players"
 msgstr "Aktivní hráči"
 
@@ -262,8 +267,8 @@ msgstr "Vše vybráno"
 msgid "All skill levels welcome"
 msgstr "Všechny úrovně dovedností vítány"
 
-#: src/pages/LeaderboardPage.tsx:343
-#: src/pages/LeaderboardPage.tsx:367
+#: src/pages/LeaderboardPage.tsx:346
+#: src/pages/LeaderboardPage.tsx:370
 msgid "All Sports"
 msgstr "Všechny sporty"
 
@@ -284,7 +289,7 @@ msgstr "Přibl. {price} {currency} / hod"
 msgid "Are you sure you want to cancel this event? This action cannot be undone."
 msgstr "Opravdu chcete tuto událost zrušit? Tuto akci nelze vrátit zpět."
 
-#: src/pages/LeaderboardPage.tsx:661
+#: src/pages/LeaderboardPage.tsx:664
 msgid "Attending events (+5 points)"
 msgstr "Účast na událostech (+5 bodů)"
 
@@ -292,8 +297,8 @@ msgstr "Účast na událostech (+5 bodů)"
 msgid "Available Facilities"
 msgstr "Dostupné vybavení"
 
-#: src/pages/DiscoverPage.tsx:194
-#: src/pages/DiscoverPage.tsx:278
+#: src/pages/DiscoverPage.tsx:202
+#: src/pages/DiscoverPage.tsx:286
 msgid "Available Spots"
 msgstr "Volná místa"
 
@@ -301,9 +306,13 @@ msgstr "Volná místa"
 msgid "Average player"
 msgstr "Průměrný hráč"
 
-#: src/pages/LeaderboardPage.tsx:634
+#: src/pages/LeaderboardPage.tsx:637
 msgid "Average Score"
 msgstr "Průměrné skóre"
+
+#: src/components/weather/WeatherWidget.tsx:312
+msgid "Avoid outdoor play during thunderstorms"
+msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1057
 msgid "Back to Events"
@@ -374,7 +383,7 @@ msgstr "Zrušit událost"
 msgid "Cancel Event?"
 msgstr "Zrušit událost?"
 
-#: src/pages/LeaderboardPage.tsx:684
+#: src/pages/LeaderboardPage.tsx:687
 msgid "Canceling events last minute (-3 points)"
 msgstr "Zrušení událostí na poslední chvíli (-3 body)"
 
@@ -390,9 +399,13 @@ msgstr "Storno podmínky"
 msgid "Cancellation Reason (Optional)"
 msgstr "Důvod zrušení (nepovinné)"
 
-#: src/pages/LeaderboardPage.tsx:278
+#: src/pages/LeaderboardPage.tsx:281
 msgid "Celebrate our most active community members and see how you rank among fellow sports enthusiasts"
 msgstr "Oslavte naše nejaktivnější členy komunity a podívejte se, jak si vedete mezi dalšími sportovními nadšenci"
+
+#: src/components/weather/WeatherWidget.tsx:274
+msgid "Challenging conditions"
+msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:200
 #: src/components/venues/VenueSelector.tsx:99
@@ -423,6 +436,10 @@ msgstr "Kliknutím na QR kód jej zvětšíte."
 msgid "Close"
 msgstr "Zavřít"
 
+#: src/components/weather/WeatherWidget.tsx:106
+msgid "Cold with snow"
+msgstr ""
+
 #: src/pages/EventDetailsPage.tsx:2525
 msgid "Comment (optional)"
 msgstr "Komentář (nepovinné)"
@@ -443,13 +460,21 @@ msgstr "Komentář aktualizován."
 msgid "Comments"
 msgstr "Komentáře"
 
-#: src/pages/LeaderboardPage.tsx:275
+#: src/pages/LeaderboardPage.tsx:278
 msgid "Community Leaderboard"
 msgstr "Komunitní žebříček"
 
 #: src/pages/HomePage.tsx:207
 msgid "Connect with like-minded players, earn karma points, and climb the leaderboards."
 msgstr "Spojte se s podobně naladěnými hráči, sbírejte body karmy a stoupejte v žebříčcích."
+
+#: src/components/weather/WeatherWidget.tsx:286
+msgid "Consider bringing waterproof gear"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:300
+msgid "Consider sun protection"
+msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:759
 msgid "Contact Information (Optional)"
@@ -458,6 +483,14 @@ msgstr "Kontaktní údaje (nepovinné)"
 #: src/pages/UserProfilePage.tsx:611
 msgid "Contact support to change email"
 msgstr "Pro změnu e-mailu kontaktujte podporu"
+
+#: src/components/weather/WeatherWidget.tsx:104
+msgid "Cool and rainy"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:98
+msgid "Cool but sunny"
+msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:1202
 msgid "Core group"
@@ -470,6 +503,10 @@ msgstr "Časný přístup pro základní skupinu"
 #: src/components/events/CreateEventForm.tsx:205
 msgid "Core group window must be between 2 hours and 14 days."
 msgstr "Okno pro základní skupinu musí být mezi 2 hodinami a 14 dny."
+
+#: src/components/weather/WeatherWidget.tsx:152
+msgid "Could not find location for weather forecast"
+msgstr ""
 
 #: src/pages/HomePage.tsx:127
 msgid "Countries"
@@ -486,7 +523,7 @@ msgstr "Vytvářejte a upravujte opakovaně používané skupiny pro časný př
 #: src/components/events/CreateEventForm.tsx:1265
 #: src/components/layout/Header.tsx:116
 #: src/components/layout/Header.tsx:190
-#: src/pages/DiscoverPage.tsx:393
+#: src/pages/DiscoverPage.tsx:401
 #: src/pages/HomePage.tsx:160
 msgid "Create Event"
 msgstr "Vytvořit událost"
@@ -528,7 +565,7 @@ msgstr "Měna"
 msgid "Currency updated"
 msgstr "Měna aktualizována"
 
-#: src/pages/LeaderboardPage.tsx:597
+#: src/pages/LeaderboardPage.tsx:600
 msgid "Current Champion"
 msgstr "Aktuální šampion"
 
@@ -541,9 +578,9 @@ msgid "Date *"
 msgstr "Datum *"
 
 #: src/components/events/CreateEventForm.tsx:699
-#: src/pages/DiscoverPage.tsx:190
-#: src/pages/DiscoverPage.tsx:196
-#: src/pages/DiscoverPage.tsx:272
+#: src/pages/DiscoverPage.tsx:198
+#: src/pages/DiscoverPage.tsx:204
+#: src/pages/DiscoverPage.tsx:280
 #: src/pages/EventDetailsPage.tsx:1253
 msgid "Date & Time"
 msgstr "Datum a čas"
@@ -594,8 +631,8 @@ msgstr "Objevujte hry"
 msgid "Discover sports events near you with advanced filtering by sport, skill level, and location."
 msgstr "Objevujte sportovní události ve svém okolí díky pokročilému filtrování podle sportu, úrovně a polohy."
 
-#: src/pages/DiscoverPage.tsx:192
-#: src/pages/DiscoverPage.tsx:275
+#: src/pages/DiscoverPage.tsx:200
+#: src/pages/DiscoverPage.tsx:283
 msgid "Distance"
 msgstr "Vzdálenost"
 
@@ -606,6 +643,10 @@ msgstr "nepodporuje"
 #: src/components/venues/AddVenueModal.tsx:530
 msgid "Drag the pin to mark the exact entrance to the pitch."
 msgstr "Přetáhněte špendlík pro označení přesného vchodu na hřiště."
+
+#: src/components/weather/WeatherWidget.tsx:304
+msgid "Dress warmly and allow extra warm-up time"
+msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1086
 msgid "Duplicate Event"
@@ -627,7 +668,7 @@ msgstr "např. nepřízeň počasí, nedostatek hráčů..."
 msgid "Early access duration from now (hours)"
 msgstr "Doba trvání časného přístupu od teď (hodiny)"
 
-#: src/pages/LeaderboardPage.tsx:652
+#: src/pages/LeaderboardPage.tsx:655
 msgid "Earn Points For:"
 msgstr "Získejte body za:"
 
@@ -743,11 +784,11 @@ msgstr "Událost byla úspěšně aktualizována!"
 msgid "Events Created"
 msgstr "Vytvořené události"
 
-#: src/pages/LeaderboardPage.tsx:208
+#: src/pages/LeaderboardPage.tsx:211
 msgid "Events Joined"
 msgstr "Účast na událostech"
 
-#: src/pages/LeaderboardPage.tsx:206
+#: src/pages/LeaderboardPage.tsx:209
 msgid "Events Organized"
 msgstr "Zorganizované události"
 
@@ -810,6 +851,10 @@ msgstr "Nepodařilo se opustit událost. Zkuste to prosím znovu."
 #: src/components/ui/GiphyPicker.tsx:59
 msgid "Failed to load GIFs"
 msgstr "Nepodařilo se načíst GIFy"
+
+#: src/components/weather/WeatherWidget.tsx:229
+msgid "Failed to load weather data"
+msgstr ""
 
 #: src/pages/UserProfilePage.tsx:447
 msgid "Failed to process account deletion"
@@ -893,11 +938,15 @@ msgstr "Hodnocení bylo úspěšně odesláno"
 msgid "Feedback Type"
 msgstr "Typ hodnocení"
 
+#: src/components/weather/WeatherWidget.tsx:288
+msgid "Field/court may be slippery"
+msgstr ""
+
 #: src/components/events/CreateEventForm.tsx:518
 msgid "Fill in the details to organize your next game"
 msgstr "Vyplňte podrobnosti a uspořádejte svou další hru"
 
-#: src/pages/LeaderboardPage.tsx:324
+#: src/pages/LeaderboardPage.tsx:327
 msgid "Filter by Sport"
 msgstr "Filtrovat podle sportu"
 
@@ -912,6 +961,10 @@ msgstr "Najděte místní hry"
 #: src/pages/HomePage.tsx:116
 #~ msgid "Finding events near you..."
 #~ msgstr "Hledám události ve vašem okolí..."
+
+#: src/components/weather/WeatherWidget.tsx:102
+msgid "Foggy conditions"
+msgstr ""
 
 #: src/components/layout/Header.tsx:347
 msgid "from User"
@@ -949,6 +1002,10 @@ msgstr "Udělit neutrální karmu"
 msgid "Give Positive Karma"
 msgstr "Udělit pozitivní karmu"
 
+#: src/components/weather/WeatherWidget.tsx:265
+msgid "Good conditions"
+msgstr ""
+
 #: src/pages/EventDetailsPage.tsx:2515
 msgid "Good sportsmanship"
 msgstr "Dobré sportovní chování"
@@ -981,11 +1038,19 @@ msgstr "Pomozte budovat naši komunitu tím, že udělíte karmu hráčům, kte�
 msgid "Help grow our community by adding a new sports venue"
 msgstr "Pomozte rozvíjet naši komunitu přidáním nového sportoviště"
 
-#: src/pages/LeaderboardPage.tsx:669
+#: src/pages/LeaderboardPage.tsx:672
 msgid "Helping new players (+2 points)"
 msgstr "Pomoc novým hráčům (+2 body)"
 
-#: src/pages/LeaderboardPage.tsx:645
+#: src/components/weather/WeatherWidget.tsx:308
+msgid "High humidity - take breaks as needed"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:96
+msgid "Hot and sunny"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:648
 msgid "How Karma Points Work"
 msgstr "Jak fungují body karmy"
 
@@ -996,6 +1061,10 @@ msgstr "Jak dlouho před událostí máme zkontrolovat, zda je dostatek hráčů
 #: src/components/venues/AddVenueModal.tsx:751
 msgid "How to find and access the playing area..."
 msgstr "Jak najít a vstoupit na herní plochu..."
+
+#: src/components/weather/WeatherWidget.tsx:429
+msgid "Humidity:"
+msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1328
 msgid "Ideal"
@@ -1088,7 +1157,7 @@ msgstr "Jazyk"
 msgid "Leaderboard"
 msgstr "Žebříček"
 
-#: src/pages/LeaderboardPage.tsx:291
+#: src/pages/LeaderboardPage.tsx:294
 msgid "Leaderboard Categories"
 msgstr "Kategorie žebříčku"
 
@@ -1114,6 +1183,10 @@ msgstr "Načítání detailů události..."
 msgid "Loading venues..."
 msgstr "Načítám místa..."
 
+#: src/components/weather/WeatherWidget.tsx:339
+msgid "Loading weather data..."
+msgstr ""
+
 #: src/pages/ManageCoreGroupsPage.tsx:176
 msgid "Loading..."
 msgstr "Načítání..."
@@ -1133,7 +1206,7 @@ msgstr "Náhled polohy"
 msgid "Location TBD"
 msgstr "Místo bude upřesněno"
 
-#: src/pages/LeaderboardPage.tsx:675
+#: src/pages/LeaderboardPage.tsx:678
 msgid "Lose Points For:"
 msgstr "Ztratíte body za:"
 
@@ -1209,11 +1282,11 @@ msgstr "Minimální počet hráčů *"
 msgid "Mixed (Indoor & Outdoor)"
 msgstr "Smíšené (uvnitř i venku)"
 
-#: src/pages/LeaderboardPage.tsx:235
+#: src/pages/LeaderboardPage.tsx:238
 msgid "Most active event organizers"
 msgstr "Nejaktivnější organizátoři"
 
-#: src/pages/LeaderboardPage.tsx:239
+#: src/pages/LeaderboardPage.tsx:242
 msgid "Most active participants"
 msgstr "Nejaktivnější účastníci"
 
@@ -1222,7 +1295,7 @@ msgstr "Nejaktivnější účastníci"
 msgid "My Events"
 msgstr "Moje události"
 
-#: src/pages/LeaderboardPage.tsx:588
+#: src/pages/LeaderboardPage.tsx:591
 msgid "N/A"
 msgstr "N/A"
 
@@ -1230,7 +1303,7 @@ msgstr "N/A"
 msgid "Need {count} more players to confirm"
 msgstr "Pro potvrzení chybí ještě {count} hráčů"
 
-#: src/pages/LeaderboardPage.tsx:688
+#: src/pages/LeaderboardPage.tsx:691
 msgid "Negative behavior reports (-10 points)"
 msgstr "Nahlášení negativního chování (-10 bodů)"
 
@@ -1258,7 +1331,7 @@ msgstr "Nejnovější nejdříve"
 msgid "No bio provided"
 msgstr "Žádné bio"
 
-#: src/pages/DiscoverPage.tsx:387
+#: src/pages/DiscoverPage.tsx:395
 msgid "No events found"
 msgstr "Žádné události nenalezeny"
 
@@ -1294,12 +1367,12 @@ msgstr "Bez telefonu"
 msgid "No phone number available"
 msgstr "Telefonní číslo není k dispozici"
 
-#: src/pages/LeaderboardPage.tsx:560
+#: src/pages/LeaderboardPage.tsx:563
 msgid "No players found"
 msgstr "Žádní hráči nenalezeni"
 
 #. placeholder {0}: SPORTS.find((s) => s.id === selectedSport)?.name ?? ''
-#: src/pages/LeaderboardPage.tsx:563
+#: src/pages/LeaderboardPage.tsx:566
 msgid "No players have skill levels recorded for {0}."
 msgstr "Pro {0} nejsou zaznamenány úrovně dovedností."
 
@@ -1319,7 +1392,7 @@ msgstr "Žádné skluzy, přineste si světlý i tmavý dres, hlašte si vlastn�
 msgid "No upcoming events"
 msgstr "Žádné nadcházející události"
 
-#: src/pages/DiscoverPage.tsx:342
+#: src/pages/DiscoverPage.tsx:350
 msgid "No upcoming events found."
 msgstr "Nenalezeny žádné nadcházející události."
 
@@ -1351,7 +1424,7 @@ msgstr "Zatím žádná místa"
 msgid "No-show reports will deduct karma points and may affect future event participation."
 msgstr "Nahlášení nedostavení se odečte body karmy a může ovlivnit účast na dalších událostech."
 
-#: src/pages/LeaderboardPage.tsx:680
+#: src/pages/LeaderboardPage.tsx:683
 msgid "No-shows without notice (-5 points)"
 msgstr "Nepřítomnost bez omluvy (-5 bodů)"
 
@@ -1388,7 +1461,7 @@ msgstr "Otevřené pro všechny úrovně"
 msgid "Organizer"
 msgstr "Organizátor"
 
-#: src/pages/LeaderboardPage.tsx:657
+#: src/pages/LeaderboardPage.tsx:660
 msgid "Organizing successful events (+10 points)"
 msgstr "Organizace úspěšných událostí (+10 bodů)"
 
@@ -1408,9 +1481,13 @@ msgstr "Venku"
 msgid "Outdoor venue"
 msgstr "Venkovní areál"
 
-#: src/pages/LeaderboardPage.tsx:204
+#: src/pages/LeaderboardPage.tsx:207
 msgid "Overall Karma"
 msgstr "Celková karma"
+
+#: src/components/weather/WeatherWidget.tsx:100
+msgid "Overcast with clouds"
+msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1671
 #: src/pages/EventDetailsPage.tsx:1672
@@ -1435,7 +1512,7 @@ msgstr "Účastníci: {current}/{max}"
 msgid "Password changed successfully!"
 msgstr "Heslo bylo úspěšně změněno!"
 
-#: src/pages/DiscoverPage.tsx:354
+#: src/pages/DiscoverPage.tsx:362
 #: src/pages/PublicProfilePage.tsx:180
 msgid "Past Events"
 msgstr "Minulé události"
@@ -1480,10 +1557,14 @@ msgstr "Čeká na schválení"
 msgid "per hour"
 msgstr "za hodinu"
 
-#: src/components/events/EventCard.tsx:116
+#: src/components/events/EventCard.tsx:118
 #: src/components/map/EventMap.tsx:259
 msgid "per person"
 msgstr "za osobu"
+
+#: src/components/weather/WeatherWidget.tsx:262
+msgid "Perfect for sports!"
+msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1331
 msgid "Perfect game size"
@@ -1509,6 +1590,10 @@ msgstr "Fotky"
 msgid "Photos & Orientation"
 msgstr "Fotky a orientace"
 
+#: src/components/weather/WeatherWidget.tsx:269
+msgid "Playable conditions"
+msgstr ""
+
 #: src/pages/EventDetailsPage.tsx:1812
 msgid "Player"
 msgstr "Hráč"
@@ -1533,6 +1618,10 @@ msgstr "Hráči na čekací listině budou automaticky přidáni, jakmile se uvo
 #: src/components/events/CreateEventForm.tsx:1043
 msgid "Players without the required skill level in {0} will not be able to join this event."
 msgstr "Hráči bez požadované úrovně dovedností v {0} se nebudou moci k této události připojit."
+
+#: src/components/weather/WeatherWidget.tsx:97
+msgid "Pleasant and sunny"
+msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:549
 msgid "Please describe the behavior issue..."
@@ -1610,7 +1699,7 @@ msgstr "Špatné sportovní chování"
 #~ msgid "Popular Events in {userLocation}"
 #~ msgstr "Populární události v {userLocation}"
 
-#: src/pages/LeaderboardPage.tsx:665
+#: src/pages/LeaderboardPage.tsx:668
 msgid "Positive feedback from players (+3 points)"
 msgstr "Pozitivní hodnocení od hráčů (+3 body)"
 
@@ -1691,6 +1780,10 @@ msgstr "QR kódy"
 msgid "QR codes are displayed only to participants."
 msgstr "QR kódy jsou zobrazeny pouze účastníkům."
 
+#: src/components/weather/WeatherWidget.tsx:453
+msgid "Rain chance:"
+msgstr ""
+
 #: src/pages/EventDetailsPage.tsx:1725
 msgid "Rate"
 msgstr "Hodnotit"
@@ -1710,6 +1803,11 @@ msgstr "Ohodnoťte spoluhráče"
 #: src/pages/EventDetailsPage.tsx:2492
 msgid "Rating"
 msgstr "Hodnocení"
+
+#: src/components/weather/WeatherWidget.tsx:359
+#: src/components/weather/WeatherWidget.tsx:400
+msgid "Refresh"
+msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:1017
 msgid "Regular players with some experience"
@@ -1864,7 +1962,7 @@ msgstr "Přihlaste se, abyste se připojili k rozhovoru."
 msgid "Skill Level Requirements"
 msgstr "Požadavky na úroveň dovedností"
 
-#: src/pages/DiscoverPage.tsx:264
+#: src/pages/DiscoverPage.tsx:272
 msgid "Sort by:"
 msgstr "Seřadit podle:"
 
@@ -1872,7 +1970,7 @@ msgstr "Seřadit podle:"
 msgid "Sport *"
 msgstr "Sport *"
 
-#: src/pages/LeaderboardPage.tsx:700
+#: src/pages/LeaderboardPage.tsx:703
 msgid "Sport-Specific Rankings"
 msgstr "Žebříčky pro konkrétní sport"
 
@@ -1892,6 +1990,10 @@ msgstr "Čas začátku *"
 msgid "Start typing to search for an address..."
 msgstr "Začněte psát pro vyhledání adresy..."
 
+#: src/components/weather/WeatherWidget.tsx:299
+msgid "Stay hydrated - bring extra water"
+msgstr ""
+
 #: src/pages/EventDetailsPage.tsx:2586
 msgid "Submitting..."
 msgstr "Odesílám..."
@@ -1903,6 +2005,10 @@ msgstr "Odesílám..."
 #: src/components/events/CreateEventForm.tsx:607
 msgid "Sunday Football at the Park"
 msgstr "Nedělní fotbal v parku"
+
+#: src/components/weather/WeatherWidget.tsx:445
+msgid "Sunset:"
+msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:549
 msgid "Supported Sports *"
@@ -1942,23 +2048,31 @@ msgstr "Tato událost je momentálně plná, proto jste byli přidáni na čekac
 msgid "This event will be automatically cancelled if we don't reach the minimum of {0} players by <0>{1}</0>."
 msgstr "Tato událost bude automaticky zrušena, pokud nedosáhneme minima {0} hráčů do <0>{1}</0>."
 
-#: src/pages/LeaderboardPage.tsx:210
+#: src/pages/LeaderboardPage.tsx:213
 msgid "This Month"
 msgstr "Tento měsíc"
+
+#: src/components/weather/WeatherWidget.tsx:108
+msgid "Thunderstorm expected"
+msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:876
 msgid "Tip: Increase max players to widen the sliders."
 msgstr "Tip: Zvyšte max. počet hráčů pro rozšíření posuvníků."
 
-#: src/pages/LeaderboardPage.tsx:243
+#: src/components/weather/WeatherWidget.tsx:464
+msgid "Tips for {sport}"
+msgstr ""
+
+#: src/pages/LeaderboardPage.tsx:246
 msgid "Top performers this month"
 msgstr "Nejlepší tento měsíc"
 
-#: src/pages/LeaderboardPage.tsx:230
+#: src/pages/LeaderboardPage.tsx:233
 msgid "Top players by sport-specific karma points earned"
 msgstr "Nejlepší hráči podle karmy za tento sport"
 
-#: src/pages/LeaderboardPage.tsx:231
+#: src/pages/LeaderboardPage.tsx:234
 msgid "Top players by total karma points earned"
 msgstr "Nejlepší hráči podle celkové karmy"
 
@@ -1966,9 +2080,13 @@ msgstr "Nejlepší hráči podle celkové karmy"
 msgid "Total Price"
 msgstr "Celková cena"
 
-#: src/pages/DiscoverPage.tsx:390
+#: src/pages/DiscoverPage.tsx:398
 msgid "Try adjusting your filters or create a new event."
 msgstr "Zkuste upravit filtry nebo vytvořte novou událost."
+
+#: src/components/weather/WeatherWidget.tsx:378
+msgid "Try again"
+msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:811
 msgid "Typical hourly rates for this venue"
@@ -1978,7 +2096,7 @@ msgstr "Typické hodinové sazby pro toto místo"
 msgid "Up to 2 names"
 msgstr "Až 2 jména"
 
-#: src/pages/DiscoverPage.tsx:293
+#: src/pages/DiscoverPage.tsx:301
 #: src/pages/PublicProfilePage.tsx:87
 msgid "Upcoming Events"
 msgstr "Nadcházející události"
@@ -1995,7 +2113,7 @@ msgstr "Aktualizujte podrobnosti o své události"
 msgid "Update Venue"
 msgstr "Aktualizovat místo"
 
-#: src/pages/LeaderboardPage.tsx:425
+#: src/pages/LeaderboardPage.tsx:428
 msgid "Updated daily"
 msgstr "Aktualizováno denně"
 
@@ -2074,7 +2192,7 @@ msgstr "Ověřeno"
 msgid "View all notifications"
 msgstr "Zobrazit všechna oznámení"
 
-#: src/pages/LeaderboardPage.tsx:572
+#: src/pages/LeaderboardPage.tsx:575
 msgid "View All Sports"
 msgstr "Zobrazit všechny sporty"
 
@@ -2095,6 +2213,10 @@ msgstr "Navštívit web"
 msgid "Waitlist"
 msgstr "Čekací listina"
 
+#: src/components/weather/WeatherWidget.tsx:104
+msgid "Warm with rain showers"
+msgstr ""
+
 #: src/components/events/CreateEventForm.tsx:572
 msgid "Warning:"
 msgstr "Varování:"
@@ -2103,13 +2225,32 @@ msgstr "Varování:"
 msgid "We'll check for minimum players and decide whether to proceed or cancel the event."
 msgstr "Zkontrolujeme minimální počet hráčů a rozhodneme, zda událost uskutečnit nebo zrušit."
 
+#: src/components/weather/WeatherWidget.tsx:481
+msgid "Weather data provided by Open-Meteo"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:372
+msgid "Weather data unavailable"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:331
+#: src/components/weather/WeatherWidget.tsx:354
+#: src/components/weather/WeatherWidget.tsx:395
+msgid "Weather Forecast"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:167
+#: src/components/weather/WeatherWidget.tsx:184
+msgid "Weather forecast is not available for this date"
+msgstr ""
+
 #: src/components/venues/AddVenueModal.tsx:791
 #: src/pages/ManageVenuesPage.tsx:201
 msgid "Website"
 msgstr "Web"
 
 #. placeholder {0}: SPORTS.find((s) => s.id === selectedSport)?.name ?? ''
-#: src/pages/LeaderboardPage.tsx:704
+#: src/pages/LeaderboardPage.tsx:707
 msgid "When filtering by {0}, rankings show karma points and activities specifically related to this sport. Only players with recorded skill levels in this sport are included in the rankings."
 msgstr "Při filtrování podle {0} žebříčky zobrazují body karmy a aktivity související přímo s tímto sportem. V žebříčku jsou pouze hráči se zaznamenanou úrovní dovedností v tomto sportu."
 
@@ -2129,6 +2270,14 @@ msgstr "Wi-Fi"
 #: src/components/events/CreateEventForm.tsx:1105
 msgid "Will be divided by participant count"
 msgstr "Bude rozděleno podle počtu účastníků"
+
+#: src/components/weather/WeatherWidget.tsx:294
+msgid "Wind may affect ball/shuttlecock trajectory"
+msgstr ""
+
+#: src/components/weather/WeatherWidget.tsx:436
+msgid "Wind:"
+msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:2407
 msgid "Yes I have paid"
