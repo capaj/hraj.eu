@@ -4,6 +4,7 @@ import { I18nProvider } from '@lingui/react'
 import { Link, useRouter } from '@tanstack/react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useEffect, type ReactNode } from 'react'
+import { Toaster } from 'sonner'
 import { authClient } from './auth-client'
 import { activateLocale, i18n, type AppLocale } from './i18n'
 
@@ -39,6 +40,7 @@ export function Providers({ children }: { children: ReactNode }) {
             Link={({ href, ...props }) => <Link to={href} {...props} />}
           >
             {children}
+            <Toaster position="bottom-right" richColors closeButton />
           </AuthUIProviderTanstack>
         </AuthQueryProvider>
       </QueryClientProvider>
