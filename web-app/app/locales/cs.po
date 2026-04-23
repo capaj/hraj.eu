@@ -101,7 +101,7 @@ msgstr "{minutes} minut"
 
 #: src/pages/EventDetailsPage.tsx:742
 msgid "{name} has been removed from the event."
-msgstr ""
+msgstr "{name} byl odstraněn ze události."
 
 #: src/pages/EventDetailsPage.tsx:2323
 msgid "{name} Orientation Plan"
@@ -299,7 +299,7 @@ msgstr "Opravdu chcete tuto událost zrušit? Tuto akci nelze vrátit zpět."
 
 #: src/pages/EventDetailsPage.tsx:745
 msgid "Attendee removed from the event."
-msgstr ""
+msgstr "Účastník byl odstraněn ze události."
 
 #: src/pages/LeaderboardPage.tsx:664
 msgid "Attending events (+5 points)"
@@ -1843,11 +1843,11 @@ msgstr "Odstranit"
 
 #: src/pages/EventDetailsPage.tsx:1731
 msgid "Remove attendee"
-msgstr ""
+msgstr "Odstranit účastníka"
 
 #: src/pages/EventDetailsPage.tsx:1876
 msgid "Remove from waitlist"
-msgstr ""
+msgstr "Odstranit ze čekací listiny"
 
 #: src/pages/EventDetailsPage.tsx:2525
 msgid "Report bad behavior"
