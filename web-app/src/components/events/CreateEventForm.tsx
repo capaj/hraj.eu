@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Trans, t, msg } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
+import { t, msg } from '@lingui/core/macro'
 import { i18n } from '~/lib/i18n'
 import { Card, CardHeader, CardContent } from '../ui/Card'
 import { Button } from '../ui/Button'

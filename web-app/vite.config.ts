@@ -2,7 +2,8 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import { defineConfig } from 'vite'
 import tsConfigPaths from 'vite-tsconfig-paths'
 import tailwindcss from '@tailwindcss/vite'
-import macrosPlugin from 'vite-plugin-babel-macros'
+import { lingui, linguiTransformerBabelPreset } from '@lingui/vite-plugin'
+import babel from '@rolldown/plugin-babel'
 import viteReact from '@vitejs/plugin-react'
 import { cloudflare } from '@cloudflare/vite-plugin'
 import path from 'node:path'
@@ -52,8 +53,9 @@ export default defineConfig({
     cloudflare({ viteEnvironment: { name: 'ssr' } }),
 
     tanstackStart(),
-    macrosPlugin(),
     viteReact(),
+    lingui(),
+    babel({ presets: [linguiTransformerBabelPreset()] }),
     tailwindcss()
   ]
 })

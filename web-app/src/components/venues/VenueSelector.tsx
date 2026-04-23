@@ -4,7 +4,8 @@ import { Button } from '../ui/Button'
 import { Badge } from '../ui/Badge'
 import { Venue } from '../../types'
 import { SPORTS } from '../../lib/constants'
-import { Trans, t, msg } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
+import { t, msg } from '@lingui/core/macro'
 import { i18n } from '~/lib/i18n'
 import {
   MapPin,
