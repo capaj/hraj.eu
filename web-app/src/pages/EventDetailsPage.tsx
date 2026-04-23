@@ -710,12 +710,18 @@ export const EventDetailsPage: React.FC = () => {
     }
   }
 
-  const handleLeaveEvent = async () => {
+  const handleLeaveEvent = async (targetUserId?: string) => {
     if (!event || !currentUserId) return
+
+    const isRemovingOther = targetUserId !== undefined && targetUserId !== currentUserId
 
     try {
       setIsJoining(true) // Reusing isJoining state for loading UI
-      const response = await leaveEvent({ data: { eventId: event.id } })
+      const response = await leaveEvent({
+        data: isRemovingOther
+          ? { eventId: event.id, targetUserId }
+          : { eventId: event.id }
+      })
 
       if (response?.participants) {
         setEvent((prev) => ({
@@ -725,20 +731,22 @@ export const EventDetailsPage: React.FC = () => {
           participantPlusOnes: response.participants.plusAttendees
         }))
 
-        if (currentUserId) {
+        if (!isRemovingOther) {
           setPlusAttendees([])
         }
 
-        // Removed user is naturally filtered out from participants list render
-        // because event.participants (ids) is updated.
-        // But we might want to keep the user object in `participants` state 
-        // so we don't have to refetch if they rejoin? 
-        // Actually, we are just maintaining a list of User objects.
-        // No need to remove from `participants` state array, 
-        // just updating `event.participants` (list of IDs) is enough to trigger re-render
-        // and filter the list correctly in `participantUsersList`.
-
-        toast.info(i18n._(msg`You have left the event.`))
+        if (isRemovingOther) {
+          const removedUser = participantsMap.get(targetUserId!)
+          toast.success(
+            removedUser?.name
+              ? i18n._(msg`{name} has been removed from the event.`.id, {
+                  name: removedUser.name
+                })
+              : i18n._(msg`Attendee removed from the event.`)
+          )
+        } else {
+          toast.info(i18n._(msg`You have left the event.`))
+        }
       }
     } catch (error) {
       const message =
@@ -1701,11 +1709,29 @@ export const EventDetailsPage: React.FC = () => {
                             variant="ghost"
                             size="sm"
                             className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                            onClick={handleLeaveEvent}
+                            onClick={() => handleLeaveEvent()}
                             disabled={isJoining}
                           >
                             <UserX size={16} className="mr-1" />
                             <Trans>Leave</Trans>
+                          </Button>
+                        )}
+
+                      {/* Remove button for organizer (removing someone else) */}
+                      {!hasEventEnded &&
+                        currentUserId === event.organizerId &&
+                        user?.id &&
+                        user.id !== currentUserId && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                            onClick={() => handleLeaveEvent(user.id)}
+                            disabled={isJoining}
+                            title={i18n._(msg`Remove attendee`)}
+                          >
+                            <UserX size={16} className="mr-1" />
+                            <Trans>Remove</Trans>
                           </Button>
                         )}
 
@@ -1829,13 +1855,30 @@ export const EventDetailsPage: React.FC = () => {
                               variant="ghost"
                               size="sm"
                               className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                              onClick={handleLeaveEvent}
+                              onClick={() => handleLeaveEvent()}
                               disabled={isJoining}
                             >
                               <UserX size={16} className="mr-1" />
                               <Trans>Leave</Trans>
                             </Button>
                           )}
+
+                          {/* Remove button for organizer (removing waitlisted user) */}
+                          {!hasEventEnded &&
+                            currentUserId === event.organizerId &&
+                            !isMe && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                                onClick={() => handleLeaveEvent(userId)}
+                                disabled={isJoining}
+                                title={i18n._(msg`Remove from waitlist`)}
+                              >
+                                <UserX size={16} className="mr-1" />
+                                <Trans>Remove</Trans>
+                              </Button>
+                            )}
                         </div>
                       )
                     })}

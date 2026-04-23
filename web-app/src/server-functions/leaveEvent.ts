@@ -8,7 +8,8 @@ import { auth } from '~/lib/auth'
 import { and, asc, eq } from 'drizzle-orm'
 
 const LeaveEventSchema = z.object({
-  eventId: z.string().min(1, 'Event ID is required')
+  eventId: z.string().min(1, 'Event ID is required'),
+  targetUserId: z.string().min(1).optional()
 })
 
 export const leaveEvent = createServerFn({ method: 'POST' })
@@ -27,6 +28,25 @@ export const leaveEvent = createServerFn({ method: 'POST' })
       throw new Error('You must be signed in to leave an event')
     }
 
+    const userIdToRemove = data.targetUserId ?? session.user.id
+    const isRemovingOther = userIdToRemove !== session.user.id
+
+    if (isRemovingOther) {
+      const [eventRow] = await db
+        .select({ organizerId: eventT.organizerId })
+        .from(eventT)
+        .where(eq(eventT.id, data.eventId))
+        .limit(1)
+
+      if (!eventRow) {
+        throw new Error('Event not found')
+      }
+
+      if (eventRow.organizerId !== session.user.id) {
+        throw new Error('Only the organizer can remove other attendees')
+      }
+    }
+
     await db.transaction(async (tx) => {
       await tx
         .update(participantT)
@@ -34,7 +54,7 @@ export const leaveEvent = createServerFn({ method: 'POST' })
         .where(
           and(
             eq(participantT.eventId, data.eventId),
-            eq(participantT.userId, session.user.id)
+            eq(participantT.userId, userIdToRemove)
           )
         )
 
