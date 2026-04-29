@@ -305,9 +305,24 @@ export const EventDetailsPage: React.FC = () => {
 
   const participantsMap = new Map(participants.map((user) => [user.id, user]))
 
+  const getJoinedAtTime = (userId: string) => {
+    const joinedAt = event.participantJoinedAt?.[userId]
+    return joinedAt ? new Date(joinedAt).getTime() : Number.MAX_SAFE_INTEGER
+  }
+
   const participantUsersList = event.participants
-    .map((id) => participantsMap.get(id))
-    .filter((user): user is NonNullable<typeof user> => user !== undefined)
+    .map((id, index) => ({
+      user: participantsMap.get(id),
+      joinedAtTime: getJoinedAtTime(id),
+      index
+    }))
+    .filter((entry): entry is typeof entry & { user: User } => entry.user !== undefined)
+    .sort(
+      (a, b) =>
+        a.joinedAtTime - b.joinedAtTime ||
+        a.index - b.index
+    )
+    .map((entry) => entry.user)
 
   const paidParticipants = new Set(event.paidParticipants ?? [])
   const isCurrentUserPaid = currentUserId
@@ -665,7 +680,9 @@ export const EventDetailsPage: React.FC = () => {
           ...prev,
           participants: response.participants.confirmed,
           waitlist: response.participants.waitlisted,
-          participantPlusOnes: response.participants.plusAttendees
+          participantPlusOnes: response.participants.plusAttendees,
+          participantJoinedAt: response.participants.participantJoinedAt,
+          waitlistJoinedAt: response.participants.waitlistJoinedAt
         }))
 
         const existingIds = new Set(participants.map((u) => u.id))
@@ -728,7 +745,9 @@ export const EventDetailsPage: React.FC = () => {
           ...prev,
           participants: response.participants.confirmed,
           waitlist: response.participants.waitlisted,
-          participantPlusOnes: response.participants.plusAttendees
+          participantPlusOnes: response.participants.plusAttendees,
+          participantJoinedAt: response.participants.participantJoinedAt,
+          waitlistJoinedAt: response.participants.waitlistJoinedAt
         }))
 
         if (!isRemovingOther) {
@@ -891,7 +910,9 @@ export const EventDetailsPage: React.FC = () => {
           ...prev,
           participants: response.participants.confirmed,
           waitlist: response.participants.waitlisted,
-          participantPlusOnes: response.participants.plusAttendees
+          participantPlusOnes: response.participants.plusAttendees,
+          participantJoinedAt: response.participants.participantJoinedAt,
+          waitlistJoinedAt: response.participants.waitlistJoinedAt
         }))
         setPlusAttendees(
           response.participants.plusAttendees[currentUserId] ||
@@ -1686,11 +1707,35 @@ export const EventDetailsPage: React.FC = () => {
                               </span>
                             )}
                           </div>
-                          <div className="text-sm text-gray-500">
-                            {i18n._(msg`{karmaPoints} karma`.id, {
-                              karmaPoints: user?.karmaPoints ?? 0
-                            })}
-                          </div>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <div className="text-sm text-gray-500 cursor-help w-fit">
+                                {event.participantJoinedAt?.[user.id]
+                                  ? i18n._(msg`Joined {timeAgo}`.id, {
+                                      timeAgo: formatDistanceToNow(
+                                        new Date(event.participantJoinedAt[user.id]),
+                                        {
+                                          addSuffix: true,
+                                          locale: dateLocale
+                                        }
+                                      )
+                                    })
+                                  : i18n._(msg`Joined`)}
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent side="top">
+                              <div>
+                                {i18n._(msg`Karma: {karmaPoints}`.id, {
+                                  karmaPoints: user.karmaPoints ?? 0
+                                })}
+                              </div>
+                              <div>
+                                {i18n._(msg`Games organized: {count}`.id, {
+                                  count: user.eventsOrganized ?? 0
+                                })}
+                              </div>
+                            </TooltipContent>
+                          </Tooltip>
                           {user?.id &&
                             (event.participantPlusOnes?.[user.id]?.length ?? 0) >
                             0 && (

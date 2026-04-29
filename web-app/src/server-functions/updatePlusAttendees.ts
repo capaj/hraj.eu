@@ -103,7 +103,8 @@ async function getParticipants(eventId: string) {
     .select({
       userId: participantT.userId,
       status: participantT.status,
-      plusAttendees: participantT.plusAttendees
+      plusAttendees: participantT.plusAttendees,
+      createdAt: participantT.createdAt
     })
     .from(participantT)
     .where(eq(participantT.eventId, eventId))
@@ -119,10 +120,30 @@ async function getParticipants(eventId: string) {
   return {
     confirmed: participants
       .filter((p) => p.status === 'confirmed')
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
       .map((p) => p.userId),
     waitlisted: participants
       .filter((p) => p.status === 'waitlisted')
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
       .map((p) => p.userId),
-    plusAttendees: participantPlusOnes
+    plusAttendees: participantPlusOnes,
+    participantJoinedAt: participants
+      .filter((p) => p.status === 'confirmed')
+      .reduce(
+        (acc, participant) => {
+          acc[participant.userId] = new Date(participant.createdAt)
+          return acc
+        },
+        {} as Record<string, Date>
+      ),
+    waitlistJoinedAt: participants
+      .filter((p) => p.status === 'waitlisted')
+      .reduce(
+        (acc, participant) => {
+          acc[participant.userId] = new Date(participant.createdAt)
+          return acc
+        },
+        {} as Record<string, Date>
+      )
   }
 }
