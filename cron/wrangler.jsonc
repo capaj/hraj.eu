@@ -5,6 +5,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "hraj-eu-cron",
+	"account_id": "fbd16d9252980833034caa69e11aa064",
 	"main": "src/index.ts",
 	"compatibility_date": "2025-11-15",
 	"compatibility_flags": ["nodejs_compat"],
