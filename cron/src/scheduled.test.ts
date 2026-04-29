@@ -23,11 +23,20 @@ describe('runScheduledJob', () => {
 	let tempDir: string
 	let client: Client
 	let database: ReturnType<typeof drizzle<typeof schema>>
+	let queries: string[]
 
 	beforeEach(async () => {
 		tempDir = await mkdtemp(join(tmpdir(), 'hraj-cron-'))
 		client = createClient({ url: `file:${join(tempDir, 'test.db')}` })
-		database = drizzle(client, { schema })
+		queries = []
+		database = drizzle(client, {
+			schema,
+			logger: {
+				logQuery(query) {
+					queries.push(query)
+				}
+			}
+		})
 		await migrate(database, {
 			migrationsFolder: resolve('../web-app/drizzle/migrations')
 		})
@@ -86,6 +95,10 @@ describe('runScheduledJob', () => {
 			eventUrl: 'https://example.com/events/event-to-confirm',
 			icsFilename: 'test_match.ics'
 		})
+		expect(queries).toContainEqual(expect.stringContaining('left join (select'))
+		expect(queries).not.toContainEqual(
+			expect.stringContaining('"participant"."event_id" = "event"."id"')
+		)
 	})
 
 	it('cancels open events after the deadline when the minimum was not reached', async () => {

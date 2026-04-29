@@ -8,6 +8,8 @@ import type { Env, EventRow, ParticipantRow } from './types'
 const LOCATION_FALLBACK = 'Location TBD'
 const DEFAULT_BASE_URL = 'https://hraj.eu'
 const CANCELLATION_REASON = 'Minimum participants not reached'
+const CONFIRMED_COUNTS_ALIAS = 'confirmed_counts'
+const CONFIRMED_COUNT_ALIAS = 'confirmed_count'
 
 type CronDb = {
 	select: (...args: any[]) => any
@@ -32,13 +34,21 @@ export async function runScheduledJob({
 	const senderEmail = requireEnv(env, 'SENDER_EMAIL')
 	const today = new Date().toISOString().split('T')[0]
 	const baseUrl = (env.APP_BASE_URL || DEFAULT_BASE_URL).replace(/\/$/, '')
-	const confirmedCount = sql<number>`(
-		select count(${participantT.id})
-		from ${participantT}
-		where ${participantT.eventId} = ${eventT.id}
-			and ${participantT.status} = ${'confirmed'}
-	)`
-
+	const confirmedCount = sql<number>`cast(count(${participantT.id}) as int)`.as(
+		CONFIRMED_COUNT_ALIAS
+	)
+	const confirmedCounts = database
+		.select({
+			eventId: participantT.eventId,
+			confirmedCount
+		})
+		.from(participantT)
+		.where(eq(participantT.status, 'confirmed'))
+		.groupBy(participantT.eventId)
+		.as(CONFIRMED_COUNTS_ALIAS)
+	const confirmedCountOrZero = sql<number>`coalesce(${sql.identifier(
+		CONFIRMED_COUNTS_ALIAS
+	)}.${sql.identifier(CONFIRMED_COUNT_ALIAS)}, 0)`
 	const eventSelection = {
 		id: eventT.id,
 		title: eventT.title,
@@ -56,19 +66,20 @@ export async function runScheduledJob({
 		gameRules: eventT.gameRules,
 		venueName: venueT.name,
 		venueAddress: venueT.address,
-		confirmedCount
+		confirmedCount: confirmedCountOrZero
 	}
 
 	const eventsToConfirm = (await database
 		.select(eventSelection)
 		.from(eventT)
 		.leftJoin(venueT, eq(venueT.id, eventT.venueId))
+		.leftJoin(confirmedCounts, eq(confirmedCounts.eventId, eventT.id))
 		.where(
 			and(
 				eq(eventT.status, 'open'),
 				isNull(eventT.confirmedAt),
 				gte(eventT.date, today),
-				sql`${confirmedCount} >= ${eventT.minParticipants}`
+				sql`${confirmedCountOrZero} >= ${eventT.minParticipants}`
 			)
 		)) as EventRow[]
 
@@ -137,13 +148,14 @@ export async function runScheduledJob({
 		.select(eventSelection)
 		.from(eventT)
 		.leftJoin(venueT, eq(venueT.id, eventT.venueId))
+		.leftJoin(confirmedCounts, eq(confirmedCounts.eventId, eventT.id))
 		.where(
 			and(
 				eq(eventT.status, 'open'),
 				isNull(eventT.cancellationCheckRanAt),
 				gte(eventT.date, today),
 				cancellationDeadlineReached,
-				sql`${confirmedCount} < ${eventT.minParticipants}`
+				sql`${confirmedCountOrZero} < ${eventT.minParticipants}`
 			)
 		)) as EventRow[]
 
