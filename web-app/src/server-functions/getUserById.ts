@@ -1,8 +1,8 @@
 import { createServerFn } from '@tanstack/react-start'
 import { User } from '../types'
 import { db } from '../../drizzle/db'
-import { user as userTable } from '../../drizzle/schema'
-import { eq } from 'drizzle-orm'
+import { eventT, user as userTable } from '../../drizzle/schema'
+import { count, eq } from 'drizzle-orm'
 
 export const getUserById = createServerFn({ method: 'GET' })
   .inputValidator((userId: string) => userId)
@@ -17,6 +17,11 @@ export const getUserById = createServerFn({ method: 'GET' })
     if (!user) {
       throw new Error(`User with id ${userId} not found`)
     }
+
+    const [organizedCountResult] = await db
+      .select({ count: count() })
+      .from(eventT)
+      .where(eq(eventT.organizerId, userId))
 
     const skillLevels: Record<string, 'beginner' | 'intermediate' | 'advanced'> = {}
     if (user.skills) {
@@ -34,6 +39,7 @@ export const getUserById = createServerFn({ method: 'GET' })
       name: user.name,
       image: user.image || undefined,
       karmaPoints: user.karmaPoints || 0,
+      eventsOrganized: organizedCountResult?.count ?? 0,
       skillLevels,
       notificationPreferences: {}, // notifications logic is separate
       preferredCurrency: user.preferredCurrency || 'CZK',

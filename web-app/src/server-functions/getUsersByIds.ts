@@ -1,8 +1,8 @@
 import { createServerFn } from '@tanstack/react-start'
 import { User } from '../types'
 import { db } from '../../drizzle/db'
-import { user as userTable } from '../../drizzle/schema'
-import { inArray } from 'drizzle-orm'
+import { eventT, user as userTable } from '../../drizzle/schema'
+import { count, inArray } from 'drizzle-orm'
 
 export const getUsersByIds = createServerFn({ method: 'GET' })
   .inputValidator((userIds: string[]) => userIds)
@@ -16,12 +16,26 @@ export const getUsersByIds = createServerFn({ method: 'GET' })
       .from(userTable)
       .where(inArray(userTable.id, userIds))
 
+    const organizedCounts = await db
+      .select({
+        userId: eventT.organizerId,
+        count: count()
+      })
+      .from(eventT)
+      .where(inArray(eventT.organizerId, userIds))
+      .groupBy(eventT.organizerId)
+
+    const organizedCountByUserId = new Map(
+      organizedCounts.map((result) => [result.userId, result.count])
+    )
+
     const users = usersFromDb.map((user) => ({
       id: user.id,
       email: user.email,
       name: user.name,
       image: user.image || undefined,
       karmaPoints: user.karmaPoints || 0,
+      eventsOrganized: organizedCountByUserId.get(user.id) ?? 0,
       skillLevels: {},
       notificationPreferences: {},
       preferredCurrency: user.preferredCurrency || 'CZK',
@@ -34,4 +48,3 @@ export const getUsersByIds = createServerFn({ method: 'GET' })
 
     return users
   })
-

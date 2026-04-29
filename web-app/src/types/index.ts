@@ -5,6 +5,7 @@ export interface User {
   image?: string
   bio?: string
   karmaPoints: number
+  eventsOrganized?: number
   skillLevels: Record<string, 'beginner' | 'intermediate' | 'advanced'>
   notificationPreferences: Record<string, boolean> // sportId -> enabled
   preferredCurrency: string
@@ -77,6 +78,7 @@ export interface Event {
   paidParticipants?: string[]
   paidParticipantsAt?: Record<string, Date>
   participantPlusOnes: Record<string, string[]>
+  participantJoinedAt?: Record<string, Date>
   waitlistJoinedAt?: Record<string, Date>
   status: 'draft' | 'open' | 'confirmed' | 'cancelled' | 'completed'
   allowedSkillLevels?: string[]
