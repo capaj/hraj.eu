@@ -749,7 +749,7 @@ msgid "Event"
 msgstr ""
 
 #: src/lib/email/sendCancellationEmail.ts:45
-#: src/pages/EditEventPage.tsx:98
+#: src/pages/EditEventPage.tsx:103
 msgid "Event cancelled"
 msgstr ""
 
@@ -845,7 +845,7 @@ msgstr ""
 msgid "Failed to add comment. Please try again."
 msgstr ""
 
-#: src/pages/EditEventPage.tsx:101
+#: src/pages/EditEventPage.tsx:106
 msgid "Failed to cancel event"
 msgstr ""
 
@@ -2180,7 +2180,7 @@ msgstr ""
 msgid "Updated daily"
 msgstr ""
 
-#: src/pages/EditEventPage.tsx:121
+#: src/pages/EditEventPage.tsx:126
 msgid "Updating event..."
 msgstr ""
 

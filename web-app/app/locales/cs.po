@@ -749,7 +749,7 @@ msgid "Event"
 msgstr "Událost"
 
 #: src/lib/email/sendCancellationEmail.ts:45
-#: src/pages/EditEventPage.tsx:98
+#: src/pages/EditEventPage.tsx:103
 msgid "Event cancelled"
 msgstr "Událost zrušena"
 
@@ -845,7 +845,7 @@ msgstr "Vybavení:"
 msgid "Failed to add comment. Please try again."
 msgstr "Nepodařilo se přidat komentář. Zkuste to prosím znovu."
 
-#: src/pages/EditEventPage.tsx:101
+#: src/pages/EditEventPage.tsx:106
 msgid "Failed to cancel event"
 msgstr "Nepodařilo se zrušit událost"
 
@@ -2180,7 +2180,7 @@ msgstr "Aktualizovat místo"
 msgid "Updated daily"
 msgstr "Aktualizováno denně"
 
-#: src/pages/EditEventPage.tsx:121
+#: src/pages/EditEventPage.tsx:126
 msgid "Updating event..."
 msgstr "Aktualizuji událost..."
 
