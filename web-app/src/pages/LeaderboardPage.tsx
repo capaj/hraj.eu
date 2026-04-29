@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { getUsers } from '~/server-functions/getUsers'
-import { User } from '../types'
+import { User, Event } from '../types'
 import { SPORTS } from '../lib/constants'
 import { i18n } from '~/lib/i18n'
 import {
@@ -21,6 +21,7 @@ import {
   ChevronDown
 } from 'lucide-react'
 import { UserAvatar } from '../components/user/UserAvatar'
+import { useLoaderData } from '@tanstack/react-router'
 
 type LeaderboardType =
   | 'karma'
@@ -37,19 +38,44 @@ export const Leaderboard: React.FC = () => {
   )
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [users, setUsers] = useState<User[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const { events } = useLoaderData({ from: '/leaderboard' }) as { events: Event[] }
+
+  const userStats = useMemo(() => {
+    const stats = new Map<string, { eventsOrganized: number; eventsJoined: number; monthlyPoints: number }>()
+    const monthStart = new Date()
+    monthStart.setUTCDate(1)
+    monthStart.setUTCHours(0, 0, 0, 0)
+
+    for (const event of events) {
+      const eventDate = new Date(event.date)
+      const isInSelectedSport = (sportId?: string) => !sportId || event.sport === sportId
+
+      if (isInSelectedSport(selectedSport)) {
+        const organizer = stats.get(event.organizerId) ?? { eventsOrganized: 0, eventsJoined: 0, monthlyPoints: 0 }
+        organizer.eventsOrganized += 1
+        if (eventDate >= monthStart) organizer.monthlyPoints += 10
+        stats.set(event.organizerId, organizer)
+
+        for (const participantId of event.participants) {
+          const participant = stats.get(participantId) ?? { eventsOrganized: 0, eventsJoined: 0, monthlyPoints: 0 }
+          participant.eventsJoined += 1
+          if (eventDate >= monthStart) participant.monthlyPoints += 5
+          stats.set(participantId, participant)
+        }
+      }
+    }
+
+    return stats
+  }, [events, selectedSport])
 
   // Fetch users from server
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        setIsLoading(true)
         const usersData = await getUsers({ data: { limit: MAX_LEADERBOARD_USERS } })
         setUsers(usersData)
       } catch (error) {
         console.error('Failed to load users:', error)
-      } finally {
-        setIsLoading(false)
       }
     }
     fetchUsers()
@@ -68,23 +94,13 @@ export const Leaderboard: React.FC = () => {
       case 'karma':
         return filteredUsers
           .sort((a, b) => b.karmaPoints - a.karmaPoints)
-          .map((user, index) => ({
+          .map((user) => ({
             ...user,
-            score: sport
-              ? Math.floor(user.karmaPoints * 0.7) +
-              Math.floor(Math.random() * 20)
-              : user.karmaPoints,
-            subtitle: sport
-              ? i18n._(msg`{karma} karma in {sportName}`.id, {
-                karma:
-                  Math.floor(user.karmaPoints * 0.7) +
-                  Math.floor(Math.random() * 20),
-                sportName: SPORTS.find((s) => s.id === sport)?.name ?? sport
-              })
-              : i18n._(msg`{karmaPoints} karma points`.id, {
-                karmaPoints: user.karmaPoints
-              }),
-            change: Math.floor(Math.random() * 20) - 10
+            score: user.karmaPoints,
+            subtitle: i18n._(msg`{karmaPoints} karma points`.id, {
+              karmaPoints: user.karmaPoints
+            }),
+            change: 0
           }))
           .sort((a, b) => b.score - a.score)
 
@@ -92,12 +108,12 @@ export const Leaderboard: React.FC = () => {
         return filteredUsers
           .map((user) => ({
             ...user,
-            score: Math.floor(Math.random() * 15) + 1,
+            score: userStats.get(user.id)?.eventsOrganized ?? 0,
             subtitle: '',
-            change: Math.floor(Math.random() * 6) - 3
+            change: 0
           }))
           .sort((a, b) => b.score - a.score)
-          .map((user, index) => ({
+          .map((user) => ({
             ...user,
             subtitle: sport
               ? i18n._(msg`{count} {sportName} events organized`.id, {
@@ -111,12 +127,12 @@ export const Leaderboard: React.FC = () => {
         return filteredUsers
           .map((user) => ({
             ...user,
-            score: Math.floor(Math.random() * 25) + 5,
+            score: userStats.get(user.id)?.eventsJoined ?? 0,
             subtitle: '',
-            change: Math.floor(Math.random() * 8) - 4
+            change: 0
           }))
           .sort((a, b) => b.score - a.score)
-          .map((user, index) => ({
+          .map((user) => ({
             ...user,
             subtitle: sport
               ? i18n._(msg`{count} {sportName} events joined`.id, {
@@ -130,12 +146,12 @@ export const Leaderboard: React.FC = () => {
         return filteredUsers
           .map((user) => ({
             ...user,
-            score: Math.floor(Math.random() * 50) + 10,
+            score: userStats.get(user.id)?.monthlyPoints ?? 0,
             subtitle: '',
-            change: Math.floor(Math.random() * 15) - 7
+            change: 0
           }))
           .sort((a, b) => b.score - a.score)
-          .map((user, index) => ({
+          .map((user) => ({
             ...user,
             subtitle: sport
               ? i18n._(msg`{count} points in {sportName} this month`.id, {
