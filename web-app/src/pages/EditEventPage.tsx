@@ -88,13 +88,18 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
     navigate({ to: '/events/$eventId', params: { eventId: event.id } })
   }
 
-  const handleCancelEvent = async () => {
+  const handleCancelEvent = async (reason?: string) => {
     if (!confirm(i18n._(msg`Are you sure you want to cancel this event? This action cannot be undone.`))) {
       return
     }
 
     try {
-      await cancelEvent({ data: { eventId: event.id, reason: 'Cancelled by organizer' } })
+      await cancelEvent({
+        data: {
+          eventId: event.id,
+          reason: reason?.trim() || 'Cancelled by organizer'
+        }
+      })
       toast.success(i18n._(msg`Event cancelled`))
       navigate({ to: '/events/$eventId', params: { eventId: event.id } })
     } catch (error) {
