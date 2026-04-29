@@ -27,6 +27,10 @@ export const auth = betterAuth({
         input: true,
         defaultValue: 'CZK'
       },
+      timezone: {
+        type: 'string',
+        input: false
+      },
       location: {
         type: 'string',
         input: false

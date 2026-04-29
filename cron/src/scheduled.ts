@@ -10,6 +10,7 @@ const DEFAULT_BASE_URL = 'https://hraj.eu'
 const CANCELLATION_REASON = 'Minimum participants not reached'
 const CONFIRMED_COUNTS_ALIAS = 'confirmed_counts'
 const CONFIRMED_COUNT_ALIAS = 'confirmed_count'
+const DEFAULT_EVENT_TIMEZONE = 'Europe/Prague'
 
 type CronDb = {
 	select: (...args: any[]) => any
@@ -107,8 +108,6 @@ export async function runScheduledJob({
 
 		const participants = await getConfirmedParticipants(database, eventRow.id)
 		const location = formatLocation(eventRow.venueName, eventRow.venueAddress)
-		const calendarEvent = toCalendarEvent(eventRow, location)
-		const icalContent = generateICalEvent(calendarEvent)
 		const icsFilename = `${slugify(eventRow.title || 'event')}.ics`
 		const eventUrl = `${baseUrl}/events/${eventRow.id}`
 
@@ -118,6 +117,13 @@ export async function runScheduledJob({
 			}
 
 			try {
+				const calendarEvent = toCalendarEvent(
+					eventRow,
+					location,
+					attendee.timezone ?? DEFAULT_EVENT_TIMEZONE
+				)
+				const icalContent = generateICalEvent(calendarEvent)
+
 				await sendConfirmation({
 					resend,
 					from: senderEmail,
@@ -220,7 +226,7 @@ async function getConfirmedParticipants(
 	eventId: string
 ): Promise<ParticipantRow[]> {
 	return database
-		.select({ email: user.email, name: user.name })
+		.select({ email: user.email, name: user.name, timezone: user.timezone })
 		.from(participantT)
 		.innerJoin(user, eq(user.id, participantT.userId))
 		.where(
@@ -254,20 +260,25 @@ interface CalendarEvent {
 	title: string
 	description: string
 	location: string
-	startDate: Date
-	endDate: Date
+	startDateTime: string
+	endDateTime: string
+	timezone: string
 }
 
-function toCalendarEvent(eventRow: EventRow, location: string): CalendarEvent {
-	const [hours = 0, minutes = 0] = eventRow.startTime
-		.split(':')
-		.map((part) => Number(part))
-
-	const startDate = new Date(eventRow.date)
-	startDate.setHours(hours, minutes, 0, 0)
-
-	const endDate = new Date(startDate)
-	endDate.setMinutes(endDate.getMinutes() + eventRow.duration)
+function toCalendarEvent(
+	eventRow: EventRow,
+	location: string,
+	timezone: string
+): CalendarEvent {
+	const startDateTime = formatLocalICalDateTime(
+		eventRow.date,
+		eventRow.startTime
+	)
+	const endDateTime = addMinutesToLocalDateTime(
+		eventRow.date,
+		eventRow.startTime,
+		eventRow.duration
+	)
 
 	const descriptionLines = [
 		eventRow.description?.trim(),
@@ -289,13 +300,55 @@ function toCalendarEvent(eventRow: EventRow, location: string): CalendarEvent {
 		title: eventRow.title,
 		description: descriptionLines.join('\n'),
 		location,
-		startDate,
-		endDate
+		startDateTime,
+		endDateTime,
+		timezone
 	}
 }
 
+function formatLocalICalDateTime(date: string, time: string): string {
+	const [year, month, day] = date.split('-').map((part) => Number(part))
+	const [hours = 0, minutes = 0] = time.split(':').map((part) => Number(part))
+
+	return [
+		padNumber(year, 4),
+		padNumber(month),
+		padNumber(day),
+		'T',
+		padNumber(hours),
+		padNumber(minutes),
+		'00'
+	].join('')
+}
+
+function addMinutesToLocalDateTime(
+	date: string,
+	time: string,
+	durationMinutes: number
+): string {
+	const [year, month, day] = date.split('-').map((part) => Number(part))
+	const [hours = 0, minutes = 0] = time.split(':').map((part) => Number(part))
+	const utcDate = new Date(
+		Date.UTC(year, month - 1, day, hours, minutes + durationMinutes, 0, 0)
+	)
+
+	return [
+		padNumber(utcDate.getUTCFullYear(), 4),
+		padNumber(utcDate.getUTCMonth() + 1),
+		padNumber(utcDate.getUTCDate()),
+		'T',
+		padNumber(utcDate.getUTCHours()),
+		padNumber(utcDate.getUTCMinutes()),
+		'00'
+	].join('')
+}
+
+function padNumber(value: number, length = 2): string {
+	return String(value).padStart(length, '0')
+}
+
 function generateICalEvent(event: CalendarEvent): string {
-	const formatDate = (date: Date): string => {
+	const formatUtcDate = (date: Date): string => {
 		return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z'
 	}
 
@@ -318,9 +371,9 @@ function generateICalEvent(event: CalendarEvent): string {
 		'METHOD:PUBLISH',
 		'BEGIN:VEVENT',
 		`UID:${uid}`,
-		`DTSTAMP:${formatDate(now)}`,
-		`DTSTART:${formatDate(event.startDate)}`,
-		`DTEND:${formatDate(event.endDate)}`,
+		`DTSTAMP:${formatUtcDate(now)}`,
+		`DTSTART;TZID=${event.timezone}:${event.startDateTime}`,
+		`DTEND;TZID=${event.timezone}:${event.endDateTime}`,
 		`SUMMARY:${escapeText(event.title)}`,
 		`DESCRIPTION:${escapeText(event.description)}`,
 		`LOCATION:${escapeText(event.location)}`,

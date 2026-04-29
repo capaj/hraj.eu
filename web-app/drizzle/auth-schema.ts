@@ -12,6 +12,7 @@ export const user = sqliteTable('user', {
   phone: text('phone'),
   karmaPoints: integer('karma_points').default(0).notNull(),
   preferredCurrency: text('preferred_currency'),
+  timezone: text('timezone'),
   location: text('location'),
   bio: text('bio'),
   notificationPreferences: text('notification_preferences', { mode: 'json' }).$type<Record<string, boolean>>(),

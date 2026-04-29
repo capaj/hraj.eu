@@ -29,4 +29,5 @@ export interface EventRow {
 export interface ParticipantRow {
 	email: string
 	name: string | null
+	timezone: string | null
 }

@@ -62,7 +62,12 @@ describe('runScheduledJob', () => {
 				{ id: 2, userId: 'u2' }
 			],
 			users: [
-				{ id: 'u1', name: 'Alice', email: 'alice@example.com' },
+				{
+					id: 'u1',
+					name: 'Alice',
+					email: 'alice@example.com',
+					timezone: 'America/New_York'
+				},
 				{ id: 'u2', name: 'Bob', email: 'bob@example.com' }
 			]
 		})
@@ -95,6 +100,17 @@ describe('runScheduledJob', () => {
 			eventUrl: 'https://example.com/events/event-to-confirm',
 			icsFilename: 'test_match.ics'
 		})
+		const confirmationEmail = confirmationEmails[0] as { icalContent: string }
+		expect(confirmationEmail.icalContent).toContain('TZID=America/New_York')
+		expect(confirmationEmail.icalContent).toContain(
+			`DTSTART;TZID=America/New_York:${today.replace(/-/g, '')}T180000`
+		)
+		expect(confirmationEmail.icalContent).toContain(
+			`DTEND;TZID=America/New_York:${today.replace(/-/g, '')}T193000`
+		)
+		expect(confirmationEmail.icalContent).not.toMatch(
+			/DTSTART:\d{8}T\d{6}Z/
+		)
 		expect(queries).toContainEqual(expect.stringContaining('left join (select'))
 		expect(queries).not.toContainEqual(
 			expect.stringContaining('"participant"."event_id" = "event"."id"')
@@ -165,7 +181,7 @@ async function seedCronData(
 		minParticipants: number
 		startTime: string
 		participants: { id: number; userId: string }[]
-		users: { id: string; name: string; email: string }[]
+		users: { id: string; name: string; email: string; timezone?: string }[]
 	}
 ): Promise<void> {
 	await seed(
@@ -198,6 +214,9 @@ async function seedCronData(
 				email: funcs.valuesFromArray({
 					values: users.map((seedUser) => seedUser.email),
 					isUnique: true
+				}),
+				timezone: funcs.valuesFromArray({
+					values: users.map((seedUser) => seedUser.timezone ?? null)
 				}),
 				emailVerified: funcs.default({ defaultValue: true }),
 				karmaPoints: funcs.default({ defaultValue: 0 })
