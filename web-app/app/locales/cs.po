@@ -411,6 +411,10 @@ msgstr "Storno podmínky"
 msgid "Cancellation Reason (Optional)"
 msgstr "Důvod zrušení (nepovinné)"
 
+#: src/server-functions/cancelEvent.ts:70
+msgid "Cancelled by organizer"
+msgstr "Zrušeno organizátorem"
+
 #: src/pages/LeaderboardPage.tsx:281
 msgid "Celebrate our most active community members and see how you rank among fellow sports enthusiasts"
 msgstr "Oslavte naše nejaktivnější členy komunity a podívejte se, jak si vedete mezi dalšími sportovními nadšenci"
@@ -744,6 +748,7 @@ msgstr "Vybavení"
 msgid "Event"
 msgstr "Událost"
 
+#: src/lib/email/sendCancellationEmail.ts:45
 #: src/pages/EditEventPage.tsx:98
 msgid "Event cancelled"
 msgstr "Událost zrušena"
@@ -751,6 +756,14 @@ msgstr "Událost zrušena"
 #: src/pages/EventDetailsPage.tsx:1188
 msgid "Event Cancelled"
 msgstr "Událost zrušena"
+
+#: src/lib/email/sendCancellationEmail.ts:81
+#~ msgid "Event cancelled: {0}"
+#~ msgstr ""
+
+#: src/lib/email/sendCancellationEmail.ts:82
+msgid "Event cancelled: {title}"
+msgstr "Událost zrušena: {title}"
 
 #: src/pages/EventDetailsPage.tsx:1076
 msgid "Event Completed"
@@ -1053,6 +1066,14 @@ msgstr "Pomozte rozvíjet naši komunitu přidáním nového sportoviště"
 #: src/pages/LeaderboardPage.tsx:672
 msgid "Helping new players (+2 points)"
 msgstr "Pomoc novým hráčům (+2 body)"
+
+#: src/lib/email/sendCancellationEmail.ts:42
+msgid "Hi {name},"
+msgstr "Ahoj {name},"
+
+#: src/lib/email/sendCancellationEmail.ts:42
+msgid "Hi,"
+msgstr "Ahoj,"
 
 #: src/components/weather/WeatherWidget.tsx:308
 msgid "High humidity - take breaks as needed"
@@ -1824,6 +1845,14 @@ msgstr "Ohodnoťte spoluhráče"
 msgid "Rating"
 msgstr "Hodnocení"
 
+#: src/lib/email/sendCancellationEmail.ts:49
+msgid "Reason"
+msgstr "Důvod"
+
+#: src/lib/email/sendCancellationEmail.ts:57
+msgid "Reason: {reason}"
+msgstr "Důvod: {reason}"
+
 #: src/components/weather/WeatherWidget.tsx:359
 #: src/components/weather/WeatherWidget.tsx:400
 msgid "Refresh"
@@ -2234,6 +2263,14 @@ msgstr "Zobrazit všechny sporty"
 msgid "View and edit venues you've added to the platform"
 msgstr "Zobrazte a upravujte místa, která jste přidali na platformu"
 
+#: src/lib/email/sendCancellationEmail.ts:50
+msgid "View event"
+msgstr "Zobrazit událost"
+
+#: src/lib/email/sendCancellationEmail.ts:61
+msgid "View event: {eventUrl}"
+msgstr "Zobrazit událost: {eventUrl}"
+
 #: src/components/events/CreateEventForm.tsx:1151
 msgid "Visibility"
 msgstr "Viditelnost"
@@ -2254,6 +2291,10 @@ msgstr "Teplé s prudeným deštěm"
 #: src/components/events/CreateEventForm.tsx:573
 msgid "Warning:"
 msgstr "Varování:"
+
+#: src/lib/email/sendCancellationEmail.ts:46
+msgid "was cancelled."
+msgstr "byla zrušena."
 
 #: src/components/events/CreateEventForm.tsx:941
 msgid "We'll check for minimum players and decide whether to proceed or cancel the event."
@@ -2283,6 +2324,10 @@ msgstr "Předpověď počasí není dostupná pro toto datum"
 msgid "Website"
 msgstr "Web"
 
+#: src/lib/email/sendCancellationEmail.ts:47
+msgid "When"
+msgstr "Kdy"
+
 #. placeholder {0}: SPORTS.find((s) => s.id === selectedSport)?.name ?? ''
 #: src/pages/LeaderboardPage.tsx:707
 msgid "When filtering by {0}, rankings show karma points and activities specifically related to this sport. Only players with recorded skill levels in this sport are included in the rankings."
@@ -2291,6 +2336,18 @@ msgstr "Při filtrování podle {0} žebříčky zobrazují body karmy a aktivit
 #: src/components/events/CreateEventForm.tsx:1068
 msgid "When skill level restrictions are disabled, players of any skill level can join your event. This is great for casual games and welcoming new players to the sport."
 msgstr "Když jsou omezení úrovně vypnuta, mohou se připojit hráči jakékoli úrovně. To je skvělé pro přátelské zápasy a uvítání nových hráčů."
+
+#: src/lib/email/sendCancellationEmail.ts:55
+msgid "When: {when}"
+msgstr "Kdy: {when}"
+
+#: src/lib/email/sendCancellationEmail.ts:48
+msgid "Where"
+msgstr "Kde"
+
+#: src/lib/email/sendCancellationEmail.ts:56
+msgid "Where: {location}"
+msgstr "Kde: {location}"
 
 #: src/pages/EventDetailsPage.tsx:1637
 msgid "Who's Playing"
@@ -2372,6 +2429,14 @@ msgstr "vaše okolí"
 #: src/pages/PublicProfilePage.tsx:240
 msgid "Your completed events will appear here."
 msgstr "Vaše dokončené události se zobrazí zde."
+
+#: src/lib/email/sendCancellationEmail.ts:53
+#~ msgid "Your event was cancelled: {0}"
+#~ msgstr ""
+
+#: src/lib/email/sendCancellationEmail.ts:54
+msgid "Your event was cancelled: {title}"
+msgstr "Tvoje událost byla zrušena: {title}"
 
 #: src/pages/ManageCoreGroupsPage.tsx:173
 msgid "Your Groups"

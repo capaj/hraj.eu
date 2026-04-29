@@ -411,6 +411,10 @@ msgstr ""
 msgid "Cancellation Reason (Optional)"
 msgstr ""
 
+#: src/server-functions/cancelEvent.ts:70
+msgid "Cancelled by organizer"
+msgstr ""
+
 #: src/pages/LeaderboardPage.tsx:281
 msgid "Celebrate our most active community members and see how you rank among fellow sports enthusiasts"
 msgstr ""
@@ -744,12 +748,21 @@ msgstr ""
 msgid "Event"
 msgstr ""
 
+#: src/lib/email/sendCancellationEmail.ts:45
 #: src/pages/EditEventPage.tsx:98
 msgid "Event cancelled"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1188
 msgid "Event Cancelled"
+msgstr ""
+
+#: src/lib/email/sendCancellationEmail.ts:81
+#~ msgid "Event cancelled: {0}"
+#~ msgstr ""
+
+#: src/lib/email/sendCancellationEmail.ts:82
+msgid "Event cancelled: {title}"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1076
@@ -1052,6 +1065,14 @@ msgstr ""
 
 #: src/pages/LeaderboardPage.tsx:672
 msgid "Helping new players (+2 points)"
+msgstr ""
+
+#: src/lib/email/sendCancellationEmail.ts:42
+msgid "Hi {name},"
+msgstr ""
+
+#: src/lib/email/sendCancellationEmail.ts:42
+msgid "Hi,"
 msgstr ""
 
 #: src/components/weather/WeatherWidget.tsx:308
@@ -1824,6 +1845,14 @@ msgstr ""
 msgid "Rating"
 msgstr ""
 
+#: src/lib/email/sendCancellationEmail.ts:49
+msgid "Reason"
+msgstr ""
+
+#: src/lib/email/sendCancellationEmail.ts:57
+msgid "Reason: {reason}"
+msgstr ""
+
 #: src/components/weather/WeatherWidget.tsx:359
 #: src/components/weather/WeatherWidget.tsx:400
 msgid "Refresh"
@@ -2234,6 +2263,14 @@ msgstr ""
 msgid "View and edit venues you've added to the platform"
 msgstr ""
 
+#: src/lib/email/sendCancellationEmail.ts:50
+msgid "View event"
+msgstr ""
+
+#: src/lib/email/sendCancellationEmail.ts:61
+msgid "View event: {eventUrl}"
+msgstr ""
+
 #: src/components/events/CreateEventForm.tsx:1151
 msgid "Visibility"
 msgstr ""
@@ -2253,6 +2290,10 @@ msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:573
 msgid "Warning:"
+msgstr ""
+
+#: src/lib/email/sendCancellationEmail.ts:46
+msgid "was cancelled."
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:941
@@ -2283,6 +2324,10 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
+#: src/lib/email/sendCancellationEmail.ts:47
+msgid "When"
+msgstr ""
+
 #. placeholder {0}: SPORTS.find((s) => s.id === selectedSport)?.name ?? ''
 #: src/pages/LeaderboardPage.tsx:707
 msgid "When filtering by {0}, rankings show karma points and activities specifically related to this sport. Only players with recorded skill levels in this sport are included in the rankings."
@@ -2290,6 +2335,18 @@ msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:1068
 msgid "When skill level restrictions are disabled, players of any skill level can join your event. This is great for casual games and welcoming new players to the sport."
+msgstr ""
+
+#: src/lib/email/sendCancellationEmail.ts:55
+msgid "When: {when}"
+msgstr ""
+
+#: src/lib/email/sendCancellationEmail.ts:48
+msgid "Where"
+msgstr ""
+
+#: src/lib/email/sendCancellationEmail.ts:56
+msgid "Where: {location}"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1637
@@ -2371,6 +2428,14 @@ msgstr ""
 
 #: src/pages/PublicProfilePage.tsx:240
 msgid "Your completed events will appear here."
+msgstr ""
+
+#: src/lib/email/sendCancellationEmail.ts:53
+#~ msgid "Your event was cancelled: {0}"
+#~ msgstr ""
+
+#: src/lib/email/sendCancellationEmail.ts:54
+msgid "Your event was cancelled: {title}"
 msgstr ""
 
 #: src/pages/ManageCoreGroupsPage.tsx:173
