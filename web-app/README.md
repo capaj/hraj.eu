@@ -19,6 +19,16 @@ pnpm dev
 
 This starts your app in development mode, rebuilding assets on file changes.
 
+## Deployment
+
+Deployment builds should run `pnpm run ci:build`, which compiles the app and
+applies pending Drizzle migrations before the app is published. Wrangler deploys
+can use `pnpm run deploy`, which runs the same build-and-migrate step before
+`wrangler deploy`.
+
+The deployment environment must provide `TURSO_DATABASE_URL` and
+`TURSO_AUTH_TOKEN` so `drizzle-kit migrate` can connect to Turso.
+
 ## Editing and previewing the docs of TanStack projects locally
 
 The documentations for all TanStack projects except for `React Charts` are hosted on [https://tanstack.com](https://tanstack.com), powered by this TanStack Router app.
