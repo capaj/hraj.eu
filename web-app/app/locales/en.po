@@ -31,11 +31,11 @@ msgstr ""
 msgid "{cancellationTimeInline} before the event starts"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:122
+#: src/pages/LeaderboardPage.tsx:138
 msgid "{count} {sportName} events joined"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:103
+#: src/pages/LeaderboardPage.tsx:119
 msgid "{count} {sportName} events organized"
 msgstr ""
 
@@ -43,19 +43,19 @@ msgstr ""
 msgid "{count} event{count, plural, one {} other {s}} found"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:126
+#: src/pages/LeaderboardPage.tsx:142
 msgid "{count} events joined"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:107
+#: src/pages/LeaderboardPage.tsx:123
 msgid "{count} events organized"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:141
+#: src/pages/LeaderboardPage.tsx:157
 msgid "{count} points in {sportName} this month"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:145
+#: src/pages/LeaderboardPage.tsx:161
 msgid "{count} points this month"
 msgstr ""
 
@@ -76,14 +76,14 @@ msgid "{hours} hours"
 msgstr ""
 
 #: src/pages/LeaderboardPage.tsx:78
-msgid "{karma} karma in {sportName}"
-msgstr ""
+#~ msgid "{karma} karma in {sportName}"
+#~ msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1690
 msgid "{karmaPoints} karma"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:84
+#: src/pages/LeaderboardPage.tsx:100
 msgid "{karmaPoints} karma points"
 msgstr ""
 
@@ -111,31 +111,31 @@ msgstr ""
 msgid "{name} photo {index}"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:237
+#: src/pages/LeaderboardPage.tsx:253
 msgid "{sportName} - Most active event organizers"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:241
+#: src/pages/LeaderboardPage.tsx:257
 msgid "{sportName} - Most active participants"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:245
+#: src/pages/LeaderboardPage.tsx:261
 msgid "{sportName} - Top performers this month"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:226
+#: src/pages/LeaderboardPage.tsx:242
 msgid "{sportName} - Top players by sport-specific karma points earned"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:229
+#: src/pages/LeaderboardPage.tsx:245
 msgid "{sportName} - Top players by total karma points earned"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:595
+#: src/pages/LeaderboardPage.tsx:611
 msgid "{sportName} Champion"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:615
+#: src/pages/LeaderboardPage.tsx:631
 msgid "{sportName} Players"
 msgstr ""
 
@@ -151,7 +151,7 @@ msgstr ""
 msgid "{timeLabel} (day before)"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:404
+#: src/pages/LeaderboardPage.tsx:420
 msgid "{title} Leaderboard"
 msgstr ""
 
@@ -217,7 +217,7 @@ msgid "Account Security"
 msgstr ""
 
 #: src/pages/HomePage.tsx:119
-#: src/pages/LeaderboardPage.tsx:620
+#: src/pages/LeaderboardPage.tsx:636
 msgid "Active Players"
 msgstr ""
 
@@ -275,8 +275,8 @@ msgstr ""
 msgid "All skill levels welcome"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:346
-#: src/pages/LeaderboardPage.tsx:370
+#: src/pages/LeaderboardPage.tsx:362
+#: src/pages/LeaderboardPage.tsx:386
 msgid "All Sports"
 msgstr ""
 
@@ -301,7 +301,7 @@ msgstr ""
 msgid "Attendee removed from the event."
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:664
+#: src/pages/LeaderboardPage.tsx:680
 msgid "Attending events (+5 points)"
 msgstr ""
 
@@ -318,7 +318,7 @@ msgstr ""
 msgid "Average player"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:637
+#: src/pages/LeaderboardPage.tsx:653
 msgid "Average Score"
 msgstr ""
 
@@ -395,7 +395,7 @@ msgstr ""
 msgid "Cancel Event?"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:687
+#: src/pages/LeaderboardPage.tsx:703
 msgid "Canceling events last minute (-3 points)"
 msgstr ""
 
@@ -415,7 +415,7 @@ msgstr ""
 msgid "Cancelled by organizer"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:281
+#: src/pages/LeaderboardPage.tsx:297
 msgid "Celebrate our most active community members and see how you rank among fellow sports enthusiasts"
 msgstr ""
 
@@ -476,7 +476,7 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:278
+#: src/pages/LeaderboardPage.tsx:294
 msgid "Community Leaderboard"
 msgstr ""
 
@@ -581,7 +581,7 @@ msgstr ""
 msgid "Currency updated"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:600
+#: src/pages/LeaderboardPage.tsx:616
 msgid "Current Champion"
 msgstr ""
 
@@ -684,7 +684,7 @@ msgstr ""
 msgid "Early access duration from now (hours)"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:655
+#: src/pages/LeaderboardPage.tsx:671
 msgid "Earn Points For:"
 msgstr ""
 
@@ -809,11 +809,11 @@ msgstr ""
 msgid "Events Created"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:211
+#: src/pages/LeaderboardPage.tsx:227
 msgid "Events Joined"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:209
+#: src/pages/LeaderboardPage.tsx:225
 msgid "Events Organized"
 msgstr ""
 
@@ -971,7 +971,7 @@ msgstr ""
 msgid "Fill in the details to organize your next game"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:327
+#: src/pages/LeaderboardPage.tsx:343
 msgid "Filter by Sport"
 msgstr ""
 
@@ -1063,7 +1063,7 @@ msgstr ""
 msgid "Help grow our community by adding a new sports venue"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:672
+#: src/pages/LeaderboardPage.tsx:688
 msgid "Helping new players (+2 points)"
 msgstr ""
 
@@ -1083,7 +1083,7 @@ msgstr ""
 msgid "Hot and sunny"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:648
+#: src/pages/LeaderboardPage.tsx:664
 msgid "How Karma Points Work"
 msgstr ""
 
@@ -1198,7 +1198,7 @@ msgstr ""
 msgid "Leaderboard"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:294
+#: src/pages/LeaderboardPage.tsx:310
 msgid "Leaderboard Categories"
 msgstr ""
 
@@ -1247,7 +1247,7 @@ msgstr ""
 msgid "Location TBD"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:678
+#: src/pages/LeaderboardPage.tsx:694
 msgid "Lose Points For:"
 msgstr ""
 
@@ -1323,11 +1323,11 @@ msgstr ""
 msgid "Mixed (Indoor & Outdoor)"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:238
+#: src/pages/LeaderboardPage.tsx:254
 msgid "Most active event organizers"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:242
+#: src/pages/LeaderboardPage.tsx:258
 msgid "Most active participants"
 msgstr ""
 
@@ -1336,7 +1336,7 @@ msgstr ""
 msgid "My Events"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:591
+#: src/pages/LeaderboardPage.tsx:607
 msgid "N/A"
 msgstr ""
 
@@ -1344,7 +1344,7 @@ msgstr ""
 msgid "Need {count} more players to confirm"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:691
+#: src/pages/LeaderboardPage.tsx:707
 msgid "Negative behavior reports (-10 points)"
 msgstr ""
 
@@ -1408,12 +1408,12 @@ msgstr ""
 msgid "No phone number available"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:563
+#: src/pages/LeaderboardPage.tsx:579
 msgid "No players found"
 msgstr ""
 
 #. placeholder {0}: SPORTS.find((s) => s.id === selectedSport)?.name ?? ''
-#: src/pages/LeaderboardPage.tsx:566
+#: src/pages/LeaderboardPage.tsx:582
 msgid "No players have skill levels recorded for {0}."
 msgstr ""
 
@@ -1465,7 +1465,7 @@ msgstr ""
 msgid "No-show reports will deduct karma points and may affect future event participation."
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:683
+#: src/pages/LeaderboardPage.tsx:699
 msgid "No-shows without notice (-5 points)"
 msgstr ""
 
@@ -1502,7 +1502,7 @@ msgstr ""
 msgid "Organizer"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:660
+#: src/pages/LeaderboardPage.tsx:676
 msgid "Organizing successful events (+10 points)"
 msgstr ""
 
@@ -1522,7 +1522,7 @@ msgstr ""
 msgid "Outdoor venue"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:207
+#: src/pages/LeaderboardPage.tsx:223
 msgid "Overall Karma"
 msgstr ""
 
@@ -1740,7 +1740,7 @@ msgstr ""
 #~ msgid "Popular Events in {userLocation}"
 #~ msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:668
+#: src/pages/LeaderboardPage.tsx:684
 msgid "Positive feedback from players (+3 points)"
 msgstr ""
 
@@ -2029,7 +2029,7 @@ msgstr ""
 msgid "Sport *"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:703
+#: src/pages/LeaderboardPage.tsx:719
 msgid "Sport-Specific Rankings"
 msgstr ""
 
@@ -2107,7 +2107,7 @@ msgstr ""
 msgid "This event will be automatically cancelled if we don't reach the minimum of {0} players by <0>{1}</0>."
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:213
+#: src/pages/LeaderboardPage.tsx:229
 msgid "This Month"
 msgstr ""
 
@@ -2127,15 +2127,15 @@ msgstr ""
 msgid "today"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:246
+#: src/pages/LeaderboardPage.tsx:262
 msgid "Top performers this month"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:233
+#: src/pages/LeaderboardPage.tsx:249
 msgid "Top players by sport-specific karma points earned"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:234
+#: src/pages/LeaderboardPage.tsx:250
 msgid "Top players by total karma points earned"
 msgstr ""
 
@@ -2176,7 +2176,7 @@ msgstr ""
 msgid "Update Venue"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:428
+#: src/pages/LeaderboardPage.tsx:444
 msgid "Updated daily"
 msgstr ""
 
@@ -2255,7 +2255,7 @@ msgstr ""
 msgid "View all notifications"
 msgstr ""
 
-#: src/pages/LeaderboardPage.tsx:575
+#: src/pages/LeaderboardPage.tsx:591
 msgid "View All Sports"
 msgstr ""
 
@@ -2329,7 +2329,7 @@ msgid "When"
 msgstr ""
 
 #. placeholder {0}: SPORTS.find((s) => s.id === selectedSport)?.name ?? ''
-#: src/pages/LeaderboardPage.tsx:707
+#: src/pages/LeaderboardPage.tsx:723
 msgid "When filtering by {0}, rankings show karma points and activities specifically related to this sport. Only players with recorded skill levels in this sport are included in the rankings."
 msgstr ""
 
