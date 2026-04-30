@@ -2,6 +2,7 @@ import { Link, useNavigate } from '@tanstack/react-router'
 import type React from 'react'
 import { MapPin, Trophy, Users } from 'lucide-react'
 import { EventCard } from '../components/events/EventCard'
+import { EventMap } from '../components/map/EventMap'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card, CardContent } from '../components/ui/Card'
@@ -78,6 +79,20 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
 
       <section className="bg-white px-4 py-10 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
+          <div className="mb-10">
+            <h2 className="mb-4 text-2xl font-semibold text-gray-900">
+              Games map
+            </h2>
+            <div className="h-[420px] overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
+              <EventMap
+                events={data.events}
+                venues={data.venues}
+                onJoinEvent={handleJoinEvent}
+                currentUserId={session.data?.user?.id}
+              />
+            </div>
+          </div>
+
           <div className="mb-6 flex items-center justify-between gap-4">
             <h2 className="text-2xl font-semibold text-gray-900">
               Upcoming games
