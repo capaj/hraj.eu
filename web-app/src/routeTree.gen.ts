@@ -23,7 +23,9 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EventsEventIdRouteImport } from './routes/events/$eventId'
 import { Route as EditEventEventIdRouteImport } from './routes/edit-event.$eventId'
+import { Route as CitiesCitySlugRouteImport } from './routes/cities/$citySlug'
 import { Route as AuthPathnameRouteImport } from './routes/auth/$pathname'
+import { Route as CitySlugSportSlugRouteImport } from './routes/$citySlug/$sportSlug'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiOgEventEventIdRouteImport } from './routes/api/og/event/$eventId'
 
@@ -97,9 +99,19 @@ const EditEventEventIdRoute = EditEventEventIdRouteImport.update({
   path: '/edit-event/$eventId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CitiesCitySlugRoute = CitiesCitySlugRouteImport.update({
+  id: '/cities/$citySlug',
+  path: '/cities/$citySlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthPathnameRoute = AuthPathnameRouteImport.update({
   id: '/auth/$pathname',
   path: '/auth/$pathname',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CitySlugSportSlugRoute = CitySlugSportSlugRouteImport.update({
+  id: '/$citySlug/$sportSlug',
+  path: '/$citySlug/$sportSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -126,7 +138,9 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/user-profile': typeof UserProfileRoute
+  '/$citySlug/$sportSlug': typeof CitySlugSportSlugRoute
   '/auth/$pathname': typeof AuthPathnameRoute
+  '/cities/$citySlug': typeof CitiesCitySlugRoute
   '/edit-event/$eventId': typeof EditEventEventIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -145,7 +159,9 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/user-profile': typeof UserProfileRoute
+  '/$citySlug/$sportSlug': typeof CitySlugSportSlugRoute
   '/auth/$pathname': typeof AuthPathnameRoute
+  '/cities/$citySlug': typeof CitiesCitySlugRoute
   '/edit-event/$eventId': typeof EditEventEventIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -165,7 +181,9 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/user-profile': typeof UserProfileRoute
+  '/$citySlug/$sportSlug': typeof CitySlugSportSlugRoute
   '/auth/$pathname': typeof AuthPathnameRoute
+  '/cities/$citySlug': typeof CitiesCitySlugRoute
   '/edit-event/$eventId': typeof EditEventEventIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -186,7 +204,9 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/user-profile'
+    | '/$citySlug/$sportSlug'
     | '/auth/$pathname'
+    | '/cities/$citySlug'
     | '/edit-event/$eventId'
     | '/events/$eventId'
     | '/api/auth/$'
@@ -205,7 +225,9 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/user-profile'
+    | '/$citySlug/$sportSlug'
     | '/auth/$pathname'
+    | '/cities/$citySlug'
     | '/edit-event/$eventId'
     | '/events/$eventId'
     | '/api/auth/$'
@@ -224,7 +246,9 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/user-profile'
+    | '/$citySlug/$sportSlug'
     | '/auth/$pathname'
+    | '/cities/$citySlug'
     | '/edit-event/$eventId'
     | '/events/$eventId'
     | '/api/auth/$'
@@ -244,7 +268,9 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   UserProfileRoute: typeof UserProfileRoute
+  CitySlugSportSlugRoute: typeof CitySlugSportSlugRoute
   AuthPathnameRoute: typeof AuthPathnameRoute
+  CitiesCitySlugRoute: typeof CitiesCitySlugRoute
   EditEventEventIdRoute: typeof EditEventEventIdRoute
   EventsEventIdRoute: typeof EventsEventIdRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
@@ -351,11 +377,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EditEventEventIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cities/$citySlug': {
+      id: '/cities/$citySlug'
+      path: '/cities/$citySlug'
+      fullPath: '/cities/$citySlug'
+      preLoaderRoute: typeof CitiesCitySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/$pathname': {
       id: '/auth/$pathname'
       path: '/auth/$pathname'
       fullPath: '/auth/$pathname'
       preLoaderRoute: typeof AuthPathnameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$citySlug/$sportSlug': {
+      id: '/$citySlug/$sportSlug'
+      path: '/$citySlug/$sportSlug'
+      fullPath: '/$citySlug/$sportSlug'
+      preLoaderRoute: typeof CitySlugSportSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
@@ -388,7 +428,9 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   UserProfileRoute: UserProfileRoute,
+  CitySlugSportSlugRoute: CitySlugSportSlugRoute,
   AuthPathnameRoute: AuthPathnameRoute,
+  CitiesCitySlugRoute: CitiesCitySlugRoute,
   EditEventEventIdRoute: EditEventEventIdRoute,
   EventsEventIdRoute: EventsEventIdRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,

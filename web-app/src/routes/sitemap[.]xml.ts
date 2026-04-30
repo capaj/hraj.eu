@@ -99,6 +99,9 @@ export const Route = createFileRoute('/sitemap.xml')({
       GET: async ({ request }) => {
         const origin = new URL(request.url).origin
         const today = new Date()
+        const { querySeoLandingPageLinks } = await import(
+          '~/server-functions/seoLandingPageQueries'
+        )
 
         const urls: SitemapUrl[] = [
           {
@@ -117,6 +120,16 @@ export const Route = createFileRoute('/sitemap.xml')({
             changefreq: 'weekly',
             priority: 0.4
           },
+          ...(await querySeoLandingPageLinks()).map((link) => ({
+            loc: buildUrl(
+              origin,
+              link.sportId
+                ? `/${link.citySlug}/${link.sportSlug}`
+                : `/cities/${link.citySlug}`
+            ),
+            changefreq: link.eventCount > 0 ? ('daily' as const) : ('weekly' as const),
+            priority: link.sportId ? 0.7 : 0.6
+          })),
           ...(await getPublicUpcomingEventUrls(origin))
         ]
 

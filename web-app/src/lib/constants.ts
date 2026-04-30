@@ -84,18 +84,3 @@ export const EU_CURRENCIES = [
   { code: 'SEK', name: 'Swedish Krona', symbol: 'kr', countries: ['Sweden'] },
   { code: 'HRK', name: 'Croatian Kuna', symbol: 'kn', countries: ['Croatia'] }
 ] as const
-
-export const CITIES = [
-  'Prague',
-  'Vienna',
-  'Budapest',
-  'Warsaw',
-  'Berlin',
-  'Amsterdam',
-  'Brussels',
-  'Paris',
-  'Madrid',
-  'Rome',
-  'Stockholm',
-  'Copenhagen'
-] as const
