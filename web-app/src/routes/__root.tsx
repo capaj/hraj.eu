@@ -10,6 +10,7 @@ import { useEffect } from 'react'
 import { Header } from '../components/layout/Header'
 import { Providers } from '~/lib/providers'
 import appCss from '../styles/app.css?url'
+import { buildSeoMeta } from '~/lib/seo'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -22,8 +23,14 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1'
       },
       {
-        title: 'hraj.eu - Amateur Sports Events'
-      }
+        name: 'theme-color',
+        content: '#16a34a'
+      },
+      {
+        name: 'robots',
+        content: 'index, follow'
+      },
+      ...buildSeoMeta()
     ],
     links: [
       {
@@ -55,7 +62,7 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html lang="en">
       <head>
         <HeadContent />
       </head>

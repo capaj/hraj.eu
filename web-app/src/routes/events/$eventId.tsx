@@ -6,6 +6,7 @@ import { getUserById } from '~/server-functions/getUserById'
 import { getUsersByIds } from '~/server-functions/getUsersByIds'
 import { getRequestOrigin } from '~/server-functions/getRequestOrigin'
 import { getEventComments } from '~/server-functions/getEventComments'
+import { SPORTS } from '~/lib/constants'
 
 export const Route = createFileRoute('/events/$eventId')({
   ssr: true,
@@ -59,6 +60,8 @@ export const Route = createFileRoute('/events/$eventId')({
     }
 
     const title = event.title?.trim() ? event.title.trim() : 'Event'
+    const sport = SPORTS.find((s) => s.id === event.sport)
+    const sportName = sport?.name ?? event.sport
 
     const start = (() => {
       const date = new Date(event.date)
@@ -68,6 +71,7 @@ export const Route = createFileRoute('/events/$eventId')({
       date.setHours(hours, minutes, 0, 0)
       return date
     })()
+    const end = new Date(start.getTime() + (event.duration || 0) * 60 * 1000)
 
     const when = (() => {
       try {
@@ -97,11 +101,88 @@ export const Route = createFileRoute('/events/$eventId')({
       rawDescription.length > 200 ? `${rawDescription.slice(0, 197)}...` : rawDescription
 
     const ogTitle = where ? `${title} @ ${where}` : title
+    const seoTitleParts = [
+      sportName ? `${sportName} game` : null,
+      title,
+      venue?.city ? venue.city : null
+    ].filter(Boolean)
+    const seoTitle = `${seoTitleParts.join(' - ')} | hraj.eu`
+    const isPubliclyIndexable =
+      event.isPublic &&
+      event.status !== 'cancelled' &&
+      (!event.coreGroupExclusiveUntil ||
+        new Date(event.coreGroupExclusiveUntil).getTime() <= Date.now())
+    const priceParticipants = event.idealParticipants || event.minParticipants
+    const pricePerPlayer =
+      event.price && priceParticipants > 0
+        ? Number((event.price / priceParticipants).toFixed(2))
+        : undefined
+
+    const eventJsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'SportsEvent',
+      name: title,
+      description,
+      sport: sportName,
+      startDate: start.toISOString(),
+      endDate: end.toISOString(),
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      eventStatus:
+        event.status === 'cancelled'
+          ? 'https://schema.org/EventCancelled'
+          : 'https://schema.org/EventScheduled',
+      url,
+      image: ogImage,
+      maximumAttendeeCapacity: event.maxParticipants,
+      location: venue
+        ? {
+            '@type': 'Place',
+            name: venue.name,
+            address: {
+              '@type': 'PostalAddress',
+              streetAddress: venue.address,
+              addressLocality: venue.city,
+              addressCountry: venue.country
+            },
+            geo:
+              venue.lat && venue.lng
+                ? {
+                    '@type': 'GeoCoordinates',
+                    latitude: venue.lat,
+                    longitude: venue.lng
+                  }
+                : undefined
+          }
+        : undefined,
+      organizer: loaderData?.organizer
+        ? {
+            '@type': 'Person',
+            name: loaderData.organizer.name
+          }
+        : {
+            '@type': 'Organization',
+            name: 'hraj.eu',
+            url: origin
+          },
+      offers: pricePerPlayer
+        ? {
+            '@type': 'Offer',
+            price: pricePerPlayer,
+            priceCurrency: event.currency || 'CZK',
+            availability:
+              event.participants.length >= event.maxParticipants
+                ? 'https://schema.org/SoldOut'
+                : 'https://schema.org/InStock',
+            url
+          }
+        : undefined
+    }
 
     return {
       meta: [
-        { title: `${title} | hraj.eu` },
+        { title: seoTitle },
         { name: 'description', content: description },
+        ...(isPubliclyIndexable ? [] : [{ name: 'robots', content: 'noindex' }]),
         { property: 'og:type', content: 'website' },
         { property: 'og:site_name', content: 'hraj.eu' },
         { property: 'og:url', content: url },
@@ -116,7 +197,8 @@ export const Route = createFileRoute('/events/$eventId')({
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: ogTitle },
         { name: 'twitter:description', content: description },
-        { name: 'twitter:image', content: ogImage }
+        { name: 'twitter:image', content: ogImage },
+        { 'script:ld+json': eventJsonLd } as any
       ],
       links: [{ rel: 'canonical', href: url }]
     }

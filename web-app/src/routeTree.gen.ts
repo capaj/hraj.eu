@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UserProfileRouteImport } from './routes/user-profile'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ManageVenuesRouteImport } from './routes/manage-venues'
@@ -34,6 +35,11 @@ const UserProfileRoute = UserProfileRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -117,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/manage-venues': typeof ManageVenuesRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/user-profile': typeof UserProfileRoute
   '/auth/$pathname': typeof AuthPathnameRoute
@@ -135,6 +142,7 @@ export interface FileRoutesByTo {
   '/manage-venues': typeof ManageVenuesRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/user-profile': typeof UserProfileRoute
   '/auth/$pathname': typeof AuthPathnameRoute
@@ -154,6 +162,7 @@ export interface FileRoutesById {
   '/manage-venues': typeof ManageVenuesRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/user-profile': typeof UserProfileRoute
   '/auth/$pathname': typeof AuthPathnameRoute
@@ -174,6 +183,7 @@ export interface FileRouteTypes {
     | '/manage-venues'
     | '/privacy'
     | '/profile'
+    | '/sitemap.xml'
     | '/terms'
     | '/user-profile'
     | '/auth/$pathname'
@@ -192,6 +202,7 @@ export interface FileRouteTypes {
     | '/manage-venues'
     | '/privacy'
     | '/profile'
+    | '/sitemap.xml'
     | '/terms'
     | '/user-profile'
     | '/auth/$pathname'
@@ -210,6 +221,7 @@ export interface FileRouteTypes {
     | '/manage-venues'
     | '/privacy'
     | '/profile'
+    | '/sitemap.xml'
     | '/terms'
     | '/user-profile'
     | '/auth/$pathname'
@@ -229,6 +241,7 @@ export interface RootRouteChildren {
   ManageVenuesRoute: typeof ManageVenuesRoute
   PrivacyRoute: typeof PrivacyRoute
   ProfileRoute: typeof ProfileRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   UserProfileRoute: typeof UserProfileRoute
   AuthPathnameRoute: typeof AuthPathnameRoute
@@ -252,6 +265,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -365,6 +385,7 @@ const rootRouteChildren: RootRouteChildren = {
   ManageVenuesRoute: ManageVenuesRoute,
   PrivacyRoute: PrivacyRoute,
   ProfileRoute: ProfileRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   UserProfileRoute: UserProfileRoute,
   AuthPathnameRoute: AuthPathnameRoute,
