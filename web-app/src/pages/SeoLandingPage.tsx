@@ -10,6 +10,7 @@ import { authClient } from '../lib/auth-client'
 import { joinEvent } from '~/server-functions/joinEvent'
 import { SPORTS } from '../lib/constants'
 import type { SeoLandingPageData } from '~/server-functions/getSeoLandingPageData'
+import { Trans } from '@lingui/react/macro'
 
 type SeoLandingPageProps = {
   data: SeoLandingPageData
@@ -19,13 +20,8 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
   const navigate = useNavigate()
   const session = authClient.useSession()
 
-  const title = data.sportName
-    ? `Play ${data.sportName} in ${data.city}`
-    : `Find amateur sports games in ${data.city}`
-
-  const subtitle = data.sportName
-    ? `Meet local amateur ${data.sportName.toLowerCase()} players, join upcoming games, and find places to play in ${data.city}.`
-    : `Join local amateur players, discover team sports events, and find places to play in ${data.city}.`
+  const sportName = data.sportName
+  const lowerSportName = sportName?.toLowerCase()
 
   const handleJoinEvent = async (eventId: string) => {
     if (!session.data?.user?.id) {
@@ -47,30 +43,56 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
               {data.sportName && <Badge variant="warning">{data.sportName}</Badge>}
             </div>
             <h1 className="text-4xl font-bold tracking-normal md:text-5xl">
-              {title}
+              {sportName ? (
+                <Trans>Play {sportName} in {data.city}</Trans>
+              ) : (
+                <Trans>Find amateur sports games in {data.city}</Trans>
+              )}
             </h1>
-            <p className="mt-4 text-lg text-white/85">{subtitle}</p>
+            <p className="mt-4 text-lg text-white/85">
+              {sportName ? (
+                <Trans>
+                  Meet local amateur {lowerSportName} players, join upcoming
+                  games, and find places to play in {data.city}.
+                </Trans>
+              ) : (
+                <Trans>
+                  Join local amateur players, discover team sports events, and
+                  find places to play in {data.city}.
+                </Trans>
+              )}
+            </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link to="/">
-                <Button variant="secondary">Browse all games</Button>
+                <Button variant="secondary">
+                  <Trans>Browse all games</Trans>
+                </Button>
               </Link>
               <Link to="/create">
                 <Button
                   variant="outline"
                   className="border-white/30 bg-white/10 text-white hover:bg-white/20"
                 >
-                  Create a game
+                  <Trans>Create a game</Trans>
                 </Button>
               </Link>
             </div>
           </div>
 
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <Stat icon={<Trophy size={20} />} label="Upcoming games" value={data.events.length} />
-            <Stat icon={<MapPin size={20} />} label="Places to play" value={data.venues.length} />
+            <Stat
+              icon={<Trophy size={20} />}
+              label={<Trans>Upcoming games</Trans>}
+              value={data.events.length}
+            />
+            <Stat
+              icon={<MapPin size={20} />}
+              label={<Trans>Places to play</Trans>}
+              value={data.venues.length}
+            />
             <Stat
               icon={<Users size={20} />}
-              label="Sports covered"
+              label={<Trans>Sports covered</Trans>}
               value={new Set(data.venues.flatMap((venue) => venue.sports)).size}
             />
           </div>
@@ -81,7 +103,7 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
         <div className="mx-auto max-w-7xl">
           <div className="mb-10">
             <h2 className="mb-4 text-2xl font-semibold text-gray-900">
-              Games map
+              <Trans>Games map</Trans>
             </h2>
             <div className="h-[420px] overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
               <EventMap
@@ -95,7 +117,7 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
 
           <div className="mb-6 flex items-center justify-between gap-4">
             <h2 className="text-2xl font-semibold text-gray-900">
-              Upcoming games
+              <Trans>Upcoming games</Trans>
             </h2>
             {data.sportLinks.length > 0 && !data.sportName && (
               <div className="hidden flex-wrap gap-2 md:flex">
@@ -129,8 +151,10 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
             </div>
           ) : (
             <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-gray-700">
-              No upcoming games are listed here yet. The venues below support
-              this page, and new games will appear here automatically.
+              <Trans>
+                No upcoming games are listed here yet. The venues below support
+                this page, and new games will appear here automatically.
+              </Trans>
             </div>
           )}
         </div>
@@ -139,7 +163,7 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
       <section className="bg-gray-50 px-4 py-10 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-6 text-2xl font-semibold text-gray-900">
-            Places to play in {data.city}
+            <Trans>Places to play in {data.city}</Trans>
           </h2>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             {data.venues.slice(0, 12).map((venue) => (
@@ -170,7 +194,7 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 md:grid-cols-2">
           {data.sportLinks.length > 0 && (
             <LinkList
-              title={`Sports in ${data.city}`}
+              title={<Trans>Sports in {data.city}</Trans>}
               links={data.sportLinks.map((link) => ({
                 label: link.sportName || '',
                 to: `/${link.citySlug}/${link.sportSlug}`,
@@ -179,7 +203,7 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
             />
           )}
           <LinkList
-            title="Other active cities"
+            title={<Trans>Other active cities</Trans>}
             links={data.cityLinks
               .filter((link) => link.citySlug !== data.citySlug)
               .slice(0, 12)
@@ -201,7 +225,7 @@ function Stat({
   value
 }: {
   icon: React.ReactNode
-  label: string
+  label: React.ReactNode
   value: number
 }) {
   return (
@@ -221,7 +245,7 @@ function LinkList({
   title,
   links
 }: {
-  title: string
+  title: React.ReactNode
   links: Array<{ label: string; to: string; count: number }>
 }) {
   if (links.length === 0) return null
