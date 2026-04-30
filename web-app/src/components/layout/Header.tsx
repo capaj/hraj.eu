@@ -17,14 +17,14 @@ import {
   Euro,
   AlertTriangle,
   CheckCircle,
-  Menu,
-  Globe
+  Menu
 } from 'lucide-react'
 import { Notification } from '../../types'
 import { formatDistanceToNow } from 'date-fns'
 import { UserButton } from '../user/UserButton'
 import { authClient } from '~/lib/auth-client'
 import { activateLocale, type AppLocale } from '~/lib/i18n'
+import { LanguageSelector } from './LanguageSelector'
 
 export const Header: React.FC = () => {
   const session = authClient.useSession()
@@ -96,18 +96,11 @@ export const Header: React.FC = () => {
               <label className="sr-only" htmlFor="locale-select">
                 <Trans>Language</Trans>
               </label>
-              <div className="flex items-center gap-2 px-2 py-1 border border-gray-200 rounded-lg bg-white">
-                <Globe size={16} className="text-gray-500" />
-                <select
-                  id="locale-select"
-                  value={currentLocale}
-                  onChange={(e) => setLocale(e.target.value as AppLocale)}
-                  className="text-sm bg-transparent text-gray-700 focus:outline-none"
-                >
-                  <option value="en">EN</option>
-                  <option value="cs">CS</option>
-                </select>
-              </div>
+              <LanguageSelector
+                currentLocale={currentLocale}
+                onLocaleChange={setLocale}
+                triggerId="locale-select"
+              />
             </div>
 
             <Link to="/create" className="hidden sm:inline-flex">
@@ -137,14 +130,12 @@ export const Header: React.FC = () => {
                 <label className="block text-xs text-gray-500 mb-2">
                   <Trans>Language</Trans>
                 </label>
-                <select
-                  value={currentLocale}
-                  onChange={(e) => setLocale(e.target.value as AppLocale)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white text-gray-700"
-                >
-                  <option value="en">EN</option>
-                  <option value="cs">CS</option>
-                </select>
+                <LanguageSelector
+                  currentLocale={currentLocale}
+                  onLocaleChange={setLocale}
+                  triggerId="mobile-locale-select"
+                  fullWidth
+                />
               </div>
 
               <Link
