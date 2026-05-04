@@ -112,6 +112,7 @@ export const Leaderboard: React.FC = () => {
             subtitle: '',
             change: 0
           }))
+          .filter((user) => user.score > 0)
           .sort((a, b) => b.score - a.score)
           .map((user) => ({
             ...user,
