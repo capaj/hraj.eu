@@ -2,6 +2,7 @@ import { createClient, type Client } from '@libsql/client'
 import { drizzle } from 'drizzle-orm/libsql'
 import { migrate } from 'drizzle-orm/libsql/migrator'
 import { seed } from 'drizzle-seed'
+import { eq } from 'drizzle-orm'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
@@ -117,6 +118,51 @@ describe('runScheduledJob', () => {
 		)
 	})
 
+	it('does not cancel events when plus attendees push the count past the minimum', async () => {
+		const confirmationEmails: unknown[] = []
+		const cancellationEmails: unknown[] = []
+		const today = new Date().toISOString().split('T')[0]
+
+		await seedCronData(database, {
+			id: 'event-with-guests',
+			date: today,
+			minParticipants: 4,
+			startTime: '00:00',
+			participants: [
+				{
+					id: 1,
+					userId: 'u1',
+					plusAttendees: ['Guest 1', 'Guest 2', 'Guest 3']
+				}
+			],
+			users: [{ id: 'u1', name: 'Alice', email: 'alice@example.com' }]
+		})
+
+		await runScheduledJob({
+			event: scheduledEvent(),
+			env,
+			database,
+			resend: {} as never,
+			sendConfirmation: vi.fn(async (payload) => {
+				confirmationEmails.push(payload)
+			}),
+			sendCancellation: vi.fn(async (payload) => {
+				cancellationEmails.push(payload)
+			})
+		})
+
+		const eventRow = await client.execute({
+			sql: 'select status, cancellation_check_ran_at, confirmed_at from event where id = ?',
+			args: ['event-with-guests']
+		})
+
+		expect(eventRow.rows[0]?.status).toBe('confirmed')
+		expect(eventRow.rows[0]?.confirmed_at).not.toBeNull()
+		expect(eventRow.rows[0]?.cancellation_check_ran_at).toBeNull()
+		expect(cancellationEmails).toHaveLength(0)
+		expect(confirmationEmails).toHaveLength(1)
+	})
+
 	it('cancels open events after the deadline when the minimum was not reached', async () => {
 		const confirmationEmails: unknown[] = []
 		const cancellationEmails: unknown[] = []
@@ -180,7 +226,7 @@ async function seedCronData(
 		date: string
 		minParticipants: number
 		startTime: string
-		participants: { id: number; userId: string }[]
+		participants: { id: number; userId: string; plusAttendees?: string[] }[]
 		users: { id: string; name: string; email: string; timezone?: string }[]
 	}
 ): Promise<void> {
@@ -276,6 +322,15 @@ async function seedCronData(
 			}
 		}
 	}))
+
+	for (const participant of participants) {
+		if (participant.plusAttendees && participant.plusAttendees.length > 0) {
+			await database
+				.update(participantT)
+				.set({ plusAttendees: participant.plusAttendees })
+				.where(eq(participantT.id, participant.id))
+		}
+	}
 }
 
 function scheduledEvent(): ScheduledController {

@@ -35,7 +35,7 @@ export async function runScheduledJob({
 	const senderEmail = requireEnv(env, 'SENDER_EMAIL')
 	const today = new Date().toISOString().split('T')[0]
 	const baseUrl = (env.APP_BASE_URL || DEFAULT_BASE_URL).replace(/\/$/, '')
-	const confirmedCount = sql<number>`cast(count(${participantT.id}) as int)`.as(
+	const confirmedCount = sql<number>`cast(coalesce(sum(1 + json_array_length(${participantT.plusAttendees})), 0) as int)`.as(
 		CONFIRMED_COUNT_ALIAS
 	)
 	const confirmedCounts = database
