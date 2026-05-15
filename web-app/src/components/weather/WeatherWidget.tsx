@@ -41,16 +41,11 @@ interface WeatherData {
 
 interface WeatherWidgetProps {
   date: Date
-  location: string
   sport: string
-}
-
-interface GeocodeResult {
-  results?: Array<{
+  coordinates?: {
     latitude: number
     longitude: number
-    name: string
-  }>
+  }
 }
 
 interface ForecastResult {
@@ -69,7 +64,6 @@ interface ForecastResult {
   }
 }
 
-const GEOCODE_URL = 'https://geocoding-api.open-meteo.com/v1/search'
 const FORECAST_URL = 'https://api.open-meteo.com/v1/forecast'
 
 function wmoToCondition(code: number): WeatherCondition {
@@ -128,8 +122,8 @@ function scoreRecommendation(
 
 export const WeatherWidget: React.FC<WeatherWidgetProps> = ({
   date,
-  location,
-  sport
+  sport,
+  coordinates
 }) => {
   const { i18n, t } = useLingui()
   const [weather, setWeather] = useState<WeatherData | null>(null)
@@ -141,14 +135,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({
     setError(null)
 
     try {
-      const searchTerm = location.split(',')[0]?.trim() || location
-      const geoRes = await fetch(
-        `${GEOCODE_URL}?name=${encodeURIComponent(searchTerm)}&count=1&language=${i18n.locale}&format=json`
-      )
-      if (!geoRes.ok) throw new Error('geocode_failed')
-      const geo = (await geoRes.json()) as GeocodeResult
-      const place = geo.results?.[0]
-      if (!place) {
+      if (!coordinates) {
         setError(i18n._(msg`Could not find location for weather forecast`))
         setWeather(null)
         return
@@ -170,7 +157,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({
       }
 
       const forecastRes = await fetch(
-        `${FORECAST_URL}?latitude=${place.latitude}&longitude=${place.longitude}` +
+        `${FORECAST_URL}?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}` +
           `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunset,wind_speed_10m_max` +
           `&hourly=relative_humidity_2m` +
           `&start_date=${dateStr}&end_date=${dateStr}&timezone=auto`
@@ -231,7 +218,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({
     } finally {
       setIsLoading(false)
     }
-  }, [date, location, sport, i18n])
+  }, [date, coordinates?.latitude, coordinates?.longitude, sport, i18n])
 
   useEffect(() => {
     fetchWeather()
