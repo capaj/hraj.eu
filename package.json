@@ -1,7 +1,7 @@
 {
   "name": "hraj.eu",
   "private": true,
-  "packageManager": "pnpm@11.1.0",
+  "packageManager": "pnpm@11.1.2",
   "scripts": {
     "test": "turbo test",
     "typecheck": "turbo typecheck",
