@@ -7,7 +7,6 @@
     "typecheck": "turbo typecheck",
     "bump": "turbo bump",
     "lingui": "cd web-app && pnpm lingui:extract && pnpm lingui:compile",
-    "postinstall": "turbo postinstall",
     "prepare": "husky"
   },
   "devDependencies": {

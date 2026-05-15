@@ -1,6 +1,12 @@
 packages:
   - web-app/**
   - cron/**
+allowBuilds:
+  '@parcel/watcher': true
+  core-js: true
+  esbuild: true
+  sharp: true
+  workerd: true
 
 # patchedDependencies:
 #   h3@2.0.1-rc.6: patches/h3@2.0.1-rc.6.patch
