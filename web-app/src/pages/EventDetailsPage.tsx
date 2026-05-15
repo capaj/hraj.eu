@@ -1513,8 +1513,15 @@ export const EventDetailsPage: React.FC = () => {
             {shouldShowWeather && (
               <WeatherWidget
                 date={event.date}
-                location={venue?.address || i18n._(msg`Location TBD`)}
                 sport={event.sport}
+                coordinates={
+                  venue &&
+                  Number.isFinite(venue.lat) &&
+                  Number.isFinite(venue.lng) &&
+                  (venue.lat !== 0 || venue.lng !== 0)
+                    ? { latitude: venue.lat, longitude: venue.lng }
+                    : undefined
+                }
               />
             )}
 
