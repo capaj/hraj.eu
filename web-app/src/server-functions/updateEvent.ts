@@ -5,6 +5,7 @@ import { coreGroupT, eventT } from '../../drizzle/schema'
 import { db } from 'drizzle/db'
 import { auth } from '~/lib/auth'
 import { eq, and } from 'drizzle-orm'
+import { assertNoVenueEventConflict } from './eventVenueConflicts'
 
 const UpdateEventSchema = z.object({
   id: z.string().min(1),
@@ -143,6 +144,14 @@ export const updateEvent = createServerFn({ method: 'POST' })
         updates.requiredSkillLevel = null
       }
     }
+
+    await assertNoVenueEventConflict(db, {
+      venueId: data.venueId ?? event.venueId,
+      date: data.date ?? event.date,
+      startTime: data.startTime ?? event.startTime,
+      duration: data.duration ?? event.duration,
+      excludeEventId: event.id
+    })
 
     await db.update(eventT).set(updates).where(eq(eventT.id, data.id))
 

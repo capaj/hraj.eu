@@ -6,6 +6,7 @@ import { coreGroupT, eventT as eventTable } from '../../drizzle/schema'
 import { db } from '../../drizzle/db'
 import { and, eq } from 'drizzle-orm'
 import { auth } from './auth'
+import { assertNoVenueEventConflict } from '../server-functions/eventVenueConflicts'
 
 const ClientEventSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -96,6 +97,13 @@ export const createEvent = createServerFn({ method: 'POST' })
       validatedCoreGroupId && data.coreGroupExclusiveHours
         ? new Date(now.getTime() + data.coreGroupExclusiveHours * 60 * 60 * 1000)
         : undefined
+
+    await assertNoVenueEventConflict(db, {
+      venueId: data.venueId,
+      date: data.date,
+      startTime: data.startTime,
+      duration: data.duration
+    })
 
     const insertData: Partial<InsertedEvent> = {
       title: data.title,
