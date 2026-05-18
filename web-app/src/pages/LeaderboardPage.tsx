@@ -205,6 +205,17 @@ export const Leaderboard: React.FC = () => {
     }
   }
 
+  const getRankMedal = (position: number) => {
+    switch (position) {
+      case 1:
+        return '🥇'
+      case 2:
+        return '🥈'
+      default:
+        return '🥉'
+    }
+  }
+
   const getTypeIcon = (type: LeaderboardType) => {
     switch (type) {
       case 'karma':
@@ -238,17 +249,23 @@ export const Leaderboard: React.FC = () => {
 
     switch (type) {
       case 'karma':
-        return sportName
-          ? selectedSport
-            ? i18n._(msg`{sportName} - Top players by sport-specific karma points earned`.id, {
-              sportName
-            })
-            : i18n._(msg`{sportName} - Top players by total karma points earned`.id, {
-              sportName
-            })
-          : selectedSport
-            ? i18n._(msg`Top players by sport-specific karma points earned`)
-            : i18n._(msg`Top players by total karma points earned`)
+        if (sportName && selectedSport) {
+          return i18n._(msg`{sportName} - Top players by sport-specific karma points earned`.id, {
+            sportName
+          })
+        }
+
+        if (sportName) {
+          return i18n._(msg`{sportName} - Top players by total karma points earned`.id, {
+            sportName
+          })
+        }
+
+        if (selectedSport) {
+          return i18n._(msg`Top players by sport-specific karma points earned`)
+        }
+
+        return i18n._(msg`Top players by total karma points earned`)
       case 'events-organized':
         return sportName
           ? i18n._(msg`{sportName} - Most active event organizers`.id, { sportName })
@@ -486,11 +503,7 @@ export const Leaderboard: React.FC = () => {
                                     variant={getRankBadgeVariant(position)}
                                     size="sm"
                                   >
-                                    {position === 1
-                                      ? '🥇'
-                                      : position === 2
-                                        ? '🥈'
-                                        : '🥉'}
+                                    {getRankMedal(position)}
                                   </Badge>
                                 )}
                                 {selectedSport &&

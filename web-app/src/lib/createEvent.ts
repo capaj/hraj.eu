@@ -61,18 +61,19 @@ export const createEvent = createServerFn({ method: 'POST' })
     const cancellationDeadlineMinutes =
       data.cancellationHours * 60 + data.cancellationMinutes
 
-    const numericPrice =
-      typeof data.price === 'string' && data.price !== ''
-        ? Number(data.price)
-        : typeof data.price === 'number'
-        ? data.price
-        : undefined
+    let numericPrice: number | undefined
+    if (typeof data.price === 'string' && data.price !== '') {
+      numericPrice = Number(data.price)
+    } else if (typeof data.price === 'number') {
+      numericPrice = data.price
+    }
 
-    const requiredSkillLevel = data.requireSkillLevel
-      ? data.allowedSkillLevels && data.allowedSkillLevels.length === 1
-        ? data.allowedSkillLevels[0]
-        : undefined
-      : undefined
+    let requiredSkillLevel:
+      | NonNullable<typeof data.allowedSkillLevels>[number]
+      | undefined
+    if (data.requireSkillLevel && data.allowedSkillLevels?.length === 1) {
+      requiredSkillLevel = data.allowedSkillLevels[0]
+    }
 
     let validatedCoreGroupId: string | undefined
     if (data.coreGroupId) {

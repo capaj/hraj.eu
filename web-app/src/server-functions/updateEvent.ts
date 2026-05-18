@@ -114,12 +114,13 @@ export const updateEvent = createServerFn({ method: 'POST' })
     }
 
     if (data.price !== undefined) {
-      updates.price =
-        typeof data.price === 'string' && data.price !== ''
-          ? Number(data.price)
-          : typeof data.price === 'number'
-          ? data.price
-          : null
+      if (typeof data.price === 'string' && data.price !== '') {
+        updates.price = Number(data.price)
+      } else if (typeof data.price === 'number') {
+        updates.price = data.price
+      } else {
+        updates.price = null
+      }
     }
 
     if (data.currency) updates.currency = data.currency

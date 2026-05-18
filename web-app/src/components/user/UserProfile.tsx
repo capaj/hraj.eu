@@ -44,20 +44,19 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
             {Object.entries(user.skillLevels || {}).map(([sport, level]) => {
               const sportInfo = SPORTS.find((s) => s.id === sport)
               const levelInfo = SKILL_LEVELS.find((l) => l.id === level)
+              let badgeVariant: 'success' | 'warning' | 'error' = 'error'
+              if (level === 'beginner') {
+                badgeVariant = 'success'
+              } else if (level === 'intermediate') {
+                badgeVariant = 'warning'
+              }
+
               return (
                 <div key={sport} className="flex items-center justify-between">
                   <span className="text-sm text-gray-700">
                     {sportInfo?.icon} {sportInfo?.name}
                   </span>
-                  <Badge
-                    variant={
-                      level === 'beginner'
-                        ? 'success'
-                        : level === 'intermediate'
-                          ? 'warning'
-                          : 'error'
-                    }
-                  >
+                  <Badge variant={badgeVariant}>
                     {levelInfo?.name}
                   </Badge>
                 </div>

@@ -310,6 +310,17 @@ export const DiscoverPage: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {upcomingEvents.map((event, index) => {
                   const distance = getEventDistance(event)
+                  let sortIndicator = `#${index + 1}`
+                  if (sortBy === 'distance' && distance) {
+                    sortIndicator = distance
+                  } else if (sortBy === 'spots') {
+                    sortIndicator = i18n._(msg`{count} spots`.id, {
+                      count:
+                        event.maxParticipants -
+                        getConfirmedHeadcount(event)
+                    })
+                  }
+
                   return (
                     <div
                       key={event.id}
@@ -320,15 +331,7 @@ export const DiscoverPage: React.FC = () => {
                       {sortBy !== 'date' && (
                         <div className="absolute -top-2 -left-2 z-10">
                           <div className="bg-white text-primary-600 text-xs px-2 py-1 rounded-full font-medium shadow-lg">
-                            {sortBy === 'distance' && distance
-                              ? distance
-                              : sortBy === 'spots'
-                                ? i18n._(msg`{count} spots`.id, {
-                                  count:
-                                    event.maxParticipants -
-                                    getConfirmedHeadcount(event)
-                                })
-                                : `#${index + 1}`}
+                            {sortIndicator}
                           </div>
                         </div>
                       )}

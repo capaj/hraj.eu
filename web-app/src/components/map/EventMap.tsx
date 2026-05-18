@@ -224,6 +224,26 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
               currentUserId && event.participants.includes(currentUserId)
             const confirmedHeadcount = getConfirmedHeadcount(event)
             const spotsLeft = event.maxParticipants - confirmedHeadcount
+            const eventIsClosed =
+              isPast(getEventDateTime(event)) || event.status === 'cancelled'
+            let eventActionButton = ''
+            if (!eventIsClosed && isJoined) {
+              eventActionButton = `<button 
+                        style="padding: 6px 12px; background-color: #e5e7eb; color: #374151; border: none; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: default;"
+                      >
+                        ${t`You are playing`}
+                      </button>`
+            } else if (!eventIsClosed) {
+              const joinLabel = spotsLeft > 0 ? t`Join Game` : t`Join Waitlist`
+              eventActionButton = `<button 
+                        onclick="window.joinEvent_${event.id}()"
+                        style="padding: 6px 12px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
+                        onmouseover="this.style.backgroundColor='#059669'"
+                        onmouseout="this.style.backgroundColor='#10b981'"
+                      >
+                        ${joinLabel}
+                      </button>`
+            }
 
             const eventHtml = `
               <div style="${index > 0
@@ -268,23 +288,7 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
               }; font-weight: 500;">
                     ${spotsLeft > 0 ? `${spotsLeft} spots left` : t`Waitlist`}
                   </span>
-                  ${(isPast(getEventDateTime(event)) || event.status === 'cancelled')
-                ? ''
-                : isJoined
-                  ? `<button 
-                        style="padding: 6px 12px; background-color: #e5e7eb; color: #374151; border: none; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: default;"
-                      >
-                        ${t`You are playing`}
-                      </button>`
-                  : `<button 
-                        onclick="window.joinEvent_${event.id}()"
-                        style="padding: 6px 12px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
-                        onmouseover="this.style.backgroundColor='#059669'"
-                        onmouseout="this.style.backgroundColor='#10b981'"
-                      >
-                        ${spotsLeft > 0 ? t`Join Game` : t`Join Waitlist`}
-                      </button>`
-              } 
+                  ${eventActionButton} 
                 </div>
               </div>
             `

@@ -3,6 +3,7 @@
   "private": true,
   "packageManager": "pnpm@11.1.2",
   "scripts": {
+    "lint": "oxlint .",
     "test": "turbo test",
     "typecheck": "turbo typecheck",
     "bump": "turbo bump",

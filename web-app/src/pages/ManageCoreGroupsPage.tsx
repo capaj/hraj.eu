@@ -88,6 +88,47 @@ export const ManageCoreGroupsPage: React.FC = () => {
     await loadData()
   }
 
+  const groupsContent = () => {
+    if (isLoading) {
+      return <p className="text-gray-600"><Trans>Loading...</Trans></p>
+    }
+
+    if (groups.length === 0) {
+      return <p className="text-gray-600"><Trans>No groups yet. Create your first one.</Trans></p>
+    }
+
+    return (
+      <div className="space-y-3">
+        {groups.map((group) => (
+          <div key={group.id} className="border border-gray-200 rounded-lg p-4 bg-white">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="font-semibold text-gray-900">{group.name}</p>
+                <p className="text-sm text-gray-600 mt-1 flex items-center gap-1">
+                  <Users size={14} /> {group.userIds.length}
+                  <Trans>members</Trans>
+                </p>
+                <p className="text-xs text-gray-500 mt-2">
+                  {group.userIds.map((userId) => userMap.get(userId) || userId).join(', ')}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <Button type="button" size="sm" variant="outline" onClick={() => startEdit(group)}>
+                  <Edit size={14} className="mr-1" />
+                  <Trans>Edit</Trans>
+                </Button>
+                <Button type="button" size="sm" variant="danger" onClick={() => removeGroup(group.id)}>
+                  <Trash2 size={14} className="mr-1" />
+                  <Trans>Delete</Trans>
+                </Button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-600 to-secondary-600 py-8">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
@@ -173,40 +214,7 @@ export const ManageCoreGroupsPage: React.FC = () => {
             <h2 className="text-xl font-semibold text-gray-900"><Trans>Your Groups</Trans></h2>
           </CardHeader>
           <CardContent>
-            {isLoading ? (
-              <p className="text-gray-600"><Trans>Loading...</Trans></p>
-            ) : groups.length === 0 ? (
-              <p className="text-gray-600"><Trans>No groups yet. Create your first one.</Trans></p>
-            ) : (
-              <div className="space-y-3">
-                {groups.map((group) => (
-                  <div key={group.id} className="border border-gray-200 rounded-lg p-4 bg-white">
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="font-semibold text-gray-900">{group.name}</p>
-                        <p className="text-sm text-gray-600 mt-1 flex items-center gap-1">
-                          <Users size={14} /> {group.userIds.length}
-                          <Trans>members</Trans>
-                        </p>
-                        <p className="text-xs text-gray-500 mt-2">
-                          {group.userIds.map((userId) => userMap.get(userId) || userId).join(', ')}
-                        </p>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button type="button" size="sm" variant="outline" onClick={() => startEdit(group)}>
-                          <Edit size={14} className="mr-1" />
-                          <Trans>Edit</Trans>
-                        </Button>
-                        <Button type="button" size="sm" variant="danger" onClick={() => removeGroup(group.id)}>
-                          <Trash2 size={14} className="mr-1" />
-                          <Trans>Delete</Trans>
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            {groupsContent()}
           </CardContent>
         </Card>
       </div>

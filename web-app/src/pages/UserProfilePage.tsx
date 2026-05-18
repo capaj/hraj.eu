@@ -1280,6 +1280,25 @@ export const UserProfile: React.FC = () => {
                           const isChanging =
                             hasRecentChange &&
                             skillLevelChanges[sport.id] === level.id
+                          let selectedLevelClass = 'bg-red-500 text-white'
+                          if (level.id === 'beginner') {
+                            selectedLevelClass = 'bg-green-500 text-white'
+                          } else if (level.id === 'intermediate') {
+                            selectedLevelClass = 'bg-yellow-500 text-white'
+                          }
+
+                          const skillLevelClass = [
+                            'px-2 py-1 text-xs font-medium rounded-full transition-all duration-200',
+                            isSelected
+                              ? selectedLevelClass
+                              : 'bg-gray-100 text-gray-600 hover:bg-gray-200',
+                            hasRecentChange
+                              ? 'opacity-50 cursor-not-allowed'
+                              : 'cursor-pointer',
+                            isChanging ? 'ring-2 ring-green-400' : ''
+                          ]
+                            .filter(Boolean)
+                            .join(' ')
 
                           return (
                             <button
@@ -1291,17 +1310,7 @@ export const UserProfile: React.FC = () => {
                                 )
                               }
                               disabled={hasRecentChange}
-                              className={`px-2 py-1 text-xs font-medium rounded-full transition-all duration-200 ${isSelected
-                                ? level.id === 'beginner'
-                                  ? 'bg-green-500 text-white'
-                                  : level.id === 'intermediate'
-                                    ? 'bg-yellow-500 text-white'
-                                    : 'bg-red-500 text-white'
-                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                                } ${hasRecentChange
-                                  ? 'opacity-50 cursor-not-allowed'
-                                  : 'cursor-pointer'
-                                } ${isChanging ? 'ring-2 ring-green-400' : ''}`}
+                              className={skillLevelClass}
                             >
                               {isChanging ? (
                                 <div className="flex items-center">

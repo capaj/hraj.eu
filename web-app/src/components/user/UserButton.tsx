@@ -95,6 +95,40 @@ export function UserButton({
 
   const isPending = sessionPending || activeSessionPending
 
+  const iconTriggerContent = () => {
+    if (isPending) {
+      return (
+        <Avatar className={cn('h-12 w-12', className)}>
+          <AvatarFallback className="bg-transparent p-0">
+            <div className="h-full w-full animate-pulse bg-gray-300 rounded-full" />
+          </AvatarFallback>
+        </Avatar>
+      )
+    }
+
+    if (user) {
+      return (
+        <UserAvatar
+          key={user?.image}
+          className={cn('h-12 w-12', className)}
+          user={user}
+          aria-label="Account"
+        />
+      )
+    }
+
+    return (
+      <Tooltip>
+        <TooltipTrigger>
+          <UserRoundPlus />
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Sign in to your account</p>
+        </TooltipContent>
+      </Tooltip>
+    )
+  }
+
   const handleSignOut = useCallback(async () => {
     setActiveSessionPending(true)
     try {
@@ -116,29 +150,7 @@ export function UserButton({
         {trigger ||
           (size === 'icon' ? (
             <Button size="sm" className="p-1 rounded-full" variant="ghost">
-              {isPending ? (
-                <Avatar className={cn('h-12 w-12', className)}>
-                  <AvatarFallback className="bg-transparent p-0">
-                    <div className="h-full w-full animate-pulse bg-gray-300 rounded-full" />
-                  </AvatarFallback>
-                </Avatar>
-              ) : user ? (
-                <UserAvatar
-                  key={user?.image}
-                  className={cn('h-12 w-12', className)}
-                  user={user}
-                  aria-label="Account"
-                />
-              ) : (
-                <Tooltip>
-                  <TooltipTrigger>
-                    <UserRoundPlus />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Sign in to your account</p>
-                  </TooltipContent>
-                </Tooltip>
-              )}
+              {iconTriggerContent()}
             </Button>
           ) : (
             <Button className={cn('!p-2 h-fit', className)} size="md">
