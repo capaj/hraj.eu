@@ -3,10 +3,12 @@ import { getRequest } from '@tanstack/react-start/server'
 import { auth } from '~/lib/auth'
 import { Venue } from '../types'
 import { db } from '../../drizzle/db'
-import { venueT, user } from '../../drizzle/schema'
-import { eq } from 'drizzle-orm'
-
-const ADMIN_EMAILS = ['capajj@gmail.com']
+import { venueT } from '../../drizzle/schema'
+import {
+  editableVenueWhereClause,
+  getSuccessfulOrganizerVenueIds,
+  isVenueAdmin
+} from './venuePermissions'
 
 export const getVenuesForCurrentUser = createServerFn({ method: 'GET' })
   .handler(async () => {
@@ -19,21 +21,17 @@ export const getVenuesForCurrentUser = createServerFn({ method: 'GET' })
 
     const userId = session.user.id
 
-    const userData = await db.query.user.findFirst({
-      where: eq(user.id, userId),
-      columns: {
-        email: true
-      }
-    })
-
-    const isAdmin = userData?.email && ADMIN_EMAILS.includes(userData.email)
+    const isAdmin = await isVenueAdmin(userId)
+    const successfulOrganizerVenueIds = isAdmin
+      ? []
+      : await getSuccessfulOrganizerVenueIds(userId)
 
     const venuesFromDb = isAdmin
       ? await db.select().from(venueT)
       : await db
           .select()
           .from(venueT)
-          .where(eq(venueT.createdBy, userId))
+          .where(editableVenueWhereClause(userId, successfulOrganizerVenueIds))
 
     const venues = venuesFromDb.map((venue) => {
       return {

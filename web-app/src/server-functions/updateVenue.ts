@@ -6,6 +6,7 @@ import { db } from 'drizzle/db'
 import { auth } from '~/lib/auth'
 import { eq } from 'drizzle-orm'
 import { SPORTS } from '~/lib/constants'
+import { canEditVenue } from './venuePermissions'
 
 const normalizeMaybeUndefined = <T extends z.ZodTypeAny>(inner: T) =>
   z
@@ -138,7 +139,7 @@ export const updateVenue = createServerFn({ method: 'POST' })
 
       if (
         !existingVenue.length ||
-        existingVenue[0].createdBy !== session.user.id
+        !(await canEditVenue(session.user.id, existingVenue[0]))
       ) {
         throw new Error(
           'Venue not found or you do not have permission to update it'
@@ -157,4 +158,3 @@ export const updateVenue = createServerFn({ method: 'POST' })
       return data.id
     }
   )
-
