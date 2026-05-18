@@ -18,7 +18,7 @@ msgid "(sorted by {label})"
 msgstr ""
 
 #. placeholder {0}: weather.windSpeed
-#: src/components/weather/WeatherWidget.tsx:439
+#: src/components/weather/WeatherWidget.tsx:426
 msgid "{0} km/h"
 msgstr ""
 
@@ -103,11 +103,11 @@ msgstr ""
 msgid "{name} has been removed from the event."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2368
+#: src/pages/EventDetailsPage.tsx:2375
 msgid "{name} Orientation Plan"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2399
+#: src/pages/EventDetailsPage.tsx:2406
 msgid "{name} photo {index}"
 msgstr ""
 
@@ -200,7 +200,7 @@ msgid "About this event"
 msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:742
-#: src/pages/EventDetailsPage.tsx:2260
+#: src/pages/EventDetailsPage.tsx:2267
 msgid "Access Instructions"
 msgstr ""
 
@@ -221,7 +221,7 @@ msgstr ""
 msgid "Active Players"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2178
+#: src/pages/EventDetailsPage.tsx:2185
 msgid "Add GIF"
 msgstr ""
 
@@ -284,7 +284,7 @@ msgstr ""
 msgid "Any extra players will be put on a waitlist"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2310
+#: src/pages/EventDetailsPage.tsx:2317
 msgid "Approx. {price} {currency} / hour"
 msgstr ""
 
@@ -314,7 +314,7 @@ msgstr ""
 msgid "Available Spots"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2602
+#: src/pages/EventDetailsPage.tsx:2609
 msgid "Average player"
 msgstr ""
 
@@ -322,7 +322,7 @@ msgstr ""
 msgid "Average Score"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:312
+#: src/components/weather/WeatherWidget.tsx:299
 msgid "Avoid outdoor play during thunderstorms"
 msgstr ""
 
@@ -342,15 +342,15 @@ msgstr ""
 #~ msgid "Be the first to bring your community together! Create an event and start building connections through sport."
 #~ msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1962
+#: src/pages/EventDetailsPage.tsx:1969
 msgid "Be the first to leave a comment."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2644
+#: src/pages/EventDetailsPage.tsx:2651
 msgid "Behavior reports are taken seriously and may result in account restrictions."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2601
+#: src/pages/EventDetailsPage.tsx:2608
 msgid "Below average"
 msgstr ""
 
@@ -362,7 +362,7 @@ msgstr ""
 msgid "Brief description of the venue..."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1574
+#: src/pages/EventDetailsPage.tsx:1581
 msgid "Bringing guests?"
 msgstr ""
 
@@ -384,8 +384,8 @@ msgid "Café"
 msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:855
-#: src/pages/EventDetailsPage.tsx:1998
-#: src/pages/EventDetailsPage.tsx:2660
+#: src/pages/EventDetailsPage.tsx:2005
+#: src/pages/EventDetailsPage.tsx:2667
 #: src/pages/ManageCoreGroupsPage.tsx:164
 #: src/pages/UserProfilePage.tsx:572
 msgid "Cancel"
@@ -423,7 +423,7 @@ msgstr ""
 msgid "Celebrate our most active community members and see how you rank among fellow sports enthusiasts"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:274
+#: src/components/weather/WeatherWidget.tsx:261
 msgid "Challenging conditions"
 msgstr ""
 
@@ -456,11 +456,11 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:106
+#: src/components/weather/WeatherWidget.tsx:100
 msgid "Cold with snow"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2613
+#: src/pages/EventDetailsPage.tsx:2620
 msgid "Comment (optional)"
 msgstr ""
 
@@ -476,7 +476,7 @@ msgstr ""
 msgid "Comment updated."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1951
+#: src/pages/EventDetailsPage.tsx:1958
 msgid "Comments"
 msgstr ""
 
@@ -488,11 +488,11 @@ msgstr ""
 msgid "Connect with like-minded players, earn karma points, and climb the leaderboards."
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:286
+#: src/components/weather/WeatherWidget.tsx:273
 msgid "Consider bringing waterproof gear"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:300
+#: src/components/weather/WeatherWidget.tsx:287
 msgid "Consider sun protection"
 msgstr ""
 
@@ -504,11 +504,11 @@ msgstr ""
 msgid "Contact support to change email"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:104
+#: src/components/weather/WeatherWidget.tsx:98
 msgid "Cool and rainy"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:98
+#: src/components/weather/WeatherWidget.tsx:92
 msgid "Cool but sunny"
 msgstr ""
 
@@ -524,7 +524,7 @@ msgstr ""
 msgid "Core group window must be between 2 hours and 14 days."
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:152
+#: src/components/weather/WeatherWidget.tsx:139
 msgid "Could not find location for weather forecast"
 msgstr ""
 
@@ -617,7 +617,7 @@ msgstr ""
 msgid "Deadline:"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2034
+#: src/pages/EventDetailsPage.tsx:2041
 #: src/pages/ManageCoreGroupsPage.tsx:202
 msgid "Delete"
 msgstr ""
@@ -634,7 +634,7 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2614
+#: src/pages/EventDetailsPage.tsx:2621
 msgid "Details (required)"
 msgstr ""
 
@@ -668,7 +668,7 @@ msgstr ""
 msgid "Drag the pin to mark the exact entrance to the pitch."
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:304
+#: src/components/weather/WeatherWidget.tsx:291
 msgid "Dress warmly and allow extra warm-up time"
 msgstr ""
 
@@ -700,7 +700,7 @@ msgstr ""
 msgid "Easy Organization"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2025
+#: src/pages/EventDetailsPage.tsx:2032
 #: src/pages/ManageCoreGroupsPage.tsx:198
 #: src/pages/ManageVenuesPage.tsx:137
 msgid "Edit"
@@ -833,7 +833,7 @@ msgstr ""
 msgid "Events you've saved for later"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2604
+#: src/pages/EventDetailsPage.tsx:2611
 msgid "Excellent player!"
 msgstr ""
 
@@ -841,7 +841,7 @@ msgstr ""
 msgid "Experienced competitive players"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2321
+#: src/pages/EventDetailsPage.tsx:2328
 msgid "Facilities"
 msgstr ""
 
@@ -885,7 +885,7 @@ msgstr ""
 msgid "Failed to load GIFs"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:229
+#: src/components/weather/WeatherWidget.tsx:216
 msgid "Failed to load weather data"
 msgstr ""
 
@@ -967,11 +967,11 @@ msgstr ""
 msgid "Feedback submitted successfully"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2529
+#: src/pages/EventDetailsPage.tsx:2536
 msgid "Feedback Type"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:288
+#: src/components/weather/WeatherWidget.tsx:275
 msgid "Field/court may be slippery"
 msgstr ""
 
@@ -1000,7 +1000,7 @@ msgstr ""
 #~ msgid "Finding events near you..."
 #~ msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:102
+#: src/components/weather/WeatherWidget.tsx:96
 msgid "Foggy conditions"
 msgstr ""
 
@@ -1028,11 +1028,11 @@ msgstr ""
 msgid "Games map"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1733
+#: src/pages/EventDetailsPage.tsx:1740
 msgid "Games organized: {count}"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2542
+#: src/pages/EventDetailsPage.tsx:2549
 msgid "Give karma rating"
 msgstr ""
 
@@ -1048,11 +1048,11 @@ msgstr ""
 msgid "Give Positive Karma"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:265
+#: src/components/weather/WeatherWidget.tsx:252
 msgid "Good conditions"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2603
+#: src/pages/EventDetailsPage.tsx:2610
 msgid "Good sportsmanship"
 msgstr ""
 
@@ -1060,7 +1060,7 @@ msgstr ""
 msgid "Group name"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1590
+#: src/pages/EventDetailsPage.tsx:1597
 msgid "Guest {index, number} name (optional)"
 msgstr ""
 
@@ -1068,15 +1068,15 @@ msgstr ""
 msgid "Guest list updated."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1743
+#: src/pages/EventDetailsPage.tsx:1750
 msgid "Guests:"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2457
+#: src/pages/EventDetailsPage.tsx:2464
 msgid "Have you paid?"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1834
+#: src/pages/EventDetailsPage.tsx:1841
 msgid "Help build our community by giving karma to players who showed good sportsmanship, or report issues if needed."
 msgstr ""
 
@@ -1096,11 +1096,11 @@ msgstr ""
 msgid "Hi,"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:308
+#: src/components/weather/WeatherWidget.tsx:295
 msgid "High humidity - take breaks as needed"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:96
+#: src/components/weather/WeatherWidget.tsx:90
 msgid "Hot and sunny"
 msgstr ""
 
@@ -1116,7 +1116,7 @@ msgstr ""
 msgid "How to find and access the playing area..."
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:429
+#: src/components/weather/WeatherWidget.tsx:416
 msgid "Humidity:"
 msgstr ""
 
@@ -1129,7 +1129,7 @@ msgid "Ideal Players *"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:607
-#: src/pages/EventDetailsPage.tsx:1563
+#: src/pages/EventDetailsPage.tsx:1570
 msgid "Ideal: {count} players"
 msgstr ""
 
@@ -1141,7 +1141,7 @@ msgstr ""
 msgid "Image must be smaller than 5MB"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2636
+#: src/pages/EventDetailsPage.tsx:2643
 msgid "Important"
 msgstr ""
 
@@ -1192,12 +1192,12 @@ msgstr ""
 msgid "Join Your First Event"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1723
+#: src/pages/EventDetailsPage.tsx:1730
 msgid "Joined"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1714
-#: src/pages/EventDetailsPage.tsx:1887
+#: src/pages/EventDetailsPage.tsx:1721
+#: src/pages/EventDetailsPage.tsx:1894
 msgid "Joined {timeAgo}"
 msgstr ""
 
@@ -1215,7 +1215,7 @@ msgstr ""
 msgid "Karma points: {0}"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1728
+#: src/pages/EventDetailsPage.tsx:1735
 msgid "Karma: {karmaPoints}"
 msgstr ""
 
@@ -1237,12 +1237,12 @@ msgstr ""
 msgid "Leaderboard Categories"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1761
-#: src/pages/EventDetailsPage.tsx:1907
+#: src/pages/EventDetailsPage.tsx:1768
+#: src/pages/EventDetailsPage.tsx:1914
 msgid "Leave"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2069
+#: src/pages/EventDetailsPage.tsx:2076
 msgid "Leave a comment"
 msgstr ""
 
@@ -1259,7 +1259,7 @@ msgstr ""
 msgid "Loading venues..."
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:339
+#: src/components/weather/WeatherWidget.tsx:326
 msgid "Loading weather data..."
 msgstr ""
 
@@ -1278,7 +1278,6 @@ msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:632
 #: src/pages/EventDetailsPage.tsx:1326
-#: src/pages/EventDetailsPage.tsx:1516
 msgid "Location TBD"
 msgstr ""
 
@@ -1351,7 +1350,7 @@ msgstr ""
 msgid "Minimum"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1640
+#: src/pages/EventDetailsPage.tsx:1647
 msgid "Minimum {count} players needed to confirm"
 msgstr ""
 
@@ -1428,7 +1427,7 @@ msgstr ""
 msgid "No groups yet. Create your first one."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2471
+#: src/pages/EventDetailsPage.tsx:2478
 msgid "No I have not paid"
 msgstr ""
 
@@ -1440,11 +1439,11 @@ msgstr ""
 msgid "No past events"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2282
+#: src/pages/EventDetailsPage.tsx:2289
 msgid "No phone number"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2278
+#: src/pages/EventDetailsPage.tsx:2285
 msgid "No phone number available"
 msgstr ""
 
@@ -1505,7 +1504,7 @@ msgstr ""
 msgid "No venues yet"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2641
+#: src/pages/EventDetailsPage.tsx:2648
 msgid "No-show reports will deduct karma points and may affect future event participation."
 msgstr ""
 
@@ -1529,7 +1528,7 @@ msgstr ""
 msgid "Only {remainingSlots} more QR code images can be uploaded for this event."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1814
+#: src/pages/EventDetailsPage.tsx:1821
 msgid "Open spot"
 msgstr ""
 
@@ -1542,7 +1541,7 @@ msgstr ""
 #~ msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1382
-#: src/pages/EventDetailsPage.tsx:1694
+#: src/pages/EventDetailsPage.tsx:1701
 msgid "Organizer"
 msgstr ""
 
@@ -1550,7 +1549,7 @@ msgstr ""
 msgid "Organizing successful events (+10 points)"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2358
+#: src/pages/EventDetailsPage.tsx:2365
 msgid "Orientation Plan"
 msgstr ""
 
@@ -1574,13 +1573,13 @@ msgstr ""
 msgid "Overall Karma"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:100
+#: src/components/weather/WeatherWidget.tsx:94
 msgid "Overcast with clouds"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1700
-#: src/pages/EventDetailsPage.tsx:1701
-#: src/pages/EventDetailsPage.tsx:1705
+#: src/pages/EventDetailsPage.tsx:1707
+#: src/pages/EventDetailsPage.tsx:1708
+#: src/pages/EventDetailsPage.tsx:1712
 msgid "Paid"
 msgstr ""
 
@@ -1651,7 +1650,7 @@ msgstr ""
 msgid "per person"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:262
+#: src/components/weather/WeatherWidget.tsx:249
 msgid "Perfect for sports!"
 msgstr ""
 
@@ -1671,11 +1670,11 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2383
+#: src/pages/EventDetailsPage.tsx:2390
 msgid "Photos"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2350
+#: src/pages/EventDetailsPage.tsx:2357
 msgid "Photos & Orientation"
 msgstr ""
 
@@ -1693,11 +1692,11 @@ msgstr ""
 msgid "Play {sportName} in {0}"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:269
+#: src/components/weather/WeatherWidget.tsx:256
 msgid "Playable conditions"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1883
+#: src/pages/EventDetailsPage.tsx:1890
 msgid "Player"
 msgstr ""
 
@@ -1709,11 +1708,11 @@ msgstr ""
 msgid "players"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1559
+#: src/pages/EventDetailsPage.tsx:1566
 msgid "Players confirmed"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1933
+#: src/pages/EventDetailsPage.tsx:1940
 msgid "Players on the waitlist will automatically be added when spots become available."
 msgstr ""
 
@@ -1722,7 +1721,7 @@ msgstr ""
 msgid "Players without the required skill level in {0} will not be able to join this event."
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:97
+#: src/components/weather/WeatherWidget.tsx:91
 msgid "Pleasant and sunny"
 msgstr ""
 
@@ -1790,7 +1789,7 @@ msgstr ""
 msgid "Please type \"DELETE\" to confirm account deletion."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2600
+#: src/pages/EventDetailsPage.tsx:2607
 msgid "Poor sportsmanship"
 msgstr ""
 
@@ -1806,11 +1805,11 @@ msgstr ""
 msgid "Positive feedback from players (+3 points)"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2210
+#: src/pages/EventDetailsPage.tsx:2217
 msgid "Post comment"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2208
+#: src/pages/EventDetailsPage.tsx:2215
 msgid "Posting..."
 msgstr ""
 
@@ -1863,8 +1862,8 @@ msgstr ""
 msgid "Public (discoverable by everyone)"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2445
-#: src/pages/EventDetailsPage.tsx:2450
+#: src/pages/EventDetailsPage.tsx:2452
+#: src/pages/EventDetailsPage.tsx:2457
 msgid "QR code enlarged"
 msgstr ""
 
@@ -1883,27 +1882,27 @@ msgstr ""
 msgid "QR codes are displayed only to participants."
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:453
+#: src/components/weather/WeatherWidget.tsx:440
 msgid "Rain chance:"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1796
+#: src/pages/EventDetailsPage.tsx:1803
 msgid "Rate"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2516
+#: src/pages/EventDetailsPage.tsx:2523
 msgid "Rate Participant"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1667
+#: src/pages/EventDetailsPage.tsx:1674
 msgid "Rate Players"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1831
+#: src/pages/EventDetailsPage.tsx:1838
 msgid "Rate Your Fellow Players"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2580
+#: src/pages/EventDetailsPage.tsx:2587
 msgid "Rating"
 msgstr ""
 
@@ -1915,8 +1914,8 @@ msgstr ""
 msgid "Reason: {reason}"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:359
-#: src/components/weather/WeatherWidget.tsx:400
+#: src/components/weather/WeatherWidget.tsx:346
+#: src/components/weather/WeatherWidget.tsx:387
 msgid "Refresh"
 msgstr ""
 
@@ -1926,21 +1925,21 @@ msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:681
 #: src/components/venues/AddVenueModal.tsx:715
-#: src/pages/EventDetailsPage.tsx:1600
-#: src/pages/EventDetailsPage.tsx:1779
-#: src/pages/EventDetailsPage.tsx:1924
+#: src/pages/EventDetailsPage.tsx:1607
+#: src/pages/EventDetailsPage.tsx:1786
+#: src/pages/EventDetailsPage.tsx:1931
 msgid "Remove"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1776
+#: src/pages/EventDetailsPage.tsx:1783
 msgid "Remove attendee"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1921
+#: src/pages/EventDetailsPage.tsx:1928
 msgid "Remove from waitlist"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2570
+#: src/pages/EventDetailsPage.tsx:2577
 msgid "Report bad behavior"
 msgstr ""
 
@@ -1948,7 +1947,7 @@ msgstr ""
 msgid "Report Bad Behavior"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2556
+#: src/pages/EventDetailsPage.tsx:2563
 msgid "Report no-show"
 msgstr ""
 
@@ -1973,7 +1972,7 @@ msgid "Revolut: @username or cash on spot"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1188
-#: src/pages/EventDetailsPage.tsx:2007
+#: src/pages/EventDetailsPage.tsx:2014
 #: src/pages/ManageCoreGroupsPage.tsx:161
 msgid "Save"
 msgstr ""
@@ -1982,7 +1981,7 @@ msgstr ""
 msgid "Save Changes"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1622
+#: src/pages/EventDetailsPage.tsx:1629
 msgid "Save guests"
 msgstr ""
 
@@ -1994,8 +1993,8 @@ msgstr ""
 msgid "Saved Events"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1620
-#: src/pages/EventDetailsPage.tsx:2490
+#: src/pages/EventDetailsPage.tsx:1627
+#: src/pages/EventDetailsPage.tsx:2497
 msgid "Saving..."
 msgstr ""
 
@@ -2045,7 +2044,7 @@ msgstr ""
 msgid "Share"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2139
+#: src/pages/EventDetailsPage.tsx:2146
 msgid "Share updates, ask questions, or tag players with @Name."
 msgstr ""
 
@@ -2075,7 +2074,7 @@ msgstr ""
 msgid "Showing venues that support"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2216
+#: src/pages/EventDetailsPage.tsx:2223
 msgid "Sign in to join the conversation."
 msgstr ""
 
@@ -2120,11 +2119,11 @@ msgstr ""
 msgid "Start typing to search for an address..."
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:299
+#: src/components/weather/WeatherWidget.tsx:286
 msgid "Stay hydrated - bring extra water"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2674
+#: src/pages/EventDetailsPage.tsx:2681
 msgid "Submitting..."
 msgstr ""
 
@@ -2136,7 +2135,7 @@ msgstr ""
 msgid "Sunday Football at the Park"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:445
+#: src/components/weather/WeatherWidget.tsx:432
 msgid "Sunset:"
 msgstr ""
 
@@ -2144,7 +2143,7 @@ msgstr ""
 msgid "Supported Sports *"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2081
+#: src/pages/EventDetailsPage.tsx:2088
 msgid "Supports **bold**, *italic*, __underline__, @mentions, and GIFs."
 msgstr ""
 
@@ -2182,7 +2181,7 @@ msgstr ""
 msgid "This Month"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:108
+#: src/components/weather/WeatherWidget.tsx:102
 msgid "Thunderstorm expected"
 msgstr ""
 
@@ -2190,7 +2189,7 @@ msgstr ""
 msgid "Tip: Increase max players to widen the sliders."
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:464
+#: src/components/weather/WeatherWidget.tsx:451
 msgid "Tips for {sport}"
 msgstr ""
 
@@ -2218,7 +2217,7 @@ msgstr ""
 msgid "Try adjusting your filters or create a new event."
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:378
+#: src/components/weather/WeatherWidget.tsx:365
 msgid "Try again"
 msgstr ""
 
@@ -2226,7 +2225,7 @@ msgstr ""
 msgid "Typical hourly rates for this venue"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1577
+#: src/pages/EventDetailsPage.tsx:1584
 msgid "Up to 2 names"
 msgstr ""
 
@@ -2286,7 +2285,7 @@ msgstr ""
 msgid "Uploading..."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2229
+#: src/pages/EventDetailsPage.tsx:2236
 msgid "Venue"
 msgstr ""
 
@@ -2351,16 +2350,16 @@ msgstr ""
 msgid "Visibility"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2304
+#: src/pages/EventDetailsPage.tsx:2311
 msgid "Visit website"
 msgstr ""
 
 #: src/components/map/EventMap.tsx:269
-#: src/pages/EventDetailsPage.tsx:1855
+#: src/pages/EventDetailsPage.tsx:1862
 msgid "Waitlist"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:104
+#: src/components/weather/WeatherWidget.tsx:98
 msgid "Warm with rain showers"
 msgstr ""
 
@@ -2376,22 +2375,22 @@ msgstr ""
 msgid "We'll check for minimum players and decide whether to proceed or cancel the event."
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:481
+#: src/components/weather/WeatherWidget.tsx:468
 msgid "Weather data provided by Open-Meteo"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:372
+#: src/components/weather/WeatherWidget.tsx:359
 msgid "Weather data unavailable"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:331
-#: src/components/weather/WeatherWidget.tsx:354
-#: src/components/weather/WeatherWidget.tsx:395
+#: src/components/weather/WeatherWidget.tsx:318
+#: src/components/weather/WeatherWidget.tsx:341
+#: src/components/weather/WeatherWidget.tsx:382
 msgid "Weather Forecast"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:167
-#: src/components/weather/WeatherWidget.tsx:184
+#: src/components/weather/WeatherWidget.tsx:154
+#: src/components/weather/WeatherWidget.tsx:171
 msgid "Weather forecast is not available for this date"
 msgstr ""
 
@@ -2425,7 +2424,7 @@ msgstr ""
 msgid "Where: {location}"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1658
+#: src/pages/EventDetailsPage.tsx:1665
 msgid "Who's Playing"
 msgstr ""
 
@@ -2438,15 +2437,15 @@ msgstr ""
 msgid "Will be divided by participant count"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:294
+#: src/components/weather/WeatherWidget.tsx:281
 msgid "Wind may affect ball/shuttlecock trajectory"
 msgstr ""
 
-#: src/components/weather/WeatherWidget.tsx:436
+#: src/components/weather/WeatherWidget.tsx:423
 msgid "Wind:"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2495
+#: src/pages/EventDetailsPage.tsx:2502
 msgid "Yes I have paid"
 msgstr ""
 
@@ -2454,7 +2453,7 @@ msgstr ""
 msgid "Yes, Cancel Event"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1883
+#: src/pages/EventDetailsPage.tsx:1890
 msgid "You"
 msgstr ""
 
