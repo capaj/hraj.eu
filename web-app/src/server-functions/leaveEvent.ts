@@ -59,7 +59,10 @@ export const leaveEvent = createServerFn({ method: 'POST' })
         )
 
       const [event] = await tx
-        .select({ maxParticipants: eventT.maxParticipants })
+        .select({
+          maxParticipants: eventT.maxParticipants,
+          reservedParticipants: eventT.reservedParticipants
+        })
         .from(eventT)
         .where(eq(eventT.id, data.eventId))
         .limit(1)
@@ -92,7 +95,10 @@ export const leaveEvent = createServerFn({ method: 'POST' })
         const participantHeadcount =
           1 + (waitlistedParticipant.plusAttendees?.length ?? 0)
 
-        if (confirmedHeadcount + participantHeadcount > event.maxParticipants) {
+        if (
+          confirmedHeadcount + participantHeadcount >
+          event.maxParticipants - (event.reservedParticipants ?? 0)
+        ) {
           break
         }
 

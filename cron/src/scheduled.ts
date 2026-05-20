@@ -61,6 +61,7 @@ export async function runScheduledJob({
 		minParticipants: eventT.minParticipants,
 		idealParticipants: eventT.idealParticipants,
 		maxParticipants: eventT.maxParticipants,
+		reservedParticipants: eventT.reservedParticipants,
 		price: eventT.price,
 		currency: eventT.currency,
 		paymentDetails: eventT.paymentDetails,
@@ -284,6 +285,9 @@ function toCalendarEvent(
 		eventRow.description?.trim(),
 		`Sport: ${eventRow.sport}`,
 		`Participants: minimum ${eventRow.minParticipants}`,
+		eventRow.reservedParticipants > 0
+			? `Reserved spots: +${eventRow.reservedParticipants}`
+			: null,
 		eventRow.idealParticipants
 			? `Ideal: ${eventRow.idealParticipants} players`
 			: null,
