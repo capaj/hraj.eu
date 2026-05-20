@@ -311,7 +311,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
             }
           }
         }
-        if (newData.reservedParticipants > Math.max(v - 1, 0)) {
+        if ((newData.reservedParticipants ?? 0) > Math.max(v - 1, 0)) {
           newData.reservedParticipants = Math.max(v - 1, 0)
         }
       }
