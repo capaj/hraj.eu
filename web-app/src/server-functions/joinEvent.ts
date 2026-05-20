@@ -9,10 +9,7 @@ import { and, eq } from 'drizzle-orm'
 
 const JoinEventSchema = z.object({
   eventId: z.string().min(1, 'Event ID is required'),
-  plusAttendees: z
-    .array(z.string().min(1, 'Guest name is required').trim())
-    .max(2, 'You can bring up to two guests')
-    .optional()
+  plusAttendees: z.array(z.string().min(1, 'Guest name is required').trim()).optional()
 })
 
 export const joinEvent = createServerFn({ method: 'POST' })
@@ -58,7 +55,7 @@ export const joinEvent = createServerFn({ method: 'POST' })
       [])
       .map((name) => name.trim())
       .filter(Boolean)
-      .slice(0, 2)
+      .slice(0, Math.max(event.maxParticipants - 1, 0))
 
     const confirmedHeadcount = allParticipants
       .filter((p) => p.status === 'confirmed')
@@ -80,7 +77,9 @@ export const joinEvent = createServerFn({ method: 'POST' })
         : 0
 
     const availableSpots =
-      event.maxParticipants - (confirmedHeadcount - existingConfirmedLoad)
+      event.maxParticipants -
+      (event.reservedParticipants ?? 0) -
+      (confirmedHeadcount - existingConfirmedLoad)
 
     const requestedHeadcount = 1 + requestedPlusAttendees.length
 

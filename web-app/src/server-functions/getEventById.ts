@@ -115,6 +115,7 @@ export const getEventById = createServerFn({ method: 'GET' })
       minParticipants: event.minParticipants,
       idealParticipants: event.idealParticipants || undefined,
       maxParticipants: event.maxParticipants,
+      reservedParticipants: event.reservedParticipants ?? 0,
       cancellationDeadlineHours: event.cancellationDeadlineMinutes
         ? Math.floor(event.cancellationDeadlineMinutes / 60)
         : undefined,

@@ -17,6 +17,7 @@ export interface EventRow {
 	minParticipants: number
 	idealParticipants: number | null
 	maxParticipants: number
+	reservedParticipants: number
 	price: number | null
 	currency: string | null
 	paymentDetails: string | null

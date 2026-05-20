@@ -65,6 +65,7 @@ export interface Event {
   minParticipants: number
   idealParticipants?: number
   maxParticipants: number
+  reservedParticipants?: number
   cancellationDeadlineHours?: number
   price?: number
   currency?: string
