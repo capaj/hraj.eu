@@ -18,6 +18,7 @@ const UpdateEventSchema = z.object({
   minParticipants: z.number().int().positive().optional(),
   idealParticipants: z.number().int().positive().optional(),
   maxParticipants: z.number().int().positive().optional(),
+  reservedParticipants: z.number().int().min(0).optional(),
   cancellationHours: z.number().int().min(0).max(72).optional(),
   cancellationMinutes: z.number().int().min(0).max(59).optional(),
   price: z.union([z.number(), z.string()]).optional(),
@@ -105,6 +106,13 @@ export const updateEvent = createServerFn({ method: 'POST' })
     if (data.idealParticipants !== undefined)
       updates.idealParticipants = data.idealParticipants
     if (data.maxParticipants) updates.maxParticipants = data.maxParticipants
+    if (data.reservedParticipants !== undefined) {
+      const maxParticipants = data.maxParticipants ?? event.maxParticipants
+      updates.reservedParticipants = Math.max(
+        0,
+        Math.min(data.reservedParticipants, Math.max(maxParticipants - 1, 0))
+      )
+    }
 
     if (
       data.cancellationHours !== undefined &&

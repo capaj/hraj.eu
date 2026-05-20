@@ -110,6 +110,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     minParticipants: initialData?.minParticipants || 2,
     idealParticipants: initialData?.idealParticipants || 8,
     maxParticipants: initialData?.maxParticipants || 10,
+    reservedParticipants: initialData?.reservedParticipants || 0,
     cancellationHours: initialData?.cancellationHours ?? 2,
     cancellationMinutes: initialData?.cancellationMinutes ?? 0,
     price: initialData?.price || '',
@@ -149,6 +150,8 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
         minParticipants: initialData.minParticipants || prev.minParticipants,
         idealParticipants: initialData.idealParticipants || prev.idealParticipants,
         maxParticipants: initialData.maxParticipants || prev.maxParticipants,
+        reservedParticipants:
+          initialData.reservedParticipants ?? prev.reservedParticipants,
         cancellationHours: initialData.cancellationHours ?? prev.cancellationHours,
         cancellationMinutes: initialData.cancellationMinutes ?? prev.cancellationMinutes,
         price: initialData.price ?? prev.price,
@@ -307,6 +310,9 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
               newData.minParticipants = v
             }
           }
+        }
+        if (newData.reservedParticipants > Math.max(v - 1, 0)) {
+          newData.reservedParticipants = Math.max(v - 1, 0)
         }
       }
 
@@ -762,6 +768,33 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                     </p>
                   )}
 
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <Trans>Reserved spots</Trans>
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.reservedParticipants}
+                    onChange={(e) =>
+                      handleChange(
+                        'reservedParticipants',
+                        Math.max(
+                          0,
+                          Math.min(
+                            parseInt(e.target.value || '0', 10) || 0,
+                            Math.max(formData.maxParticipants - 1, 0)
+                          )
+                        )
+                      )
+                    }
+                    min={0}
+                    max={Math.max(formData.maxParticipants - 1, 0)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    <Trans>+X participants reserved</Trans>
+                  </p>
                 </div>
               </div>
             </div>

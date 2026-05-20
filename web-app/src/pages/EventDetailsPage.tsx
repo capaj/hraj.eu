@@ -464,8 +464,10 @@ export const EventDetailsPage: React.FC = () => {
 
   const sport = SPORTS.find((s) => s.id === event.sport)
   const confirmedHeadcount = getConfirmedHeadcount(event)
-  const isSpotAvailable = confirmedHeadcount < event.maxParticipants
-  const spotsLeft = Math.max(event.maxParticipants - confirmedHeadcount, 0)
+  const reservedParticipants = event.reservedParticipants ?? 0
+  const publicCapacity = Math.max(event.maxParticipants - reservedParticipants, 0)
+  const isSpotAvailable = confirmedHeadcount < publicCapacity
+  const spotsLeft = Math.max(publicCapacity - confirmedHeadcount, 0)
   const isMinimumReached = confirmedHeadcount >= event.minParticipants
   const isIdealReached =
     event.idealParticipants && confirmedHeadcount >= event.idealParticipants
@@ -654,7 +656,7 @@ export const EventDetailsPage: React.FC = () => {
       throw new Error(i18n._(msg`Please enter a name for each guest.`))
     }
 
-    return trimmed.filter(Boolean).slice(0, 2)
+    return trimmed.filter(Boolean).slice(0, Math.max(event.maxParticipants - 1, 0))
   }
 
   const handleJoinEvent = async () => {
@@ -880,7 +882,7 @@ export const EventDetailsPage: React.FC = () => {
     attendees
       .map((name) => name.trim())
       .filter(Boolean)
-      .slice(0, 2)
+      .slice(0, Math.max(event.maxParticipants - 1, 0))
 
   const arePlusAttendeesEqual = (a: string[], b: string[]) =>
     a.length === b.length && a.every((name, index) => name === b[index])
@@ -1565,6 +1567,13 @@ export const EventDetailsPage: React.FC = () => {
                     <div className="text-sm text-gray-600 font-medium">
                       <Trans>Players confirmed</Trans>
                     </div>
+                    {reservedParticipants > 0 && (
+                      <div className="text-xs text-gray-500 mt-1">
+                        {i18n._(msg`+{count} participants reserved`.id, {
+                          count: reservedParticipants
+                        })}
+                      </div>
+                    )}
                     {event.idealParticipants && (
                       <div className="text-xs text-gray-500 mt-1">
                         {i18n._(msg`Ideal: {count} players`.id, {
@@ -1581,11 +1590,16 @@ export const EventDetailsPage: React.FC = () => {
                         <Trans>Bringing guests?</Trans>
                       </div>
                       <span className="text-xs text-gray-500">
-                        <Trans>Up to 2 names</Trans>
+                        {i18n._(msg`Up to {count} names`.id, {
+                          count: Math.max(event.maxParticipants - 1, 0)
+                        })}
                       </span>
                     </div>
 
-                    {[0, 1].map((index) => (
+                    {Array.from(
+                      { length: Math.max(event.maxParticipants - 1, 0) },
+                      (_, index) => index
+                    ).map((index) => (
                       <div key={index} className="relative">
                         <input
                           type="text"

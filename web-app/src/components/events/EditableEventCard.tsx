@@ -65,6 +65,7 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
             ? Number(data.idealParticipants)
             : undefined,
           maxParticipants: Number(data.maxParticipants),
+          reservedParticipants: Number(data.reservedParticipants ?? 0),
           cancellationHours: Number(data.cancellationHours ?? 0),
           cancellationMinutes: Number(data.cancellationMinutes ?? 0),
           price: data.price,
@@ -122,6 +123,7 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
     minParticipants: event.minParticipants,
     idealParticipants: event.idealParticipants,
     maxParticipants: event.maxParticipants,
+    reservedParticipants: event.reservedParticipants ?? 0,
     cancellationHours: Math.floor((event.cancellationDeadlineHours || 0)), // Note: Type definition uses Hours but schema uses Minutes. Let's check schema mapping.
     // Schema has cancellationDeadlineMinutes. Event interface has cancellationDeadlineHours?
     // Let's check Event interface in types/index.ts

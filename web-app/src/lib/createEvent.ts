@@ -18,6 +18,7 @@ const ClientEventSchema = z.object({
   minParticipants: z.number().int().positive(),
   idealParticipants: z.number().int().positive().optional(),
   maxParticipants: z.number().int().positive(),
+  reservedParticipants: z.number().int().min(0).optional(),
   cancellationHours: z.number().int().min(0).max(72),
   cancellationMinutes: z.number().int().min(0).max(59),
   price: z.union([z.number(), z.string()]).optional(),
@@ -115,6 +116,13 @@ export const createEvent = createServerFn({ method: 'POST' })
       minParticipants: data.minParticipants,
       idealParticipants: data.idealParticipants,
       maxParticipants: data.maxParticipants,
+      reservedParticipants: Math.max(
+        0,
+        Math.min(
+          data.reservedParticipants ?? 0,
+          Math.max(data.maxParticipants - 1, 0)
+        )
+      ),
       cancellationDeadlineMinutes,
       price: numericPrice,
       currency: data.currency,
