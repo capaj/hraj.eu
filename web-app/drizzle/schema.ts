@@ -65,6 +65,7 @@ export const eventT = sqliteTable(
     minParticipants: integer('min_participants').notNull(),
     idealParticipants: integer('ideal_participants'),
     maxParticipants: integer('max_participants').notNull(),
+    reservedParticipants: integer('reserved_participants').notNull().default(0),
     /** time in minutes when the event is checked for minimum participants count and cancelled if not enough participants */
     cancellationDeadlineMinutes: integer(
       'cancellation_deadline_minutes'

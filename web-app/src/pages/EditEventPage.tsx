@@ -27,6 +27,7 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
     minParticipants: event.minParticipants,
     idealParticipants: event.idealParticipants,
     maxParticipants: event.maxParticipants,
+    reservedParticipants: event.reservedParticipants ?? 0,
     cancellationHours: event.cancellationDeadlineHours || 0,
     cancellationMinutes: 0, // Simplified as we only get hours from Event type currently
     price: event.price,
@@ -58,6 +59,7 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
             ? Number(eventData.idealParticipants)
             : undefined,
           maxParticipants: Number(eventData.maxParticipants),
+          reservedParticipants: Number(eventData.reservedParticipants ?? 0),
           cancellationHours: Number(eventData.cancellationHours ?? 0),
           cancellationMinutes: Number(eventData.cancellationMinutes ?? 0),
           price: eventData.price,

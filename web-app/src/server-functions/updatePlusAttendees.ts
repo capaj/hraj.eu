@@ -9,9 +9,7 @@ import { deleteOgImageFromR2 } from './utils'
 
 const UpdatePlusAttendeesSchema = z.object({
   eventId: z.string().min(1, 'Event ID is required'),
-  plusAttendees: z
-    .array(z.string().min(1, 'Guest name is required').trim())
-    .max(2, 'You can bring up to two guests')
+  plusAttendees: z.array(z.string().min(1, 'Guest name is required').trim())
 })
 
 export const updatePlusAttendees = createServerFn({ method: 'POST' })
@@ -59,7 +57,7 @@ export const updatePlusAttendees = createServerFn({ method: 'POST' })
     const sanitizedPlusAttendees = data.plusAttendees
       .map((name) => name.trim())
       .filter(Boolean)
-      .slice(0, 2)
+      .slice(0, Math.max(event.maxParticipants - 1, 0))
 
     const confirmedHeadcount = participants
       .filter((p) => p.status === 'confirmed')
@@ -73,7 +71,10 @@ export const updatePlusAttendees = createServerFn({ method: 'POST' })
         ? 1 + (participant.plusAttendees?.length ?? 0)
         : 0
 
-    const availableSpots = event.maxParticipants - (confirmedHeadcount - currentHeadcount)
+    const availableSpots =
+      event.maxParticipants -
+      (event.reservedParticipants ?? 0) -
+      (confirmedHeadcount - currentHeadcount)
     const requestedHeadcount =
       participant.status === 'confirmed' ? 1 + sanitizedPlusAttendees.length : 0
 
