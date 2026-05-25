@@ -301,7 +301,7 @@ msgstr ""
 #~ msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:1320
-#: src/pages/EditEventPage.tsx:92
+#: src/pages/EditEventPage.tsx:94
 msgid "Are you sure you want to cancel this event? This action cannot be undone."
 msgstr ""
 
@@ -765,7 +765,7 @@ msgid "Event"
 msgstr ""
 
 #: src/lib/email/sendCancellationEmail.ts:45
-#: src/pages/EditEventPage.tsx:103
+#: src/pages/EditEventPage.tsx:105
 msgid "Event cancelled"
 msgstr ""
 
@@ -817,7 +817,7 @@ msgstr ""
 msgid "Event Title *"
 msgstr ""
 
-#: src/pages/EditEventPage.tsx:76
+#: src/pages/EditEventPage.tsx:78
 msgid "Event updated successfully!"
 msgstr ""
 
@@ -861,7 +861,7 @@ msgstr ""
 msgid "Failed to add comment. Please try again."
 msgstr ""
 
-#: src/pages/EditEventPage.tsx:106
+#: src/pages/EditEventPage.tsx:108
 msgid "Failed to cancel event"
 msgstr ""
 
@@ -925,7 +925,7 @@ msgstr ""
 msgid "Failed to update currency"
 msgstr ""
 
-#: src/pages/EditEventPage.tsx:80
+#: src/pages/EditEventPage.tsx:82
 msgid "Failed to update event"
 msgstr ""
 
@@ -2271,7 +2271,7 @@ msgstr ""
 msgid "Updated daily"
 msgstr ""
 
-#: src/pages/EditEventPage.tsx:126
+#: src/pages/EditEventPage.tsx:128
 msgid "Updating event..."
 msgstr ""
 
