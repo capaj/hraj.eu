@@ -8,7 +8,7 @@
 		"start": "wrangler dev --test-scheduled",
 		"test": "vitest run",
 		"cf-typegen": "wrangler types",
-		"bump": "ncu -u"
+		"bump": "ncu -u -c 2d"
 	},
 	"dependencies": {
 		"@libsql/client": "^0.17.3",
