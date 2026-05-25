@@ -1,1 +1,1 @@
-ALTER TABLE event ADD COLUMN reserved_participants integer NOT NULL DEFAULT 0;
+ALTER TABLE `event` ADD `reserved_participants` integer DEFAULT 0 NOT NULL;
