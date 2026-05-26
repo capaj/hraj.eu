@@ -14,6 +14,18 @@ import { getEventById } from '../server-functions/getEventById'
 import { useSearch } from '@tanstack/react-router'
 // type provided by form
 
+
+const getUpcomingDateForWeekday = (targetDate: string | Date): string => {
+  const today = new Date()
+  const upcoming = new Date(today)
+  const targetWeekday = (targetDate instanceof Date ? targetDate : new Date(targetDate)).getDay()
+  const daysUntilTarget = (targetWeekday - today.getDay() + 7) % 7
+  upcoming.setDate(today.getDate() + daysUntilTarget)
+
+  return upcoming.toISOString().split('T')[0]
+}
+
+
 export const CreateEvent: React.FC = () => {
   useAuthenticate() // This is needed to make the auth work
   const search: any = useSearch({ from: '/create' })
@@ -34,7 +46,8 @@ export const CreateEvent: React.FC = () => {
       title: duplicateEvent.title,
       sport: duplicateEvent.sport,
       venueId: duplicateEvent.venueId,
-      // No date/time as it will be set to default (next week)
+      date: getUpcomingDateForWeekday(duplicateEvent.date),
+      startTime: duplicateEvent.startTime,
       duration: duplicateEvent.duration,
       minParticipants: duplicateEvent.minParticipants,
       idealParticipants: duplicateEvent.idealParticipants || undefined,
