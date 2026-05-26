@@ -892,6 +892,76 @@ export const EventDetailsPage: React.FC = () => {
     return 'secondary' as const
   }
 
+  const renderPaymentCard = (className?: string) =>
+    event.price ? (
+      <Card className={className}>
+        <CardHeader>
+          <h2 className="text-xl font-semibold text-gray-900 flex items-center">
+            <CoinsIcon size={20} className="mr-2 text-primary-600" />
+            <Trans>Payment</Trans>
+          </h2>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="bg-gray-50 rounded-lg p-4">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-gray-700 text-lg">
+                <Trans>Price total:</Trans>
+              </span>
+              <span className="font-bold text-2xl text-primary-600">
+                {event.price} {event.currency ?? 'CZK'}
+              </span>
+            </div>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-gray-700 text-lg">
+                <Trans>
+                  Price per person(
+                  {Math.max(event.minParticipants, confirmedHeadcount)}
+                  people):
+                </Trans>
+              </span>
+              <span className="font-bold text-2xl text-primary-600">
+                {(
+                  event.price /
+                  Math.max(event.minParticipants, confirmedHeadcount)
+                ).toLocaleString(undefined, {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 2,
+                })}{' '}
+                {event.currency ?? 'CZK'}
+              </span>
+            </div>
+            {event.paymentDetails && (
+              <div className="text-gray-600">
+                <strong>
+                  <Trans>Payment details:</Trans>
+                </strong>{' '}
+                {event.paymentDetails}
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    ) : null
+
+  const renderGameRulesCard = (className?: string) =>
+    event.gameRules ? (
+      <Card className={className}>
+        <CardHeader>
+          <h2 className="text-xl font-semibold text-gray-900 flex items-center">
+            <FileText size={20} className="mr-2 text-primary-600" />
+            <Trans>Game Rules & Guidelines</Trans>
+          </h2>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="bg-blue-50 rounded-lg p-4">
+            <p className="text-gray-700 whitespace-pre-line leading-relaxed">
+              {event.gameRules}
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    ) : null
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-600 to-secondary-600 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1011,9 +1081,15 @@ export const EventDetailsPage: React.FC = () => {
           </div>
         </div>
 
+        {!hasEventEnded && event.status !== 'cancelled' && (
+          <div className="mb-8 lg:hidden">
+            <JoinActionCard eventId={event.id} />
+          </div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           {/* Main Content */}
-          <div className="lg:col-span-3 space-y-6">
+          <div className="lg:col-span-3 flex flex-col gap-6">
             {/* Event Details */}
             <Card>
               <CardHeader>
@@ -1260,74 +1336,10 @@ export const EventDetailsPage: React.FC = () => {
             )}
 
             {/* Payment Info */}
-            {event.price && (
-              <Card>
-                <CardHeader>
-                  <h2 className="text-xl font-semibold text-gray-900 flex items-center">
-                    <CoinsIcon size={20} className="mr-2 text-primary-600" />
-                    <Trans>Payment</Trans>
-                  </h2>
-                </CardHeader>
-                <CardContent className="p-6">
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-gray-700 text-lg">
-                        <Trans>Price total:</Trans>
-                      </span>
-                      <span className="font-bold text-2xl text-primary-600">
-                        {event.price} {event.currency ?? 'CZK'}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-gray-700 text-lg">
-                        <Trans>
-                          Price per person(
-                          {Math.max(event.minParticipants, confirmedHeadcount)}
-                          people):
-                        </Trans>
-                      </span>
-                      <span className="font-bold text-2xl text-primary-600">
-                        {(
-                          event.price /
-                          Math.max(event.minParticipants, confirmedHeadcount)
-                        ).toLocaleString(undefined, {
-                          minimumFractionDigits: 0,
-                          maximumFractionDigits: 2,
-                        })}{' '}
-                        {event.currency ?? 'CZK'}
-                      </span>
-                    </div>
-                    {event.paymentDetails && (
-                      <div className="text-gray-600">
-                        <strong>
-                          <Trans>Payment details:</Trans>
-                        </strong>{' '}
-                        {event.paymentDetails}
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+            {renderPaymentCard('hidden lg:block')}
 
             {/* Game Rules */}
-            {event.gameRules && (
-              <Card>
-                <CardHeader>
-                  <h2 className="text-xl font-semibold text-gray-900 flex items-center">
-                    <FileText size={20} className="mr-2 text-primary-600" />
-                    <Trans>Game Rules & Guidelines</Trans>
-                  </h2>
-                </CardHeader>
-                <CardContent className="p-6">
-                  <div className="bg-blue-50 rounded-lg p-4">
-                    <p className="text-gray-700 whitespace-pre-line leading-relaxed">
-                      {event.gameRules}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+            {renderGameRulesCard('hidden lg:block')}
 
             {/* Weather Widget */}
             {shouldShowWeather && (
@@ -1352,7 +1364,9 @@ export const EventDetailsPage: React.FC = () => {
           <div className="lg:col-span-2 space-y-6">
             {/* Join Action */}
             {!hasEventEnded && event.status !== 'cancelled' && (
-              <JoinActionCard eventId={event.id} />
+              <div className="hidden lg:block">
+                <JoinActionCard eventId={event.id} />
+              </div>
             )}
 
             {/* Participants */}
@@ -1380,7 +1394,7 @@ export const EventDetailsPage: React.FC = () => {
               </CardHeader>
               <CardContent
 
-                className={`p-6  max-h-256 overflow-y-scroll ${!isParticipantsExpanded ? 'hidden lg:block' : ''
+                className={`p-6  max-h-266 overflow-y-scroll ${!isParticipantsExpanded ? 'hidden lg:block' : ''
                   }`}
               >
                 <div className="space-y-1">
@@ -2133,6 +2147,11 @@ export const EventDetailsPage: React.FC = () => {
             </CardContent>
           </Card>
         )}
+      </div>
+
+      <div className="max-w-6xl mx-auto mt-8 px-4 sm:px-6 lg:px-8 space-y-6 lg:hidden">
+        {renderPaymentCard()}
+        {renderGameRulesCard()}
       </div>
 
       {selectedQrImage && (

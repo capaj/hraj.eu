@@ -224,6 +224,9 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
             <span className="text-xl text-gray-400 font-medium">
               / {event.maxParticipants}
             </span>
+            <div className="text-sm text-gray-600 font-medium">
+              <Trans>Players confirmed</Trans>
+            </div>
           </div>
 
           <div className="w-full bg-gray-100 rounded-full h-3 mb-3 overflow-hidden">
@@ -239,9 +242,7 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
             />
           </div>
 
-          <div className="text-sm text-gray-600 font-medium">
-            <Trans>Players confirmed</Trans>
-          </div>
+
           {reservedParticipants > 0 && (
             <div className="text-xs text-gray-500 mt-1">
               {i18n._(msg`+{count} participants reserved`.id, {
@@ -345,11 +346,6 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
           {joinButtonText}
         </Button>
 
-        <div className="text-xs text-gray-500 text-center">
-          {i18n._(msg`Minimum {count} players needed to confirm`.id, {
-            count: event.minParticipants
-          })}
-        </div>
       </CardContent>
     </Card>
   )
