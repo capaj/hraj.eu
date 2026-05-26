@@ -83,6 +83,8 @@ import { EventComment, User } from '../types'
 import { getEventDateTime } from '../utils/eventDateTime'
 import { getConfirmedHeadcount } from '../utils/participants'
 
+const MAX_GUESTS_PER_USER = 2
+
 interface KarmaFeedback {
   userId: string
   rating: number
@@ -656,7 +658,7 @@ export const EventDetailsPage: React.FC = () => {
       throw new Error(i18n._(msg`Please enter a name for each guest.`))
     }
 
-    return trimmed.filter(Boolean).slice(0, Math.max(event.maxParticipants - 1, 0))
+    return trimmed.filter(Boolean).slice(0, MAX_GUESTS_PER_USER)
   }
 
   const handleJoinEvent = async () => {
@@ -882,7 +884,7 @@ export const EventDetailsPage: React.FC = () => {
     attendees
       .map((name) => name.trim())
       .filter(Boolean)
-      .slice(0, Math.max(event.maxParticipants - 1, 0))
+      .slice(0, MAX_GUESTS_PER_USER)
 
   const arePlusAttendeesEqual = (a: string[], b: string[]) =>
     a.length === b.length && a.every((name, index) => name === b[index])
@@ -1591,13 +1593,13 @@ export const EventDetailsPage: React.FC = () => {
                       </div>
                       <span className="text-xs text-gray-500">
                         {i18n._(msg`Up to {count} names`.id, {
-                          count: Math.max(event.maxParticipants - 1, 0)
+                          count: MAX_GUESTS_PER_USER
                         })}
                       </span>
                     </div>
 
                     {Array.from(
-                      { length: Math.max(event.maxParticipants - 1, 0) },
+                      { length: MAX_GUESTS_PER_USER },
                       (_, index) => index
                     ).map((index) => (
                       <div key={index} className="relative">
