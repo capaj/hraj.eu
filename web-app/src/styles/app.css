@@ -9,6 +9,35 @@
   }
 }
 
+* {
+  scrollbar-color: rgb(45 212 191 / 45%) transparent;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(45 212 191 / 35%);
+  border: 0.125rem solid transparent;
+  border-radius: 9999px;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(20 184 166 / 50%);
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
+
 /* Custom CSS variables for Tailwind v4 */
 @theme {
   --color-primary-50: #f0fdf4;
