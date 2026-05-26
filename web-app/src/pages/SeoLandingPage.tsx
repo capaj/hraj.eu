@@ -1,5 +1,5 @@
 import { Link, useNavigate } from '@tanstack/react-router'
-import type React from 'react'
+import React from 'react'
 import { MapPin, Trophy, Users } from 'lucide-react'
 import { EventCard } from '../components/events/EventCard'
 import { EventMap } from '../components/map/EventMap'
@@ -8,6 +8,7 @@ import { Button } from '../components/ui/Button'
 import { Card, CardContent } from '../components/ui/Card'
 import { authClient } from '../lib/auth-client'
 import { joinEvent } from '~/server-functions/joinEvent'
+import { subscribeToCityEvents } from '~/server-functions/subscribeToCityEvents'
 import { SPORTS } from '../lib/constants'
 import type { SeoLandingPageData } from '~/server-functions/getSeoLandingPageData'
 import { Trans } from '@lingui/react/macro'
@@ -19,9 +20,23 @@ type SeoLandingPageProps = {
 export function SeoLandingPage({ data }: SeoLandingPageProps) {
   const navigate = useNavigate()
   const session = authClient.useSession()
+  const [isSubscribed, setIsSubscribed] = React.useState(false)
 
   const sportName = data.sportName
   const lowerSportName = sportName?.toLowerCase()
+
+
+  const handleSubscribe = async () => {
+    if (!session.data?.user?.id) {
+      navigate({ to: '/auth/$pathname', params: { pathname: 'sign-in' } })
+      return
+    }
+
+    await subscribeToCityEvents({
+      data: { citySlug: data.citySlug, cityName: data.city }
+    })
+    setIsSubscribed(true)
+  }
 
   const handleJoinEvent = async (eventId: string) => {
     if (!session.data?.user?.id) {
@@ -63,6 +78,10 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
               )}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
+              <Button variant="secondary" onClick={handleSubscribe} disabled={isSubscribed}>
+                <Trans>{isSubscribed ? 'Subscribed for new city events' : 'Subscribe to new city events by email'}</Trans>
+              </Button>
+
               <Link to="/">
                 <Button variant="secondary">
                   <Trans>Browse all games</Trans>
@@ -155,6 +174,11 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
                 No upcoming games are listed here yet. The venues below support
                 this page, and new games will appear here automatically.
               </Trans>
+              <div className="mt-4">
+                <Button variant="secondary" onClick={handleSubscribe} disabled={isSubscribed}>
+                  <Trans>{isSubscribed ? 'Subscribed for new city events' : 'Email me when a new game is created in this city'}</Trans>
+                </Button>
+              </div>
             </div>
           )}
         </div>

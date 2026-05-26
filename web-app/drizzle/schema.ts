@@ -138,6 +138,39 @@ export const eventT = sqliteTable(
   })
 )
 
+
+export const cityEventSubscriptionT = sqliteTable(
+  'city_event_subscription',
+  {
+    id: text('id')
+      .$defaultFn(() => createId())
+      .primaryKey()
+      .notNull(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    citySlug: text('city_slug').notNull(),
+    cityName: text('city_name').notNull(),
+    lastNotifiedEventCreatedAt: integer('last_notified_event_created_at', {
+      mode: 'timestamp'
+    }),
+    createdAt: integer('created_at', { mode: 'timestamp' })
+      .default(sql`unixepoch()`)
+      .notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp' })
+      .default(sql`unixepoch()`)
+      .$onUpdate(() => new Date())
+      .notNull()
+  },
+  (table) => ({
+    userCityUniqueIdx: uniqueIndex('city_event_subscription_user_city_idx').on(
+      table.userId,
+      table.citySlug
+    ),
+    citySlugIdx: index('city_event_subscription_city_slug_idx').on(table.citySlug)
+  })
+)
+
 export const coreGroupT = sqliteTable(
   'core_group',
   {

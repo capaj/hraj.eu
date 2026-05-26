@@ -1,8 +1,9 @@
 import { Resend } from 'resend'
 import { and, eq, gte, isNull, sql } from 'drizzle-orm'
-import { eventT, participantT, user, venueT } from '../../web-app/drizzle/schema'
+import { cityEventSubscriptionT, eventT, participantT, user, venueT } from '../../web-app/drizzle/schema'
 import { sendCancellationEmail } from './email/sendCancellationEmail'
 import { sendConfirmationEmail } from './email/sendConfirmationEmail'
+import { sendCitySubscriptionEmail } from './email/sendCitySubscriptionEmail'
 import type { Env, EventRow, ParticipantRow } from './types'
 
 const LOCATION_FALLBACK = 'Location TBD'
@@ -167,6 +168,66 @@ export async function runScheduledJob({
 		)) as EventRow[]
 
 	console.log(`found ${eventsToCancel.length} events to cancel`)
+	const citySubscriptions = await database
+		.select({
+			id: cityEventSubscriptionT.id,
+			userId: cityEventSubscriptionT.userId,
+			citySlug: cityEventSubscriptionT.citySlug,
+			cityName: cityEventSubscriptionT.cityName,
+			lastNotifiedEventCreatedAt: cityEventSubscriptionT.lastNotifiedEventCreatedAt,
+			email: user.email
+		})
+		.from(cityEventSubscriptionT)
+		.innerJoin(user, eq(user.id, cityEventSubscriptionT.userId))
+
+	for (const subscription of citySubscriptions) {
+		if (!subscription.email) continue
+
+		const eventsInCity = await database
+			.select({
+				id: eventT.id,
+				title: eventT.title,
+				date: eventT.date,
+				startTime: eventT.startTime,
+				createdAt: eventT.createdAt
+			})
+			.from(eventT)
+			.innerJoin(venueT, eq(venueT.id, eventT.venueId))
+			.where(and(
+				eq(venueT.city, subscription.cityName),
+				eq(eventT.isPublic, true),
+				gte(eventT.date, today),
+				sql`${eventT.status} in ('open','confirmed')`,
+				subscription.lastNotifiedEventCreatedAt
+					? gte(eventT.createdAt, subscription.lastNotifiedEventCreatedAt)
+					: sql`1=1`
+			))
+
+		if (!eventsInCity.length) continue
+
+		await sendCitySubscriptionEmail({
+			resend,
+			from: senderEmail,
+			to: subscription.email,
+			cityName: subscription.cityName,
+			citySlug: subscription.citySlug,
+			events: eventsInCity.slice(0, 10),
+			baseUrl
+		})
+
+		const latestCreatedAt = eventsInCity.reduce((latest, current) => {
+			if (!latest) return current.createdAt
+			return new Date(current.createdAt) > new Date(latest) ? current.createdAt : latest
+		}, subscription.lastNotifiedEventCreatedAt as Date | null)
+
+		if (latestCreatedAt) {
+			await database
+				.update(cityEventSubscriptionT)
+				.set({ lastNotifiedEventCreatedAt: latestCreatedAt, updatedAt: new Date() })
+				.where(eq(cityEventSubscriptionT.id, subscription.id))
+		}
+	}
+
 	for (const eventRow of eventsToCancel) {
 		const updated = await database
 			.update(eventT)
