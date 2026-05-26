@@ -6,6 +6,7 @@ import { db } from 'drizzle/db'
 import { auth } from '~/lib/auth'
 import { eq, and } from 'drizzle-orm'
 import { assertNoVenueEventConflict } from './eventVenueConflicts'
+import { createEventSlug } from '../utils/eventSlug'
 
 const UpdateEventSchema = z.object({
   id: z.string().min(1),
@@ -160,6 +161,10 @@ export const updateEvent = createServerFn({ method: 'POST' })
       duration: data.duration ?? event.duration,
       excludeEventId: event.id
     })
+
+    const nextTitle = data.title ?? event.title
+    const nextDate = data.date ?? event.date
+    updates.urlSlug = createEventSlug(nextTitle, nextDate, event.id)
 
     await db.update(eventT).set(updates).where(eq(eventT.id, data.id))
 

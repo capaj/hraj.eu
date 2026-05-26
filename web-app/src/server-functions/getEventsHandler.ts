@@ -113,6 +113,7 @@ export async function getEventsHandler(
 
       return {
         id: event.id,
+        urlSlug: event.urlSlug,
         title: event.title,
         description: event.description || '',
         sport: event.sport,

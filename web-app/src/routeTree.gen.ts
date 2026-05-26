@@ -21,7 +21,7 @@ import { Route as DiscoverRouteImport } from './routes/discover'
 import { Route as CreateRouteImport } from './routes/create'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as EventsEventIdRouteImport } from './routes/events/$eventId'
+import { Route as EventsEventSlugRouteImport } from './routes/events/$eventSlug'
 import { Route as EditEventEventIdRouteImport } from './routes/edit-event.$eventId'
 import { Route as CitiesCitySlugRouteImport } from './routes/cities/$citySlug'
 import { Route as AuthPathnameRouteImport } from './routes/auth/$pathname'
@@ -89,9 +89,9 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EventsEventIdRoute = EventsEventIdRouteImport.update({
-  id: '/events/$eventId',
-  path: '/events/$eventId',
+const EventsEventSlugRoute = EventsEventSlugRouteImport.update({
+  id: '/events/$eventSlug',
+  path: '/events/$eventSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EditEventEventIdRoute = EditEventEventIdRouteImport.update({
@@ -142,7 +142,7 @@ export interface FileRoutesByFullPath {
   '/auth/$pathname': typeof AuthPathnameRoute
   '/cities/$citySlug': typeof CitiesCitySlugRoute
   '/edit-event/$eventId': typeof EditEventEventIdRoute
-  '/events/$eventId': typeof EventsEventIdRoute
+  '/events/$eventSlug': typeof EventsEventSlugRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/og/event/$eventId': typeof ApiOgEventEventIdRoute
 }
@@ -163,7 +163,7 @@ export interface FileRoutesByTo {
   '/auth/$pathname': typeof AuthPathnameRoute
   '/cities/$citySlug': typeof CitiesCitySlugRoute
   '/edit-event/$eventId': typeof EditEventEventIdRoute
-  '/events/$eventId': typeof EventsEventIdRoute
+  '/events/$eventSlug': typeof EventsEventSlugRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/og/event/$eventId': typeof ApiOgEventEventIdRoute
 }
@@ -185,7 +185,7 @@ export interface FileRoutesById {
   '/auth/$pathname': typeof AuthPathnameRoute
   '/cities/$citySlug': typeof CitiesCitySlugRoute
   '/edit-event/$eventId': typeof EditEventEventIdRoute
-  '/events/$eventId': typeof EventsEventIdRoute
+  '/events/$eventSlug': typeof EventsEventSlugRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/og/event/$eventId': typeof ApiOgEventEventIdRoute
 }
@@ -208,7 +208,7 @@ export interface FileRouteTypes {
     | '/auth/$pathname'
     | '/cities/$citySlug'
     | '/edit-event/$eventId'
-    | '/events/$eventId'
+    | '/events/$eventSlug'
     | '/api/auth/$'
     | '/api/og/event/$eventId'
   fileRoutesByTo: FileRoutesByTo
@@ -229,7 +229,7 @@ export interface FileRouteTypes {
     | '/auth/$pathname'
     | '/cities/$citySlug'
     | '/edit-event/$eventId'
-    | '/events/$eventId'
+    | '/events/$eventSlug'
     | '/api/auth/$'
     | '/api/og/event/$eventId'
   id:
@@ -250,7 +250,7 @@ export interface FileRouteTypes {
     | '/auth/$pathname'
     | '/cities/$citySlug'
     | '/edit-event/$eventId'
-    | '/events/$eventId'
+    | '/events/$eventSlug'
     | '/api/auth/$'
     | '/api/og/event/$eventId'
   fileRoutesById: FileRoutesById
@@ -272,7 +272,7 @@ export interface RootRouteChildren {
   AuthPathnameRoute: typeof AuthPathnameRoute
   CitiesCitySlugRoute: typeof CitiesCitySlugRoute
   EditEventEventIdRoute: typeof EditEventEventIdRoute
-  EventsEventIdRoute: typeof EventsEventIdRoute
+  EventsEventSlugRoute: typeof EventsEventSlugRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiOgEventEventIdRoute: typeof ApiOgEventEventIdRoute
 }
@@ -363,11 +363,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/events/$eventId': {
-      id: '/events/$eventId'
-      path: '/events/$eventId'
-      fullPath: '/events/$eventId'
-      preLoaderRoute: typeof EventsEventIdRouteImport
+    '/events/$eventSlug': {
+      id: '/events/$eventSlug'
+      path: '/events/$eventSlug'
+      fullPath: '/events/$eventSlug'
+      preLoaderRoute: typeof EventsEventSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/edit-event/$eventId': {
@@ -432,7 +432,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthPathnameRoute: AuthPathnameRoute,
   CitiesCitySlugRoute: CitiesCitySlugRoute,
   EditEventEventIdRoute: EditEventEventIdRoute,
-  EventsEventIdRoute: EventsEventIdRoute,
+  EventsEventSlugRoute: EventsEventSlugRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiOgEventEventIdRoute: ApiOgEventEventIdRoute,
 }

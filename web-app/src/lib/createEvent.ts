@@ -7,6 +7,8 @@ import { db } from '../../drizzle/db'
 import { and, eq } from 'drizzle-orm'
 import { auth } from './auth'
 import { assertNoVenueEventConflict } from '../server-functions/eventVenueConflicts'
+import { createEventSlug } from '../utils/eventSlug'
+import { createId } from '@paralleldrive/cuid2'
 
 const ClientEventSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -106,7 +108,12 @@ export const createEvent = createServerFn({ method: 'POST' })
       duration: data.duration
     })
 
+    const eventId = createId()
+    const urlSlug = createEventSlug(data.title, data.date, eventId)
+
     const insertData: Partial<InsertedEvent> = {
+      id: eventId,
+      urlSlug,
       title: data.title,
       sport: data.sport,
       venueId: data.venueId,

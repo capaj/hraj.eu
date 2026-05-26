@@ -256,7 +256,7 @@ export const EventDetailsPage: React.FC = () => {
     organizer,
     participants: participantUsers,
     comments: initialComments
-  } = useLoaderData({ from: '/events/$eventId' })
+  } = useLoaderData({ from: '/events/$eventSlug' })
   const navigate = useNavigate()
   const session = authClient.useSession()
   const [event, setEvent] = useState(initialEvent)
