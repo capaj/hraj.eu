@@ -291,6 +291,7 @@ export const EventDetailsPage: React.FC = () => {
   const commentTextareaRef = useRef<HTMLTextAreaElement>(null)
   const [shareUrl, setShareUrl] = useState('')
   const [isParticipantsExpanded, setIsParticipantsExpanded] = useState(false)
+  const [isGuestsExpanded, setIsGuestsExpanded] = useState(false)
   const [plusAttendees, setPlusAttendees] = useState<string[]>([])
   const [isUpdatingGuests, setIsUpdatingGuests] = useState(false)
   const [isMarkingPaid, setIsMarkingPaid] = useState(false)
@@ -763,8 +764,8 @@ export const EventDetailsPage: React.FC = () => {
           toast.success(
             removedUser?.name
               ? i18n._(msg`{name} has been removed from the event.`.id, {
-                  name: removedUser.name
-                })
+                name: removedUser.name
+              })
               : i18n._(msg`Attendee removed from the event.`)
           )
         } else {
@@ -1520,9 +1521,9 @@ export const EventDetailsPage: React.FC = () => {
                 sport={event.sport}
                 coordinates={
                   venue &&
-                  Number.isFinite(venue.lat) &&
-                  Number.isFinite(venue.lng) &&
-                  (venue.lat !== 0 || venue.lng !== 0)
+                    Number.isFinite(venue.lat) &&
+                    Number.isFinite(venue.lng) &&
+                    (venue.lat !== 0 || venue.lng !== 0)
                     ? { latitude: venue.lat, longitude: venue.lng }
                     : undefined
                 }
@@ -1585,66 +1586,83 @@ export const EventDetailsPage: React.FC = () => {
                     )}
                   </div>
 
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center justify-between">
+                  <div className="mb-4">
+                    <button
+                      type="button"
+                      className="w-full flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-left hover:bg-gray-100 transition-colors"
+                      aria-expanded={isGuestsExpanded}
+                      aria-controls="event-guests-collapse"
+                      onClick={() => setIsGuestsExpanded((expanded) => !expanded)}
+                    >
                       <div className="text-sm font-medium text-gray-700 flex items-center">
                         <Users size={16} className="mr-2 text-primary-600" />
                         <Trans>Bringing guests?</Trans>
                       </div>
-                      <span className="text-xs text-gray-500">
-                        {i18n._(msg`Up to {count} names`.id, {
-                          count: MAX_GUESTS_PER_USER
-                        })}
-                      </span>
-                    </div>
-
-                    {Array.from(
-                      { length: MAX_GUESTS_PER_USER },
-                      (_, index) => index
-                    ).map((index) => (
-                      <div key={index} className="relative">
-                        <input
-                          type="text"
-                          value={plusAttendees[index] || ''}
-                          onChange={(e) =>
-                            handlePlusAttendeeChange(index, e.target.value)
-                          }
-                          placeholder={i18n._(
-                            msg`Guest {index, number} name (optional)`.id,
-                            { index: index + 1 }
-                          )}
-                          className="w-full rounded-lg border border-gray-200 pl-3 pr-10 py-2 text-sm focus:border-primary-500 focus:outline-none"
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-gray-500">
+                          {i18n._(msg`Up to {count} names`.id, {
+                            count: MAX_GUESTS_PER_USER
+                          })}
+                        </span>
+                        <ChevronDown
+                          size={18}
+                          className={`text-gray-500 transition-transform duration-200 ${isGuestsExpanded ? 'rotate-180' : ''
+                            }`}
                         />
-                        <button
-                          type="button"
-                          className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed"
-                          disabled={index >= plusAttendees.length}
-                          onClick={() => handleRemovePlusAttendee(index)}
-                          aria-label={i18n._(msg`Remove`)}
-                        >
-                          <Trash2 size={16} />
-                        </button>
                       </div>
-                    ))}
+                    </button>
 
-                    {isParticipant && (
-                      <div className="flex justify-end">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          disabled={
-                            isUpdatingGuests ||
-                            isJoining ||
-                            !isGuestsFormDirty
-                          }
-                          onClick={handleSavePlusAttendees}
-                        >
-                          {isUpdatingGuests ? (
-                            <Trans>Saving...</Trans>
-                          ) : (
-                            <Trans>Save guests</Trans>
-                          )}
-                        </Button>
+                    {isGuestsExpanded && (
+                      <div id="event-guests-collapse" className="space-y-2 mt-3">
+                        {Array.from(
+                          { length: MAX_GUESTS_PER_USER },
+                          (_, index) => index
+                        ).map((index) => (
+                          <div key={index} className="relative">
+                            <input
+                              type="text"
+                              value={plusAttendees[index] || ''}
+                              onChange={(e) =>
+                                handlePlusAttendeeChange(index, e.target.value)
+                              }
+                              placeholder={i18n._(
+                                msg`Guest {index, number} name (optional)`.id,
+                                { index: index + 1 }
+                              )}
+                              className="w-full rounded-lg border border-gray-200 pl-3 pr-10 py-2 text-sm focus:border-primary-500 focus:outline-none"
+                            />
+                            <button
+                              type="button"
+                              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed"
+                              disabled={index >= plusAttendees.length}
+                              onClick={() => handleRemovePlusAttendee(index)}
+                              aria-label={i18n._(msg`Remove`)}
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                        ))}
+
+                        {isParticipant && (
+                          <div className="flex justify-end">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              disabled={
+                                isUpdatingGuests ||
+                                isJoining ||
+                                !isGuestsFormDirty
+                              }
+                              onClick={handleSavePlusAttendees}
+                            >
+                              {isUpdatingGuests ? (
+                                <Trans>Saving...</Trans>
+                              ) : (
+                                <Trans>Save guests</Trans>
+                              )}
+                            </Button>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -1693,10 +1711,11 @@ export const EventDetailsPage: React.FC = () => {
                 </div>
               </CardHeader>
               <CardContent
-                className={`p-6 ${!isParticipantsExpanded ? 'hidden lg:block' : ''
+
+                className={`p-6  max-h-256 overflow-y-scroll ${!isParticipantsExpanded ? 'hidden lg:block' : ''
                   }`}
               >
-                <div className="space-y-3">
+                <div className="space-y-1">
                   {participantUsersList.map((user) => (
                     <div
                       key={user?.id}
@@ -1732,17 +1751,17 @@ export const EventDetailsPage: React.FC = () => {
                           </div>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <div className="text-sm text-gray-500 cursor-help w-fit">
+                              <div className="text-xs text-gray-500 cursor-help w-fit">
                                 {event.participantJoinedAt?.[user.id]
                                   ? i18n._(msg`Joined {timeAgo}`.id, {
-                                      timeAgo: formatDistanceToNow(
-                                        new Date(event.participantJoinedAt[user.id]),
-                                        {
-                                          addSuffix: true,
-                                          locale: dateLocale
-                                        }
-                                      )
-                                    })
+                                    timeAgo: formatDistanceToNow(
+                                      new Date(event.participantJoinedAt[user.id]),
+                                      {
+                                        addSuffix: true,
+                                        locale: dateLocale
+                                      }
+                                    )
+                                  })
                                   : i18n._(msg`Joined`)}
                               </div>
                             </TooltipTrigger>
@@ -1799,7 +1818,6 @@ export const EventDetailsPage: React.FC = () => {
                             title={i18n._(msg`Remove attendee`)}
                           >
                             <UserX size={16} className="mr-1" />
-                            <Trans>Remove</Trans>
                           </Button>
                         )}
 

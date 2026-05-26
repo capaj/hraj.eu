@@ -3,6 +3,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@media (max-width: 767px) {
+  html {
+    font-size: 85%;
+  }
+}
+
 /* Custom CSS variables for Tailwind v4 */
 @theme {
   --color-primary-50: #f0fdf4;
@@ -210,4 +216,3 @@
     @apply bg-background text-foreground;
   }
 }
-
