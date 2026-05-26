@@ -7,6 +7,8 @@ import { eventT, participantT } from '../../drizzle/schema'
 import { auth } from '~/lib/auth'
 import { deleteOgImageFromR2 } from './utils'
 
+const MAX_GUESTS_PER_USER = 2
+
 const UpdatePlusAttendeesSchema = z.object({
   eventId: z.string().min(1, 'Event ID is required'),
   plusAttendees: z.array(z.string().min(1, 'Guest name is required').trim())
@@ -57,7 +59,7 @@ export const updatePlusAttendees = createServerFn({ method: 'POST' })
     const sanitizedPlusAttendees = data.plusAttendees
       .map((name) => name.trim())
       .filter(Boolean)
-      .slice(0, Math.max(event.maxParticipants - 1, 0))
+      .slice(0, MAX_GUESTS_PER_USER)
 
     const confirmedHeadcount = participants
       .filter((p) => p.status === 'confirmed')

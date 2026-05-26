@@ -7,6 +7,8 @@ import { eventT, participantT } from '../../drizzle/schema'
 import { auth } from '~/lib/auth'
 import { and, eq } from 'drizzle-orm'
 
+const MAX_GUESTS_PER_USER = 2
+
 const JoinEventSchema = z.object({
   eventId: z.string().min(1, 'Event ID is required'),
   plusAttendees: z.array(z.string().min(1, 'Guest name is required').trim()).optional()
@@ -55,7 +57,7 @@ export const joinEvent = createServerFn({ method: 'POST' })
       [])
       .map((name) => name.trim())
       .filter(Boolean)
-      .slice(0, Math.max(event.maxParticipants - 1, 0))
+      .slice(0, MAX_GUESTS_PER_USER)
 
     const confirmedHeadcount = allParticipants
       .filter((p) => p.status === 'confirmed')
