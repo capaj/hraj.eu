@@ -46,7 +46,8 @@ import {
   ChevronDown,
   Copy,
   Trash2,
-  Info
+  Info,
+  MoreHorizontal
 } from 'lucide-react'
 import { format, isPast, addMinutes, formatDistanceToNow } from 'date-fns'
 import { enUS, cs } from 'date-fns/locale'
@@ -962,25 +963,26 @@ export const EventDetailsPage: React.FC = () => {
       </Card>
     ) : null
 
+  const openShareUrl = (url: string) => {
+    if (!url || typeof window === 'undefined') return
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }
+
+  const encodedShareUrl = encodeURIComponent(shareUrl)
+  const encodedShareTitle = encodeURIComponent(event.title)
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-600 to-secondary-600 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header with Back Button */}
         <div className="mb-8">
-          <Button
-            variant="outline"
-            onClick={() => navigate({ to: '/discover' })}
-            className="mb-4 bg-white/10 border-white/20 text-white hover:bg-white/20"
-          >
-            <ArrowLeft size={16} className="mr-2" />
-            <Trans>Back to Events</Trans>
-          </Button>
 
-          <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-            <div className="flex items-center space-x-4">
-              <div className="text-4xl">{sport?.icon}</div>
-              <div>
-                <h1 className="text-3xl font-bold text-white">{event.title}</h1>
+
+          <div className="flex justify-between items-start gap-3 sm:gap-4">
+            <div className="flex min-w-0 flex-1 items-center space-x-4">
+              <div className="text-4xl shrink-0">{sport?.icon}</div>
+              <div className="min-w-0">
+                <h1 className="text-3xl font-bold text-white break-words">{event.title}</h1>
 
                 {hasEventEnded && (
                   <Badge variant="default" size="md" className="mt-2">
@@ -989,7 +991,96 @@ export const EventDetailsPage: React.FC = () => {
                 )}
               </div>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="sm:hidden shrink-0">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                  >
+                    <MoreHorizontal size={16} className="mr-2" />
+                    <Trans>Actions</Trans>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-64 p-2">
+                  {currentUserId === event.organizerId && (
+                    <>
+                      {hasEventEnded ? (
+                        <DropdownMenuItem
+                          className="gap-3 rounded-md px-3 py-2.5 text-base"
+                          onClick={() => {
+                            navigate({ to: '/create', search: { duplicateFrom: event.id } })
+                          }}
+                        >
+                          <Copy size={16} />
+                          <Trans>Duplicate Event</Trans>
+                        </DropdownMenuItem>
+                      ) : (
+                        <DropdownMenuItem
+                          className="gap-3 rounded-md px-3 py-2.5 text-base"
+                          onClick={() => navigate({ to: '/edit-event/$eventId', params: { eventId: event.id } })}
+                        >
+                          <Edit size={16} />
+                          <Trans>Edit Event</Trans>
+                        </DropdownMenuItem>
+                      )}
+                      <DropdownMenuSeparator />
+                    </>
+                  )}
+                  <div className="px-3 py-1.5 text-xs font-medium uppercase tracking-wide text-gray-500">
+                    <Trans>Share</Trans>
+                  </div>
+                  <DropdownMenuItem
+                    disabled={event.status === 'cancelled'}
+                    className="gap-3 rounded-md px-3 py-2.5 text-base"
+                    onClick={() =>
+                      openShareUrl(`https://www.facebook.com/sharer/sharer.php?u=${encodedShareUrl}`)
+                    }
+                  >
+                    <FacebookIcon className="size-5 text-[#4267B2]" />
+                    <span>Facebook</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    disabled={event.status === 'cancelled'}
+                    className="gap-3 rounded-md px-3 py-2.5 text-base"
+                    onClick={() =>
+                      openShareUrl(`https://twitter.com/intent/tweet?url=${encodedShareUrl}&text=${encodedShareTitle}`)
+                    }
+                  >
+                    <TwitterIcon className="size-5 text-gray-900" />
+                    <span>Twitter</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    disabled={event.status === 'cancelled'}
+                    className="gap-3 rounded-md px-3 py-2.5 text-base"
+                    onClick={() =>
+                      openShareUrl(`https://wa.me/?text=${encodedShareTitle}%20${encodedShareUrl}`)
+                    }
+                  >
+                    <MessageCircle size={20} className="text-[#25D366]" />
+                    <span>WhatsApp</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    disabled={event.status === 'cancelled'}
+                    className="gap-3 rounded-md px-3 py-2.5 text-base"
+                    onClick={() =>
+                      openShareUrl(`https://t.me/share/url?url=${encodedShareUrl}&text=${encodedShareTitle}`)
+                    }
+                  >
+                    <Send size={20} className="text-[#229ED9]" />
+                    <span>Telegram</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="gap-3 rounded-md px-3 py-2.5 text-base">
+                    <Heart size={16} />
+                    <Trans>Save</Trans>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
+            <div className="hidden sm:flex shrink-0 items-center space-x-2">
               {currentUserId === event.organizerId && (
                 <>
                   {hasEventEnded ? (
@@ -2147,6 +2238,14 @@ export const EventDetailsPage: React.FC = () => {
             </CardContent>
           </Card>
         )}
+        <Button
+          variant="outline"
+          onClick={() => navigate({ to: '/discover' })}
+          className="my-4 mb-4 bg-white/10 border-white/20 text-white hover:bg-white/20"
+        >
+          <ArrowLeft size={16} className="mr-2" />
+          <Trans>Back to Events</Trans>
+        </Button>
       </div>
 
       <div className="max-w-6xl mx-auto mt-8 px-4 sm:px-6 lg:px-8 space-y-6 lg:hidden">
