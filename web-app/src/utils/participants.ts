@@ -12,3 +12,16 @@ export function getConfirmedHeadcount(event: Event): number {
     return total + 1 + extras
   }, 0)
 }
+
+
+export function getReservedParticipants(event: Event): number {
+  return event.reservedParticipants ?? 0
+}
+
+export function getTotalReservedAwareHeadcount(event: Event): number {
+  return getConfirmedHeadcount(event) + getReservedParticipants(event)
+}
+
+export function getAvailablePublicSpots(event: Event): number {
+  return Math.max(event.maxParticipants - getTotalReservedAwareHeadcount(event), 0)
+}

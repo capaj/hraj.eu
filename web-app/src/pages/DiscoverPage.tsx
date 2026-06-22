@@ -13,7 +13,7 @@ import { Trans } from '@lingui/react/macro'
 import { joinEvent } from '~/server-functions/joinEvent'
 import { authClient } from '../lib/auth-client'
 import { i18n } from '~/lib/i18n'
-import { getConfirmedHeadcount } from '../utils/participants'
+import { getAvailablePublicSpots } from '../utils/participants'
 
 type SortOption = 'date' | 'distance' | 'spots'
 const MAX_PAST_EVENTS = 12
@@ -124,8 +124,8 @@ export const DiscoverPage: React.FC = () => {
           return distanceA - distanceB
 
         case 'spots':
-          const spotsA = a.maxParticipants - getConfirmedHeadcount(a)
-          const spotsB = b.maxParticipants - getConfirmedHeadcount(b)
+          const spotsA = getAvailablePublicSpots(a)
+          const spotsB = getAvailablePublicSpots(b)
           return spotsB - spotsA // More spots first
 
         default:
@@ -316,8 +316,7 @@ export const DiscoverPage: React.FC = () => {
                   } else if (sortBy === 'spots') {
                     sortIndicator = i18n._(msg`{count} spots`.id, {
                       count:
-                        event.maxParticipants -
-                        getConfirmedHeadcount(event)
+                        getAvailablePublicSpots(event)
                     })
                   }
 

@@ -10,7 +10,7 @@ import { Event, Venue } from '../../types'
 import { SPORTS } from '../../lib/constants'
 import { format, isPast } from 'date-fns'
 import { getEventDateTime } from '../../utils/eventDateTime'
-import { getConfirmedHeadcount } from '../../utils/participants'
+import { getAvailablePublicSpots, getTotalReservedAwareHeadcount } from '../../utils/participants'
 
 import dayjs from 'dayjs'
 import { t } from "@lingui/core/macro";
@@ -222,8 +222,8 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
             const sport = SPORTS.find((s) => s.id === event.sport)
             const isJoined =
               currentUserId && event.participants.includes(currentUserId)
-            const confirmedHeadcount = getConfirmedHeadcount(event)
-            const spotsLeft = event.maxParticipants - confirmedHeadcount
+            const confirmedHeadcount = getTotalReservedAwareHeadcount(event)
+            const spotsLeft = getAvailablePublicSpots(event)
             const eventIsClosed =
               isPast(getEventDateTime(event)) || event.status === 'cancelled'
             let eventActionButton = ''

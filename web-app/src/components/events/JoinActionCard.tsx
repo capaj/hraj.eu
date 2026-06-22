@@ -10,7 +10,7 @@ import { i18n } from '~/lib/i18n'
 import { getEventById } from '~/server-functions/getEventById'
 import { joinEvent } from '~/server-functions/joinEvent'
 import { updatePlusAttendees } from '~/server-functions/updatePlusAttendees'
-import { getConfirmedHeadcount } from '~/utils/participants'
+import { getAvailablePublicSpots, getTotalReservedAwareHeadcount } from '~/utils/participants'
 import { Button } from '../ui/Button'
 import { Card, CardContent } from '../ui/Card'
 
@@ -52,14 +52,12 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
   const isParticipant = currentUserId
     ? event?.participants.includes(currentUserId) ?? false
     : false
-  const confirmedHeadcount = event ? getConfirmedHeadcount(event) : 0
+  const reservedAwareHeadcount = event ? getTotalReservedAwareHeadcount(event) : 0
   const reservedParticipants = event?.reservedParticipants ?? 0
-  const publicCapacity = event
-    ? Math.max(event.maxParticipants - reservedParticipants, 0)
-    : 0
-  const isSpotAvailable = confirmedHeadcount < publicCapacity
+  const availablePublicSpots = event ? getAvailablePublicSpots(event) : 0
+  const isSpotAvailable = availablePublicSpots > 0
   const isMinimumReached = event
-    ? confirmedHeadcount >= event.minParticipants
+    ? reservedAwareHeadcount >= event.minParticipants
     : false
   const savedPlusAttendees =
     currentUserId && event ? (event.participantPlusOnes?.[currentUserId] ?? []) : []
@@ -219,7 +217,7 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
                 : 'text-orange-500'
                 }`}
             >
-              {confirmedHeadcount}
+              {reservedAwareHeadcount}
             </span>
             <span className="text-xl text-gray-400 font-medium">
               / {event.maxParticipants}
@@ -236,7 +234,7 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
               style={{
                 width: `${Math.min(
                   100,
-                  (confirmedHeadcount / event.maxParticipants) * 100
+                  (reservedAwareHeadcount / event.maxParticipants) * 100
                 )}%`
               }}
             />
