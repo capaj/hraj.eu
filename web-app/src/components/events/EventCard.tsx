@@ -11,7 +11,7 @@ import { enUS, cs } from 'date-fns/locale';
 import { getEventDateTime } from '../../utils/eventDateTime';
 import { t, plural } from "@lingui/core/macro";
 import { i18n } from '../../lib/i18n';
-import { getConfirmedHeadcount } from '../../utils/participants';
+import { getAvailablePublicSpots, getTotalReservedAwareHeadcount } from '../../utils/participants';
 
 
 interface EventCardProps {
@@ -31,9 +31,9 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
 
   const sport = SPORTS.find(s => s.id === event.sport);
   const venue = venues?.find(v => v.id === event.venueId);
-  const confirmedHeadcount = getConfirmedHeadcount(event);
-  const isSpotAvailable = confirmedHeadcount < event.maxParticipants;
-  const spotsLeft = event.maxParticipants - confirmedHeadcount;
+  const confirmedHeadcount = getTotalReservedAwareHeadcount(event);
+  const spotsLeft = getAvailablePublicSpots(event);
+  const isSpotAvailable = spotsLeft > 0;
   const isIdealReached = event.idealParticipants && confirmedHeadcount >= event.idealParticipants;
   const isMinimumReached = confirmedHeadcount >= event.minParticipants;
   const isBelowMinimum = confirmedHeadcount < event.minParticipants;
@@ -128,6 +128,9 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
             <Users size={16} className="mr-2" />
             <span>
               {confirmedHeadcount}/{event.maxParticipants} players
+              {(event.reservedParticipants ?? 0) > 0 && (
+                <span className="text-gray-500 ml-1">(+{event.reservedParticipants} reserved)</span>
+              )}
               {event.idealParticipants && (
                 <span className="text-gray-500 ml-1">(ideal: {event.idealParticipants})</span>
               )}

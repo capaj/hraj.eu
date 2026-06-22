@@ -80,7 +80,7 @@ import { deleteEventComment } from '~/server-functions/deleteEventComment'
 import { editEventComment } from '~/server-functions/editEventComment'
 import { EventComment, User } from '../types'
 import { getEventDateTime } from '../utils/eventDateTime'
-import { getConfirmedHeadcount } from '../utils/participants'
+import { getAvailablePublicSpots, getTotalReservedAwareHeadcount } from '../utils/participants'
 
 interface KarmaFeedback {
   userId: string
@@ -460,14 +460,12 @@ export const EventDetailsPage: React.FC = () => {
   }
 
   const sport = SPORTS.find((s) => s.id === event.sport)
-  const confirmedHeadcount = getConfirmedHeadcount(event)
-  const reservedParticipants = event.reservedParticipants ?? 0
-  const publicCapacity = Math.max(event.maxParticipants - reservedParticipants, 0)
-  const isSpotAvailable = confirmedHeadcount < publicCapacity
-  const spotsLeft = Math.max(publicCapacity - confirmedHeadcount, 0)
-  const isMinimumReached = confirmedHeadcount >= event.minParticipants
+  const reservedAwareHeadcount = getTotalReservedAwareHeadcount(event)
+  const spotsLeft = getAvailablePublicSpots(event)
+  const isSpotAvailable = spotsLeft > 0
+  const isMinimumReached = reservedAwareHeadcount >= event.minParticipants
   const isIdealReached =
-    event.idealParticipants && confirmedHeadcount >= event.idealParticipants
+    event.idealParticipants && reservedAwareHeadcount >= event.idealParticipants
 
   const getEventStartDateTime = () => {
     if (!event) {
@@ -489,7 +487,7 @@ export const EventDetailsPage: React.FC = () => {
       return {
         variant: 'error' as const,
         text: i18n._(msg`Need {count} more players to confirm`.id, {
-          count: event.minParticipants - confirmedHeadcount
+          count: event.minParticipants - reservedAwareHeadcount
         }),
         icon: <AlertTriangle size={16} className="mr-1" />
       }
@@ -503,7 +501,7 @@ export const EventDetailsPage: React.FC = () => {
       return {
         variant: 'warning' as const,
         text: i18n._(msg`Event confirmed - {count} more for ideal`.id, {
-          count: event.idealParticipants! - confirmedHeadcount
+          count: event.idealParticipants! - reservedAwareHeadcount
         }),
         icon: <Target size={16} className="mr-1" />
       }
@@ -580,7 +578,7 @@ export const EventDetailsPage: React.FC = () => {
         '',
         i18n._(msg`Sport: {sportName}`.id, { sportName: sport?.name ?? '' }),
         i18n._(msg`Participants: {current}/{max}`.id, {
-          current: confirmedHeadcount,
+          current: reservedAwareHeadcount,
           max: event.maxParticipants
         }),
         ...(event.idealParticipants
@@ -916,14 +914,14 @@ export const EventDetailsPage: React.FC = () => {
               <span className="text-gray-700 text-lg">
                 <Trans>
                   Price per person(
-                  {Math.max(event.minParticipants, confirmedHeadcount)}
+                  {Math.max(event.minParticipants, reservedAwareHeadcount)}
                   people):
                 </Trans>
               </span>
               <span className="font-bold text-2xl text-primary-600">
                 {(
                   event.price /
-                  Math.max(event.minParticipants, confirmedHeadcount)
+                  Math.max(event.minParticipants, reservedAwareHeadcount)
                 ).toLocaleString(undefined, {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 2,
