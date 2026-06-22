@@ -131,6 +131,56 @@ const renderMentions = (text: string, mentionRegex: RegExp | null) => {
   return nodes
 }
 
+const commentUrlRegex = /(?:https?:\/\/|www\.)[^\s<]+/gi
+const trailingUrlPunctuationRegex = /[),.!?:;]+$/
+
+const renderPlainTextSegments = (
+  text: string,
+  mentionRegex: RegExp | null
+): React.ReactNode[] => {
+  commentUrlRegex.lastIndex = 0
+
+  const nodes: React.ReactNode[] = []
+  let lastIndex = 0
+  let match: RegExpExecArray | null
+
+  while ((match = commentUrlRegex.exec(text)) !== null) {
+    const matchIndex = match.index
+    const rawUrl = match[0]
+    const url = rawUrl.replace(trailingUrlPunctuationRegex, '')
+    const trailingPunctuation = rawUrl.slice(url.length)
+
+    if (matchIndex > lastIndex) {
+      nodes.push(...renderMentions(text.slice(lastIndex, matchIndex), mentionRegex))
+    }
+
+    const href = url.startsWith('www.') ? `https://${url}` : url
+    nodes.push(
+      <a
+        key={`comment-link-${matchIndex}-${url}`}
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer nofollow ugc"
+        className="text-primary-600 underline hover:text-primary-700 break-words"
+      >
+        {url}
+      </a>
+    )
+
+    if (trailingPunctuation) {
+      nodes.push(trailingPunctuation)
+    }
+
+    lastIndex = matchIndex + rawUrl.length
+  }
+
+  if (lastIndex < text.length) {
+    nodes.push(...renderMentions(text.slice(lastIndex), mentionRegex))
+  }
+
+  return nodes.length > 0 ? nodes : [text]
+}
+
 const renderMarkdownSegments = (
   text: string,
   mentionRegex: RegExp | null
@@ -153,7 +203,7 @@ const renderMarkdownSegments = (
   }
 
   if (!earliestMatch) {
-    return renderMentions(text, mentionRegex)
+    return renderPlainTextSegments(text, mentionRegex)
   }
 
   const before = text.slice(0, earliestMatch.index)
@@ -162,7 +212,7 @@ const renderMarkdownSegments = (
 
   const nodes: React.ReactNode[] = []
   if (before) {
-    nodes.push(...renderMentions(before, mentionRegex))
+    nodes.push(...renderPlainTextSegments(before, mentionRegex))
   }
 
   const innerNodes = renderMarkdownSegments(inner, mentionRegex)
