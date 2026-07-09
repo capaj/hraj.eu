@@ -239,34 +239,34 @@ async function notifyAttendeesAboutVenueChange({
   const eventUrl = new URL(`/events/${event.id}`, request.url).toString()
   const locale = getEmailLocale(request.headers.get('accept-language'))
 
-  let emailsSent = 0
-  for (const participant of participants) {
-    if (!participant.email) {
-      continue
-    }
-
-    try {
-      await sendVenueChangeEmail({
-        resend,
-        from: env.SENDER_EMAIL,
-        to: participant.email,
-        name: participant.name,
-        event,
-        previousVenue,
-        newVenue: newVenueLocation,
-        eventUrl,
-        locale
+  const sendResults = await Promise.all(
+    participants
+      .filter((participant) => Boolean(participant.email))
+      .map(async (participant) => {
+        try {
+          await sendVenueChangeEmail({
+            resend,
+            from: env.SENDER_EMAIL,
+            to: participant.email,
+            name: participant.name,
+            event,
+            previousVenue,
+            newVenue: newVenueLocation,
+            eventUrl,
+            locale
+          })
+          return true
+        } catch (error) {
+          console.error(
+            `Failed to send venue change email for event ${event.id} to ${participant.email}`,
+            error
+          )
+          return false
+        }
       })
-      emailsSent += 1
-    } catch (error) {
-      console.error(
-        `Failed to send venue change email for event ${event.id} to ${participant.email}`,
-        error
-      )
-    }
-  }
+  )
 
-  return emailsSent
+  return sendResults.filter(Boolean).length
 }
 
 function formatLocation(
