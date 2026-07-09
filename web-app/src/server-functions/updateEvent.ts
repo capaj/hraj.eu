@@ -1,11 +1,24 @@
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
 import { z } from 'zod'
-import { coreGroupT, eventT } from '../../drizzle/schema'
+import {
+  coreGroupT,
+  eventT,
+  participantT,
+  user,
+  venueT
+} from '../../drizzle/schema'
 import { db } from 'drizzle/db'
 import { auth } from '~/lib/auth'
-import { eq, and } from 'drizzle-orm'
+import { eq, and, inArray } from 'drizzle-orm'
 import { assertNoVenueEventConflict } from './eventVenueConflicts'
+import { env } from 'cloudflare:workers'
+import { Resend } from 'resend'
+import { sendVenueChangeEmail } from '~/lib/email/sendVenueChangeEmail'
+import type { EmailLocale } from '~/lib/email/sendCancellationEmail'
+
+const LOCATION_FALLBACK = 'Location TBD'
+const resend = new Resend(env.RESEND_API_KEY)
 
 const UpdateEventSchema = z.object({
   id: z.string().min(1),
@@ -68,6 +81,10 @@ export const updateEvent = createServerFn({ method: 'POST' })
     if (event.organizerId !== session.user.id) {
       throw new Error('You can only update events you organized')
     }
+
+    const previousVenue = event.venueId
+      ? await db.query.venueT.findFirst({ where: eq(venueT.id, event.venueId) })
+      : null
 
     const organizerId = session.user.id
     const updates: Partial<typeof eventT.$inferInsert> = {}
@@ -163,5 +180,114 @@ export const updateEvent = createServerFn({ method: 'POST' })
 
     await db.update(eventT).set(updates).where(eq(eventT.id, data.id))
 
-    return { success: true }
+    let venueChangeEmailsSent = 0
+    if (data.venueId && data.venueId !== event.venueId) {
+      venueChangeEmailsSent = await notifyAttendeesAboutVenueChange({
+        event: {
+          id: event.id,
+          title: updates.title ?? event.title,
+          description: updates.description ?? event.description,
+          date: updates.date ?? event.date,
+          startTime: updates.startTime ?? event.startTime,
+          duration: updates.duration ?? event.duration
+        },
+        previousVenue: formatLocation(
+          previousVenue?.name,
+          previousVenue?.address
+        ),
+        newVenueId: data.venueId,
+        request
+      })
+    }
+
+    return { success: true, venueChangeEmailsSent }
   })
+
+async function notifyAttendeesAboutVenueChange({
+  event,
+  previousVenue,
+  newVenueId,
+  request
+}: {
+  event: {
+    id: string
+    title: string
+    description: string | null
+    date: string
+    startTime: string
+    duration: number
+  }
+  previousVenue: string
+  newVenueId: string
+  request: Request
+}): Promise<number> {
+  const newVenue = await db.query.venueT.findFirst({
+    where: eq(venueT.id, newVenueId)
+  })
+  const participants = await db
+    .select({ email: user.email, name: user.name })
+    .from(participantT)
+    .innerJoin(user, eq(user.id, participantT.userId))
+    .where(
+      and(
+        eq(participantT.eventId, event.id),
+        inArray(participantT.status, ['confirmed', 'waitlisted', 'invited'])
+      )
+    )
+
+  const newVenueLocation = formatLocation(newVenue?.name, newVenue?.address)
+  const eventUrl = new URL(`/events/${event.id}`, request.url).toString()
+  const locale = getEmailLocale(request.headers.get('accept-language'))
+
+  let emailsSent = 0
+  for (const participant of participants) {
+    if (!participant.email) {
+      continue
+    }
+
+    try {
+      await sendVenueChangeEmail({
+        resend,
+        from: env.SENDER_EMAIL,
+        to: participant.email,
+        name: participant.name,
+        event,
+        previousVenue,
+        newVenue: newVenueLocation,
+        eventUrl,
+        locale
+      })
+      emailsSent += 1
+    } catch (error) {
+      console.error(
+        `Failed to send venue change email for event ${event.id} to ${participant.email}`,
+        error
+      )
+    }
+  }
+
+  return emailsSent
+}
+
+function formatLocation(
+  name: string | null | undefined,
+  address: string | null | undefined
+): string {
+  const parts = [name?.trim(), address?.trim()].filter(
+    (part): part is string => Boolean(part)
+  )
+  return parts.length ? parts.join(', ') : LOCATION_FALLBACK
+}
+
+function getEmailLocale(acceptLanguage: string | null): EmailLocale {
+  if (!acceptLanguage) {
+    return 'cs'
+  }
+
+  return acceptLanguage
+    .split(',')
+    .map((language) => language.trim().toLowerCase())
+    .some((language) => language.startsWith('en'))
+    ? 'en'
+    : 'cs'
+}
