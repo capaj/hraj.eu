@@ -241,7 +241,10 @@ async function notifyAttendeesAboutVenueChange({
 
   const sendResults = await Promise.all(
     participants
-      .filter((participant) => Boolean(participant.email))
+      .filter(
+        (participant): participant is typeof participant & { email: string } =>
+          Boolean(participant.email)
+      )
       .map(async (participant) => {
         try {
           await sendVenueChangeEmail({
