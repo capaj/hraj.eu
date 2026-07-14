@@ -1,5 +1,4 @@
 import { defineNitroConfig } from 'nitropack/config'
-import type { Plugin } from 'rollup'
 
 /**
  * During Nitro's internal Rollup build the TanStack Start virtual modules that Vite
@@ -8,7 +7,7 @@ import type { Plugin } from 'rollup'
  * fail.  The exported objects are never used at runtime for our use-case
  * (reactStartCookies only needs `setCookie`), so an empty module is sufficient.
  */
-function tanstackVirtualModules(): Plugin {
+function tanstackVirtualModules() {
   const virtualIds = [
     'tanstack-start-route-tree:v',
     'tanstack-start-manifest:v',
@@ -17,14 +16,14 @@ function tanstackVirtualModules(): Plugin {
 
   return {
     name: 'tanstack-virtual-modules',
-    resolveId(id) {
+    resolveId(id: string) {
       if (virtualIds.includes(id)) {
         // mark as resolved so Rollup stops searching on file system
         return id
       }
       return null
     },
-    load(id) {
+    load(id: string) {
       if (virtualIds.includes(id)) {
         // Return an empty stub; nothing from these modules is required
         return 'export default {}'
