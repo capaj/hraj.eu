@@ -116,6 +116,11 @@ export const auth = betterAuth({
     }
   },
   trustedOrigins: ['http://localhost:5173', 'https://hraj.eu'],
+  advanced: {
+    ipAddress: {
+      ipAddressHeaders: ['cf-connecting-ip', 'x-forwarded-for']
+    }
+  },
   plugins: [
     tanstackStartCookies(),
     magicLink({
