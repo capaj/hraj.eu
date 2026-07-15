@@ -11,12 +11,19 @@ import {
 } from './dropdown-menu'
 import { cn } from '~/lib/utils'
 
+interface TagOption {
+  id: string
+  name: string
+  icon?: React.ReactNode
+}
+
 interface TagInputProps {
-  options: ReadonlyArray<{ id: string; name: string; icon?: string }>
+  options: ReadonlyArray<TagOption>
   selected: string[]
   onChange: (selected: string[]) => void
   placeholder?: string
   className?: string
+  renderOptionIcon?: (option: TagOption) => React.ReactNode
 }
 
 export const TagInput: React.FC<TagInputProps> = ({
@@ -24,7 +31,8 @@ export const TagInput: React.FC<TagInputProps> = ({
   selected,
   onChange,
   placeholder,
-  className
+  className,
+  renderOptionIcon
 }) => {
   const defaultPlaceholder = i18n._(msg`Add...`)
   const finalPlaceholder = placeholder || defaultPlaceholder
@@ -42,6 +50,8 @@ export const TagInput: React.FC<TagInputProps> = ({
   }
 
   const availableOptions = options.filter((opt) => !selected.includes(opt.id))
+  const getOptionIcon = (option: TagOption) =>
+    renderOptionIcon?.(option) ?? option.icon
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -54,13 +64,14 @@ export const TagInput: React.FC<TagInputProps> = ({
         {selected.map((tagId) => {
           const option = options.find((opt) => opt.id === tagId)
           if (!option) return null
+          const optionIcon = getOptionIcon(option)
           return (
             <Badge
               key={tagId}
               variant="info"
               className="flex items-center gap-1 px-2 py-1"
             >
-              {option.icon && <span>{option.icon}</span>}
+              {optionIcon ? <span className="flex shrink-0">{optionIcon}</span> : null}
               <span>{option.name}</span>
               <X
                 className="h-3 w-3 cursor-pointer hover:text-red-600"
@@ -92,16 +103,19 @@ export const TagInput: React.FC<TagInputProps> = ({
         sideOffset={4}
       >
         {availableOptions.length > 0 ? (
-          availableOptions.map((opt) => (
-            <DropdownMenuItem
-              key={opt.id}
-              onSelect={() => addTag(opt.id)}
-              className="cursor-pointer"
-            >
-              <span className="mr-2">{opt.icon}</span>
-              {opt.name}
-            </DropdownMenuItem>
-          ))
+          availableOptions.map((opt) => {
+            const optionIcon = getOptionIcon(opt)
+            return (
+              <DropdownMenuItem
+                key={opt.id}
+                onSelect={() => addTag(opt.id)}
+                className="cursor-pointer"
+              >
+                {optionIcon ? <span className="mr-2 flex shrink-0">{optionIcon}</span> : null}
+                {opt.name}
+              </DropdownMenuItem>
+            )
+          })
         ) : (
           <div className="px-2 py-1.5 text-sm text-gray-500">
             {i18n._(msg`All options selected`)}
@@ -111,4 +125,3 @@ export const TagInput: React.FC<TagInputProps> = ({
     </DropdownMenu>
   )
 }
-

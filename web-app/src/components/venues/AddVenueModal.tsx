@@ -12,6 +12,7 @@ import { createVenue } from '~/lib/createVenue'
 import { updateVenue } from '~/server-functions/updateVenue'
 import { getGoogleMapsApiKey } from '~/server-functions/getGoogleMapsApiKey'
 import { TagInput } from '../ui/TagInput'
+import { SportIcon } from '../sports/SportIcon'
 import { AddressAutocomplete, AddressDetails } from './AddressAutocomplete'
 import { VenueMapPreview } from './VenueMapPreview'
 import {
@@ -552,6 +553,9 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                   options={SPORTS}
                   selected={formData.sports}
                   onChange={(selected) => handleChange('sports', selected)}
+                  renderOptionIcon={(sport) => (
+                    <SportIcon sport={sport.id} size={16} />
+                  )}
                   placeholder={i18n._(msg`Add sports...`)}
                 />
                 <p className="text-xs text-gray-500 mt-1">

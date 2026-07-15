@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Badge } from '../ui/Badge'
 import { Button } from '../ui/Button'
 import { SPORTS, SKILL_LEVELS } from '../../lib/constants'
@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
 import { cn } from '../../lib/utils'
+import { SportIcon } from '../sports/SportIcon'
 
 interface EventFiltersProps {
   selectedSports: string[]
@@ -76,7 +77,7 @@ export const EventFilters: React.FC<EventFiltersProps> = ({
                         : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300"
                     )}
                   >
-                    <span>{sport.icon}</span>
+                    <SportIcon sport={sport.id} size={14} />
                     <span>{sport.name}</span>
                   </button>
                 )
@@ -128,7 +129,8 @@ export const EventFilters: React.FC<EventFiltersProps> = ({
           if (!sport) return null
           return (
             <Badge key={sportId} variant="info" className="flex items-center gap-1 pl-2 pr-1 py-1">
-              {sport.icon} {sport.name}
+              <SportIcon sport={sport.id} size={14} />
+              {sport.name}
               <button onClick={() => onSportToggle(sportId)} className="hover:bg-blue-200 rounded-full p-0.5 ml-1">
                 <X size={12} />
               </button>

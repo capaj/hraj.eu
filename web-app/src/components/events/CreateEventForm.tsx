@@ -6,8 +6,16 @@ import { Card, CardHeader, CardContent } from '../ui/Card'
 import { Button } from '../ui/Button'
 import { Badge } from '../ui/Badge'
 import { Toggle } from '../ui/Toggle'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger
+} from '../ui/dropdown-menu'
 import { VenueSelector } from '../venues/VenueSelector'
 import { AddVenueModal } from '../venues/AddVenueModal'
+import { SportIcon } from '../sports/SportIcon'
 import { SPORTS, SKILL_LEVELS } from '../../lib/constants'
 import { getVenues } from '~/server-functions/getVenues'
 import { getCoreGroups } from '~/server-functions/getCoreGroups'
@@ -24,7 +32,8 @@ import {
   Shield,
   AlertTriangle,
   Image as ImageIcon,
-  X
+  X,
+  ChevronDown
 } from 'lucide-react'
 
 const MAX_QR_IMAGES = 10
@@ -193,6 +202,11 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (!formData.sport) {
+      alert(i18n._(msg`Please select a sport for your event.`))
+      return
+    }
 
     // Validate venue selection
     if (!formData.venueId) {
@@ -511,6 +525,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     ? `${cancellationTimeParts.primary} ${cancellationTimeParts.secondary}`
     : cancellationTimeParts.primary
   const cancellationDeadlineTime = getCancellationDeadlineTimeLabel()
+  const selectedSport = SPORTS.find((sport) => sport.id === formData.sport)
 
   return (
     <>
@@ -532,19 +547,56 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <Trans>Sport *</Trans>
               </label>
-              <select
-                required
-                value={formData.sport}
-                onChange={(e) => handleChange('sport', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              >
-                <option value=""><Trans>Select a sport</Trans></option>
-                {SPORTS.map((sport) => (
-                  <option key={sport.id} value={sport.id}>
-                    {sport.icon} {sport.name}
-                  </option>
-                ))}
-              </select>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    type="button"
+                    aria-required="true"
+                    aria-invalid={!formData.sport}
+                    className="flex w-full items-center justify-between rounded-lg border border-gray-300 px-3 py-2 text-left focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  >
+                    {selectedSport ? (
+                      <span className="flex items-center gap-2 text-gray-900">
+                        <SportIcon
+                          sport={selectedSport.id}
+                          size={18}
+                          className="text-primary-600"
+                        />
+                        {selectedSport.name}
+                      </span>
+                    ) : (
+                      <span className="text-gray-500">
+                        <Trans>Select a sport</Trans>
+                      </span>
+                    )}
+                    <ChevronDown size={16} className="text-gray-500" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="start"
+                  className="max-h-80 w-80 max-w-[calc(100vw-2rem)]"
+                >
+                  <DropdownMenuRadioGroup
+                    value={formData.sport}
+                    onValueChange={(sport) => handleChange('sport', sport)}
+                  >
+                    {SPORTS.map((sport) => (
+                      <DropdownMenuRadioItem
+                        key={sport.id}
+                        value={sport.id}
+                        className="gap-2 px-3 py-2"
+                      >
+                        <SportIcon
+                          sport={sport.id}
+                          size={18}
+                          className="size-[18px] text-primary-600"
+                        />
+                        {sport.name}
+                      </DropdownMenuRadioItem>
+                    ))}
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
             {/* Venue Selection */}

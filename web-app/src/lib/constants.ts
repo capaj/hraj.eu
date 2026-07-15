@@ -1,20 +1,20 @@
 export const SPORTS = [
-  { id: 'soccer', name: 'Soccer', icon: '🥅' },
-  { id: 'futsal', name: 'Futsal', icon: '⚽' },
-  { id: 'basketball', name: 'Basketball', icon: '🏀' },
-  { id: 'volleyball', name: 'Volleyball', icon: '🏐' },
-  { id: 'beach-volleyball', name: 'Beach Volleyball', icon: '🏖️' },
-  { id: 'football-tennis', name: 'Football Tennis', icon: '🎾' },
-  { id: 'handball', name: 'Handball', icon: '🤾' },
-  { id: 'rugby-union', name: 'Rugby Union', icon: '🏉' },
-  { id: 'rugby-league', name: 'Rugby League', icon: '🏉' },
-  { id: 'ice-hockey', name: 'Ice Hockey', icon: '🏒' },
-  { id: 'field-hockey', name: 'Field Hockey', icon: '🏑' },
-  { id: 'water-polo', name: 'Water Polo', icon: '🤽' },
-  { id: 'cricket', name: 'Cricket', icon: '🏏' },
-  { id: 'netball', name: 'Netball', icon: '🥅' },
-  { id: 'korfball', name: 'Korfball', icon: '🗑️' },
-  { id: 'floorball', name: 'Floorball', icon: '🏒' }
+  { id: 'soccer', name: 'Soccer' },
+  { id: 'futsal', name: 'Futsal' },
+  { id: 'basketball', name: 'Basketball' },
+  { id: 'volleyball', name: 'Volleyball' },
+  { id: 'beach-volleyball', name: 'Beach Volleyball' },
+  { id: 'football-tennis', name: 'Football Tennis' },
+  { id: 'handball', name: 'Handball' },
+  { id: 'rugby-union', name: 'Rugby Union' },
+  { id: 'rugby-league', name: 'Rugby League' },
+  { id: 'ice-hockey', name: 'Ice Hockey' },
+  { id: 'field-hockey', name: 'Field Hockey' },
+  { id: 'water-polo', name: 'Water Polo' },
+  { id: 'cricket', name: 'Cricket' },
+  { id: 'netball', name: 'Netball' },
+  { id: 'korfball', name: 'Korfball' },
+  { id: 'floorball', name: 'Floorball' }
 ] as const
 
 export const FACILITIES = [

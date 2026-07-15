@@ -22,6 +22,7 @@ import {
   Check,
   X
 } from 'lucide-react'
+import { SportIcon } from '../sports/SportIcon'
 
 interface VenueSelectorProps {
   venues: Venue[]
@@ -254,7 +255,7 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
                               className="text-lg"
                               title={sport.name}
                             >
-                              {sport.icon}
+                              <SportIcon sport={sport.id} size={18} />
                             </span>
                           ) : null
                         })}

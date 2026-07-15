@@ -11,6 +11,7 @@ import { SPORTS } from '../../lib/constants'
 import { format, isPast } from 'date-fns'
 import { getEventDateTime } from '../../utils/eventDateTime'
 import { getAvailablePublicSpots, getTotalReservedAwareHeadcount } from '../../utils/participants'
+import { sportIconSvg } from '../sports/SportIcon'
 
 import dayjs from 'dayjs'
 import { t } from "@lingui/core/macro";
@@ -187,6 +188,10 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
           bounds.push([venue.lat, venue.lng])
 
           const mainSport = SPORTS.find((s) => s.id === venueEvents[0].sport)
+          const mainSportIcon = sportIconSvg(mainSport?.id ?? venueEvents[0].sport, {
+            size: 16,
+            color: '#6d28d9'
+          })
 
           const countBadge =
             venueEvents.length > 1
@@ -195,8 +200,7 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
 
           const customIcon = L.divIcon({
             className: 'custom-event-marker',
-            html: `<div style="position: relative; width: 32px; height: 32px; background-color: white; border: 2px solid #8b5cf6; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size: 16px;">${mainSport?.icon || '📍'
-              }</span>${countBadge}</div>`,
+            html: `<div style="position: relative; width: 32px; height: 32px; background-color: white; border: 2px solid #8b5cf6; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><span style="display: flex;">${mainSportIcon}</span>${countBadge}</div>`,
             iconSize: [32, 32],
             iconAnchor: [16, 16]
           })
@@ -220,6 +224,10 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
 
           venueEvents.forEach((event, index) => {
             const sport = SPORTS.find((s) => s.id === event.sport)
+            const eventSportIcon = sportIconSvg(sport?.id ?? event.sport, {
+              size: 20,
+              color: '#6d28d9'
+            })
             const isJoined =
               currentUserId && event.participants.includes(currentUserId)
             const confirmedHeadcount = getTotalReservedAwareHeadcount(event)
@@ -252,7 +260,7 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
               }">
                 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
                   <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 20px;">${sport?.icon || '📍'}</span>
+                    <span style="display: flex; flex: 0 0 auto;">${eventSportIcon}</span>
                     <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: #111827;">${event.title
               }</h3>
                   </div>

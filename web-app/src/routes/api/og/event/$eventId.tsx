@@ -90,7 +90,6 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
 
           const sportObj = SPORTS.find((s) => s.id === event.sport)
           const sportName = sportObj?.name ?? event.sport
-          const sportIcon = sportObj?.icon ?? ''
 
           const start = (() => {
             const date = new Date(event.date)
@@ -212,8 +211,6 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
                       border: '1px solid rgba(255,255,255,0.3)',
                     }}
                   >
-                    {/* TODO: Use PNG icons for sports instead of emojis as they render poorly in OG images */}
-                    {/* <div style={{ fontSize: 24 }}>{sportIcon}</div> */}
                     <div>{sportName}</div>
                   </div>
                 </div>

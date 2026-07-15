@@ -43,6 +43,7 @@ import { deleteUserAccount } from '~/server-functions/deleteUserAccount'
 import { authClient } from '~/lib/auth-client'
 import { toast } from 'sonner'
 import { i18n } from '~/lib/i18n'
+import { SportIcon } from '../components/sports/SportIcon'
 
 export const UserProfile: React.FC = () => {
   const { user: userFromLoader } = useLoaderData({ from: '/user-profile' })
@@ -1237,9 +1238,11 @@ export const UserProfile: React.FC = () => {
                       }`}
                   >
                     <div className="flex items-center space-x-3 min-w-0 flex-1">
-                      <span className="text-2xl flex-shrink-0">
-                        {sport.icon}
-                      </span>
+                      <SportIcon
+                        sport={sport.id}
+                        size={24}
+                        className="flex-shrink-0 text-primary-600"
+                      />
                       <div className="min-w-0 flex-1">
                         <div className="font-medium text-gray-900 truncate">
                           {sport.name}

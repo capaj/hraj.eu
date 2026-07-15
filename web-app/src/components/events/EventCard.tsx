@@ -3,8 +3,8 @@ import { Link } from '@tanstack/react-router';
 import { Card, CardContent } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
-import { Calendar, Clock, MapPin, Users, Euro, Target, BadgeDollarSign } from 'lucide-react';
-import { Event, User, Venue } from '../../types';
+import { Calendar, Clock, MapPin, Users, BadgeDollarSign } from 'lucide-react';
+import { Event, Venue } from '../../types';
 import { SPORTS } from '../../lib/constants';
 import { format, isPast, differenceInCalendarDays } from 'date-fns';
 import { enUS, cs } from 'date-fns/locale';
@@ -12,6 +12,7 @@ import { getEventDateTime } from '../../utils/eventDateTime';
 import { t, plural } from "@lingui/core/macro";
 import { i18n } from '../../lib/i18n';
 import { getAvailablePublicSpots, getTotalReservedAwareHeadcount } from '../../utils/participants';
+import { SportIcon } from '../sports/SportIcon';
 
 
 interface EventCardProps {
@@ -78,7 +79,12 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
       <CardContent className="p-6 flex flex-col h-full">
         <div className="flex items-start justify-between mb-4 gap-3">
           <div className="flex items-center space-x-3 min-w-0 flex-1">
-            <div className="text-2xl flex-shrink-0">{sport?.icon}</div>
+            <SportIcon
+              sport={sport?.id ?? event.sport}
+              size={24}
+              title={sport?.name ?? event.sport}
+              className="flex-shrink-0 text-primary-600"
+            />
             <div className="min-w-0 flex-1">
               <h3 className="font-semibold text-gray-900 text-lg truncate">
                 {event.title}

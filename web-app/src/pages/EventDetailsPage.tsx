@@ -81,6 +81,7 @@ import { editEventComment } from '~/server-functions/editEventComment'
 import { EventComment, User } from '../types'
 import { getEventDateTime } from '../utils/eventDateTime'
 import { getAvailablePublicSpots, getTotalReservedAwareHeadcount } from '../utils/participants'
+import { SportIcon } from '../components/sports/SportIcon'
 
 interface KarmaFeedback {
   userId: string
@@ -1028,7 +1029,12 @@ export const EventDetailsPage: React.FC = () => {
 
           <div className="flex justify-between items-start gap-3 sm:gap-4">
             <div className="flex min-w-0 flex-1 items-center space-x-4">
-              <div className="text-4xl shrink-0">{sport?.icon}</div>
+              <SportIcon
+                sport={sport?.id ?? event.sport}
+                size={40}
+                title={sport?.name ?? event.sport}
+                className="shrink-0 text-white"
+              />
               <div className="min-w-0">
                 <h1 className="text-3xl font-bold text-white break-words">{event.title}</h1>
 

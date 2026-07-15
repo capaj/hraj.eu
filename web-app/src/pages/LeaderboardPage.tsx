@@ -21,6 +21,7 @@ import {
   ChevronDown
 } from 'lucide-react'
 import { UserAvatar } from '../components/user/UserAvatar'
+import { SportIcon } from '../components/sports/SportIcon'
 import { useLoaderData } from '@tanstack/react-router'
 
 type LeaderboardType =
@@ -368,7 +369,11 @@ export const Leaderboard: React.FC = () => {
                   <span className="flex items-center">
                     {selectedSportInfo ? (
                       <>
-                        <span className="mr-2">{selectedSportInfo.icon}</span>
+                        <SportIcon
+                          sport={selectedSportInfo.id}
+                          size={16}
+                          className="mr-2 text-primary-600"
+                        />
                         <span className="truncate">
                           {selectedSportInfo.name}
                         </span>
@@ -416,7 +421,11 @@ export const Leaderboard: React.FC = () => {
                           : ''
                           }`}
                       >
-                        <span className="mr-2">{sport.icon}</span>
+                        <SportIcon
+                          sport={sport.id}
+                          size={16}
+                          className="mr-2 text-primary-600"
+                        />
                         <span className="truncate">{sport.name}</span>
                       </button>
                     ))}
@@ -440,9 +449,11 @@ export const Leaderboard: React.FC = () => {
                     })}
                   </span>
                   {selectedSport && (
-                    <span className="ml-2 text-lg">
-                      {SPORTS.find((s) => s.id === selectedSport)?.icon}
-                    </span>
+                    <SportIcon
+                      sport={selectedSport}
+                      size={18}
+                      className="ml-2 text-primary-600"
+                    />
                   )}
                 </h2>
                 <p className="text-gray-600 mt-1">
@@ -452,7 +463,11 @@ export const Leaderboard: React.FC = () => {
               <div className="flex items-center space-x-2">
                 {selectedSport && (
                   <Badge variant="info" size="md" className="flex items-center">
-                    {SPORTS.find((s) => s.id === selectedSport)?.icon}
+                    <SportIcon
+                      sport={selectedSport}
+                      size={16}
+                      className="text-primary-600"
+                    />
                     <span className="ml-1">
                       {SPORTS.find((s) => s.id === selectedSport)?.name}
                     </span>
@@ -526,11 +541,11 @@ export const Leaderboard: React.FC = () => {
                                         )?.name
                                       }
                                     >
-                                      {
-                                        SPORTS.find(
-                                          (s) => s.id === selectedSport
-                                        )?.icon
-                                      }
+                                      <SportIcon
+                                        sport={selectedSport}
+                                        size={14}
+                                        className="text-primary-600"
+                                      />
                                     </span>
                                   </div>
                                 ) : (
@@ -547,7 +562,13 @@ export const Leaderboard: React.FC = () => {
                                           className="text-xs"
                                           title={sportInfo?.name}
                                         >
-                                          {sportInfo?.icon}
+                                          {sportInfo ? (
+                                            <SportIcon
+                                              sport={sportInfo.id}
+                                              size={12}
+                                              className="text-primary-600"
+                                            />
+                                          ) : null}
                                         </span>
                                       )
                                     })
@@ -728,7 +749,11 @@ export const Leaderboard: React.FC = () => {
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <h4 className="font-medium text-blue-900 mb-2 flex items-center">
-                    {SPORTS.find((s) => s.id === selectedSport)?.icon}
+                    <SportIcon
+                      sport={selectedSport}
+                      size={18}
+                      className="mr-2 text-primary-700"
+                    />
                     <span className="ml-2">
                       <Trans>Sport-Specific Rankings</Trans>
                     </span>

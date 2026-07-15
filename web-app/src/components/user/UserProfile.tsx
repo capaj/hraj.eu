@@ -5,6 +5,7 @@ import { User } from '../../types'
 import { SPORTS, SKILL_LEVELS } from '../../lib/constants'
 import { Trophy, Calendar } from 'lucide-react'
 import { UserAvatar } from './UserAvatar'
+import { SportIcon } from '../sports/SportIcon'
 
 interface UserProfileProps {
   user: User
@@ -53,8 +54,9 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
 
               return (
                 <div key={sport} className="flex items-center justify-between">
-                  <span className="text-sm text-gray-700">
-                    {sportInfo?.icon} {sportInfo?.name}
+                  <span className="flex items-center text-sm text-gray-700">
+                    <SportIcon sport={sport} size={16} className="mr-1.5" />
+                    {sportInfo?.name ?? sport}
                   </span>
                   <Badge variant={badgeVariant}>
                     {levelInfo?.name}

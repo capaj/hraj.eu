@@ -21,6 +21,7 @@ import {
   Euro
 } from 'lucide-react'
 import { SPORTS } from '../lib/constants'
+import { SportIcon } from '../components/sports/SportIcon'
 import { format } from 'date-fns'
 
 type ManageVenuesContentProps = {
@@ -28,11 +29,6 @@ type ManageVenuesContentProps = {
   venues: Venue[]
   onAddVenue: () => void
   onEditVenue: (venue: Venue) => void
-}
-
-const getSportIcon = (sportId: string) => {
-  const sport = SPORTS.find((s) => s.id === sportId)
-  return sport?.icon || '🏟️'
 }
 
 const VenueCard = ({
@@ -113,7 +109,7 @@ const VenueCard = ({
             <div className="flex flex-wrap gap-2">
               {venue.sports.map((sportId) => (
                 <Badge key={sportId} variant="info" size="sm">
-                  <span className="mr-1">{getSportIcon(sportId)}</span>
+                  <SportIcon sport={sportId} size={14} className="mr-1" />
                   {SPORTS.find((s) => s.id === sportId)?.name || sportId}
                 </Badge>
               ))}

@@ -19,6 +19,7 @@ import { updateEvent } from '../../server-functions/updateEvent'
 import { cancelEvent } from '../../server-functions/cancelEvent'
 import { useRouter } from '@tanstack/react-router'
 import { getTotalReservedAwareHeadcount } from '../../utils/participants'
+import { SportIcon } from '../sports/SportIcon'
 
 interface EditableEventCardProps {
   event: Event & { participants: string[] }
@@ -152,12 +153,11 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
       >
         <div className="flex justify-between items-start mb-3">
           <div className="flex items-center space-x-3">
-            <div className="text-2xl">
-              {event.sport === 'football' && '⚽'}
-              {event.sport === 'basketball' && '🏀'}
-              {event.sport === 'handball' && '🤾'}
-              {event.sport === 'ice-hockey' && '🏒'}
-            </div>
+            <SportIcon
+              sport={event.sport}
+              size={24}
+              className="shrink-0 text-primary-600"
+            />
             <div>
               <h3 className="font-semibold text-gray-900">{event.title}</h3>
               <p className="text-sm text-gray-600">
