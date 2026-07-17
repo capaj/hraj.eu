@@ -5,7 +5,8 @@ import { z } from 'zod'
 import { db } from '../../drizzle/db'
 import { eventT, participantT } from '../../drizzle/schema'
 import { auth } from '~/lib/auth'
-import { and, asc, eq } from 'drizzle-orm'
+import { and, asc, eq, inArray } from 'drizzle-orm'
+import { getWaitlistParticipantIdsToPromote } from './waitlistPromotion'
 
 const LeaveEventSchema = z.object({
   eventId: z.string().min(1, 'Event ID is required'),
@@ -81,33 +82,17 @@ export const leaveEvent = createServerFn({ method: 'POST' })
         .where(eq(participantT.eventId, data.eventId))
         .orderBy(asc(participantT.createdAt))
 
-      let confirmedHeadcount = participants
-        .filter((participant) => participant.status === 'confirmed')
-        .reduce((total, participant) => {
-          return total + 1 + (participant.plusAttendees?.length ?? 0)
-        }, 0)
-
-      const waitlistedParticipants = participants.filter(
-        (participant) => participant.status === 'waitlisted'
+      const participantIdsToPromote = getWaitlistParticipantIdsToPromote(
+        participants,
+        event.maxParticipants,
+        event.reservedParticipants ?? 0
       )
 
-      for (const waitlistedParticipant of waitlistedParticipants) {
-        const participantHeadcount =
-          1 + (waitlistedParticipant.plusAttendees?.length ?? 0)
-
-        if (
-          confirmedHeadcount + participantHeadcount >
-          event.maxParticipants - (event.reservedParticipants ?? 0)
-        ) {
-          break
-        }
-
+      if (participantIdsToPromote.length) {
         await tx
           .update(participantT)
           .set({ status: 'confirmed' })
-          .where(eq(participantT.id, waitlistedParticipant.id))
-
-        confirmedHeadcount += participantHeadcount
+          .where(inArray(participantT.id, participantIdsToPromote))
       }
     })
 
