@@ -10,12 +10,17 @@ import {
 } from '../../drizzle/schema'
 import { db } from 'drizzle/db'
 import { auth } from '~/lib/auth'
-import { eq, and, inArray } from 'drizzle-orm'
+import { eq, and, asc, inArray } from 'drizzle-orm'
 import { assertNoVenueEventConflict } from './eventVenueConflicts'
 import { env } from 'cloudflare:workers'
 import { Resend } from 'resend'
 import { sendVenueChangeEmail } from '~/lib/email/sendVenueChangeEmail'
+import {
+  sendEventTimeChangeEmail,
+  type EventTiming
+} from '~/lib/email/sendEventTimeChangeEmail'
 import type { EmailLocale } from '~/lib/email/sendCancellationEmail'
+import { getWaitlistParticipantIdsToPromote } from './waitlistPromotion'
 
 const LOCATION_FALLBACK = 'Location TBD'
 const resend = new Resend(env.RESEND_API_KEY)
@@ -82,7 +87,17 @@ export const updateEvent = createServerFn({ method: 'POST' })
       throw new Error('You can only update events you organized')
     }
 
-    const previousVenue = event.venueId
+    const venueChanged =
+      data.venueId !== undefined && data.venueId !== event.venueId
+    const timingChanged =
+      (data.date !== undefined && data.date !== event.date) ||
+      (data.startTime !== undefined && data.startTime !== event.startTime) ||
+      (data.duration !== undefined && data.duration !== event.duration)
+    const capacityIncreased =
+      data.maxParticipants !== undefined &&
+      data.maxParticipants > event.maxParticipants
+
+    const previousVenue = venueChanged && event.venueId
       ? await db.query.venueT.findFirst({ where: eq(venueT.id, event.venueId) })
       : null
 
@@ -178,29 +193,78 @@ export const updateEvent = createServerFn({ method: 'POST' })
       excludeEventId: event.id
     })
 
-    await db.update(eventT).set(updates).where(eq(eventT.id, data.id))
+    let waitlistParticipantsPromoted = 0
+    await db.transaction(async (tx) => {
+      await tx.update(eventT).set(updates).where(eq(eventT.id, data.id))
 
-    let venueChangeEmailsSent = 0
-    if (data.venueId && data.venueId !== event.venueId) {
-      venueChangeEmailsSent = await notifyAttendeesAboutVenueChange({
-        event: {
-          id: event.id,
-          title: updates.title ?? event.title,
-          description: updates.description ?? event.description,
-          date: updates.date ?? event.date,
-          startTime: updates.startTime ?? event.startTime,
-          duration: updates.duration ?? event.duration
-        },
-        previousVenue: formatLocation(
-          previousVenue?.name,
-          previousVenue?.address
-        ),
-        newVenueId: data.venueId,
-        request
-      })
+      if (!capacityIncreased || data.maxParticipants === undefined) {
+        return
+      }
+
+      const participants = await tx
+        .select({
+          id: participantT.id,
+          status: participantT.status,
+          plusAttendees: participantT.plusAttendees
+        })
+        .from(participantT)
+        .where(eq(participantT.eventId, event.id))
+        .orderBy(asc(participantT.createdAt))
+
+      const participantIdsToPromote = getWaitlistParticipantIdsToPromote(
+        participants,
+        data.maxParticipants,
+        updates.reservedParticipants ?? event.reservedParticipants
+      )
+
+      if (participantIdsToPromote.length) {
+        await tx
+          .update(participantT)
+          .set({ status: 'confirmed' })
+          .where(inArray(participantT.id, participantIdsToPromote))
+      }
+      waitlistParticipantsPromoted = participantIdsToPromote.length
+    })
+
+    const updatedEvent = {
+      id: event.id,
+      title: updates.title ?? event.title,
+      description: updates.description ?? event.description,
+      date: updates.date ?? event.date,
+      startTime: updates.startTime ?? event.startTime,
+      duration: updates.duration ?? event.duration
     }
+    const [venueChangeEmailsSent, timeChangeEmailsSent] = await Promise.all([
+      venueChanged && data.venueId
+        ? notifyAttendeesAboutVenueChange({
+            event: updatedEvent,
+            previousVenue: formatLocation(
+              previousVenue?.name,
+              previousVenue?.address
+            ),
+            newVenueId: data.venueId,
+            request
+          })
+        : Promise.resolve(0),
+      timingChanged
+        ? notifyAttendeesAboutTimeChange({
+            event: updatedEvent,
+            previousTiming: {
+              date: event.date,
+              startTime: event.startTime,
+              duration: event.duration
+            },
+            request
+          })
+        : Promise.resolve(0)
+    ])
 
-    return { success: true, venueChangeEmailsSent }
+    return {
+      success: true,
+      venueChangeEmailsSent,
+      timeChangeEmailsSent,
+      waitlistParticipantsPromoted
+    }
   })
 
 async function notifyAttendeesAboutVenueChange({
@@ -262,6 +326,67 @@ async function notifyAttendeesAboutVenueChange({
         } catch (error) {
           console.error(
             `Failed to send venue change email for event ${event.id} to ${participant.email}`,
+            error
+          )
+          return false
+        }
+      })
+  )
+
+  return sendResults.filter(Boolean).length
+}
+
+async function notifyAttendeesAboutTimeChange({
+  event,
+  previousTiming,
+  request
+}: {
+  event: {
+    id: string
+    title: string
+    description: string | null
+    date: string
+    startTime: string
+    duration: number
+  }
+  previousTiming: EventTiming
+  request: Request
+}): Promise<number> {
+  const participants = await db
+    .select({ email: user.email, name: user.name })
+    .from(participantT)
+    .innerJoin(user, eq(user.id, participantT.userId))
+    .where(
+      and(
+        eq(participantT.eventId, event.id),
+        inArray(participantT.status, ['confirmed', 'waitlisted', 'invited'])
+      )
+    )
+
+  const eventUrl = new URL(`/events/${event.id}`, request.url).toString()
+  const locale = getEmailLocale(request.headers.get('accept-language'))
+  const sendResults = await Promise.all(
+    participants
+      .filter(
+        (participant): participant is typeof participant & { email: string } =>
+          Boolean(participant.email)
+      )
+      .map(async (participant) => {
+        try {
+          await sendEventTimeChangeEmail({
+            resend,
+            from: env.SENDER_EMAIL,
+            to: participant.email,
+            name: participant.name,
+            event,
+            previousTiming,
+            eventUrl,
+            locale
+          })
+          return true
+        } catch (error) {
+          console.error(
+            `Failed to send time change email for event ${event.id} to ${participant.email}`,
             error
           )
           return false

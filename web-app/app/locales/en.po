@@ -826,6 +826,14 @@ msgstr ""
 msgid "Event Organizer"
 msgstr ""
 
+#: src/lib/email/sendEventTimeChangeEmail.ts:40
+msgid "Event time changed"
+msgstr ""
+
+#: src/lib/email/sendEventTimeChangeEmail.ts:74
+msgid "Event time changed: {title}"
+msgstr ""
+
 #: src/components/events/CreateEventForm.tsx:658
 msgid "Event Title *"
 msgstr ""
@@ -1101,6 +1109,10 @@ msgstr ""
 msgid "Guests:"
 msgstr ""
 
+#: src/lib/email/sendEventTimeChangeEmail.ts:41
+msgid "has a new time."
+msgstr ""
+
 #: src/lib/email/sendVenueChangeEmail.ts:39
 msgid "has a new venue."
 msgstr ""
@@ -1122,11 +1134,13 @@ msgid "Helping new players (+2 points)"
 msgstr ""
 
 #: src/lib/email/sendCancellationEmail.ts:42
+#: src/lib/email/sendEventTimeChangeEmail.ts:36
 #: src/lib/email/sendVenueChangeEmail.ts:35
 msgid "Hi {name},"
 msgstr ""
 
 #: src/lib/email/sendCancellationEmail.ts:42
+#: src/lib/email/sendEventTimeChangeEmail.ts:36
 #: src/lib/email/sendVenueChangeEmail.ts:35
 msgid "Hi,"
 msgstr ""
@@ -1432,6 +1446,14 @@ msgstr ""
 
 #: src/pages/UserProfilePage.tsx:395
 msgid "New passwords do not match."
+msgstr ""
+
+#: src/lib/email/sendEventTimeChangeEmail.ts:43
+msgid "New time"
+msgstr ""
+
+#: src/lib/email/sendEventTimeChangeEmail.ts:50
+msgid "New time: {newWhen}"
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:1101
@@ -1868,6 +1890,14 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
+#: src/lib/email/sendEventTimeChangeEmail.ts:42
+msgid "Previous time"
+msgstr ""
+
+#: src/lib/email/sendEventTimeChangeEmail.ts:49
+msgid "Previous time: {previousWhen}"
+msgstr ""
+
 #: src/lib/email/sendVenueChangeEmail.ts:41
 msgid "Previous venue"
 msgstr ""
@@ -2223,6 +2253,10 @@ msgstr ""
 msgid "The selected venue"
 msgstr ""
 
+#: src/lib/email/sendEventTimeChangeEmail.ts:48
+msgid "The time changed for your event: {title}"
+msgstr ""
+
 #: src/lib/email/sendVenueChangeEmail.ts:47
 msgid "The venue changed for your event: {title}"
 msgstr ""
@@ -2411,11 +2445,13 @@ msgstr ""
 #~ msgstr ""
 
 #: src/lib/email/sendCancellationEmail.ts:50
+#: src/lib/email/sendEventTimeChangeEmail.ts:44
 #: src/lib/email/sendVenueChangeEmail.ts:43
 msgid "View event"
 msgstr ""
 
 #: src/lib/email/sendCancellationEmail.ts:61
+#: src/lib/email/sendEventTimeChangeEmail.ts:54
 #: src/lib/email/sendVenueChangeEmail.ts:54
 msgid "View event: {eventUrl}"
 msgstr ""
