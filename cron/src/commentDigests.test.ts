@@ -1,7 +1,7 @@
 import { createClient, type Client } from '@libsql/client'
 import { drizzle } from 'drizzle-orm/libsql'
 import { migrate } from 'drizzle-orm/libsql/migrator'
-import { eq } from 'drizzle-orm'
+import { eq, isNull } from 'drizzle-orm'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
@@ -122,6 +122,10 @@ describe('sendPendingCommentDigests', () => {
 			.from(eventCommentT)
 			.where(eq(eventCommentT.id, 'comment-1'))
 		expect(pendingComment.notifiedAt).toBeNull()
+		await database
+			.update(eventCommentNotificationDeliveryT)
+			.set({ claimedAt: new Date(Date.now() - 60 * 60 * 1000) })
+			.where(isNull(eventCommentNotificationDeliveryT.deliveredAt))
 
 		const retriedRecipients: string[] = []
 		await sendPendingCommentDigests({
@@ -153,6 +157,63 @@ describe('sendPendingCommentDigests', () => {
 			.from(eventCommentT)
 			.where(eq(eventCommentT.id, 'comment-1'))
 		expect(completedComment.notifiedAt).toEqual(expect.any(Date))
+	})
+
+	it('claims deliveries before sending so overlapping runs do not duplicate comments', async () => {
+		await seedEvent(database, {
+			users: [
+				{ id: 'author', email: 'author@example.com' },
+				{ id: 'recipient', email: 'recipient@example.com' }
+			],
+			comments: [
+				{ id: 'comment-1', userId: 'author', content: 'First comment' }
+			]
+		})
+
+		let releaseFirstSend: (() => void) | undefined
+		let markFirstSendStarted: (() => void) | undefined
+		const firstSendStarted = new Promise<void>((resolve) => {
+			markFirstSendStarted = resolve
+		})
+		const firstRunComments: string[] = []
+		const firstRun = sendPendingCommentDigests({
+			database,
+			resend: {} as never,
+			senderEmail: 'noreply@example.com',
+			baseUrl: 'https://example.com',
+			sendDigest: vi.fn(async ({ comments }) => {
+				firstRunComments.push(...comments.map((comment) => comment.content))
+				markFirstSendStarted?.()
+				await new Promise<void>((resolve) => {
+					releaseFirstSend = resolve
+				})
+			})
+		})
+
+		await firstSendStarted
+		await database.insert(eventCommentT).values({
+			id: 'comment-2',
+			eventId: 'event-1',
+			userId: 'author',
+			content: 'Second comment'
+		})
+
+		const secondRunComments: string[] = []
+		await sendPendingCommentDigests({
+			database,
+			resend: {} as never,
+			senderEmail: 'noreply@example.com',
+			baseUrl: 'https://example.com',
+			sendDigest: vi.fn(async ({ comments }) => {
+				secondRunComments.push(...comments.map((comment) => comment.content))
+			})
+		})
+
+		expect(firstRunComments).toEqual(['First comment'])
+		expect(secondRunComments).toEqual(['Second comment'])
+
+		releaseFirstSend?.()
+		await firstRun
 	})
 
 	it('completes comments when nobody is eligible for an email', async () => {

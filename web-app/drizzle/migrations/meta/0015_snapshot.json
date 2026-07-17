@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "fff98cfa-b231-4a75-a92c-13220f016fbb",
+  "id": "8a3ced49-b9f7-4a26-83cd-e1c8638cb1e4",
   "prevId": "2949fca8-8ffc-4522-ba44-bd38180d5667",
   "tables": {
     "city_event_subscription": {
@@ -278,13 +278,27 @@
           "notNull": true,
           "autoincrement": false
         },
-        "delivered_at": {
-          "name": "delivered_at",
+        "claim_token": {
+          "name": "claim_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "claimed_at": {
+          "name": "claimed_at",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
           "default": "unixepoch()"
+        },
+        "delivered_at": {
+          "name": "delivered_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         }
       },
       "indexes": {

@@ -1,4 +1,4 @@
-import { and, asc, eq, inArray, isNull } from 'drizzle-orm'
+import { and, asc, eq, inArray, isNull, lt } from 'drizzle-orm'
 import type { Resend } from 'resend'
 import {
 	eventCommentNotificationDeliveryT,
@@ -13,6 +13,7 @@ import {
 } from './email/sendCommentDigestEmail'
 
 const COMMENT_BATCH_SIZE = 500
+const DELIVERY_CLAIM_TIMEOUT_MS = 45 * 60 * 1000
 
 type CronDb = {
 	select: (...args: any[]) => any
@@ -125,31 +126,107 @@ async function sendEventCommentDigests({
 	const existingDeliveries = (await database
 		.select({
 			commentId: eventCommentNotificationDeliveryT.commentId,
-			recipientUserId: eventCommentNotificationDeliveryT.recipientUserId
+			recipientUserId: eventCommentNotificationDeliveryT.recipientUserId,
+			deliveredAt: eventCommentNotificationDeliveryT.deliveredAt
 		})
 		.from(eventCommentNotificationDeliveryT)
 		.where(
 			inArray(eventCommentNotificationDeliveryT.commentId, commentIds)
-		)) as Array<{ commentId: string; recipientUserId: string }>
+		)) as Array<{
+		commentId: string
+		recipientUserId: string
+		deliveredAt: Date | null
+	}>
 
 	const delivered = new Set(
-		existingDeliveries.map((delivery) =>
-			deliveryKey(delivery.commentId, delivery.recipientUserId)
-		)
+		existingDeliveries
+			.filter((delivery) => delivery.deliveredAt)
+			.map((delivery) =>
+				deliveryKey(delivery.commentId, delivery.recipientUserId)
+			)
 	)
 
 	for (const recipient of recipients) {
-		const commentsForRecipient = eventComments.filter(
+		const pendingCommentsForRecipient = eventComments.filter(
 			(comment) =>
 				comment.authorUserId !== recipient.id &&
 				!delivered.has(deliveryKey(comment.id, recipient.id))
 		)
 
-		if (!commentsForRecipient.length) {
+		if (!pendingCommentsForRecipient.length) {
 			continue
 		}
 
 		try {
+			const claimToken = crypto.randomUUID()
+			const claimedAt = new Date()
+			const pendingCommentIds = pendingCommentsForRecipient.map(
+				(comment) => comment.id
+			)
+
+			await database
+				.insert(eventCommentNotificationDeliveryT)
+				.values(
+					pendingCommentsForRecipient.map((comment) => ({
+						commentId: comment.id,
+						recipientUserId: recipient.id,
+						claimToken,
+						claimedAt
+					}))
+				)
+				.onConflictDoNothing()
+
+			await database
+				.update(eventCommentNotificationDeliveryT)
+				.set({ claimToken, claimedAt })
+				.where(
+					and(
+						inArray(
+							eventCommentNotificationDeliveryT.commentId,
+							pendingCommentIds
+						),
+						eq(
+							eventCommentNotificationDeliveryT.recipientUserId,
+							recipient.id
+						),
+						isNull(eventCommentNotificationDeliveryT.deliveredAt),
+						lt(
+							eventCommentNotificationDeliveryT.claimedAt,
+							new Date(Date.now() - DELIVERY_CLAIM_TIMEOUT_MS)
+						)
+					)
+				)
+
+			const claimedDeliveries = (await database
+				.select({
+					commentId: eventCommentNotificationDeliveryT.commentId
+				})
+				.from(eventCommentNotificationDeliveryT)
+				.where(
+					and(
+						inArray(
+							eventCommentNotificationDeliveryT.commentId,
+							pendingCommentIds
+						),
+						eq(
+							eventCommentNotificationDeliveryT.recipientUserId,
+							recipient.id
+						),
+						eq(eventCommentNotificationDeliveryT.claimToken, claimToken),
+						isNull(eventCommentNotificationDeliveryT.deliveredAt)
+					)
+				)) as Array<{ commentId: string }>
+			const claimedCommentIds = new Set(
+				claimedDeliveries.map((delivery) => delivery.commentId)
+			)
+			const commentsForRecipient = pendingCommentsForRecipient.filter(
+				(comment) => claimedCommentIds.has(comment.id)
+			)
+
+			if (!commentsForRecipient.length) {
+				continue
+			}
+
 			await sendDigest({
 				resend,
 				from: senderEmail,
@@ -166,14 +243,22 @@ async function sendEventCommentDigests({
 			})
 
 			await database
-				.insert(eventCommentNotificationDeliveryT)
-				.values(
-					commentsForRecipient.map((comment) => ({
-						commentId: comment.id,
-						recipientUserId: recipient.id
-					}))
+				.update(eventCommentNotificationDeliveryT)
+				.set({ deliveredAt: new Date() })
+				.where(
+					and(
+						eq(eventCommentNotificationDeliveryT.claimToken, claimToken),
+						eq(
+							eventCommentNotificationDeliveryT.recipientUserId,
+							recipient.id
+						),
+						inArray(
+							eventCommentNotificationDeliveryT.commentId,
+							commentsForRecipient.map((comment) => comment.id)
+						),
+						isNull(eventCommentNotificationDeliveryT.deliveredAt)
+					)
 				)
-				.onConflictDoNothing()
 
 			for (const comment of commentsForRecipient) {
 				delivered.add(deliveryKey(comment.id, recipient.id))

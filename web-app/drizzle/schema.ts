@@ -264,9 +264,11 @@ export const eventCommentNotificationDeliveryT = sqliteTable(
     recipientUserId: text('recipient_user_id')
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
-    deliveredAt: integer('delivered_at', { mode: 'timestamp' })
+    claimToken: text('claim_token').notNull(),
+    claimedAt: integer('claimed_at', { mode: 'timestamp' })
       .default(sql`unixepoch()`)
-      .notNull()
+      .notNull(),
+    deliveredAt: integer('delivered_at', { mode: 'timestamp' })
   },
   (table) => ({
     commentRecipientUniqueIdx: uniqueIndex(

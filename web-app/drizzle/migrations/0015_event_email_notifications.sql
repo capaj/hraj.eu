@@ -2,7 +2,9 @@ CREATE TABLE `event_comment_notification_delivery` (
 	`id` text PRIMARY KEY NOT NULL,
 	`comment_id` text NOT NULL,
 	`recipient_user_id` text NOT NULL,
-	`delivered_at` integer DEFAULT (unixepoch()) NOT NULL,
+	`claim_token` text NOT NULL,
+	`claimed_at` integer DEFAULT (unixepoch()) NOT NULL,
+	`delivered_at` integer,
 	FOREIGN KEY (`comment_id`) REFERENCES `event_comment`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`recipient_user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade
 );
