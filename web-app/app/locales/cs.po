@@ -219,7 +219,7 @@ msgstr "O události"
 msgid "Access Instructions"
 msgstr "Pokyny k přístupu"
 
-#: src/pages/UserProfilePage.tsx:442
+#: src/pages/UserProfilePage.tsx:474
 msgid "Account deleted successfully"
 msgstr "Účet byl úspěšně smazán"
 
@@ -227,7 +227,7 @@ msgstr "Účet byl úspěšně smazán"
 #~ msgid "Account deletion request submitted. You will receive an email with further instructions."
 #~ msgstr "Žádost o smazání účtu byla odeslána. Obdržíte e-mail s dalšími pokyny."
 
-#: src/pages/UserProfilePage.tsx:674
+#: src/pages/UserProfilePage.tsx:706
 msgid "Account Security"
 msgstr "Zabezpečení účtu"
 
@@ -349,7 +349,7 @@ msgstr "Vyvarujte se venkovních her během bouří"
 msgid "Back to Events"
 msgstr "Zpět na události"
 
-#: src/pages/UserProfilePage.tsx:168
+#: src/pages/UserProfilePage.tsx:171
 msgid "Bank account updated!"
 msgstr "Bankovní účet aktualizován!"
 
@@ -373,7 +373,7 @@ msgstr "Nahlášení nevhodného chování bereme vážně a může vést k omez
 msgid "Below average"
 msgstr "Podprůměrný"
 
-#: src/pages/UserProfilePage.tsx:642
+#: src/pages/UserProfilePage.tsx:674
 msgid "Bio"
 msgstr "O mně"
 
@@ -406,7 +406,7 @@ msgstr "Kavárna"
 #: src/pages/EventDetailsPage.tsx:1866
 #: src/pages/EventDetailsPage.tsx:2541
 #: src/pages/ManageCoreGroupsPage.tsx:205
-#: src/pages/UserProfilePage.tsx:573
+#: src/pages/UserProfilePage.tsx:605
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -459,7 +459,7 @@ msgstr "Vybrat GIF"
 msgid "City *"
 msgstr "Město *"
 
-#: src/pages/UserProfilePage.tsx:631
+#: src/pages/UserProfilePage.tsx:663
 msgid "City, Country"
 msgstr "Město, země"
 
@@ -499,6 +499,10 @@ msgstr "Komentář aktualizován."
 msgid "Comments"
 msgstr "Komentáře"
 
+#: src/pages/UserProfilePage.tsx:1221
+msgid "Comments are collected and sent as an hourly digest instead of one email per comment."
+msgstr "Komentáře se shromažďují a odesílají v hodinovém souhrnu namísto samostatného e-mailu pro každý komentář."
+
 #: src/pages/LeaderboardPage.tsx:313
 msgid "Community Leaderboard"
 msgstr "Komunitní žebříček"
@@ -519,9 +523,13 @@ msgstr "Zvažte ochranu před sluncem"
 msgid "Contact Information (Optional)"
 msgstr "Kontaktní údaje (nepovinné)"
 
-#: src/pages/UserProfilePage.tsx:612
+#: src/pages/UserProfilePage.tsx:644
 msgid "Contact support to change email"
 msgstr "Pro změnu e-mailu kontaktujte podporu"
+
+#: src/pages/UserProfilePage.tsx:1208
+msgid "Control confirmation, cancellation, event-change, and comment digest emails."
+msgstr "Spravuj e-maily s potvrzením, zrušením a změnami událostí a souhrny komentářů."
 
 #: src/components/weather/WeatherWidget.tsx:98
 msgid "Cool and rainy"
@@ -604,7 +612,7 @@ msgstr "Vytvářím místo..."
 msgid "Currency"
 msgstr "Měna"
 
-#: src/pages/UserProfilePage.tsx:326
+#: src/pages/UserProfilePage.tsx:358
 msgid "Currency updated"
 msgstr "Měna aktualizována"
 
@@ -736,7 +744,7 @@ msgstr "Upravit událost"
 msgid "Edit Group"
 msgstr "Upravit skupinu"
 
-#: src/pages/UserProfilePage.tsx:568
+#: src/pages/UserProfilePage.tsx:600
 msgid "Edit Profile"
 msgstr "Upravit profil"
 
@@ -748,7 +756,7 @@ msgstr "Upravit místo"
 msgid "Email"
 msgstr "E-mail"
 
-#: src/pages/UserProfilePage.tsx:608
+#: src/pages/UserProfilePage.tsx:640
 msgid "Email Address"
 msgstr "E-mailová adresa"
 
@@ -817,6 +825,18 @@ msgstr "Událost vytvořena přes hraj.eu"
 #: src/pages/EventDetailsPage.tsx:1242
 msgid "Event Details"
 msgstr "Detaily události"
+
+#: src/pages/UserProfilePage.tsx:1205
+msgid "Event email notifications"
+msgstr "E-mailová upozornění k událostem"
+
+#: src/pages/UserProfilePage.tsx:332
+msgid "Event emails disabled"
+msgstr "E-maily k událostem vypnuty"
+
+#: src/pages/UserProfilePage.tsx:331
+msgid "Event emails enabled"
+msgstr "E-maily k událostem zapnuty"
 
 #: src/pages/EventDetailsPage.tsx:508
 msgid "Event not found"
@@ -926,7 +946,7 @@ msgstr "Nepodařilo se načíst GIFy"
 msgid "Failed to load weather data"
 msgstr "Nepodařilo se načíst data o počasí"
 
-#: src/pages/UserProfilePage.tsx:448
+#: src/pages/UserProfilePage.tsx:480
 msgid "Failed to process account deletion"
 msgstr "Nepodařilo se zpracovat smazání účtu"
 
@@ -938,7 +958,7 @@ msgstr "Nepodařilo se zpracovat smazání účtu"
 msgid "Failed to search GIFs"
 msgstr "Nepodařilo se vyhledat GIFy"
 
-#: src/pages/UserProfilePage.tsx:171
+#: src/pages/UserProfilePage.tsx:174
 msgid "Failed to update bank account"
 msgstr "Nepodařilo se aktualizovat bankovní účet"
 
@@ -950,9 +970,13 @@ msgstr "Nepodařilo se aktualizovat bankovní účet"
 msgid "Failed to update comment. Please try again."
 msgstr "Nepodařilo se aktualizovat komentář. Zkuste to prosím znovu."
 
-#: src/pages/UserProfilePage.tsx:329
+#: src/pages/UserProfilePage.tsx:361
 msgid "Failed to update currency"
 msgstr "Nepodařilo se aktualizovat měnu"
+
+#: src/pages/UserProfilePage.tsx:336
+msgid "Failed to update email preference"
+msgstr "Nastavení e-mailů se nepodařilo změnit"
 
 #: src/pages/EditEventPage.tsx:82
 msgid "Failed to update event"
@@ -962,7 +986,7 @@ msgstr "Nepodařilo se aktualizovat událost"
 msgid "Failed to update guests. Please try again."
 msgstr "Nepodařilo se aktualizovat hosty. Zkuste to prosím znovu."
 
-#: src/pages/UserProfilePage.tsx:295
+#: src/pages/UserProfilePage.tsx:298
 msgid "Failed to update notification"
 msgstr "Nepodařilo se aktualizovat oznámení"
 
@@ -971,11 +995,11 @@ msgstr "Nepodařilo se aktualizovat oznámení"
 msgid "Failed to update payment status. Please try again."
 msgstr "Nepodařilo se aktualizovat stav platby. Zkuste to prosím znovu."
 
-#: src/pages/UserProfilePage.tsx:119
+#: src/pages/UserProfilePage.tsx:122
 msgid "Failed to update profile"
 msgstr "Nepodařilo se aktualizovat profil"
 
-#: src/pages/UserProfilePage.tsx:146
+#: src/pages/UserProfilePage.tsx:149
 msgid "Failed to update Revolut tag"
 msgstr "Nepodařilo se aktualizovat Revolut tag"
 
@@ -987,7 +1011,7 @@ msgstr "Nepodařilo se aktualizovat Revolut tag"
 msgid "Failed to update venue. Please try again."
 msgstr "Nepodařilo se aktualizovat místo. Zkuste to prosím znovu."
 
-#: src/pages/UserProfilePage.tsx:377
+#: src/pages/UserProfilePage.tsx:409
 msgid "Failed to upload image. Please try again."
 msgstr "Nepodařilo se nahrát obrázek. Zkuste to prosím znovu."
 
@@ -1186,7 +1210,7 @@ msgstr "Ideál: {count} hráčů"
 msgid "If fewer than the minimum number of players join by the cancellation deadline, the event will be automatically cancelled and all participants will be notified."
 msgstr "Pokud se do uzávěrky nepřihlásí alespoň minimální počet hráčů, událost bude automaticky zrušena a všichni účastníci budou informováni."
 
-#: src/pages/UserProfilePage.tsx:353
+#: src/pages/UserProfilePage.tsx:385
 msgid "Image must be smaller than 5MB"
 msgstr "Obrázek musí být menší než 5 MB"
 
@@ -1255,7 +1279,7 @@ msgstr "Připojil se {timeAgo}"
 msgid "JPG, PNG up to 10MB each"
 msgstr "JPG, PNG do 10 MB každý"
 
-#: src/pages/UserProfilePage.tsx:540
+#: src/pages/UserProfilePage.tsx:572
 msgid "Karma Points"
 msgstr "Body karmy"
 
@@ -1317,7 +1341,7 @@ msgid "Loading..."
 msgstr "Načítání..."
 
 #: src/pages/EventDetailsPage.tsx:1358
-#: src/pages/UserProfilePage.tsx:618
+#: src/pages/UserProfilePage.tsx:650
 msgid "Location"
 msgstr "Poloha"
 
@@ -1346,7 +1370,7 @@ msgstr "Spravovat skupiny"
 msgid "Manage Venues"
 msgstr "Spravovat místa"
 
-#: src/pages/UserProfilePage.tsx:677
+#: src/pages/UserProfilePage.tsx:709
 msgid "Manage your password and account security settings"
 msgstr "Spravujte své heslo a nastavení zabezpečení účtu"
 
@@ -1383,7 +1407,7 @@ msgstr "Maximální počet hráčů *"
 msgid "Meet local amateur {lowerSportName} players, join upcoming games, and find places to play in {0}."
 msgstr "Seznamte se s místními amatérskými hráči sportu {lowerSportName}, přidejte se k nadcházejícím hrám a najděte místa, kde si zahrát v {0}."
 
-#: src/pages/UserProfilePage.tsx:524
+#: src/pages/UserProfilePage.tsx:556
 msgid "Member since"
 msgstr "Členem od"
 
@@ -1440,11 +1464,11 @@ msgstr "Nahlášení negativního chování (-10 bodů)"
 msgid "New Group"
 msgstr "Nová skupina"
 
-#: src/pages/UserProfilePage.tsx:400
+#: src/pages/UserProfilePage.tsx:432
 msgid "New password must be at least 8 characters long."
 msgstr "Nové heslo musí mít alespoň 8 znaků."
 
-#: src/pages/UserProfilePage.tsx:395
+#: src/pages/UserProfilePage.tsx:427
 msgid "New passwords do not match."
 msgstr "Nová hesla se neshodují."
 
@@ -1472,7 +1496,7 @@ msgstr "Nové místo: {newVenue}"
 msgid "Newest First"
 msgstr "Nejnovější nejdříve"
 
-#: src/pages/UserProfilePage.tsx:661
+#: src/pages/UserProfilePage.tsx:693
 msgid "No bio provided"
 msgstr "Žádné bio"
 
@@ -1577,7 +1601,7 @@ msgstr "Nahlášení nedostavení se odečte body karmy a může ovlivnit účas
 msgid "No-shows without notice (-5 points)"
 msgstr "Nepřítomnost bez omluvy (-5 bodů)"
 
-#: src/pages/UserProfilePage.tsx:635
+#: src/pages/UserProfilePage.tsx:667
 msgid "Not specified"
 msgstr "Neuvedeno"
 
@@ -1661,7 +1685,7 @@ msgstr "Účastníci"
 msgid "Participants: {current}/{max}"
 msgstr "Účastníci: {current}/{max}"
 
-#: src/pages/UserProfilePage.tsx:421
+#: src/pages/UserProfilePage.tsx:453
 msgid "Password changed successfully!"
 msgstr "Heslo bylo úspěšně změněno!"
 
@@ -1727,7 +1751,7 @@ msgstr "Ideální velikost hry"
 msgid "Perfect number for the best game"
 msgstr "Ideální počet pro nejlepší hru"
 
-#: src/pages/UserProfilePage.tsx:560
+#: src/pages/UserProfilePage.tsx:592
 msgid "Personal Information"
 msgstr "Osobní údaje"
 
@@ -1806,7 +1830,7 @@ msgstr "Prosím, zadejte komentář před odesláním."
 msgid "Please enter a name for each guest."
 msgstr "Prosím, zadejte jméno pro každého hosta."
 
-#: src/pages/UserProfilePage.tsx:390
+#: src/pages/UserProfilePage.tsx:422
 msgid "Please fill in all password fields."
 msgstr "Vyplňte prosím všechna pole pro heslo."
 
@@ -1834,7 +1858,7 @@ msgstr "Prosím, vyberte sport pro vaši událost."
 msgid "Please select a venue for your event."
 msgstr "Vyberte prosím místo konání své události."
 
-#: src/pages/UserProfilePage.tsx:347
+#: src/pages/UserProfilePage.tsx:379
 msgid "Please select an image file"
 msgstr "Vyberte prosím soubor s obrázkem"
 
@@ -1854,7 +1878,7 @@ msgstr "Pro potvrzení platby se prosím přihlaste."
 msgid "Please sign in to join this event."
 msgstr "Pro připojení k této události se prosím přihlaste."
 
-#: src/pages/UserProfilePage.tsx:433
+#: src/pages/UserProfilePage.tsx:465
 msgid "Please type \"DELETE\" to confirm account deletion."
 msgstr "Pro potvrzení smazání účtu napište \"DELETE\"."
 
@@ -1939,7 +1963,7 @@ msgstr "Ceník (nepovinný)"
 msgid "Private (invite-only)"
 msgstr "Soukromá (jen pro pozvané)"
 
-#: src/pages/UserProfilePage.tsx:116
+#: src/pages/UserProfilePage.tsx:119
 msgid "Profile updated successfully!"
 msgstr "Profil byl úspěšně aktualizován!"
 
@@ -1999,6 +2023,10 @@ msgstr "Důvod"
 msgid "Reason: {reason}"
 msgstr "Důvod: {reason}"
 
+#: src/pages/UserProfilePage.tsx:1218
+msgid "Receive event emails"
+msgstr "Dostávat e-maily k událostem"
+
 #: src/components/weather/WeatherWidget.tsx:346
 #: src/components/weather/WeatherWidget.tsx:387
 msgid "Refresh"
@@ -2051,7 +2079,7 @@ msgstr "Nutné pro potvrzení události"
 msgid "Reserved spots"
 msgstr "Rezervovaná místa"
 
-#: src/pages/UserProfilePage.tsx:143
+#: src/pages/UserProfilePage.tsx:146
 msgid "Revolut tag updated!"
 msgstr "Revolut tag aktualizován!"
 
@@ -2066,7 +2094,7 @@ msgstr "Revolut: @uživatelskéjméno nebo hotovost na místě"
 msgid "Save"
 msgstr "Uložit"
 
-#: src/pages/UserProfilePage.tsx:577
+#: src/pages/UserProfilePage.tsx:609
 msgid "Save Changes"
 msgstr "Uložit změny"
 
@@ -2241,7 +2269,7 @@ msgstr "Podporuje **tučné**, *kurzívu*, __podtržení__, @zmínky a GIFy."
 #~ msgid "Supports **bold**, *italic*, __underline__, and @mentions."
 #~ msgstr ""
 
-#: src/pages/UserProfilePage.tsx:656
+#: src/pages/UserProfilePage.tsx:688
 msgid "Tell us about yourself and your sports interests..."
 msgstr "Napište nám něco o sobě a svých sportovních zájmech..."
 

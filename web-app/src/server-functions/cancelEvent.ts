@@ -92,7 +92,8 @@ export const cancelEvent = createServerFn({ method: 'POST' })
       .where(
         and(
           eq(participantT.eventId, event.id),
-          inArray(participantT.status, ['confirmed', 'waitlisted', 'invited'])
+          inArray(participantT.status, ['confirmed', 'waitlisted', 'invited']),
+          eq(user.emailNotificationsDisabled, false)
         )
       )
 

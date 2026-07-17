@@ -42,6 +42,7 @@ export const getUserById = createServerFn({ method: 'GET' })
       eventsOrganized: organizedCountResult?.count ?? 0,
       skillLevels,
       notificationPreferences: {}, // notifications logic is separate
+      emailNotificationsDisabled: user.emailNotificationsDisabled,
       preferredCurrency: user.preferredCurrency || 'CZK',
       location:
         user.city && user.country ? `${user.city}, ${user.country}` : undefined,

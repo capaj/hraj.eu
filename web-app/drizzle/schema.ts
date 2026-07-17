@@ -241,11 +241,40 @@ export const eventCommentT = sqliteTable(
     content: text('content').notNull(),
     createdAt: integer('created_at', { mode: 'timestamp' })
       .default(sql`unixepoch()`)
-      .notNull()
+      .notNull(),
+    notifiedAt: integer('notified_at', { mode: 'timestamp' })
   },
   (table) => ({
     eventIdIdx: index('event_comment_event_id_idx').on(table.eventId),
-    userIdIdx: index('event_comment_user_id_idx').on(table.userId)
+    userIdIdx: index('event_comment_user_id_idx').on(table.userId),
+    notifiedAtIdx: index('event_comment_notified_at_idx').on(table.notifiedAt)
+  })
+)
+
+export const eventCommentNotificationDeliveryT = sqliteTable(
+  'event_comment_notification_delivery',
+  {
+    id: text('id')
+      .$defaultFn(() => createId())
+      .primaryKey()
+      .notNull(),
+    commentId: text('comment_id')
+      .notNull()
+      .references(() => eventCommentT.id, { onDelete: 'cascade' }),
+    recipientUserId: text('recipient_user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    deliveredAt: integer('delivered_at', { mode: 'timestamp' })
+      .default(sql`unixepoch()`)
+      .notNull()
+  },
+  (table) => ({
+    commentRecipientUniqueIdx: uniqueIndex(
+      'event_comment_notification_delivery_comment_recipient_idx'
+    ).on(table.commentId, table.recipientUserId),
+    recipientIdx: index(
+      'event_comment_notification_delivery_recipient_idx'
+    ).on(table.recipientUserId)
   })
 )
 
@@ -483,6 +512,20 @@ export const eventCommentRelations = relations(eventCommentT, ({ one }) => ({
     references: [user.id]
   })
 }))
+
+export const eventCommentNotificationDeliveryRelations = relations(
+  eventCommentNotificationDeliveryT,
+  ({ one }) => ({
+    comment: one(eventCommentT, {
+      fields: [eventCommentNotificationDeliveryT.commentId],
+      references: [eventCommentT.id]
+    }),
+    recipient: one(user, {
+      fields: [eventCommentNotificationDeliveryT.recipientUserId],
+      references: [user.id]
+    })
+  })
+)
 
 export const eventFeedbackT = sqliteTable(
   'event_feedback',

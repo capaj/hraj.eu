@@ -99,6 +99,20 @@
       "when": 1779703834081,
       "tag": "0013_reserved_participants",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "6",
+      "when": 1784293675818,
+      "tag": "0014_city_event_subscriptions",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "6",
+      "when": 1784293715373,
+      "tag": "0015_event_email_notifications",
+      "breakpoints": true
     }
   ]
 }
