@@ -1759,32 +1759,6 @@ export const EventDetailsPage: React.FC = () => {
               </Card>
             )}
 
-            {/* Comments */}
-            {renderCommentsCard()}
-
-            {/* Payment Info */}
-            {renderPaymentCard()}
-
-            {/* Weather Widget */}
-            {shouldShowWeather && (
-              <WeatherWidget
-                date={event.date}
-                sport={event.sport}
-                coordinates={
-                  venue &&
-                    Number.isFinite(venue.lat) &&
-                    Number.isFinite(venue.lng) &&
-                    (venue.lat !== 0 || venue.lng !== 0)
-                    ? { latitude: venue.lat, longitude: venue.lng }
-                    : undefined
-                }
-              />
-            )}
-
-            {/* Game Rules */}
-            {renderGameRulesCard()}
-
-
           </div>
 
           {/* Sidebar */}
@@ -2089,6 +2063,33 @@ export const EventDetailsPage: React.FC = () => {
               </Card>
             )}
 
+          </div>
+        </div>
+
+        <div className="mt-8 grid grid-cols-1 items-start gap-8 lg:grid-cols-5">
+          <div className="lg:col-span-3">
+            {renderCommentsCard()}
+          </div>
+
+          <div className="space-y-6 lg:col-span-2">
+            {renderPaymentCard()}
+
+            {shouldShowWeather && (
+              <WeatherWidget
+                date={event.date}
+                sport={event.sport}
+                coordinates={
+                  venue &&
+                    Number.isFinite(venue.lat) &&
+                    Number.isFinite(venue.lng) &&
+                    (venue.lat !== 0 || venue.lng !== 0)
+                    ? { latitude: venue.lat, longitude: venue.lng }
+                    : undefined
+                }
+              />
+            )}
+
+            {renderGameRulesCard()}
           </div>
         </div>
 
