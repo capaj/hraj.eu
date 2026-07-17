@@ -4,6 +4,7 @@ import { cityEventSubscriptionT, eventT, participantT, user, venueT } from '../.
 import { sendCancellationEmail } from './email/sendCancellationEmail'
 import { sendConfirmationEmail } from './email/sendConfirmationEmail'
 import { sendCitySubscriptionEmail } from './email/sendCitySubscriptionEmail'
+import { sendPendingCommentDigests } from './commentDigests'
 import type { Env, EventRow, ParticipantRow } from './types'
 
 const LOCATION_FALLBACK = 'Location TBD'
@@ -15,6 +16,7 @@ const DEFAULT_EVENT_TIMEZONE = 'Europe/Prague'
 
 type CronDb = {
 	select: (...args: any[]) => any
+	insert: (...args: any[]) => any
 	update: (...args: any[]) => any
 }
 
@@ -179,6 +181,7 @@ export async function runScheduledJob({
 		})
 		.from(cityEventSubscriptionT)
 		.innerJoin(user, eq(user.id, cityEventSubscriptionT.userId))
+		.where(eq(user.emailNotificationsDisabled, false))
 
 	for (const subscription of citySubscriptions) {
 		if (!subscription.email) continue
@@ -215,10 +218,15 @@ export async function runScheduledJob({
 			baseUrl
 		})
 
-		const latestCreatedAt = eventsInCity.reduce((latest, current) => {
-			if (!latest) return current.createdAt
-			return new Date(current.createdAt) > new Date(latest) ? current.createdAt : latest
-		}, subscription.lastNotifiedEventCreatedAt as Date | null)
+		const latestCreatedAt = eventsInCity.reduce(
+			(latest: Date | null, current: { createdAt: Date }) => {
+				if (!latest) return current.createdAt
+				return new Date(current.createdAt) > new Date(latest)
+					? current.createdAt
+					: latest
+			},
+			subscription.lastNotifiedEventCreatedAt as Date | null
+		)
 
 		if (latestCreatedAt) {
 			await database
@@ -281,6 +289,13 @@ export async function runScheduledJob({
 			`Cancelled event ${eventRow.id} and emailed ${participants.length} attendees`
 		)
 	}
+
+	await sendPendingCommentDigests({
+		database,
+		resend,
+		senderEmail,
+		baseUrl
+	})
 }
 
 async function getConfirmedParticipants(
@@ -292,7 +307,11 @@ async function getConfirmedParticipants(
 		.from(participantT)
 		.innerJoin(user, eq(user.id, participantT.userId))
 		.where(
-			and(eq(participantT.eventId, eventId), eq(participantT.status, 'confirmed'))
+			and(
+				eq(participantT.eventId, eventId),
+				eq(participantT.status, 'confirmed'),
+				eq(user.emailNotificationsDisabled, false)
+			)
 		)
 }
 

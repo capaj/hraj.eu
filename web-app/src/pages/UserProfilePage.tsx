@@ -54,6 +54,8 @@ export const UserProfile: React.FC = () => {
     karmaPoints: userFromLoader.karmaPoints ?? 0,
     skillLevels: userFromLoader.skillLevels ?? {},
     notificationPreferences: userFromLoader.notificationPreferences ?? {},
+    emailNotificationsDisabled:
+      userFromLoader.emailNotificationsDisabled ?? false,
     preferredCurrency: userFromLoader.preferredCurrency ?? 'EUR',
     location: userFromLoader.location ?? '',
     revTag: userFromLoader.revTag ?? '',
@@ -77,6 +79,7 @@ export const UserProfile: React.FC = () => {
   const [notificationChanges, setNotificationChanges] = useState<
     Record<string, boolean>
   >({})
+  const [isSavingEmailPreference, setIsSavingEmailPreference] = useState(false)
 
   // Password change state
   const [showPasswordChange, setShowPasswordChange] = useState(false)
@@ -304,6 +307,35 @@ export const UserProfile: React.FC = () => {
           return newChanges
         })
       }
+    }
+  }
+
+  const handleEmailNotificationsChange = async (enabled: boolean) => {
+    const disabled = !enabled
+    setIsSavingEmailPreference(true)
+
+    try {
+      await updateUserProfile({
+        data: { emailNotificationsDisabled: disabled }
+      })
+      setUser((previous) => ({
+        ...previous,
+        emailNotificationsDisabled: disabled
+      }))
+      setEditedUser((previous) => ({
+        ...previous,
+        emailNotificationsDisabled: disabled
+      }))
+      toast.success(
+        enabled
+          ? i18n._(msg`Event emails enabled`)
+          : i18n._(msg`Event emails disabled`)
+      )
+    } catch (error) {
+      console.error('Failed to update event email preference:', error)
+      toast.error(i18n._(msg`Failed to update email preference`))
+    } finally {
+      setIsSavingEmailPreference(false)
     }
   }
 
@@ -1161,6 +1193,45 @@ export const UserProfile: React.FC = () => {
             </Card>
           </div>
         </div>
+
+        <Card className="mt-8">
+          <CardHeader>
+            <h3 className="text-xl font-semibold text-gray-900 flex items-center">
+              {user.emailNotificationsDisabled ? (
+                <BellOff size={20} className="mr-2" />
+              ) : (
+                <Bell size={20} className="mr-2" />
+              )}
+              <Trans>Event email notifications</Trans>
+            </h3>
+            <p className="text-gray-600 text-sm mt-1">
+              <Trans>
+                Control confirmation, cancellation, event-change, and comment
+                digest emails.
+              </Trans>
+            </p>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between gap-6">
+              <div>
+                <div className="font-medium text-gray-900">
+                  <Trans>Receive event emails</Trans>
+                </div>
+                <p className="text-sm text-gray-600 mt-1">
+                  <Trans>
+                    Comments are collected and sent as an hourly digest instead
+                    of one email per comment.
+                  </Trans>
+                </p>
+              </div>
+              <Toggle
+                checked={!user.emailNotificationsDisabled}
+                onChange={handleEmailNotificationsChange}
+                disabled={isSavingEmailPreference}
+              />
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Sports & Skill Levels - Full Width with Two-Column Grid */}
         <Card className="mt-8">

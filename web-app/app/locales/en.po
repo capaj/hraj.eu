@@ -219,7 +219,7 @@ msgstr ""
 msgid "Access Instructions"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:442
+#: src/pages/UserProfilePage.tsx:474
 msgid "Account deleted successfully"
 msgstr ""
 
@@ -227,7 +227,7 @@ msgstr ""
 #~ msgid "Account deletion request submitted. You will receive an email with further instructions."
 #~ msgstr ""
 
-#: src/pages/UserProfilePage.tsx:674
+#: src/pages/UserProfilePage.tsx:706
 msgid "Account Security"
 msgstr ""
 
@@ -349,7 +349,7 @@ msgstr ""
 msgid "Back to Events"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:168
+#: src/pages/UserProfilePage.tsx:171
 msgid "Bank account updated!"
 msgstr ""
 
@@ -373,7 +373,7 @@ msgstr ""
 msgid "Below average"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:642
+#: src/pages/UserProfilePage.tsx:674
 msgid "Bio"
 msgstr ""
 
@@ -406,7 +406,7 @@ msgstr ""
 #: src/pages/EventDetailsPage.tsx:1866
 #: src/pages/EventDetailsPage.tsx:2541
 #: src/pages/ManageCoreGroupsPage.tsx:205
-#: src/pages/UserProfilePage.tsx:573
+#: src/pages/UserProfilePage.tsx:605
 msgid "Cancel"
 msgstr ""
 
@@ -459,7 +459,7 @@ msgstr ""
 msgid "City *"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:631
+#: src/pages/UserProfilePage.tsx:663
 msgid "City, Country"
 msgstr ""
 
@@ -499,6 +499,10 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
+#: src/pages/UserProfilePage.tsx:1221
+msgid "Comments are collected and sent as an hourly digest instead of one email per comment."
+msgstr ""
+
 #: src/pages/LeaderboardPage.tsx:313
 msgid "Community Leaderboard"
 msgstr ""
@@ -519,8 +523,12 @@ msgstr ""
 msgid "Contact Information (Optional)"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:612
+#: src/pages/UserProfilePage.tsx:644
 msgid "Contact support to change email"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:1208
+msgid "Control confirmation, cancellation, event-change, and comment digest emails."
 msgstr ""
 
 #: src/components/weather/WeatherWidget.tsx:98
@@ -604,7 +612,7 @@ msgstr ""
 msgid "Currency"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:326
+#: src/pages/UserProfilePage.tsx:358
 msgid "Currency updated"
 msgstr ""
 
@@ -736,7 +744,7 @@ msgstr ""
 msgid "Edit Group"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:568
+#: src/pages/UserProfilePage.tsx:600
 msgid "Edit Profile"
 msgstr ""
 
@@ -748,7 +756,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:608
+#: src/pages/UserProfilePage.tsx:640
 msgid "Email Address"
 msgstr ""
 
@@ -816,6 +824,18 @@ msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1242
 msgid "Event Details"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:1205
+msgid "Event email notifications"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:332
+msgid "Event emails disabled"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:331
+msgid "Event emails enabled"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:508
@@ -926,7 +946,7 @@ msgstr ""
 msgid "Failed to load weather data"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:448
+#: src/pages/UserProfilePage.tsx:480
 msgid "Failed to process account deletion"
 msgstr ""
 
@@ -938,7 +958,7 @@ msgstr ""
 msgid "Failed to search GIFs"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:171
+#: src/pages/UserProfilePage.tsx:174
 msgid "Failed to update bank account"
 msgstr ""
 
@@ -950,8 +970,12 @@ msgstr ""
 msgid "Failed to update comment. Please try again."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:329
+#: src/pages/UserProfilePage.tsx:361
 msgid "Failed to update currency"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:336
+msgid "Failed to update email preference"
 msgstr ""
 
 #: src/pages/EditEventPage.tsx:82
@@ -962,7 +986,7 @@ msgstr ""
 msgid "Failed to update guests. Please try again."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:295
+#: src/pages/UserProfilePage.tsx:298
 msgid "Failed to update notification"
 msgstr ""
 
@@ -971,11 +995,11 @@ msgstr ""
 msgid "Failed to update payment status. Please try again."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:119
+#: src/pages/UserProfilePage.tsx:122
 msgid "Failed to update profile"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:146
+#: src/pages/UserProfilePage.tsx:149
 msgid "Failed to update Revolut tag"
 msgstr ""
 
@@ -987,7 +1011,7 @@ msgstr ""
 msgid "Failed to update venue. Please try again."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:377
+#: src/pages/UserProfilePage.tsx:409
 msgid "Failed to upload image. Please try again."
 msgstr ""
 
@@ -1186,7 +1210,7 @@ msgstr ""
 msgid "If fewer than the minimum number of players join by the cancellation deadline, the event will be automatically cancelled and all participants will be notified."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:353
+#: src/pages/UserProfilePage.tsx:385
 msgid "Image must be smaller than 5MB"
 msgstr ""
 
@@ -1255,7 +1279,7 @@ msgstr ""
 msgid "JPG, PNG up to 10MB each"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:540
+#: src/pages/UserProfilePage.tsx:572
 msgid "Karma Points"
 msgstr ""
 
@@ -1317,7 +1341,7 @@ msgid "Loading..."
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1358
-#: src/pages/UserProfilePage.tsx:618
+#: src/pages/UserProfilePage.tsx:650
 msgid "Location"
 msgstr ""
 
@@ -1346,7 +1370,7 @@ msgstr ""
 msgid "Manage Venues"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:677
+#: src/pages/UserProfilePage.tsx:709
 msgid "Manage your password and account security settings"
 msgstr ""
 
@@ -1383,7 +1407,7 @@ msgstr ""
 msgid "Meet local amateur {lowerSportName} players, join upcoming games, and find places to play in {0}."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:524
+#: src/pages/UserProfilePage.tsx:556
 msgid "Member since"
 msgstr ""
 
@@ -1440,11 +1464,11 @@ msgstr ""
 msgid "New Group"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:400
+#: src/pages/UserProfilePage.tsx:432
 msgid "New password must be at least 8 characters long."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:395
+#: src/pages/UserProfilePage.tsx:427
 msgid "New passwords do not match."
 msgstr ""
 
@@ -1472,7 +1496,7 @@ msgstr ""
 msgid "Newest First"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:661
+#: src/pages/UserProfilePage.tsx:693
 msgid "No bio provided"
 msgstr ""
 
@@ -1577,7 +1601,7 @@ msgstr ""
 msgid "No-shows without notice (-5 points)"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:635
+#: src/pages/UserProfilePage.tsx:667
 msgid "Not specified"
 msgstr ""
 
@@ -1661,7 +1685,7 @@ msgstr ""
 msgid "Participants: {current}/{max}"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:421
+#: src/pages/UserProfilePage.tsx:453
 msgid "Password changed successfully!"
 msgstr ""
 
@@ -1727,7 +1751,7 @@ msgstr ""
 msgid "Perfect number for the best game"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:560
+#: src/pages/UserProfilePage.tsx:592
 msgid "Personal Information"
 msgstr ""
 
@@ -1806,7 +1830,7 @@ msgstr ""
 msgid "Please enter a name for each guest."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:390
+#: src/pages/UserProfilePage.tsx:422
 msgid "Please fill in all password fields."
 msgstr ""
 
@@ -1834,7 +1858,7 @@ msgstr ""
 msgid "Please select a venue for your event."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:347
+#: src/pages/UserProfilePage.tsx:379
 msgid "Please select an image file"
 msgstr ""
 
@@ -1854,7 +1878,7 @@ msgstr ""
 msgid "Please sign in to join this event."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:433
+#: src/pages/UserProfilePage.tsx:465
 msgid "Please type \"DELETE\" to confirm account deletion."
 msgstr ""
 
@@ -1939,7 +1963,7 @@ msgstr ""
 msgid "Private (invite-only)"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:116
+#: src/pages/UserProfilePage.tsx:119
 msgid "Profile updated successfully!"
 msgstr ""
 
@@ -1999,6 +2023,10 @@ msgstr ""
 msgid "Reason: {reason}"
 msgstr ""
 
+#: src/pages/UserProfilePage.tsx:1218
+msgid "Receive event emails"
+msgstr ""
+
 #: src/components/weather/WeatherWidget.tsx:346
 #: src/components/weather/WeatherWidget.tsx:387
 msgid "Refresh"
@@ -2051,7 +2079,7 @@ msgstr ""
 msgid "Reserved spots"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:143
+#: src/pages/UserProfilePage.tsx:146
 msgid "Revolut tag updated!"
 msgstr ""
 
@@ -2066,7 +2094,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:577
+#: src/pages/UserProfilePage.tsx:609
 msgid "Save Changes"
 msgstr ""
 
@@ -2241,7 +2269,7 @@ msgstr ""
 #~ msgid "Supports **bold**, *italic*, __underline__, and @mentions."
 #~ msgstr ""
 
-#: src/pages/UserProfilePage.tsx:656
+#: src/pages/UserProfilePage.tsx:688
 msgid "Tell us about yourself and your sports interests..."
 msgstr ""
 

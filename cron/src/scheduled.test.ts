@@ -163,6 +163,44 @@ describe('runScheduledJob', () => {
 		expect(confirmationEmails).toHaveLength(1)
 	})
 
+	it('does not send confirmation emails to users who opted out', async () => {
+		const confirmationEmails: Array<{ to: string }> = []
+		const today = new Date().toISOString().split('T')[0]
+
+		await seedCronData(database, {
+			id: 'event-with-opt-out',
+			date: today,
+			minParticipants: 2,
+			startTime: '18:00',
+			participants: [
+				{ id: 1, userId: 'u1' },
+				{ id: 2, userId: 'u2' }
+			],
+			users: [
+				{ id: 'u1', name: 'Alice', email: 'alice@example.com' },
+				{
+					id: 'u2',
+					name: 'Bob',
+					email: 'bob@example.com',
+					emailNotificationsDisabled: true
+				}
+			]
+		})
+
+		await runScheduledJob({
+			event: scheduledEvent(),
+			env,
+			database,
+			resend: {} as never,
+			sendConfirmation: vi.fn(async ({ to }) => {
+				confirmationEmails.push({ to })
+			}),
+			sendCancellation: vi.fn()
+		})
+
+		expect(confirmationEmails).toEqual([{ to: 'alice@example.com' }])
+	})
+
 	it('cancels open events after the deadline when the minimum was not reached', async () => {
 		const confirmationEmails: unknown[] = []
 		const cancellationEmails: unknown[] = []
@@ -227,7 +265,13 @@ async function seedCronData(
 		minParticipants: number
 		startTime: string
 		participants: { id: number; userId: string; plusAttendees?: string[] }[]
-		users: { id: string; name: string; email: string; timezone?: string }[]
+		users: {
+			id: string
+			name: string
+			email: string
+			timezone?: string
+			emailNotificationsDisabled?: boolean
+		}[]
 	}
 ): Promise<void> {
 	await seed(
@@ -262,9 +306,14 @@ async function seedCronData(
 					isUnique: true
 				}),
 				timezone: funcs.valuesFromArray({
-					values: users.map((seedUser) => seedUser.timezone ?? null)
+					values: users.map((seedUser) => seedUser.timezone)
 				}),
 				emailVerified: funcs.default({ defaultValue: true }),
+				emailNotificationsDisabled: funcs.valuesFromArray({
+					values: users.map(
+						(seedUser) => seedUser.emailNotificationsDisabled ?? false
+					)
+				}),
 				karmaPoints: funcs.default({ defaultValue: 0 })
 			}
 		},
@@ -335,7 +384,7 @@ async function seedCronData(
 
 function scheduledEvent(): ScheduledController {
 	return {
-		cron: '*/30 * * * *',
+		cron: '0 * * * *',
 		scheduledTime: Date.now()
 	} as ScheduledController
 }

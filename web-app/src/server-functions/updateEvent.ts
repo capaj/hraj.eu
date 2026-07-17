@@ -295,7 +295,8 @@ async function notifyAttendeesAboutVenueChange({
     .where(
       and(
         eq(participantT.eventId, event.id),
-        inArray(participantT.status, ['confirmed', 'waitlisted', 'invited'])
+        inArray(participantT.status, ['confirmed', 'waitlisted', 'invited']),
+        eq(user.emailNotificationsDisabled, false)
       )
     )
 
@@ -359,7 +360,8 @@ async function notifyAttendeesAboutTimeChange({
     .where(
       and(
         eq(participantT.eventId, event.id),
-        inArray(participantT.status, ['confirmed', 'waitlisted', 'invited'])
+        inArray(participantT.status, ['confirmed', 'waitlisted', 'invited']),
+        eq(user.emailNotificationsDisabled, false)
       )
     )
 

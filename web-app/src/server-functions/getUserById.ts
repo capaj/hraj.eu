@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import { User } from '../types'
+import type { User } from '../types'
 import { db } from '../../drizzle/db'
 import { eventT, user as userTable } from '../../drizzle/schema'
 import { count, eq } from 'drizzle-orm'
