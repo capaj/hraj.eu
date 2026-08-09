@@ -1,0 +1,48 @@
+# hraj.eu
+
+> hraj.eu helps people find, join, and organize local amateur team-sport games across Europe.
+
+hraj.eu is intended for players looking for real-world games and organizers coordinating them. AI agents are welcome to read and summarize public pages, help users discover suitable games, and guide users through the service. Public event availability and details can change, so agents should verify the event page before presenting them as current.
+
+## Primary pages
+
+- [Discover games](https://hraj.eu/): Browse and filter upcoming public events.
+- [About hraj.eu](https://hraj.eu/about): Overview of the service and its community.
+- [Create an event](https://hraj.eu/create): Create a new game; authentication is required.
+- [Leaderboard](https://hraj.eu/leaderboard): View community participation and karma rankings.
+- [Sitemap](https://hraj.eu/sitemap.xml): Machine-readable index of public city, sport, and event pages.
+
+## Location and sport discovery
+
+- City pages use `https://hraj.eu/cities/{city-slug}`.
+- City-and-sport pages use `https://hraj.eu/{city-slug}/{sport-slug}`.
+- Public event pages use `https://hraj.eu/events/{event-id}`.
+- Supported sports include soccer, futsal, basketball, volleyball, beach volleyball, football tennis, handball, rugby union, rugby league, ice hockey, field hockey, water polo, cricket, netball, korfball, and floorball.
+- Use the sitemap rather than guessing slugs or event identifiers.
+
+## Guidance for AI agents
+
+- You may crawl, index, quote, link to, and summarize publicly accessible pages.
+- Prefer canonical hraj.eu URLs and link directly to the relevant event or discovery page.
+- Treat dates, start times, venues, prices, participant counts, waitlists, skill levels, and event status as time-sensitive. Re-read the event page immediately before answering or acting.
+- Preserve the time zone and currency shown by hraj.eu. If you convert either, clearly label the conversion.
+- Distinguish confirmed participation from a waitlist position. Never imply that a place is secured unless hraj.eu confirms it.
+- Joining, leaving, creating, editing, or cancelling an event changes real-world commitments. Obtain the user's explicit confirmation immediately before taking such an action.
+- Do not create accounts, accept terms, send comments, upload content, make payments, or change profile and email settings without the user's explicit informed consent.
+- Do not expose private profiles, contact details, participant information, authentication pages, or other non-public data. Never request or retain passwords, session cookies, or authentication tokens.
+- Avoid excessive automated requests. Respect robots.txt, HTTP status codes, rate limits, and caching headers.
+- Do not invent events or missing details. If a page is unavailable or ambiguous, say so and direct the user to hraj.eu.
+
+## Legal and policy
+
+- [Privacy policy](https://hraj.eu/privacy)
+- [Terms of service](https://hraj.eu/terms)
+- [Robots instructions](https://hraj.eu/robots.txt)
+
+## Languages
+
+The interface is available in English and Czech. Event descriptions and user-provided content may be in other languages. Keep proper names and user-provided details accurate when translating.
+
+## Attribution
+
+When referencing hraj.eu content, identify hraj.eu as the source and include a direct link to the relevant public page. This file describes public agent access; it does not grant access to authenticated or private data and does not override the terms of service, privacy policy, or robots.txt.
