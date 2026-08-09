@@ -73,14 +73,16 @@ export const Leaderboard: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const usersData = await getUsers({ data: { limit: MAX_LEADERBOARD_USERS } })
+        const usersData = await getUsers({
+          data: { limit: MAX_LEADERBOARD_USERS, sport: selectedSport }
+        })
         setUsers(usersData)
       } catch (error) {
         console.error('Failed to load users:', error)
       }
     }
     fetchUsers()
-  }, [])
+  }, [selectedSport])
 
   // Generate leaderboard data
   const generateLeaderboardData = (type: LeaderboardType, sport?: string) => {
