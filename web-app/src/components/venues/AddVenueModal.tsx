@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Trans } from '@lingui/react/macro'
 import { msg } from '@lingui/core/macro'
 import { i18n } from '~/lib/i18n'
@@ -65,6 +65,10 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(
     null
   )
+  const [hasConfirmedLocation, setHasConfirmedLocation] = useState(false)
+  const [isLocating, setIsLocating] = useState(false)
+  const [locationError, setLocationError] = useState(false)
+  const geolocationRequestRef = useRef(0)
   const [googleMapsApiKey, setGoogleMapsApiKey] = useState<string>('')
 
   // Fetch Google Maps API key
@@ -75,6 +79,9 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
   }, [])
 
   useEffect(() => {
+    let ignoreGeolocation = false
+    const requestId = ++geolocationRequestRef.current
+
     if (isOpen && initialData) {
       setFormData({
         name: initialData.name || '',
@@ -95,14 +102,55 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
       setImages(initialData.photos || [])
       setOrientationPlan(initialData.orientationPlan || '')
       // Set location if available
-      if (initialData.lat && initialData.lng) {
+      setLocation(null)
+      if (
+        typeof initialData.lat === 'number' &&
+        typeof initialData.lng === 'number'
+      ) {
         setLocation({ lat: initialData.lat, lng: initialData.lng })
       }
+      setHasConfirmedLocation(true)
+      setIsLocating(false)
+      setLocationError(false)
     } else if (isOpen && !initialData) {
       setFormData(DEFAULT_FORM_DATA)
       setImages([])
       setOrientationPlan('')
       setLocation(null)
+      setHasConfirmedLocation(false)
+      setLocationError(false)
+
+      if (typeof navigator !== 'undefined' && navigator.geolocation) {
+        setIsLocating(true)
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            if (
+              ignoreGeolocation ||
+              requestId !== geolocationRequestRef.current
+            ) return
+            setLocation({
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            })
+            setIsLocating(false)
+          },
+          () => {
+            if (
+              ignoreGeolocation ||
+              requestId !== geolocationRequestRef.current
+            ) return
+            setIsLocating(false)
+            setLocationError(true)
+          }
+        )
+      } else {
+        setIsLocating(false)
+        setLocationError(true)
+      }
+    }
+
+    return () => {
+      ignoreGeolocation = true
     }
   }, [isOpen, initialData])
 
@@ -130,7 +178,8 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
     const baseImages = initialData?.photos || []
     const basePlan = initialData?.orientationPlan || ''
     const baseLocation =
-      initialData?.lat && initialData?.lng
+      typeof initialData?.lat === 'number' &&
+      typeof initialData?.lng === 'number'
         ? { lat: initialData.lat, lng: initialData.lng }
         : null
 
@@ -278,6 +327,10 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
   }
 
   const handlePlaceSelected = (details: AddressDetails) => {
+    // Do not allow a slower browser geolocation response to overwrite the
+    // address the user has already selected.
+    geolocationRequestRef.current += 1
+    setIsLocating(false)
     // Update form data with address details
     setFormData((prev) => ({
       ...prev,
@@ -287,10 +340,15 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
     }))
     // Update location
     setLocation({ lat: details.lat, lng: details.lng })
+    // An address result is only an estimate. The user must confirm the exact
+    // venue entrance by interacting with the map.
+    setHasConfirmedLocation(false)
+    setLocationError(false)
   }
 
   const handleLocationChange = (lat: number, lng: number) => {
     setLocation({ lat, lng })
+    setHasConfirmedLocation(true)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -303,6 +361,11 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
       formData.sports.length === 0
     ) {
       alert(i18n._(msg`Please fill in all required fields and select at least one sport.`))
+      return
+    }
+
+    if (!location || (!initialData && !hasConfirmedLocation)) {
+      alert(i18n._(msg`Please set the exact venue location on the map before continuing.`))
       return
     }
 
@@ -329,8 +392,8 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
         },
         price: formData.price,
         currency: formData.currency,
-        lat: location?.lat ?? initialData?.lat ?? 50.0755,
-        lng: location?.lng ?? initialData?.lng ?? 14.4378
+        lat: location.lat,
+        lng: location.lng
       }
 
       let venueId: string
@@ -522,13 +585,29 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                 </div>
 
                 {/* Map Preview */}
+                {isLocating && !location && (
+                  <div className="mt-6 rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm text-gray-600">
+                    <Trans>Finding your location to center the venue map...</Trans>
+                  </div>
+                )}
+                {locationError && !location && (
+                  <div className="mt-6 rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-800">
+                    <Trans>We could not access your location. Select an address to open the map, then set the exact venue position.</Trans>
+                  </div>
+                )}
                 {location && (
                   <div className="mt-6">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      <Trans>Location Preview</Trans>
+                      <Trans>Exact Venue Location *</Trans>
                     </label>
-                    <p className="text-sm text-gray-500 mb-3">
-                      <Trans>Drag the pin to mark the exact entrance to the pitch.</Trans>
+                    <p
+                      className={`text-sm mb-3 ${hasConfirmedLocation ? 'text-green-700' : 'font-medium text-amber-700'}`}
+                    >
+                      {hasConfirmedLocation ? (
+                        <Trans>Venue location set.</Trans>
+                      ) : (
+                        <Trans>Required: click the map or drag the pin to set the exact entrance.</Trans>
+                      )}
                     </p>
                     <VenueMapPreview
                       lat={location.lat}
@@ -861,7 +940,11 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                 <Button
                   type="submit"
                   variant="primary"
-                  disabled={isSubmitting || formData.sports.length === 0}
+                  disabled={
+                    isSubmitting ||
+                    formData.sports.length === 0 ||
+                    (!initialData && !hasConfirmedLocation)
+                  }
                 >
                   {isSubmitting ? (
                     <>
