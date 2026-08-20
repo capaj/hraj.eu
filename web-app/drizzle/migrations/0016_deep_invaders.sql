@@ -1,0 +1,1 @@
+ALTER TABLE `user` ADD `event_join_banned_until` integer;

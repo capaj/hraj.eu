@@ -1,1 +1,1 @@
-export const ADMIN_EMAILS = ['capajj@gmail.com'];
+export { ADMIN_EMAILS, isAdminEmail } from '~/lib/admin'

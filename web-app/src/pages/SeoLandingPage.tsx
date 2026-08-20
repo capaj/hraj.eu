@@ -12,6 +12,9 @@ import { subscribeToCityEvents } from '~/server-functions/subscribeToCityEvents'
 import { SPORTS } from '../lib/constants'
 import type { SeoLandingPageData } from '~/server-functions/getSeoLandingPageData'
 import { Trans } from '@lingui/react/macro'
+import { msg } from '@lingui/core/macro'
+import { i18n } from '~/lib/i18n'
+import { toast } from 'sonner'
 
 type SeoLandingPageProps = {
   data: SeoLandingPageData
@@ -44,7 +47,15 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
       return
     }
 
-    await joinEvent({ data: { eventId } })
+    try {
+      await joinEvent({ data: { eventId } })
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : i18n._(msg`Failed to join the event. Please try again.`)
+      )
+    }
   }
 
   return (

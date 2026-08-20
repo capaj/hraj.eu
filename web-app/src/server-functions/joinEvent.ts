@@ -3,7 +3,7 @@ import { getRequest } from '@tanstack/react-start/server'
 import { deleteOgImageFromR2 } from './utils'
 import { z } from 'zod'
 import { db } from '../../drizzle/db'
-import { eventT, participantT } from '../../drizzle/schema'
+import { eventT, participantT, user } from '../../drizzle/schema'
 import { auth } from '~/lib/auth'
 import { and, eq } from 'drizzle-orm'
 
@@ -51,6 +51,25 @@ export const joinEvent = createServerFn({ method: 'POST' })
     const existingParticipant = allParticipants.find(
       (p) => p.userId === session.user.id
     )
+
+    const [currentUser] = await db
+      .select({ eventJoinBannedUntil: user.eventJoinBannedUntil })
+      .from(user)
+      .where(eq(user.id, session.user.id))
+      .limit(1)
+
+    const isAlreadyAttending =
+      existingParticipant?.status === 'confirmed' ||
+      existingParticipant?.status === 'waitlisted'
+    const hasActiveEventJoinBan =
+      !!currentUser?.eventJoinBannedUntil &&
+      currentUser.eventJoinBannedUntil.getTime() > Date.now()
+
+    if (hasActiveEventJoinBan && !isAlreadyAttending) {
+      throw new Error(
+        'Your account is temporarily restricted from joining new games.'
+      )
+    }
 
     const requestedPlusAttendees = (data.plusAttendees ??
       existingParticipant?.plusAttendees ??

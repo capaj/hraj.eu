@@ -13,13 +13,13 @@
 	"dependencies": {
 		"@libsql/client": "^0.17.4",
 		"drizzle-orm": "^0.45.2",
-		"resend": "^6.17.2"
+		"resend": "^6.20.0"
 	},
 	"devDependencies": {
-		"@types/node": "^26.1.1",
+		"@types/node": "^26.2.0",
 		"drizzle-seed": "^0.3.1",
 		"typescript": "^7.0.2",
 		"vitest": "^4.1.10",
-		"wrangler": "^4.111.0"
+		"wrangler": "^4.123.0"
 	}
 }

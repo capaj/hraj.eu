@@ -7,7 +7,8 @@ import {
   SettingsIcon,
   UserRoundPlus,
   Building2,
-  Users
+  Users,
+  Shield
 } from 'lucide-react'
 import {
   type ComponentProps,
@@ -33,6 +34,8 @@ import { cn } from '../../lib/utils'
 import { authClient } from '../../lib/auth-client'
 import { Link } from '@tanstack/react-router'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
+import { isAdminEmail } from '../../lib/admin'
+import { Trans } from '@lingui/react/macro'
 
 export interface UserButtonProps {
   className?: string
@@ -208,6 +211,14 @@ export function UserButton({
                     Manage Core Groups
                   </DropdownMenuItem>
                 </Link>
+                {isAdminEmail(user.email) && (
+                  <Link to="/admin/event-bans" className="cursor-pointer">
+                    <DropdownMenuItem>
+                      <Shield />
+                      <Trans>Manage attendance bans</Trans>
+                    </DropdownMenuItem>
+                  </Link>
+                )}
                 <Link to="/user-profile" className="cursor-pointer">
                   <DropdownMenuItem>
                     <SettingsIcon />

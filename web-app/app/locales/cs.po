@@ -13,14 +13,14 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/DiscoverPage.tsx:303
+#: src/pages/DiscoverPage.tsx:309
 msgid "(sorted by {label})"
 msgstr "(seřazeno podle {label})"
 
 #. placeholder {0}: isSubscribed ? 'Subscribed for new city events' : 'Email me when a new game is created in this city'
 #. placeholder {0}: isSubscribed ? 'Subscribed for new city events' : 'Subscribe to new city events by email'
-#: src/pages/SeoLandingPage.tsx:82
-#: src/pages/SeoLandingPage.tsx:179
+#: src/pages/SeoLandingPage.tsx:93
+#: src/pages/SeoLandingPage.tsx:190
 msgid "{0}"
 msgstr "{0}"
 
@@ -34,6 +34,10 @@ msgstr "{0} km/h"
 msgid "{0} min"
 msgstr "{0} min"
 
+#: src/pages/AdminEventBansPage.tsx:193
+msgid "{activeBanCount} active bans"
+msgstr "{activeBanCount} aktivních zákazů"
+
 #: src/components/events/CreateEventForm.tsx:1023
 msgid "{cancellationTimeInline} before the event starts"
 msgstr "{cancellationTimeInline} před začátkem události"
@@ -46,7 +50,7 @@ msgstr "{count} událost{count, plural, one {} few {i} other {í}} ({sportName})
 msgid "{count} {sportName} events organized"
 msgstr "{count} událost{count, plural, one {} few {i} other {í}} ({sportName}) – zorganizováno"
 
-#: src/pages/DiscoverPage.tsx:266
+#: src/pages/DiscoverPage.tsx:272
 msgid "{count} event{count, plural, one {} other {s}} found"
 msgstr "Nalezeno {count} událost{count, plural, one {} few {i} other {í}}"
 
@@ -66,7 +70,7 @@ msgstr "{count} bod{count, plural, one {} few {y} other {ů}} v {sportName} tent
 msgid "{count} points this month"
 msgstr "{count} bod{count, plural, one {} few {y} other {ů}} tento měsíc"
 
-#: src/pages/DiscoverPage.tsx:317
+#: src/pages/DiscoverPage.tsx:323
 msgid "{count} spots"
 msgstr "{count} míst"
 
@@ -106,15 +110,15 @@ msgstr "Pouze hráči úrovní {levelNames}"
 msgid "{minutes} minutes"
 msgstr "{minutes} minut"
 
-#: src/pages/EventDetailsPage.tsx:703
+#: src/pages/EventDetailsPage.tsx:704
 msgid "{name} has been removed from the event."
 msgstr "{name} byl odstraněn ze události."
 
-#: src/pages/EventDetailsPage.tsx:2236
+#: src/pages/EventDetailsPage.tsx:2241
 msgid "{name} Orientation Plan"
 msgstr "{name} orientační plán"
 
-#: src/pages/EventDetailsPage.tsx:2267
+#: src/pages/EventDetailsPage.tsx:2272
 msgid "{name} photo {index}"
 msgstr "{name} foto {index}"
 
@@ -171,7 +175,7 @@ msgstr "{totalMinutes} minut"
 msgid "+{0} more"
 msgstr "+{0} dalších"
 
-#: src/components/events/JoinActionCard.tsx:246
+#: src/components/events/JoinActionCard.tsx:244
 msgid "+{count} participants reserved"
 msgstr "+{count} zapsaných účastníků"
 
@@ -215,7 +219,7 @@ msgid "About this event"
 msgstr "O události"
 
 #: src/components/venues/AddVenueModal.tsx:746
-#: src/pages/EventDetailsPage.tsx:2128
+#: src/pages/EventDetailsPage.tsx:2133
 msgid "Access Instructions"
 msgstr "Pokyny k přístupu"
 
@@ -231,16 +235,16 @@ msgstr "Účet byl úspěšně smazán"
 msgid "Account Security"
 msgstr "Zabezpečení účtu"
 
-#: src/pages/EventDetailsPage.tsx:1057
+#: src/pages/EventDetailsPage.tsx:1058
 msgid "Actions"
 msgstr "Akce"
 
-#: src/pages/HomePage.tsx:119
+#: src/pages/HomePage.tsx:125
 #: src/pages/LeaderboardPage.tsx:671
 msgid "Active Players"
 msgstr "Aktivní hráči"
 
-#: src/pages/EventDetailsPage.tsx:2046
+#: src/pages/EventDetailsPage.tsx:2020
 msgid "Add GIF"
 msgstr "Přidat GIF"
 
@@ -282,6 +286,10 @@ msgstr "Přidáno {createdAtLabel}"
 msgid "Address *"
 msgstr "Adresa *"
 
+#: src/pages/AdminEventBansPage.tsx:159
+msgid "Administrator access required"
+msgstr "Vyžadován přístup správce"
+
 #: src/components/ui/TagInput.tsx:121
 msgid "All options selected"
 msgstr "Všechny možnosti vybrány"
@@ -303,7 +311,7 @@ msgstr "Všechny sporty"
 msgid "Any extra players will be put on a waitlist"
 msgstr "Případní další hráči budou zapsáni na čekací listinu"
 
-#: src/pages/EventDetailsPage.tsx:2178
+#: src/pages/EventDetailsPage.tsx:2183
 msgid "Approx. {price} {currency} / hour"
 msgstr "Přibl. {price} {currency} / hod"
 
@@ -316,7 +324,19 @@ msgstr "Přibl. {price} {currency} / hod"
 msgid "Are you sure you want to cancel this event? This action cannot be undone."
 msgstr "Opravdu chcete tuto událost zrušit? Tuto akci nelze vrátit zpět."
 
-#: src/pages/EventDetailsPage.tsx:706
+#: src/pages/AdminEventBansPage.tsx:125
+msgid "Attendance ban removed."
+msgstr "Zákaz účasti byl zrušen."
+
+#: src/pages/AdminEventBansPage.tsx:108
+msgid "Attendance ban updated."
+msgstr "Zákaz účasti byl aktualizován."
+
+#: src/pages/AdminEventBansPage.tsx:181
+msgid "Attendance bans"
+msgstr "Zákazy účasti"
+
+#: src/pages/EventDetailsPage.tsx:707
 msgid "Attendee removed from the event."
 msgstr "Účastník byl odstraněn ze události."
 
@@ -328,8 +348,8 @@ msgstr "Účast na událostech (+5 bodů)"
 msgid "Available Facilities"
 msgstr "Dostupné vybavení"
 
-#: src/pages/DiscoverPage.tsx:202
-#: src/pages/DiscoverPage.tsx:286
+#: src/pages/DiscoverPage.tsx:208
+#: src/pages/DiscoverPage.tsx:292
 msgid "Available Spots"
 msgstr "Volná místa"
 
@@ -345,9 +365,21 @@ msgstr "Průměrné skóre"
 msgid "Avoid outdoor play during thunderstorms"
 msgstr "Vyvarujte se venkovních her během bouří"
 
-#: src/pages/EventDetailsPage.tsx:2301
+#: src/pages/EventDetailsPage.tsx:2306
 msgid "Back to Events"
 msgstr "Zpět na události"
+
+#: src/pages/AdminEventBansPage.tsx:322
+msgid "Ban"
+msgstr "Zakázat"
+
+#: src/pages/AdminEventBansPage.tsx:282
+msgid "Ban duration"
+msgstr "Délka zákazu"
+
+#: src/pages/AdminEventBansPage.tsx:296
+msgid "Ban duration unit"
+msgstr "Jednotka délky zákazu"
 
 #: src/pages/UserProfilePage.tsx:171
 msgid "Bank account updated!"
@@ -361,7 +393,7 @@ msgstr "Základní informace"
 #~ msgid "Be the first to bring your community together! Create an event and start building connections through sport."
 #~ msgstr "Buďte první, kdo spojí svou komunitu! Vytvořte událost a začněte budovat kontakty prostřednictvím sportu."
 
-#: src/pages/EventDetailsPage.tsx:1830
+#: src/pages/EventDetailsPage.tsx:1804
 msgid "Be the first to leave a comment."
 msgstr "Buďte první, kdo zanechá komentář."
 
@@ -381,11 +413,11 @@ msgstr "O mně"
 msgid "Brief description of the venue..."
 msgstr "Stručný popis místa..."
 
-#: src/components/events/JoinActionCard.tsx:270
+#: src/components/events/JoinActionCard.tsx:268
 msgid "Bringing guests?"
 msgstr "Přivedu si hosty?"
 
-#: src/pages/SeoLandingPage.tsx:87
+#: src/pages/SeoLandingPage.tsx:98
 msgid "Browse all games"
 msgstr "Procházet všechny hry"
 
@@ -393,7 +425,7 @@ msgstr "Procházet všechny hry"
 msgid "Browse Events"
 msgstr "Procházet události"
 
-#: src/pages/HomePage.tsx:204
+#: src/pages/HomePage.tsx:210
 msgid "Build Community"
 msgstr "Budujte komunitu"
 
@@ -403,7 +435,7 @@ msgid "Café"
 msgstr "Kavárna"
 
 #: src/components/venues/AddVenueModal.tsx:859
-#: src/pages/EventDetailsPage.tsx:1866
+#: src/pages/EventDetailsPage.tsx:1840
 #: src/pages/EventDetailsPage.tsx:2541
 #: src/pages/ManageCoreGroupsPage.tsx:205
 #: src/pages/UserProfilePage.tsx:605
@@ -463,7 +495,7 @@ msgstr "Město *"
 msgid "City, Country"
 msgstr "Město, země"
 
-#: src/pages/EventDetailsPage.tsx:1455
+#: src/pages/EventDetailsPage.tsx:1457
 msgid "Click a QR code to view it larger."
 msgstr "Kliknutím na QR kód jej zvětšíte."
 
@@ -483,19 +515,19 @@ msgstr "Studeno se sněhem"
 msgid "Comment (optional)"
 msgstr "Komentář (nepovinné)"
 
-#: src/pages/EventDetailsPage.tsx:759
+#: src/pages/EventDetailsPage.tsx:760
 msgid "Comment cannot be empty."
 msgstr "Komentář nemůže být prázdný."
 
-#: src/pages/EventDetailsPage.tsx:792
+#: src/pages/EventDetailsPage.tsx:793
 msgid "Comment deleted."
 msgstr "Komentář smazán."
 
-#: src/pages/EventDetailsPage.tsx:773
+#: src/pages/EventDetailsPage.tsx:774
 msgid "Comment updated."
 msgstr "Komentář aktualizován."
 
-#: src/pages/EventDetailsPage.tsx:1819
+#: src/pages/EventDetailsPage.tsx:1793
 msgid "Comments"
 msgstr "Komentáře"
 
@@ -507,7 +539,7 @@ msgstr "Komentáře se shromažďují a odesílají v hodinovém souhrnu namíst
 msgid "Community Leaderboard"
 msgstr "Komunitní žebříček"
 
-#: src/pages/HomePage.tsx:207
+#: src/pages/HomePage.tsx:213
 msgid "Connect with like-minded players, earn karma points, and climb the leaderboards."
 msgstr "Spojte se s podobně naladěnými hráči, sbírejte body karmy a stoupejte v žebříčcích."
 
@@ -555,7 +587,19 @@ msgstr "Okno pro základní skupinu musí být mezi 2 hodinami a 14 dny."
 msgid "Could not find location for weather forecast"
 msgstr "Nepodařilo se najít polohu pro předpověď počasí"
 
-#: src/pages/HomePage.tsx:127
+#: src/pages/AdminEventBansPage.tsx:59
+msgid "Could not load users."
+msgstr "Uživatele se nepodařilo načíst."
+
+#: src/pages/AdminEventBansPage.tsx:130
+msgid "Could not remove the attendance ban."
+msgstr "Zákaz účasti se nepodařilo zrušit."
+
+#: src/pages/AdminEventBansPage.tsx:113
+msgid "Could not update the attendance ban."
+msgstr "Zákaz účasti se nepodařilo aktualizovat."
+
+#: src/pages/HomePage.tsx:133
 msgid "Countries"
 msgstr "Země"
 
@@ -563,7 +607,7 @@ msgstr "Země"
 msgid "Country *"
 msgstr "Země *"
 
-#: src/pages/SeoLandingPage.tsx:95
+#: src/pages/SeoLandingPage.tsx:106
 msgid "Create a game"
 msgstr "Vytvořit hru"
 
@@ -574,12 +618,12 @@ msgstr "Vytvářejte a upravujte opakovaně používané skupiny pro časný př
 #: src/components/events/CreateEventForm.tsx:1351
 #: src/components/layout/Header.tsx:109
 #: src/components/layout/Header.tsx:181
-#: src/pages/DiscoverPage.tsx:403
-#: src/pages/HomePage.tsx:160
+#: src/pages/DiscoverPage.tsx:409
+#: src/pages/HomePage.tsx:166
 msgid "Create Event"
 msgstr "Vytvořit událost"
 
-#: src/pages/HomePage.tsx:224
+#: src/pages/HomePage.tsx:230
 msgid "Create events with payment integration, team balancing, and automated notifications."
 msgstr "Vytvářejte události s integrací plateb, vyvažováním týmů a automatickými oznámeními."
 
@@ -629,12 +673,16 @@ msgid "Date *"
 msgstr "Datum *"
 
 #: src/components/events/CreateEventForm.tsx:758
-#: src/pages/DiscoverPage.tsx:198
 #: src/pages/DiscoverPage.tsx:204
-#: src/pages/DiscoverPage.tsx:280
+#: src/pages/DiscoverPage.tsx:210
+#: src/pages/DiscoverPage.tsx:286
 #: src/pages/EventDetailsPage.tsx:1323
 msgid "Date & Time"
 msgstr "Datum a čas"
+
+#: src/pages/AdminEventBansPage.tsx:306
+msgid "days"
+msgstr "dny"
 
 #: src/components/events/CreateEventForm.tsx:980
 msgid "Deadline"
@@ -644,7 +692,7 @@ msgstr "Uzávěrka"
 msgid "Deadline:"
 msgstr "Uzávěrka:"
 
-#: src/pages/EventDetailsPage.tsx:1902
+#: src/pages/EventDetailsPage.tsx:1876
 #: src/pages/ManageCoreGroupsPage.tsx:122
 msgid "Delete"
 msgstr "Smazat"
@@ -674,16 +722,16 @@ msgstr "Objevovat"
 msgid "Discover Events"
 msgstr "Objevujte události"
 
-#: src/pages/HomePage.tsx:170
+#: src/pages/HomePage.tsx:176
 msgid "Discover Games"
 msgstr "Objevujte hry"
 
-#: src/pages/HomePage.tsx:190
+#: src/pages/HomePage.tsx:196
 msgid "Discover sports events near you with advanced filtering by sport, skill level, and location."
 msgstr "Objevujte sportovní události ve svém okolí díky pokročilému filtrování podle sportu, úrovně a polohy."
 
-#: src/pages/DiscoverPage.tsx:200
-#: src/pages/DiscoverPage.tsx:283
+#: src/pages/DiscoverPage.tsx:206
+#: src/pages/DiscoverPage.tsx:289
 msgid "Distance"
 msgstr "Vzdálenost"
 
@@ -699,8 +747,8 @@ msgstr "Přetáhněte špendlík pro označení přesného vchodu na hřiště."
 msgid "Dress warmly and allow extra warm-up time"
 msgstr "Oblékněte se teplě a vyhraďte si více času na zahřání"
 
-#: src/pages/EventDetailsPage.tsx:1071
-#: src/pages/EventDetailsPage.tsx:1150
+#: src/pages/EventDetailsPage.tsx:1072
+#: src/pages/EventDetailsPage.tsx:1151
 msgid "Duplicate Event"
 msgstr "Duplikovat událost"
 
@@ -724,19 +772,19 @@ msgstr "Doba trvání časného přístupu od teď (hodiny)"
 msgid "Earn Points For:"
 msgstr "Získejte body za:"
 
-#: src/pages/HomePage.tsx:221
+#: src/pages/HomePage.tsx:227
 msgid "Easy Organization"
 msgstr "Snadná organizace"
 
-#: src/pages/EventDetailsPage.tsx:1893
+#: src/pages/EventDetailsPage.tsx:1867
 #: src/pages/ManageCoreGroupsPage.tsx:118
 #: src/pages/ManageVenuesPage.tsx:94
 msgid "Edit"
 msgstr "Upravit"
 
 #: src/components/events/CreateEventForm.tsx:535
-#: src/pages/EventDetailsPage.tsx:1079
-#: src/pages/EventDetailsPage.tsx:1160
+#: src/pages/EventDetailsPage.tsx:1080
+#: src/pages/EventDetailsPage.tsx:1161
 msgid "Edit Event"
 msgstr "Upravit událost"
 
@@ -772,6 +820,10 @@ msgstr "Končí v {endTimeLabel}"
 msgid "Enforce skill level restrictions"
 msgstr "Vynutit omezení úrovně dovedností"
 
+#: src/pages/AdminEventBansPage.tsx:100
+msgid "Enter a duration between 1 and 3650."
+msgstr "Zadejte dobu mezi 1 a 3650."
+
 #: src/components/venues/AddressAutocomplete.tsx:35
 msgid "Enter address"
 msgstr "Zadejte adresu"
@@ -802,15 +854,15 @@ msgstr "Událost zrušena"
 msgid "Event cancelled: {title}"
 msgstr "Událost zrušena: {title}"
 
-#: src/pages/EventDetailsPage.tsx:1043
+#: src/pages/EventDetailsPage.tsx:1044
 msgid "Event Completed"
 msgstr "Událost dokončena"
 
-#: src/pages/EventDetailsPage.tsx:554
+#: src/pages/EventDetailsPage.tsx:555
 msgid "Event confirmed - {count} more for ideal"
 msgstr "Událost potvrzena – ještě {count} do ideálu"
 
-#: src/pages/EventDetailsPage.tsx:548
+#: src/pages/EventDetailsPage.tsx:549
 msgid "Event confirmed - ideal number reached!"
 msgstr "Událost potvrzena – dosažen ideální počet!"
 
@@ -818,7 +870,7 @@ msgstr "Událost potvrzena – dosažen ideální počet!"
 msgid "Event created successfully!"
 msgstr "Událost byla úspěšně vytvořena!"
 
-#: src/pages/EventDetailsPage.tsx:660
+#: src/pages/EventDetailsPage.tsx:661
 msgid "Event created via hraj.eu"
 msgstr "Událost vytvořena přes hraj.eu"
 
@@ -838,7 +890,7 @@ msgstr "E-maily k událostem vypnuty"
 msgid "Event emails enabled"
 msgstr "E-maily k událostem zapnuty"
 
-#: src/pages/EventDetailsPage.tsx:508
+#: src/pages/EventDetailsPage.tsx:509
 msgid "Event not found"
 msgstr "Událost nenalezena"
 
@@ -870,7 +922,7 @@ msgstr "Místo události se změnilo"
 msgid "Event venue changed: {title}"
 msgstr "Místo se změnilo: {title}"
 
-#: src/pages/HomePage.tsx:111
+#: src/pages/HomePage.tsx:117
 msgid "Events Created"
 msgstr "Vytvořené události"
 
@@ -898,7 +950,7 @@ msgstr "Skvělý hráč!"
 msgid "Experienced competitive players"
 msgstr "Zkušení soutěžní hráči"
 
-#: src/pages/EventDetailsPage.tsx:2189
+#: src/pages/EventDetailsPage.tsx:2194
 msgid "Facilities"
 msgstr "Vybavení"
 
@@ -906,7 +958,7 @@ msgstr "Vybavení"
 msgid "Facilities:"
 msgstr "Vybavení:"
 
-#: src/pages/EventDetailsPage.tsx:747
+#: src/pages/EventDetailsPage.tsx:748
 msgid "Failed to add comment. Please try again."
 msgstr "Nepodařilo se přidat komentář. Zkuste to prosím znovu."
 
@@ -926,15 +978,18 @@ msgstr "Nepodařilo se vytvořit událost"
 msgid "Failed to create venue. Please try again."
 msgstr "Nepodařilo se vytvořit místo. Zkuste to prosím znovu."
 
-#: src/pages/EventDetailsPage.tsx:797
+#: src/pages/EventDetailsPage.tsx:798
 msgid "Failed to delete comment. Please try again."
 msgstr "Nepodařilo se smazat komentář. Zkuste to prosím znovu."
 
-#: src/components/events/JoinActionCard.tsx:159
+#: src/components/events/JoinActionCard.tsx:157
+#: src/pages/DiscoverPage.tsx:190
+#: src/pages/HomePage.tsx:97
+#: src/pages/SeoLandingPage.tsx:56
 msgid "Failed to join the event. Please try again."
 msgstr "Nepodařilo se připojit k události. Zkuste to prosím znovu."
 
-#: src/pages/EventDetailsPage.tsx:716
+#: src/pages/EventDetailsPage.tsx:717
 msgid "Failed to leave the event. Please try again."
 msgstr "Nepodařilo se opustit událost. Zkuste to prosím znovu."
 
@@ -966,7 +1021,7 @@ msgstr "Nepodařilo se aktualizovat bankovní účet"
 #~ msgid "Failed to update bank account. Please try again."
 #~ msgstr "Nepodařilo se aktualizovat bankovní účet. Zkuste to prosím znovu."
 
-#: src/pages/EventDetailsPage.tsx:778
+#: src/pages/EventDetailsPage.tsx:779
 msgid "Failed to update comment. Please try again."
 msgstr "Nepodařilo se aktualizovat komentář. Zkuste to prosím znovu."
 
@@ -982,7 +1037,7 @@ msgstr "Nastavení e-mailů se nepodařilo změnit"
 msgid "Failed to update event"
 msgstr "Nepodařilo se aktualizovat událost"
 
-#: src/components/events/JoinActionCard.tsx:188
+#: src/components/events/JoinActionCard.tsx:186
 msgid "Failed to update guests. Please try again."
 msgstr "Nepodařilo se aktualizovat hosty. Zkuste to prosím znovu."
 
@@ -990,8 +1045,8 @@ msgstr "Nepodařilo se aktualizovat hosty. Zkuste to prosím znovu."
 msgid "Failed to update notification"
 msgstr "Nepodařilo se aktualizovat oznámení"
 
-#: src/pages/EventDetailsPage.tsx:839
-#: src/pages/EventDetailsPage.tsx:879
+#: src/pages/EventDetailsPage.tsx:840
+#: src/pages/EventDetailsPage.tsx:880
 msgid "Failed to update payment status. Please try again."
 msgstr "Nepodařilo se aktualizovat stav platby. Zkuste to prosím znovu."
 
@@ -1024,7 +1079,7 @@ msgstr "Nepodařilo se nahrát obrázky. Zkuste to prosím znovu."
 msgid "Failed to upload orientation plan. Please try again."
 msgstr "Nepodařilo se nahrát orientační plán. Zkuste to prosím znovu."
 
-#: src/pages/EventDetailsPage.tsx:927
+#: src/pages/EventDetailsPage.tsx:928
 msgid "Feedback submitted successfully"
 msgstr "Hodnocení bylo úspěšně odesláno"
 
@@ -1045,7 +1100,7 @@ msgid "Filter by Sport"
 msgstr "Filtrovat podle sportu"
 
 #. placeholder {0}: data.city
-#: src/pages/SeoLandingPage.tsx:64
+#: src/pages/SeoLandingPage.tsx:75
 msgid "Find amateur sports games in {0}"
 msgstr "Najděte amatérské sportovní hry v {0}"
 
@@ -1053,7 +1108,7 @@ msgstr "Najděte amatérské sportovní hry v {0}"
 #~ msgid "Find and join sports events in your area"
 #~ msgstr "Najděte a připojte se ke sportovním událostem ve vašem okolí"
 
-#: src/pages/HomePage.tsx:187
+#: src/pages/HomePage.tsx:193
 msgid "Find Local Games"
 msgstr "Najděte místní hry"
 
@@ -1077,19 +1132,19 @@ msgstr "Plná kapacita"
 msgid "Game Rules (Optional)"
 msgstr "Pravidla hry (nepovinné)"
 
-#: src/pages/EventDetailsPage.tsx:1002
+#: src/pages/EventDetailsPage.tsx:1003
 msgid "Game Rules & Guidelines"
 msgstr "Pravidla a pokyny"
 
-#: src/pages/EventDetailsPage.tsx:657
+#: src/pages/EventDetailsPage.tsx:658
 msgid "Game Rules:"
 msgstr "Pravidla hry:"
 
-#: src/pages/SeoLandingPage.tsx:125
+#: src/pages/SeoLandingPage.tsx:136
 msgid "Games map"
 msgstr "Mapa her"
 
-#: src/pages/EventDetailsPage.tsx:1602
+#: src/pages/EventDetailsPage.tsx:1577
 msgid "Games organized: {count}"
 msgstr "Zorganizovaných her: {count}"
 
@@ -1097,15 +1152,15 @@ msgstr "Zorganizovaných her: {count}"
 msgid "Give karma rating"
 msgstr "Udělit hodnocení karmy"
 
-#: src/pages/EventDetailsPage.tsx:935
+#: src/pages/EventDetailsPage.tsx:936
 msgid "Give Negative Karma"
 msgstr "Udělit negativní karmu"
 
-#: src/pages/EventDetailsPage.tsx:934
+#: src/pages/EventDetailsPage.tsx:935
 msgid "Give Neutral Karma"
 msgstr "Udělit neutrální karmu"
 
-#: src/pages/EventDetailsPage.tsx:933
+#: src/pages/EventDetailsPage.tsx:934
 msgid "Give Positive Karma"
 msgstr "Udělit pozitivní karmu"
 
@@ -1121,15 +1176,15 @@ msgstr "Dobré sportovní chování"
 msgid "Group name"
 msgstr "Název skupiny"
 
-#: src/components/events/JoinActionCard.tsx:300
+#: src/components/events/JoinActionCard.tsx:298
 msgid "Guest {index, number} name (optional)"
 msgstr "Jméno hosta {index, number} (nepovinné)"
 
-#: src/components/events/JoinActionCard.tsx:182
+#: src/components/events/JoinActionCard.tsx:180
 msgid "Guest list updated."
 msgstr "Seznam hostů aktualizován."
 
-#: src/pages/EventDetailsPage.tsx:1612
+#: src/pages/EventDetailsPage.tsx:1587
 msgid "Guests:"
 msgstr "Hosté:"
 
@@ -1145,7 +1200,7 @@ msgstr "má nové místo."
 msgid "Have you paid?"
 msgstr "Máte zaplaceno?"
 
-#: src/pages/EventDetailsPage.tsx:1702
+#: src/pages/EventDetailsPage.tsx:1677
 msgid "Help build our community by giving karma to players who showed good sportsmanship, or report issues if needed."
 msgstr "Pomozte budovat naši komunitu tím, že udělíte karmu hráčům, kteří se chovali sportovně, nebo nahlaste problémy, pokud je to potřeba."
 
@@ -1201,8 +1256,8 @@ msgstr "Ideál"
 msgid "Ideal Players *"
 msgstr "Ideální počet hráčů *"
 
-#: src/components/events/JoinActionCard.tsx:253
-#: src/pages/EventDetailsPage.tsx:637
+#: src/components/events/JoinActionCard.tsx:251
+#: src/pages/EventDetailsPage.tsx:638
 msgid "Ideal: {count} players"
 msgstr "Ideál: {count} hráčů"
 
@@ -1230,21 +1285,21 @@ msgstr "Důležité"
 msgid "Indoor"
 msgstr "Uvnitř"
 
-#: src/pages/EventDetailsPage.tsx:585
+#: src/pages/EventDetailsPage.tsx:586
 msgid "Indoor & outdoor venue"
 msgstr "Vnitřní i venkovní areál"
 
-#: src/pages/EventDetailsPage.tsx:583
+#: src/pages/EventDetailsPage.tsx:584
 msgid "Indoor venue"
 msgstr "Vnitřní areál"
 
-#: src/components/events/JoinActionCard.tsx:73
+#: src/components/events/JoinActionCard.tsx:71
 #: src/components/map/EventMap.tsx:245
 msgid "Join Game"
 msgstr "Připojit se ke hře"
 
 #. placeholder {0}: data.city
-#: src/pages/SeoLandingPage.tsx:74
+#: src/pages/SeoLandingPage.tsx:85
 msgid "Join local amateur players, discover team sports events, and find places to play in {0}."
 msgstr "Přidejte se k místním amatérským hráčům, objevujte týmové sportovní události a najděte místa, kde si zahrát v {0}."
 
@@ -1252,7 +1307,7 @@ msgstr "Přidejte se k místním amatérským hráčům, objevujte týmové spor
 #~ msgid "Join the largest community of sports enthusiasts across Europe. Organize games, discover events, and make new friends through sport."
 #~ msgstr "Připojte se k největší komunitě sportovních nadšenců v Evropě. Organizujte hry, objevujte události a seznamujte se díky sportu."
 
-#: src/pages/HomePage.tsx:150
+#: src/pages/HomePage.tsx:156
 msgid "Join the vibrant community of sports enthusiasts across Europe. Organize games, discover events, and make new friends through team sports."
 msgstr "Připojte se k živé komunitě sportovních nadšenců v celé Evropě. Organizujte hry, objevujte události a navazujte nová přátelství prostřednictvím týmových sportů."
 
@@ -1265,12 +1320,12 @@ msgstr "Přidat na čekací listinu"
 msgid "Join Your First Event"
 msgstr "Připojte se ke své první události"
 
-#: src/pages/EventDetailsPage.tsx:1592
+#: src/pages/EventDetailsPage.tsx:1567
 msgid "Joined"
 msgstr "Připojil se"
 
-#: src/pages/EventDetailsPage.tsx:1583
-#: src/pages/EventDetailsPage.tsx:1755
+#: src/pages/EventDetailsPage.tsx:1558
+#: src/pages/EventDetailsPage.tsx:1731
 msgid "Joined {timeAgo}"
 msgstr "Připojil se {timeAgo}"
 
@@ -1288,7 +1343,7 @@ msgstr "Body karmy"
 msgid "Karma points: {0}"
 msgstr "Karma body: {0}"
 
-#: src/pages/EventDetailsPage.tsx:1597
+#: src/pages/EventDetailsPage.tsx:1572
 msgid "Karma: {karmaPoints}"
 msgstr "Karma: {karmaPoints}"
 
@@ -1310,16 +1365,16 @@ msgstr "Žebříček"
 msgid "Leaderboard Categories"
 msgstr "Kategorie žebříčku"
 
-#: src/pages/EventDetailsPage.tsx:1630
-#: src/pages/EventDetailsPage.tsx:1775
+#: src/pages/EventDetailsPage.tsx:1605
+#: src/pages/EventDetailsPage.tsx:1751
 msgid "Leave"
 msgstr "Odejít"
 
-#: src/pages/EventDetailsPage.tsx:1937
+#: src/pages/EventDetailsPage.tsx:1911
 msgid "Leave a comment"
 msgstr "Zanechte komentář"
 
-#: src/pages/HomePage.tsx:147
+#: src/pages/HomePage.tsx:153
 msgid "Let's Play Together"
 msgstr "Pojďme si zahrát společně"
 
@@ -1349,7 +1404,7 @@ msgstr "Poloha"
 msgid "Location Preview"
 msgstr "Náhled polohy"
 
-#: src/pages/EventDetailsPage.tsx:662
+#: src/pages/EventDetailsPage.tsx:663
 #: src/pages/EventDetailsPage.tsx:1367
 msgid "Location TBD"
 msgstr "Místo bude upřesněno"
@@ -1357,6 +1412,10 @@ msgstr "Místo bude upřesněno"
 #: src/pages/LeaderboardPage.tsx:729
 msgid "Lose Points For:"
 msgstr "Ztratíte body za:"
+
+#: src/components/user/UserButton.tsx:218
+msgid "Manage attendance bans"
+msgstr "Správa zákazů účasti"
 
 #: src/pages/ManageCoreGroupsPage.tsx:139
 msgid "Manage Core Groups"
@@ -1382,11 +1441,11 @@ msgstr "Označit vše jako přečtené"
 msgid "Mark as read"
 msgstr "Označit jako přečtené"
 
-#: src/pages/EventDetailsPage.tsx:579
+#: src/pages/EventDetailsPage.tsx:580
 msgid "Marked as paid"
 msgstr "Označeno jako zaplacené"
 
-#: src/pages/EventDetailsPage.tsx:571
+#: src/pages/EventDetailsPage.tsx:572
 msgid "Marked as paid {timeAgo}"
 msgstr "Označeno jako zaplacené {timeAgo}"
 
@@ -1403,7 +1462,7 @@ msgid "Maximum Players *"
 msgstr "Maximální počet hráčů *"
 
 #. placeholder {0}: data.city
-#: src/pages/SeoLandingPage.tsx:69
+#: src/pages/SeoLandingPage.tsx:80
 msgid "Meet local amateur {lowerSportName} players, join upcoming games, and find places to play in {0}."
 msgstr "Seznamte se s místními amatérskými hráči sportu {lowerSportName}, přidejte se k nadcházejícím hrám a najděte místa, kde si zahrát v {0}."
 
@@ -1435,6 +1494,10 @@ msgstr "Minimální počet hráčů *"
 msgid "Mixed (Indoor & Outdoor)"
 msgstr "Smíšené (uvnitř i venku)"
 
+#: src/pages/AdminEventBansPage.tsx:308
+msgid "months"
+msgstr "měsíce"
+
 #: src/pages/LeaderboardPage.tsx:273
 msgid "Most active event organizers"
 msgstr "Nejaktivnější organizátoři"
@@ -1452,7 +1515,7 @@ msgstr "Moje události"
 msgid "N/A"
 msgstr "N/A"
 
-#: src/pages/EventDetailsPage.tsx:540
+#: src/pages/EventDetailsPage.tsx:541
 msgid "Need {count} more players to confirm"
 msgstr "Pro potvrzení chybí ještě {count} hráčů"
 
@@ -1500,7 +1563,7 @@ msgstr "Nejnovější nejdříve"
 msgid "No bio provided"
 msgstr "Žádné bio"
 
-#: src/pages/DiscoverPage.tsx:397
+#: src/pages/DiscoverPage.tsx:403
 msgid "No events found"
 msgstr "Žádné události nenalezeny"
 
@@ -1528,11 +1591,11 @@ msgstr "Zatím žádná oznámení"
 msgid "No past events"
 msgstr "Žádné minulé události"
 
-#: src/pages/EventDetailsPage.tsx:2150
+#: src/pages/EventDetailsPage.tsx:2155
 msgid "No phone number"
 msgstr "Bez telefonu"
 
-#: src/pages/EventDetailsPage.tsx:2146
+#: src/pages/EventDetailsPage.tsx:2151
 msgid "No phone number available"
 msgstr "Telefonní číslo není k dispozici"
 
@@ -1561,13 +1624,17 @@ msgstr "Žádné skluzy, přineste si světlý i tmavý dres, hlašte si vlastn�
 msgid "No upcoming events"
 msgstr "Žádné nadcházející události"
 
-#: src/pages/DiscoverPage.tsx:352
+#: src/pages/DiscoverPage.tsx:358
 msgid "No upcoming events found."
 msgstr "Nenalezeny žádné nadcházející události."
 
-#: src/pages/SeoLandingPage.tsx:173
+#: src/pages/SeoLandingPage.tsx:184
 msgid "No upcoming games are listed here yet. The venues below support this page, and new games will appear here automatically."
 msgstr "Zatím zde nejsou uvedeny žádné nadcházející hry. Níže uvedená místa tuto stránku podporují a nové hry se zde objeví automaticky."
+
+#: src/pages/AdminEventBansPage.tsx:234
+msgid "No users match this search."
+msgstr "Žádní uživatelé neodpovídají vyhledávání."
 
 #: src/components/venues/VenueSelector.tsx:349
 msgid "No venues available"
@@ -1617,7 +1684,7 @@ msgstr "Nejstarší nejdříve"
 msgid "Only {remainingSlots} more QR code images can be uploaded for this event."
 msgstr "Pro tuto událost lze nahrát už jen {remainingSlots, plural, one {jeden další obrázek} few {{remainingSlots} další obrázky} other {{remainingSlots} dalších obrázků}} QR kódů."
 
-#: src/pages/EventDetailsPage.tsx:1682
+#: src/pages/EventDetailsPage.tsx:1657
 msgid "Open spot"
 msgstr "Volné místo"
 
@@ -1630,7 +1697,7 @@ msgstr "Otevřené pro všechny úrovně"
 #~ msgstr "Organizovaná událost"
 
 #: src/pages/EventDetailsPage.tsx:1423
-#: src/pages/EventDetailsPage.tsx:1563
+#: src/pages/EventDetailsPage.tsx:1538
 msgid "Organizer"
 msgstr "Organizátor"
 
@@ -1638,7 +1705,7 @@ msgstr "Organizátor"
 msgid "Organizing successful events (+10 points)"
 msgstr "Organizace úspěšných událostí (+10 bodů)"
 
-#: src/pages/EventDetailsPage.tsx:2226
+#: src/pages/EventDetailsPage.tsx:2231
 msgid "Orientation Plan"
 msgstr "Orientační plán"
 
@@ -1646,7 +1713,7 @@ msgstr "Orientační plán"
 msgid "Orientation Plan (Optional)"
 msgstr "Orientační plán (nepovinný)"
 
-#: src/pages/SeoLandingPage.tsx:230
+#: src/pages/SeoLandingPage.tsx:241
 msgid "Other active cities"
 msgstr "Další aktivní města"
 
@@ -1654,7 +1721,7 @@ msgstr "Další aktivní města"
 msgid "Outdoor"
 msgstr "Venku"
 
-#: src/pages/EventDetailsPage.tsx:581
+#: src/pages/EventDetailsPage.tsx:582
 msgid "Outdoor venue"
 msgstr "Venkovní areál"
 
@@ -1666,9 +1733,9 @@ msgstr "Celková karma"
 msgid "Overcast with clouds"
 msgstr "Zataženo s mraky"
 
-#: src/pages/EventDetailsPage.tsx:1569
-#: src/pages/EventDetailsPage.tsx:1570
-#: src/pages/EventDetailsPage.tsx:1574
+#: src/pages/EventDetailsPage.tsx:1544
+#: src/pages/EventDetailsPage.tsx:1545
+#: src/pages/EventDetailsPage.tsx:1549
 msgid "Paid"
 msgstr "Zaplaceno"
 
@@ -1681,7 +1748,7 @@ msgstr "Parkování"
 msgid "Participants"
 msgstr "Účastníci"
 
-#: src/pages/EventDetailsPage.tsx:631
+#: src/pages/EventDetailsPage.tsx:632
 msgid "Participants: {current}/{max}"
 msgstr "Účastníci: {current}/{max}"
 
@@ -1689,12 +1756,12 @@ msgstr "Účastníci: {current}/{max}"
 msgid "Password changed successfully!"
 msgstr "Heslo bylo úspěšně změněno!"
 
-#: src/pages/DiscoverPage.tsx:364
+#: src/pages/DiscoverPage.tsx:370
 #: src/pages/PublicProfilePage.tsx:180
 msgid "Past Events"
 msgstr "Minulé události"
 
-#: src/pages/EventDetailsPage.tsx:951
+#: src/pages/EventDetailsPage.tsx:952
 msgid "Payment"
 msgstr "Platba"
 
@@ -1706,7 +1773,7 @@ msgstr "Platba (nepovinná)"
 msgid "Payment Details"
 msgstr "Platební údaje"
 
-#: src/pages/EventDetailsPage.tsx:986
+#: src/pages/EventDetailsPage.tsx:987
 msgid "Payment details:"
 msgstr "Platební údaje:"
 
@@ -1714,15 +1781,15 @@ msgstr "Platební údaje:"
 #~ msgid "Payment Information"
 #~ msgstr "Informace o platbě"
 
-#: src/pages/EventDetailsPage.tsx:833
+#: src/pages/EventDetailsPage.tsx:834
 msgid "Payment marked as complete."
 msgstr "Platba byla označena jako dokončená."
 
-#: src/pages/EventDetailsPage.tsx:873
+#: src/pages/EventDetailsPage.tsx:874
 msgid "Payment status cleared."
 msgstr "Stav platby byl vymazán."
 
-#: src/pages/EventDetailsPage.tsx:651
+#: src/pages/EventDetailsPage.tsx:652
 msgid "Payment: {paymentDetails}"
 msgstr "Platba: {paymentDetails}"
 
@@ -1759,25 +1826,25 @@ msgstr "Osobní údaje"
 msgid "Phone"
 msgstr "Telefon"
 
-#: src/pages/EventDetailsPage.tsx:2251
+#: src/pages/EventDetailsPage.tsx:2256
 msgid "Photos"
 msgstr "Fotky"
 
-#: src/pages/EventDetailsPage.tsx:2218
+#: src/pages/EventDetailsPage.tsx:2223
 msgid "Photos & Orientation"
 msgstr "Fotky a orientace"
 
-#: src/pages/SeoLandingPage.tsx:109
+#: src/pages/SeoLandingPage.tsx:120
 msgid "Places to play"
 msgstr "Místa ke hraní"
 
 #. placeholder {0}: data.city
-#: src/pages/SeoLandingPage.tsx:190
+#: src/pages/SeoLandingPage.tsx:201
 msgid "Places to play in {0}"
 msgstr "Místa ke hraní v {0}"
 
 #. placeholder {0}: data.city
-#: src/pages/SeoLandingPage.tsx:62
+#: src/pages/SeoLandingPage.tsx:73
 msgid "Play {sportName} in {0}"
 msgstr "Zahrajte si {sportName} v {0}"
 
@@ -1785,7 +1852,7 @@ msgstr "Zahrajte si {sportName} v {0}"
 msgid "Playable conditions"
 msgstr "Hratelné podmínky"
 
-#: src/pages/EventDetailsPage.tsx:1751
+#: src/pages/EventDetailsPage.tsx:1727
 msgid "Player"
 msgstr "Hráč"
 
@@ -1797,11 +1864,11 @@ msgstr "Požadavky na hráče"
 msgid "players"
 msgstr "hráči"
 
-#: src/components/events/JoinActionCard.tsx:226
+#: src/components/events/JoinActionCard.tsx:224
 msgid "Players confirmed"
 msgstr "Potvrzených hráčů"
 
-#: src/pages/EventDetailsPage.tsx:1801
+#: src/pages/EventDetailsPage.tsx:1777
 msgid "Players on the waitlist will automatically be added when spots become available."
 msgstr "Hráči na čekací listině budou automaticky přidáni, jakmile se uvolní místa."
 
@@ -1814,19 +1881,19 @@ msgstr "Hráči bez požadované úrovně dovedností v {0} se nebudou moci k t�
 msgid "Pleasant and sunny"
 msgstr "Příjemně a slunečno"
 
-#: src/pages/EventDetailsPage.tsx:594
+#: src/pages/EventDetailsPage.tsx:595
 msgid "Please describe the behavior issue..."
 msgstr "Popište prosím problém s chováním..."
 
-#: src/pages/EventDetailsPage.tsx:592
+#: src/pages/EventDetailsPage.tsx:593
 msgid "Please describe what happened..."
 msgstr "Popište prosím, co se stalo..."
 
-#: src/pages/EventDetailsPage.tsx:732
+#: src/pages/EventDetailsPage.tsx:733
 msgid "Please enter a comment before submitting."
 msgstr "Prosím, zadejte komentář před odesláním."
 
-#: src/components/events/JoinActionCard.tsx:97
+#: src/components/events/JoinActionCard.tsx:95
 msgid "Please enter a name for each guest."
 msgstr "Prosím, zadejte jméno pro každého hosta."
 
@@ -1866,15 +1933,15 @@ msgstr "Vyberte prosím soubor s obrázkem"
 msgid "Please select at least one member."
 msgstr "Vyberte prosím alespoň jednoho člena."
 
-#: src/pages/EventDetailsPage.tsx:726
+#: src/pages/EventDetailsPage.tsx:727
 msgid "Please sign in to comment on this event."
 msgstr "Pro komentář k této události se prosím přihlaste."
 
-#: src/pages/EventDetailsPage.tsx:808
+#: src/pages/EventDetailsPage.tsx:809
 msgid "Please sign in to confirm payment."
 msgstr "Pro potvrzení platby se prosím přihlaste."
 
-#: src/components/events/JoinActionCard.tsx:124
+#: src/components/events/JoinActionCard.tsx:122
 msgid "Please sign in to join this event."
 msgstr "Pro připojení k této události se prosím přihlaste."
 
@@ -1898,11 +1965,11 @@ msgstr "Špatné sportovní chování"
 msgid "Positive feedback from players (+3 points)"
 msgstr "Pozitivní hodnocení od hráčů (+3 body)"
 
-#: src/pages/EventDetailsPage.tsx:2078
+#: src/pages/EventDetailsPage.tsx:2052
 msgid "Post comment"
 msgstr "Odeslat komentář"
 
-#: src/pages/EventDetailsPage.tsx:2076
+#: src/pages/EventDetailsPage.tsx:2050
 msgid "Posting..."
 msgstr "Odesílám..."
 
@@ -1910,7 +1977,7 @@ msgstr "Odesílám..."
 msgid "Prague"
 msgstr "Praha"
 
-#: src/pages/EventDetailsPage.tsx:1180
+#: src/pages/EventDetailsPage.tsx:1181
 msgid "Preview"
 msgstr "Náhled"
 
@@ -1943,15 +2010,15 @@ msgstr "Cena za hodinu"
 #~ msgstr "Cena za osobu ({0} lidí):"
 
 #. placeholder {0}: Math.max(event.minParticipants, reservedAwareHeadcount)
-#: src/pages/EventDetailsPage.tsx:966
+#: src/pages/EventDetailsPage.tsx:967
 msgid "Price per person({0}people):"
 msgstr "Cena za osobu ({0} lidí):"
 
-#: src/pages/EventDetailsPage.tsx:958
+#: src/pages/EventDetailsPage.tsx:959
 msgid "Price total:"
 msgstr "Celková cena:"
 
-#: src/pages/EventDetailsPage.tsx:644
+#: src/pages/EventDetailsPage.tsx:645
 msgid "Price: €{price} per person"
 msgstr "Cena: €{price} za osobu"
 
@@ -1978,16 +2045,16 @@ msgstr "QR kód zvětšen"
 
 #. placeholder {0}: index + 1
 #: src/components/events/CreateEventForm.tsx:732
-#: src/pages/EventDetailsPage.tsx:1467
+#: src/pages/EventDetailsPage.tsx:1469
 msgid "QR code image {0}"
 msgstr "Obrázek QR kódu {0}"
 
 #: src/components/events/CreateEventForm.tsx:689
-#: src/pages/EventDetailsPage.tsx:1448
+#: src/pages/EventDetailsPage.tsx:1450
 msgid "QR Codes"
 msgstr "QR kódy"
 
-#: src/pages/EventDetailsPage.tsx:1476
+#: src/pages/EventDetailsPage.tsx:1478
 msgid "QR codes are displayed only to participants."
 msgstr "QR kódy jsou zobrazeny pouze účastníkům."
 
@@ -1995,7 +2062,7 @@ msgstr "QR kódy jsou zobrazeny pouze účastníkům."
 msgid "Rain chance:"
 msgstr "Šance na déšť:"
 
-#: src/pages/EventDetailsPage.tsx:1664
+#: src/pages/EventDetailsPage.tsx:1639
 msgid "Rate"
 msgstr "Hodnotit"
 
@@ -2003,11 +2070,11 @@ msgstr "Hodnotit"
 msgid "Rate Participant"
 msgstr "Ohodnotit účastníka"
 
-#: src/pages/EventDetailsPage.tsx:1535
+#: src/pages/EventDetailsPage.tsx:1510
 msgid "Rate Players"
 msgstr "Hodnotit hráče"
 
-#: src/pages/EventDetailsPage.tsx:1699
+#: src/pages/EventDetailsPage.tsx:1674
 msgid "Rate Your Fellow Players"
 msgstr "Ohodnoťte spoluhráče"
 
@@ -2037,17 +2104,17 @@ msgid "Regular players with some experience"
 msgstr "Pravidelní hráči s určitou zkušeností"
 
 #: src/components/events/CreateEventForm.tsx:739
-#: src/components/events/JoinActionCard.tsx:310
+#: src/components/events/JoinActionCard.tsx:308
 #: src/components/venues/AddVenueModal.tsx:719
-#: src/pages/EventDetailsPage.tsx:1792
+#: src/pages/EventDetailsPage.tsx:1768
 msgid "Remove"
 msgstr "Odstranit"
 
-#: src/pages/EventDetailsPage.tsx:1645
+#: src/pages/EventDetailsPage.tsx:1620
 msgid "Remove attendee"
 msgstr "Odstranit účastníka"
 
-#: src/pages/EventDetailsPage.tsx:1789
+#: src/pages/EventDetailsPage.tsx:1765
 msgid "Remove from waitlist"
 msgstr "Odstranit ze čekací listiny"
 
@@ -2055,7 +2122,7 @@ msgstr "Odstranit ze čekací listiny"
 msgid "Report bad behavior"
 msgstr "Nahlásit nevhodné chování"
 
-#: src/pages/EventDetailsPage.tsx:932
+#: src/pages/EventDetailsPage.tsx:933
 msgid "Report Bad Behavior"
 msgstr "Nahlásit nevhodné chování"
 
@@ -2063,7 +2130,7 @@ msgstr "Nahlásit nevhodné chování"
 msgid "Report no-show"
 msgstr "Nahlásit nedostavení se"
 
-#: src/pages/EventDetailsPage.tsx:931
+#: src/pages/EventDetailsPage.tsx:932
 msgid "Report No-Show"
 msgstr "Nahlásit nedostavení se"
 
@@ -2079,6 +2146,16 @@ msgstr "Nutné pro potvrzení události"
 msgid "Reserved spots"
 msgstr "Rezervovaná místa"
 
+#. placeholder {0}: formatBanExpiry(bannedUntil)
+#: src/pages/AdminEventBansPage.tsx:270
+msgid "Restricted until {0}"
+msgstr "Omezeno do {0}"
+
+#. placeholder {0}: formatBanExpiry(bannedUntil)
+#: src/pages/AdminEventBansPage.tsx:272
+msgid "Restriction expired {0}"
+msgstr "Omezení vypršelo {0}"
+
 #: src/pages/UserProfilePage.tsx:146
 msgid "Revolut tag updated!"
 msgstr "Revolut tag aktualizován!"
@@ -2087,9 +2164,9 @@ msgstr "Revolut tag aktualizován!"
 msgid "Revolut: @username or cash on spot"
 msgstr "Revolut: @uživatelskéjméno nebo hotovost na místě"
 
-#: src/pages/EventDetailsPage.tsx:1131
-#: src/pages/EventDetailsPage.tsx:1223
-#: src/pages/EventDetailsPage.tsx:1875
+#: src/pages/EventDetailsPage.tsx:1132
+#: src/pages/EventDetailsPage.tsx:1224
+#: src/pages/EventDetailsPage.tsx:1849
 #: src/pages/ManageCoreGroupsPage.tsx:202
 msgid "Save"
 msgstr "Uložit"
@@ -2098,7 +2175,7 @@ msgstr "Uložit"
 msgid "Save Changes"
 msgstr "Uložit změny"
 
-#: src/components/events/JoinActionCard.tsx:328
+#: src/components/events/JoinActionCard.tsx:326
 msgid "Save guests"
 msgstr "Uložit hosty"
 
@@ -2110,14 +2187,22 @@ msgstr "Ukládejte zajímavé události, abyste je později snadno našli."
 msgid "Saved Events"
 msgstr "Uložené události"
 
-#: src/components/events/JoinActionCard.tsx:326
+#: src/components/events/JoinActionCard.tsx:324
 #: src/pages/EventDetailsPage.tsx:2371
 msgid "Saving..."
 msgstr "Ukládám..."
 
+#: src/pages/AdminEventBansPage.tsx:214
+msgid "Search by name or email"
+msgstr "Hledat podle jména nebo e-mailu"
+
 #: src/components/ui/GiphyPicker.tsx:209
 msgid "Search GIFs..."
 msgstr "Hledat GIFy..."
+
+#: src/pages/AdminEventBansPage.tsx:202
+msgid "Search users"
+msgstr "Hledat uživatele"
 
 #: src/components/venues/VenueSelector.tsx:132
 msgid "Search venues by name or location..."
@@ -2157,16 +2242,16 @@ msgstr "Vybráno"
 msgid "Set from 2 hours up to 14 days (336 hours), counted from now."
 msgstr "Nastavte od 2 hodin do 14 dnů (336 hodin), počítáno od teď."
 
-#: src/pages/EventDetailsPage.tsx:1086
-#: src/pages/EventDetailsPage.tsx:1174
+#: src/pages/EventDetailsPage.tsx:1087
+#: src/pages/EventDetailsPage.tsx:1175
 msgid "Share"
 msgstr "Sdílet"
 
-#: src/pages/EventDetailsPage.tsx:2007
+#: src/pages/EventDetailsPage.tsx:1981
 msgid "Share updates, ask questions, or tag players with @Name."
 msgstr "Sdílejte aktualizace, pokládejte otázky nebo označujte hráče pomocí @Jméno."
 
-#: src/pages/EventDetailsPage.tsx:589
+#: src/pages/EventDetailsPage.tsx:590
 msgid "Share your experience playing with this person..."
 msgstr "Sdílejte svou zkušenost s hrou s tímto člověkem..."
 
@@ -2184,6 +2269,12 @@ msgstr "Zobrazit méně"
 msgid "Showers"
 msgstr "Sprchy"
 
+#. placeholder {0}: filteredUsers.length
+#. placeholder {1}: users.length
+#: src/pages/AdminEventBansPage.tsx:219
+msgid "Showing {0} of {1} users"
+msgstr "Zobrazeno {0} z {1} uživatelů"
+
 #: src/pages/HomePage.tsx:124
 #~ msgid "Showing events near your location"
 #~ msgstr "Zobrazuji události poblíž vaší polohy"
@@ -2192,7 +2283,7 @@ msgstr "Sprchy"
 msgid "Showing venues that support"
 msgstr "Zobrazuji místa, která podporují"
 
-#: src/pages/EventDetailsPage.tsx:2084
+#: src/pages/EventDetailsPage.tsx:2058
 msgid "Sign in to join the conversation."
 msgstr "Přihlaste se, abyste se připojili k rozhovoru."
 
@@ -2200,7 +2291,7 @@ msgstr "Přihlaste se, abyste se připojili k rozhovoru."
 msgid "Skill Level Requirements"
 msgstr "Požadavky na úroveň dovedností"
 
-#: src/pages/DiscoverPage.tsx:272
+#: src/pages/DiscoverPage.tsx:278
 msgid "Sort by:"
 msgstr "Seřadit podle:"
 
@@ -2212,16 +2303,16 @@ msgstr "Sport *"
 msgid "Sport-Specific Rankings"
 msgstr "Žebříčky pro konkrétní sport"
 
-#: src/pages/EventDetailsPage.tsx:630
+#: src/pages/EventDetailsPage.tsx:631
 msgid "Sport: {sportName}"
 msgstr "Sport: {sportName}"
 
-#: src/pages/SeoLandingPage.tsx:114
+#: src/pages/SeoLandingPage.tsx:125
 msgid "Sports covered"
 msgstr "Pokryté sporty"
 
 #. placeholder {0}: data.city
-#: src/pages/SeoLandingPage.tsx:221
+#: src/pages/SeoLandingPage.tsx:232
 msgid "Sports in {0}"
 msgstr "Sporty v {0}"
 
@@ -2261,7 +2352,7 @@ msgstr "Západ slunce:"
 msgid "Supported Sports *"
 msgstr "Podporované sporty *"
 
-#: src/pages/EventDetailsPage.tsx:1949
+#: src/pages/EventDetailsPage.tsx:1923
 msgid "Supports **bold**, *italic*, __underline__, @mentions, and GIFs."
 msgstr "Podporuje **tučné**, *kurzívu*, __podtržení__, @zmínky a GIFy."
 
@@ -2272,6 +2363,10 @@ msgstr "Podporuje **tučné**, *kurzívu*, __podtržení__, @zmínky a GIFy."
 #: src/pages/UserProfilePage.tsx:688
 msgid "Tell us about yourself and your sports interests..."
 msgstr "Napište nám něco o sobě a svých sportovních zájmech..."
+
+#: src/pages/AdminEventBansPage.tsx:185
+msgid "Temporarily prevent a user from joining new games. They can still browse hraj.eu and keep their existing attendances."
+msgstr "Dočasně zabraňte uživateli připojit se k novým hrám. Stále může procházet hraj.eu a ponechá si stávající účasti."
 
 #: src/pages/EventDetailsPage.tsx:1277
 msgid "The organizer has cancelled this event."
@@ -2293,7 +2388,7 @@ msgstr "Místo se změnilo pro vaši událost: {title}"
 msgid "This event has been cancelled"
 msgstr "Tato událost byla zrušena"
 
-#: src/components/events/JoinActionCard.tsx:147
+#: src/components/events/JoinActionCard.tsx:145
 msgid "This event is full right now, so you were added to the waitlist."
 msgstr "Tato událost je momentálně plná, proto jste byli přidáni na čekací listinu."
 
@@ -2306,6 +2401,10 @@ msgstr "Tato událost bude automaticky zrušena, pokud nedosáhneme minima {0} h
 #: src/pages/LeaderboardPage.tsx:242
 msgid "This Month"
 msgstr "Tento měsíc"
+
+#: src/pages/AdminEventBansPage.tsx:162
+msgid "This page is only available to hraj.eu administrators."
+msgstr "Tato stránka je dostupná pouze správcům hraj.eu."
 
 #: src/components/weather/WeatherWidget.tsx:102
 msgid "Thunderstorm expected"
@@ -2339,7 +2438,7 @@ msgstr "Nejlepší hráči podle celkové karmy"
 msgid "Total Price"
 msgstr "Celková cena"
 
-#: src/pages/DiscoverPage.tsx:400
+#: src/pages/DiscoverPage.tsx:406
 msgid "Try adjusting your filters or create a new event."
 msgstr "Zkuste upravit filtry nebo vytvořte novou událost."
 
@@ -2351,7 +2450,11 @@ msgstr "Zkuste znovu"
 msgid "Typical hourly rates for this venue"
 msgstr "Typické hodinové sazby pro toto místo"
 
-#: src/components/events/JoinActionCard.tsx:274
+#: src/pages/AdminEventBansPage.tsx:333
+msgid "Unban"
+msgstr "Zrušit zákaz"
+
+#: src/components/events/JoinActionCard.tsx:272
 msgid "Up to {count} names"
 msgstr "Až {count} jmen"
 
@@ -2359,15 +2462,19 @@ msgstr "Až {count} jmen"
 #~ msgid "Up to 2 names"
 #~ msgstr "Až 2 jména"
 
-#: src/pages/DiscoverPage.tsx:301
+#: src/pages/DiscoverPage.tsx:307
 #: src/pages/PublicProfilePage.tsx:87
 msgid "Upcoming Events"
 msgstr "Nadcházející události"
 
-#: src/pages/SeoLandingPage.tsx:104
-#: src/pages/SeoLandingPage.tsx:139
+#: src/pages/SeoLandingPage.tsx:115
+#: src/pages/SeoLandingPage.tsx:150
 msgid "Upcoming games"
 msgstr "Nadcházející hry"
+
+#: src/pages/AdminEventBansPage.tsx:322
+msgid "Update ban"
+msgstr "Aktualizovat zákaz"
 
 #: src/components/events/CreateEventForm.tsx:1351
 msgid "Update Event"
@@ -2415,7 +2522,7 @@ msgstr "Nahrajte fotky místa"
 msgid "Uploading..."
 msgstr "Nahrávám..."
 
-#: src/pages/EventDetailsPage.tsx:2097
+#: src/pages/EventDetailsPage.tsx:2102
 msgid "Venue"
 msgstr "Místo konání"
 
@@ -2488,12 +2595,12 @@ msgstr "Zobrazit událost: {eventUrl}"
 msgid "Visibility"
 msgstr "Viditelnost"
 
-#: src/pages/EventDetailsPage.tsx:2172
+#: src/pages/EventDetailsPage.tsx:2177
 msgid "Visit website"
 msgstr "Navštívit web"
 
 #: src/components/map/EventMap.tsx:297
-#: src/pages/EventDetailsPage.tsx:1723
+#: src/pages/EventDetailsPage.tsx:1699
 msgid "Waitlist"
 msgstr "Čekací listina"
 
@@ -2537,6 +2644,10 @@ msgstr "Předpověď počasí není dostupná pro toto datum"
 msgid "Website"
 msgstr "Web"
 
+#: src/pages/AdminEventBansPage.tsx:307
+msgid "weeks"
+msgstr "týdny"
+
 #: src/lib/email/sendCancellationEmail.ts:47
 #: src/lib/email/sendVenueChangeEmail.ts:40
 msgid "When"
@@ -2564,7 +2675,7 @@ msgstr "Kde"
 msgid "Where: {location}"
 msgstr "Kde: {location}"
 
-#: src/pages/EventDetailsPage.tsx:1526
+#: src/pages/EventDetailsPage.tsx:1501
 msgid "Who's Playing"
 msgstr "Kdo hraje"
 
@@ -2593,11 +2704,11 @@ msgstr "Ano, zaplatil(a) jsem"
 msgid "Yes, Cancel Event"
 msgstr "Ano, zrušit událost"
 
-#: src/pages/EventDetailsPage.tsx:1751
+#: src/pages/EventDetailsPage.tsx:1727
 msgid "You"
 msgstr "Vy"
 
-#: src/components/events/JoinActionCard.tsx:71
+#: src/components/events/JoinActionCard.tsx:341
 #: src/components/map/EventMap.tsx:242
 msgid "You are playing"
 msgstr "Jste přihlášen(a)"
@@ -2610,11 +2721,11 @@ msgstr "Můžete nahrát maximálně {MAX_QR_IMAGES} obrázků QR kódů."
 msgid "You do not have any venues to manage yet. Start by adding your first venue!"
 msgstr "Zatím nemáte žádná místa ke správě. Začněte přidáním prvního místa!"
 
-#: src/pages/EventDetailsPage.tsx:709
+#: src/pages/EventDetailsPage.tsx:710
 msgid "You have left the event."
 msgstr "Opustili jste událost."
 
-#: src/components/events/JoinActionCard.tsx:151
+#: src/components/events/JoinActionCard.tsx:149
 msgid "You have successfully joined this game."
 msgstr "Úspěšně jste se připojili ke hře."
 
@@ -2630,7 +2741,7 @@ msgstr "Máte neuložené změny. Opravdu je chcete zahodit?"
 msgid "You haven't joined or created any upcoming events yet."
 msgstr "Zatím jste se nepřipojili k žádným nadcházejícím událostem ani žádné nevytvořili."
 
-#: src/pages/EventDetailsPage.tsx:814
+#: src/pages/EventDetailsPage.tsx:815
 msgid "You must join this event to confirm payment."
 msgstr "Musíte se připojit k této události pro potvrzení platby."
 
@@ -2638,10 +2749,10 @@ msgstr "Musíte se připojit k této události pro potvrzení platby."
 msgid "You'll see updates about your events here"
 msgstr "Zde uvidíte aktualizace o vašich událostech"
 
-#: src/pages/HomePage.tsx:29
-#: src/pages/HomePage.tsx:45
-#: src/pages/HomePage.tsx:50
-#: src/pages/HomePage.tsx:57
+#: src/pages/HomePage.tsx:30
+#: src/pages/HomePage.tsx:46
+#: src/pages/HomePage.tsx:51
+#: src/pages/HomePage.tsx:58
 msgid "your area"
 msgstr "vaše okolí"
 
@@ -2661,7 +2772,7 @@ msgstr "Tvoje událost byla zrušena: {title}"
 msgid "Your Groups"
 msgstr "Vaše skupiny"
 
-#: src/components/events/JoinActionCard.tsx:153
+#: src/components/events/JoinActionCard.tsx:151
 msgid "Your request was received."
 msgstr "Vaše žádost byla přijata."
 

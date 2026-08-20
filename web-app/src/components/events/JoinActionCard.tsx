@@ -2,7 +2,7 @@ import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useRouter } from '@tanstack/react-router'
-import { ChevronDown, Loader2, Trash2, Users } from 'lucide-react'
+import { CheckCircle, ChevronDown, Loader2, Trash2, Users } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { authClient } from '~/lib/auth-client'
@@ -67,9 +67,7 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
   )
 
   let joinButtonText = i18n._(msg`Join Waitlist`)
-  if (isParticipant) {
-    joinButtonText = i18n._(msg`You are playing`)
-  } else if (isSpotAvailable) {
+  if (isSpotAvailable) {
     joinButtonText = i18n._(msg`Join Game`)
   }
 
@@ -314,12 +312,12 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
                 </div>
               ))}
 
-              {isParticipant && (
+              {isParticipant && isGuestsFormDirty && (
                 <div className="flex justify-end">
                   <Button
                     variant="outline"
                     size="sm"
-                    disabled={isUpdatingGuests || isJoining || !isGuestsFormDirty}
+                    disabled={isUpdatingGuests || isJoining}
                     onClick={handleSavePlusAttendees}
                   >
                     {isUpdatingGuests ? (
@@ -334,15 +332,25 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
           )}
         </div>
 
-        <Button
-          variant="primary"
-          size="lg"
-          className="w-full mb-3"
-          disabled={isJoining || isParticipant}
-          onClick={handleJoinEvent}
-        >
-          {joinButtonText}
-        </Button>
+        {isParticipant ? (
+          <div
+            role="status"
+            className="mb-3 flex items-center justify-center rounded-lg border border-primary-200 bg-primary-50 px-6 py-3 text-base font-medium text-primary-700"
+          >
+            <CheckCircle size={20} className="mr-2" aria-hidden="true" />
+            <Trans>You are playing</Trans>
+          </div>
+        ) : (
+          <Button
+            variant="primary"
+            size="lg"
+            className="w-full mb-3"
+            disabled={isJoining}
+            onClick={handleJoinEvent}
+          >
+            {joinButtonText}
+          </Button>
+        )}
 
       </CardContent>
     </Card>
