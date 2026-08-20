@@ -13,7 +13,8 @@ const AddEventCommentSchema = z.object({
     .string()
     .trim()
     .min(1, 'Comment cannot be empty')
-    .max(1000, 'Comment is too long')
+    .max(1000, 'Comment is too long'),
+  notifyAttendees: z.boolean().default(true)
 })
 
 export const addEventComment = createServerFn({ method: 'POST' })
@@ -50,7 +51,8 @@ export const addEventComment = createServerFn({ method: 'POST' })
       .values({
         eventId: data.eventId,
         userId: session.user.id,
-        content: data.content.trim()
+        content: data.content.trim(),
+        notifiedAt: data.notifyAttendees ? null : new Date()
       })
       .returning()
 

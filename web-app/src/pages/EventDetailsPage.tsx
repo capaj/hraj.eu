@@ -6,6 +6,7 @@ import { GiphyPicker } from '../components/ui/GiphyPicker'
 import { JoinActionCard } from '../components/events/JoinActionCard'
 import { MentionDropdown } from '../components/ui/MentionDropdown'
 import { MasonryGrid } from '../components/ui/MasonryGrid'
+import { Toggle } from '../components/ui/Toggle'
 import { Tooltip, TooltipTrigger, TooltipContent } from '../components/ui/tooltip'
 import { WeatherWidget } from '../components/weather/WeatherWidget'
 import { SPORTS, FACILITIES } from '../lib/constants'
@@ -325,6 +326,7 @@ export const EventDetailsPage: React.FC = () => {
     initialComments || []
   )
   const [commentInput, setCommentInput] = useState('')
+  const [notifyAttendees, setNotifyAttendees] = useState(true)
   const [isSubmittingComment, setIsSubmittingComment] = useState(false)
   const [showGifPicker, setShowGifPicker] = useState(false)
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null)
@@ -473,6 +475,7 @@ export const EventDetailsPage: React.FC = () => {
   useEffect(() => {
     setEvent(initialEvent)
     setCommentInput('')
+    setNotifyAttendees(true)
   }, [initialEvent])
 
   useEffect(() => {
@@ -737,10 +740,15 @@ export const EventDetailsPage: React.FC = () => {
     try {
       setIsSubmittingComment(true)
       const newComment = await addEventComment({
-        data: { eventId: event.id, content: trimmed }
+        data: {
+          eventId: event.id,
+          content: trimmed,
+          notifyAttendees
+        }
       })
       setComments((prev) => [...prev, newComment])
       setCommentInput('')
+      setNotifyAttendees(true)
     } catch (error) {
       const message =
         error instanceof Error
@@ -1271,8 +1279,36 @@ export const EventDetailsPage: React.FC = () => {
               )}
             </div>
           </div>
-          <div className="mt-2 flex items-center justify-between">
-
+          <div className="mt-3 rounded-lg border border-gray-200 bg-gray-50 p-3">
+            <Toggle
+              checked={notifyAttendees}
+              onChange={setNotifyAttendees}
+              disabled={!currentUserId || isSubmittingComment}
+              size="sm"
+              className="w-full flex-row-reverse items-start justify-between gap-4"
+            >
+              <span className="block text-left">
+                <span className="block text-sm font-medium text-gray-900">
+                  <Trans>Notify attendees by email</Trans>
+                </span>
+                <span className="mt-1 block text-xs font-normal leading-relaxed text-gray-600">
+                  {notifyAttendees ? (
+                    <Trans>
+                      All other confirmed attendees with event emails enabled
+                      will receive this comment in their next hourly digest.
+                      @mentions do not limit who is emailed.
+                    </Trans>
+                  ) : (
+                    <Trans>
+                      No email will be sent. The comment will still be visible
+                      in the event discussion.
+                    </Trans>
+                  )}
+                </span>
+              </span>
+            </Toggle>
+          </div>
+          <div className="mt-3 flex items-center justify-between">
             <Button
               variant="primary"
               size="sm"
