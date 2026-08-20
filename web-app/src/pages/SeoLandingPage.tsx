@@ -6,7 +6,7 @@ import { EventMap } from '../components/map/EventMap'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card, CardContent } from '../components/ui/Card'
-import { authClient } from '../lib/auth-client'
+import { useAuthSession } from '../lib/auth-client'
 import { joinEvent } from '~/server-functions/joinEvent'
 import { subscribeToCityEvents } from '~/server-functions/subscribeToCityEvents'
 import { SPORTS } from '../lib/constants'
@@ -22,7 +22,7 @@ type SeoLandingPageProps = {
 
 export function SeoLandingPage({ data }: SeoLandingPageProps) {
   const navigate = useNavigate()
-  const session = authClient.useSession()
+  const session = useAuthSession()
   const [isSubscribed, setIsSubscribed] = React.useState(false)
 
   const sportName = data.sportName

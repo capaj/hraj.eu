@@ -5,7 +5,7 @@ import { useNavigate, useRouter } from '@tanstack/react-router'
 import { CheckCircle, ChevronDown, Loader2, Trash2, Users } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { authClient } from '~/lib/auth-client'
+import { useAuthSession } from '~/lib/auth-client'
 import { i18n } from '~/lib/i18n'
 import { getEventById } from '~/server-functions/getEventById'
 import { joinEvent } from '~/server-functions/joinEvent'
@@ -32,7 +32,7 @@ const arePlusAttendeesEqual = (a: string[], b: string[]) =>
 export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
   const navigate = useNavigate()
   const router = useRouter()
-  const session = authClient.useSession()
+  const session = useAuthSession()
   const currentUserId = session.data?.user?.id
   const [isGuestsExpanded, setIsGuestsExpanded] = useState(false)
   const [plusAttendees, setPlusAttendees] = useState<string[]>([])

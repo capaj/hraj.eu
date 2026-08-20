@@ -22,12 +22,12 @@ import {
 import { Notification } from '../../types'
 import { formatDistanceToNow } from 'date-fns'
 import { UserButton } from '../user/UserButton'
-import { authClient } from '~/lib/auth-client'
+import { useAuthSession } from '~/lib/auth-client'
 import { activateLocale, type AppLocale } from '~/lib/i18n'
 import { LanguageSelector } from './LanguageSelector'
 
 export const Header: React.FC = () => {
-  const session = authClient.useSession()
+  const session = useAuthSession()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { i18n } = useLingui()
 
@@ -193,7 +193,7 @@ export const NotificationsDropdown = () => {
   const { i18n } = useLingui()
   const [showNotifications, setShowNotifications] = useState(false)
   const notificationRef = useRef<HTMLDivElement>(null)
-  const session = authClient.useSession()
+  const session = useAuthSession()
   const currentUserId = session.data?.user?.id
   // TODO: Fetch notifications from server when notifications table is implemented
   const [notifications, setNotifications] = useState<Notification[]>([])

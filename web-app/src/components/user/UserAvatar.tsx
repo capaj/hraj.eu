@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import { Avatar, AvatarFallback } from '../ui/avatar'
 import { cn } from '~/lib/utils'
 
 interface UserAvatarProps extends React.ComponentPropsWithoutRef<typeof Avatar> {
@@ -33,14 +33,26 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({
 
   return (
     <Avatar className={cn(className)} {...props}>
-      <AvatarImage
-        src={user.image || undefined}
-        alt={user.name || 'User avatar'}
-        className="object-cover"
-      />
-      <AvatarFallback className={cn("bg-gray-200 text-gray-600 font-bold", fallbackClassName)}>
+      <AvatarFallback
+        className={cn(
+          'bg-gray-200 text-gray-600 font-bold',
+          fallbackClassName
+        )}
+      >
         {getInitials(user.name, user.email)}
       </AvatarFallback>
+      {user.image && (
+        <img
+          key={user.image}
+          src={user.image}
+          alt={user.name || 'User avatar'}
+          referrerPolicy="no-referrer"
+          className="absolute inset-0 aspect-square size-full object-cover"
+          onError={(event) => {
+            event.currentTarget.hidden = true
+          }}
+        />
+      )}
     </Avatar>
   )
 }

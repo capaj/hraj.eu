@@ -7,14 +7,14 @@ import { Plus, MapPin, Users, Trophy, Search } from 'lucide-react'
 import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { joinEvent } from '~/server-functions/joinEvent'
-import { authClient } from '../lib/auth-client'
+import { useAuthSession } from '../lib/auth-client'
 import { i18n } from '~/lib/i18n'
 import { toast } from 'sonner'
 
 export const AboutPage: React.FC = () => {
   const { upcomingEvents: initialUpcomingEvents, stats } = useLoaderData({ from: '/about' })
   const navigate = useNavigate()
-  const session = authClient.useSession()
+  const session = useAuthSession()
   const [userLocation, setUserLocation] = useState<string>('')
   const [isLoadingLocation, setIsLoadingLocation] = useState(true)
   const [upcomingEvents, setUpcomingEvents] = useState(initialUpcomingEvents)

@@ -19,7 +19,7 @@ const UpdateUserProfileSchema = z.object({
 })
 
 export const updateUserProfile = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => {
+  .validator((payload: unknown) => {
     return UpdateUserProfileSchema.parse(payload)
   })
   .handler(async ({ data }) => {
@@ -29,15 +29,18 @@ export const updateUserProfile = createServerFn({ method: 'POST' })
     if (!session?.user?.id) {
       throw new Error('You must be signed in to update your profile')
     }
-    
+
     if (Object.keys(data).length === 0) {
-        return { success: true }
+      return { success: true }
     }
 
-    await db.update(user).set({
-      ...data,
-      updatedAt: new Date()
-    }).where(eq(user.id, session.user.id))
+    await db
+      .update(user)
+      .set({
+        ...data,
+        updatedAt: new Date()
+      })
+      .where(eq(user.id, session.user.id))
 
     return { success: true }
   })

@@ -3,10 +3,14 @@ import { AuthUIProviderTanstack } from '@daveyplate/better-auth-ui/tanstack'
 import { I18nProvider } from '@lingui/react'
 import { Link, useRouter } from '@tanstack/react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { useEffect, useRef, type ReactNode } from 'react'
+import { useEffect, useRef, type ComponentProps, type ReactNode } from 'react'
 import { Toaster } from 'sonner'
 import { updateUserTimezone } from '~/server-functions/updateUserTimezone'
-import { authClient } from './auth-client'
+import {
+  authClient,
+  authSessionQueryKey,
+  useAuthSession
+} from './auth-client'
 import { activateLocale, i18n, type AppLocale } from './i18n'
 
 // Create a client
@@ -17,6 +21,11 @@ const queryClient = new QueryClient({
     }
   }
 })
+
+const authUIClient = authClient as unknown as ComponentProps<
+  typeof AuthUIProviderTanstack
+>['authClient']
+
 export function Providers({ children }: { children: ReactNode }) {
   const router = useRouter()
 
@@ -29,13 +38,13 @@ export function Providers({ children }: { children: ReactNode }) {
   return (
     <I18nProvider i18n={i18n}>
       <QueryClientProvider client={queryClient}>
-        <AuthQueryProvider>
+        <AuthQueryProvider sessionKey={authSessionQueryKey}>
           <AuthUIProviderTanstack
             social={{
               providers: ['google', 'facebook']
             }}
             magicLink={true}
-            authClient={authClient}
+            authClient={authUIClient}
             navigate={(href) => router.navigate({ href })}
             replace={(href) => router.navigate({ href, replace: true })}
             Link={({ href, ...props }) => <Link to={href} {...props} />}
@@ -51,7 +60,7 @@ export function Providers({ children }: { children: ReactNode }) {
 }
 
 function UserTimezoneSync() {
-  const session = authClient.useSession()
+  const session = useAuthSession()
   const pendingTimezone = useRef<string | null>(null)
   const storedTimezone = session.data?.user?.timezone
 

@@ -71,7 +71,7 @@ import {
 } from '../components/ui/dropdown-menu'
 
 import { useLoaderData, useNavigate, useSearch } from '@tanstack/react-router'
-import { authClient } from '../lib/auth-client'
+import { useAuthSession } from '../lib/auth-client'
 import { leaveEvent } from '~/server-functions/leaveEvent'
 import { recordPaymentIntent } from '~/server-functions/recordPaymentIntent'
 import { markParticipantAsPaid } from '~/server-functions/markParticipantAsPaid'
@@ -307,7 +307,7 @@ export const EventDetailsPage: React.FC = () => {
     comments: initialComments
   } = useLoaderData({ from: '/events/$eventId' })
   const navigate = useNavigate()
-  const session = authClient.useSession()
+  const session = useAuthSession()
   const [event, setEvent] = useState(initialEvent)
   const [showKarmaModal, setShowKarmaModal] = useState(false)
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
@@ -1302,7 +1302,7 @@ export const EventDetailsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-600 to-secondary-600 py-8">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header with Back Button */}
         <div className="mb-8">
 
@@ -1512,8 +1512,14 @@ export const EventDetailsPage: React.FC = () => {
           </div>
         )}
 
-        <MasonryGrid columns={5} columnGap={32} rowGap={24}>
-          <div data-masonry-span="3">
+        <MasonryGrid
+          columns={2}
+          wideColumns={3}
+          wideBreakpoint={1536}
+          columnGap={32}
+          rowGap={24}
+        >
+          <div>
             {/* Event Details */}
             <Card>
               <CardHeader>
@@ -1721,7 +1727,7 @@ export const EventDetailsPage: React.FC = () => {
           </div>
 
             {event.qrCodeImages && event.qrCodeImages.length > 0 && (
-              <div data-masonry-span="3">
+              <div>
                 <Card>
                 <CardHeader>
                   <h2 className="text-xl font-semibold text-gray-900 flex items-center">
@@ -1763,12 +1769,12 @@ export const EventDetailsPage: React.FC = () => {
             )}
 
           {!hasEventEnded && event.status !== 'cancelled' && (
-            <div data-masonry-span="2" className="hidden lg:block">
+            <div className="hidden lg:block">
               <JoinActionCard eventId={event.id} />
             </div>
           )}
 
-          <div data-masonry-span="2">
+          <div>
             <Card>
               <CardHeader
                 className="cursor-pointer lg:cursor-default"
@@ -1969,7 +1975,7 @@ export const EventDetailsPage: React.FC = () => {
           </div>
 
           {!isSpotAvailable && (event.waitlist?.length ?? 0) > 0 && (
-            <div data-masonry-span="2">
+            <div>
               <Card>
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -2063,24 +2069,24 @@ export const EventDetailsPage: React.FC = () => {
             </div>
             )}
 
-          <div data-masonry-span="3">
+          <div>
             {renderCommentsCard()}
           </div>
 
           {event.price && (
-            <div data-masonry-span="2">
+            <div>
               {renderPaymentCard()}
             </div>
           )}
 
           {event.gameRules && (
-            <div data-masonry-span="2">
+            <div>
               {renderGameRulesCard()}
             </div>
           )}
 
           {shouldShowWeather && (
-            <div data-masonry-span="2">
+            <div>
               <WeatherWidget
                 date={event.date}
                 sport={event.sport}

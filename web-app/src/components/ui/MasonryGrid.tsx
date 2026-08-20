@@ -8,19 +8,23 @@ interface MasonryGridProps {
   columnGap?: number
   rowGap?: number
   desktopBreakpoint?: number
+  wideColumns?: number
+  wideBreakpoint?: number
 }
 
 /**
- * A small, responsive masonry layout for cards with different column spans.
- * On narrow screens it remains a normal vertical stack, preserving DOM order.
+ * A small, responsive masonry layout that balances cards across independent
+ * columns without leaving holes. On narrow screens it remains a normal stack.
  */
 export const MasonryGrid = ({
   children,
   className,
-  columns = 5,
+  columns = 2,
   columnGap = 32,
   rowGap = 24,
-  desktopBreakpoint = 1024
+  desktopBreakpoint = 1024,
+  wideColumns,
+  wideBreakpoint = 1536
 }: MasonryGridProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -31,12 +35,12 @@ export const MasonryGrid = ({
     const desktopQuery = window.matchMedia(
       `(min-width: ${desktopBreakpoint}px)`
     )
+    const wideQuery = window.matchMedia(`(min-width: ${wideBreakpoint}px)`)
     let animationFrame: number | undefined
 
     const getItems = () =>
       Array.from(container.children).filter(
-        (child): child is HTMLElement =>
-          child instanceof HTMLElement && child.dataset.masonrySpan !== undefined
+        (child): child is HTMLElement => child instanceof HTMLElement
       )
 
     const resetLayout = () => {
@@ -64,46 +68,98 @@ export const MasonryGrid = ({
           return
         }
 
+        const requestedColumns =
+          wideColumns !== undefined && wideQuery.matches ? wideColumns : columns
+        const activeColumns = Math.max(1, Math.floor(requestedColumns))
         const visibleItems = items.filter((item) => item.offsetParent !== null)
         const columnWidth =
-          (container.clientWidth - columnGap * (columns - 1)) / columns
-        const columnHeights = Array.from({ length: columns }, () => 0)
+          (container.clientWidth - columnGap * (activeColumns - 1)) /
+          activeColumns
 
         container.style.position = 'relative'
 
         for (const item of visibleItems) {
-          const requestedSpan = Number(item.dataset.masonrySpan)
-          const span = Math.min(
-            columns,
-            Math.max(1, Number.isFinite(requestedSpan) ? requestedSpan : 1)
-          )
-          let startColumn = 0
-          let top = Number.POSITIVE_INFINITY
+          item.style.position = 'absolute'
+          item.style.width = `${columnWidth}px`
+        }
 
-          for (let candidate = 0; candidate <= columns - span; candidate += 1) {
-            const candidateTop = Math.max(
-              ...columnHeights.slice(candidate, candidate + span)
-            )
+        const itemHeights = visibleItems.map(
+          (item) => item.getBoundingClientRect().height + rowGap
+        )
+        const assignments = Array.from({ length: visibleItems.length }, () => 0)
+        const columnHeights = Array.from({ length: activeColumns }, () => 0)
+        const fixedItemCount = Math.min(activeColumns, visibleItems.length)
 
-            if (candidateTop < top) {
-              startColumn = candidate
-              top = candidateTop
+        for (let index = 0; index < fixedItemCount; index += 1) {
+          assignments[index] = index
+          columnHeights[index] = itemHeights[index]
+        }
+
+        const remainingItemCount = visibleItems.length - fixedItemCount
+        const searchCombinations = activeColumns ** remainingItemCount
+
+        if (searchCombinations <= 100_000) {
+          let bestAssignments = [...assignments]
+          let bestRange = Number.POSITIVE_INFINITY
+          let bestMaximum = Number.POSITIVE_INFINITY
+
+          const searchAssignments = (itemIndex: number) => {
+            if (itemIndex === visibleItems.length) {
+              const maximum = Math.max(...columnHeights)
+              const range = maximum - Math.min(...columnHeights)
+
+              if (
+                range < bestRange ||
+                (range === bestRange && maximum < bestMaximum)
+              ) {
+                bestAssignments = [...assignments]
+                bestRange = range
+                bestMaximum = maximum
+              }
+              return
+            }
+
+            for (let column = 0; column < activeColumns; column += 1) {
+              assignments[itemIndex] = column
+              columnHeights[column] += itemHeights[itemIndex]
+              searchAssignments(itemIndex + 1)
+              columnHeights[column] -= itemHeights[itemIndex]
             }
           }
 
-          const width = columnWidth * span + columnGap * (span - 1)
-          const left = startColumn * (columnWidth + columnGap)
+          searchAssignments(fixedItemCount)
+          assignments.splice(0, assignments.length, ...bestAssignments)
+        } else {
+          for (
+            let itemIndex = fixedItemCount;
+            itemIndex < visibleItems.length;
+            itemIndex += 1
+          ) {
+            let shortestColumn = 0
 
-          item.style.left = `${left}px`
-          item.style.position = 'absolute'
-          item.style.top = `${top}px`
-          item.style.width = `${width}px`
+            for (let column = 1; column < activeColumns; column += 1) {
+              if (columnHeights[column] < columnHeights[shortestColumn]) {
+                shortestColumn = column
+              }
+            }
 
-          const bottom = top + item.getBoundingClientRect().height + rowGap
-          for (let column = startColumn; column < startColumn + span; column += 1) {
-            columnHeights[column] = bottom
+            assignments[itemIndex] = shortestColumn
+            columnHeights[shortestColumn] += itemHeights[itemIndex]
           }
         }
+
+        columnHeights.fill(0)
+
+        visibleItems.forEach((item, itemIndex) => {
+          const targetColumn = assignments[itemIndex]
+          const top = columnHeights[targetColumn]
+          const left = targetColumn * (columnWidth + columnGap)
+
+          item.style.left = `${left}px`
+          item.style.top = `${top}px`
+
+          columnHeights[targetColumn] = top + itemHeights[itemIndex]
+        })
 
         for (const item of items) {
           if (!visibleItems.includes(item)) {
@@ -125,6 +181,7 @@ export const MasonryGrid = ({
     resizeObserver.observe(container)
     getItems().forEach((item) => resizeObserver.observe(item))
     desktopQuery.addEventListener('change', layoutItems)
+    wideQuery.addEventListener('change', layoutItems)
     layoutItems()
 
     return () => {
@@ -132,13 +189,26 @@ export const MasonryGrid = ({
         window.cancelAnimationFrame(animationFrame)
       }
       desktopQuery.removeEventListener('change', layoutItems)
+      wideQuery.removeEventListener('change', layoutItems)
       resizeObserver.disconnect()
       resetLayout()
     }
-  }, [children, columnGap, columns, desktopBreakpoint, rowGap])
+  }, [
+    children,
+    columnGap,
+    columns,
+    desktopBreakpoint,
+    rowGap,
+    wideBreakpoint,
+    wideColumns
+  ])
 
   return (
-    <div ref={containerRef} className={clsx('flex flex-col gap-6', className)}>
+    <div
+      ref={containerRef}
+      data-masonry-grid
+      className={clsx('flex flex-col gap-6', className)}
+    >
       {children}
     </div>
   )

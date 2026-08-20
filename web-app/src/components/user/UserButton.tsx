@@ -31,8 +31,13 @@ import {
   DropdownMenuTrigger
 } from '../ui/dropdown-menu'
 import { cn } from '../../lib/utils'
-import { authClient } from '../../lib/auth-client'
+import {
+  authClient,
+  authSessionQueryKey,
+  useAuthSession
+} from '../../lib/auth-client'
 import { Link } from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
 import { isAdminEmail } from '../../lib/admin'
 import { Trans } from '@lingui/react/macro'
@@ -91,8 +96,8 @@ export function UserButton({
   disableDefaultLinks,
   size = 'md'
 }: UserButtonProps) {
-  const { data: sessionData, isPending: sessionPending } =
-    authClient.useSession()
+  const { data: sessionData, isPending: sessionPending } = useAuthSession()
+  const queryClient = useQueryClient()
   const user = sessionData?.user
   const [activeSessionPending, setActiveSessionPending] = useState(false)
 
@@ -136,13 +141,13 @@ export function UserButton({
     setActiveSessionPending(true)
     try {
       await authClient.signOut()
-      // TODO double check session is cleared. Seems like it may not be cleared.
+      await queryClient.refetchQueries({ queryKey: authSessionQueryKey })
     } catch (error) {
       console.error('Sign out error:', error)
     } finally {
       setActiveSessionPending(false)
     }
-  }, [])
+  }, [queryClient])
 
   return (
     <DropdownMenu>

@@ -11,7 +11,7 @@ import { Event } from '../types'
 import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { joinEvent } from '~/server-functions/joinEvent'
-import { authClient } from '../lib/auth-client'
+import { useAuthSession } from '../lib/auth-client'
 import { i18n } from '~/lib/i18n'
 import { getAvailablePublicSpots } from '../utils/participants'
 import { toast } from 'sonner'
@@ -22,7 +22,7 @@ const MAX_PAST_EVENTS = 12
 export const DiscoverPage: React.FC = () => {
   const { events: initialEvents, venues, user } = useLoaderData({ from: '/' })
   const navigate = useNavigate()
-  const session = authClient.useSession()
+  const session = useAuthSession()
   const mapRef = useRef<EventMapRef>(null)
 
   // Initialize with user's skills if available
