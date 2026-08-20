@@ -9,74 +9,30 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as UserProfileRouteImport } from './routes/user-profile'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as ManageVenuesRouteImport } from './routes/manage-venues'
-import { Route as ManageCoreGroupsRouteImport } from './routes/manage-core-groups'
-import { Route as LeaderboardRouteImport } from './routes/leaderboard'
-import { Route as DiscoverRouteImport } from './routes/discover'
-import { Route as CreateRouteImport } from './routes/create'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as EventsEventIdRouteImport } from './routes/events/$eventId'
-import { Route as EditEventEventIdRouteImport } from './routes/edit-event.$eventId'
-import { Route as CitiesCitySlugRouteImport } from './routes/cities/$citySlug'
-import { Route as AuthPathnameRouteImport } from './routes/auth/$pathname'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as CreateRouteImport } from './routes/create'
+import { Route as DiscoverRouteImport } from './routes/discover'
+import { Route as LeaderboardRouteImport } from './routes/leaderboard'
+import { Route as ManageCoreGroupsRouteImport } from './routes/manage-core-groups'
+import { Route as ManageVenuesRouteImport } from './routes/manage-venues'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as UserProfileRouteImport } from './routes/user-profile'
 import { Route as CitySlugSportSlugRouteImport } from './routes/$citySlug/$sportSlug'
+import { Route as AdminEventBansRouteImport } from './routes/admin/event-bans'
+import { Route as AuthPathnameRouteImport } from './routes/auth/$pathname'
+import { Route as CitiesCitySlugRouteImport } from './routes/cities/$citySlug'
+import { Route as EditEventEventIdRouteImport } from './routes/edit-event.$eventId'
+import { Route as EventsEventIdRouteImport } from './routes/events/$eventId'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiOgEventEventIdRouteImport } from './routes/api/og/event/$eventId'
 
-const UserProfileRoute = UserProfileRouteImport.update({
-  id: '/user-profile',
-  path: '/user-profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ManageVenuesRoute = ManageVenuesRouteImport.update({
-  id: '/manage-venues',
-  path: '/manage-venues',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ManageCoreGroupsRoute = ManageCoreGroupsRouteImport.update({
-  id: '/manage-core-groups',
-  path: '/manage-core-groups',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LeaderboardRoute = LeaderboardRouteImport.update({
-  id: '/leaderboard',
-  path: '/leaderboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DiscoverRoute = DiscoverRouteImport.update({
-  id: '/discover',
-  path: '/discover',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CreateRoute = CreateRouteImport.update({
-  id: '/create',
-  path: '/create',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -84,24 +40,64 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const CreateRoute = CreateRouteImport.update({
+  id: '/create',
+  path: '/create',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EventsEventIdRoute = EventsEventIdRouteImport.update({
-  id: '/events/$eventId',
-  path: '/events/$eventId',
+const DiscoverRoute = DiscoverRouteImport.update({
+  id: '/discover',
+  path: '/discover',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EditEventEventIdRoute = EditEventEventIdRouteImport.update({
-  id: '/edit-event/$eventId',
-  path: '/edit-event/$eventId',
+const LeaderboardRoute = LeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CitiesCitySlugRoute = CitiesCitySlugRouteImport.update({
-  id: '/cities/$citySlug',
-  path: '/cities/$citySlug',
+const ManageCoreGroupsRoute = ManageCoreGroupsRouteImport.update({
+  id: '/manage-core-groups',
+  path: '/manage-core-groups',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ManageVenuesRoute = ManageVenuesRouteImport.update({
+  id: '/manage-venues',
+  path: '/manage-venues',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UserProfileRoute = UserProfileRouteImport.update({
+  id: '/user-profile',
+  path: '/user-profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CitySlugSportSlugRoute = CitySlugSportSlugRouteImport.update({
+  id: '/$citySlug/$sportSlug',
+  path: '/$citySlug/$sportSlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminEventBansRoute = AdminEventBansRouteImport.update({
+  id: '/admin/event-bans',
+  path: '/admin/event-bans',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthPathnameRoute = AuthPathnameRouteImport.update({
@@ -109,9 +105,19 @@ const AuthPathnameRoute = AuthPathnameRouteImport.update({
   path: '/auth/$pathname',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CitySlugSportSlugRoute = CitySlugSportSlugRouteImport.update({
-  id: '/$citySlug/$sportSlug',
-  path: '/$citySlug/$sportSlug',
+const CitiesCitySlugRoute = CitiesCitySlugRouteImport.update({
+  id: '/cities/$citySlug',
+  path: '/cities/$citySlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditEventEventIdRoute = EditEventEventIdRouteImport.update({
+  id: '/edit-event/$eventId',
+  path: '/edit-event/$eventId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsEventIdRoute = EventsEventIdRouteImport.update({
+  id: '/events/$eventId',
+  path: '/events/$eventId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -139,6 +145,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/user-profile': typeof UserProfileRoute
   '/$citySlug/$sportSlug': typeof CitySlugSportSlugRoute
+  '/admin/event-bans': typeof AdminEventBansRoute
   '/auth/$pathname': typeof AuthPathnameRoute
   '/cities/$citySlug': typeof CitiesCitySlugRoute
   '/edit-event/$eventId': typeof EditEventEventIdRoute
@@ -160,6 +167,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/user-profile': typeof UserProfileRoute
   '/$citySlug/$sportSlug': typeof CitySlugSportSlugRoute
+  '/admin/event-bans': typeof AdminEventBansRoute
   '/auth/$pathname': typeof AuthPathnameRoute
   '/cities/$citySlug': typeof CitiesCitySlugRoute
   '/edit-event/$eventId': typeof EditEventEventIdRoute
@@ -182,6 +190,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/user-profile': typeof UserProfileRoute
   '/$citySlug/$sportSlug': typeof CitySlugSportSlugRoute
+  '/admin/event-bans': typeof AdminEventBansRoute
   '/auth/$pathname': typeof AuthPathnameRoute
   '/cities/$citySlug': typeof CitiesCitySlugRoute
   '/edit-event/$eventId': typeof EditEventEventIdRoute
@@ -205,6 +214,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/user-profile'
     | '/$citySlug/$sportSlug'
+    | '/admin/event-bans'
     | '/auth/$pathname'
     | '/cities/$citySlug'
     | '/edit-event/$eventId'
@@ -226,6 +236,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/user-profile'
     | '/$citySlug/$sportSlug'
+    | '/admin/event-bans'
     | '/auth/$pathname'
     | '/cities/$citySlug'
     | '/edit-event/$eventId'
@@ -247,6 +258,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/user-profile'
     | '/$citySlug/$sportSlug'
+    | '/admin/event-bans'
     | '/auth/$pathname'
     | '/cities/$citySlug'
     | '/edit-event/$eventId'
@@ -269,6 +281,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   UserProfileRoute: typeof UserProfileRoute
   CitySlugSportSlugRoute: typeof CitySlugSportSlugRoute
+  AdminEventBansRoute: typeof AdminEventBansRoute
   AuthPathnameRoute: typeof AuthPathnameRoute
   CitiesCitySlugRoute: typeof CitiesCitySlugRoute
   EditEventEventIdRoute: typeof EditEventEventIdRoute
@@ -279,74 +292,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/user-profile': {
-      id: '/user-profile'
-      path: '/user-profile'
-      fullPath: '/user-profile'
-      preLoaderRoute: typeof UserProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/manage-venues': {
-      id: '/manage-venues'
-      path: '/manage-venues'
-      fullPath: '/manage-venues'
-      preLoaderRoute: typeof ManageVenuesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/manage-core-groups': {
-      id: '/manage-core-groups'
-      path: '/manage-core-groups'
-      fullPath: '/manage-core-groups'
-      preLoaderRoute: typeof ManageCoreGroupsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/leaderboard': {
-      id: '/leaderboard'
-      path: '/leaderboard'
-      fullPath: '/leaderboard'
-      preLoaderRoute: typeof LeaderboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/discover': {
-      id: '/discover'
-      path: '/discover'
-      fullPath: '/discover'
-      preLoaderRoute: typeof DiscoverRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/create': {
-      id: '/create'
-      path: '/create'
-      fullPath: '/create'
-      preLoaderRoute: typeof CreateRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -356,32 +306,88 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/create': {
+      id: '/create'
+      path: '/create'
+      fullPath: '/create'
+      preLoaderRoute: typeof CreateRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/events/$eventId': {
-      id: '/events/$eventId'
-      path: '/events/$eventId'
-      fullPath: '/events/$eventId'
-      preLoaderRoute: typeof EventsEventIdRouteImport
+    '/discover': {
+      id: '/discover'
+      path: '/discover'
+      fullPath: '/discover'
+      preLoaderRoute: typeof DiscoverRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/edit-event/$eventId': {
-      id: '/edit-event/$eventId'
-      path: '/edit-event/$eventId'
-      fullPath: '/edit-event/$eventId'
-      preLoaderRoute: typeof EditEventEventIdRouteImport
+    '/leaderboard': {
+      id: '/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof LeaderboardRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/cities/$citySlug': {
-      id: '/cities/$citySlug'
-      path: '/cities/$citySlug'
-      fullPath: '/cities/$citySlug'
-      preLoaderRoute: typeof CitiesCitySlugRouteImport
+    '/manage-core-groups': {
+      id: '/manage-core-groups'
+      path: '/manage-core-groups'
+      fullPath: '/manage-core-groups'
+      preLoaderRoute: typeof ManageCoreGroupsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manage-venues': {
+      id: '/manage-venues'
+      path: '/manage-venues'
+      fullPath: '/manage-venues'
+      preLoaderRoute: typeof ManageVenuesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/user-profile': {
+      id: '/user-profile'
+      path: '/user-profile'
+      fullPath: '/user-profile'
+      preLoaderRoute: typeof UserProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$citySlug/$sportSlug': {
+      id: '/$citySlug/$sportSlug'
+      path: '/$citySlug/$sportSlug'
+      fullPath: '/$citySlug/$sportSlug'
+      preLoaderRoute: typeof CitySlugSportSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/event-bans': {
+      id: '/admin/event-bans'
+      path: '/admin/event-bans'
+      fullPath: '/admin/event-bans'
+      preLoaderRoute: typeof AdminEventBansRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/$pathname': {
@@ -391,11 +397,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthPathnameRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/$citySlug/$sportSlug': {
-      id: '/$citySlug/$sportSlug'
-      path: '/$citySlug/$sportSlug'
-      fullPath: '/$citySlug/$sportSlug'
-      preLoaderRoute: typeof CitySlugSportSlugRouteImport
+    '/cities/$citySlug': {
+      id: '/cities/$citySlug'
+      path: '/cities/$citySlug'
+      fullPath: '/cities/$citySlug'
+      preLoaderRoute: typeof CitiesCitySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/edit-event/$eventId': {
+      id: '/edit-event/$eventId'
+      path: '/edit-event/$eventId'
+      fullPath: '/edit-event/$eventId'
+      preLoaderRoute: typeof EditEventEventIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events/$eventId': {
+      id: '/events/$eventId'
+      path: '/events/$eventId'
+      fullPath: '/events/$eventId'
+      preLoaderRoute: typeof EventsEventIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
@@ -429,6 +449,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   UserProfileRoute: UserProfileRoute,
   CitySlugSportSlugRoute: CitySlugSportSlugRoute,
+  AdminEventBansRoute: AdminEventBansRoute,
   AuthPathnameRoute: AuthPathnameRoute,
   CitiesCitySlugRoute: CitiesCitySlugRoute,
   EditEventEventIdRoute: EditEventEventIdRoute,

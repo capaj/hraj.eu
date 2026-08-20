@@ -5,6 +5,7 @@ import { Button } from '../components/ui/Button'
 import { GiphyPicker } from '../components/ui/GiphyPicker'
 import { JoinActionCard } from '../components/events/JoinActionCard'
 import { MentionDropdown } from '../components/ui/MentionDropdown'
+import { MasonryGrid } from '../components/ui/MasonryGrid'
 import { Tooltip, TooltipTrigger, TooltipContent } from '../components/ui/tooltip'
 import { WeatherWidget } from '../components/weather/WeatherWidget'
 import { SPORTS, FACILITIES } from '../lib/constants'
@@ -1511,9 +1512,8 @@ export const EventDetailsPage: React.FC = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-3 flex flex-col gap-6">
+        <MasonryGrid columns={5} columnGap={32} rowGap={24}>
+          <div data-masonry-span="3">
             {/* Event Details */}
             <Card>
               <CardHeader>
@@ -1718,9 +1718,11 @@ export const EventDetailsPage: React.FC = () => {
                 </div>
               </CardContent>
             </Card>
+          </div>
 
             {event.qrCodeImages && event.qrCodeImages.length > 0 && (
-              <Card>
+              <div data-masonry-span="3">
+                <Card>
                 <CardHeader>
                   <h2 className="text-xl font-semibold text-gray-900 flex items-center">
                     <ImageIcon size={18} className="mr-2 text-primary-600" />
@@ -1756,21 +1758,17 @@ export const EventDetailsPage: React.FC = () => {
                     </p>
                   )}
                 </CardContent>
-              </Card>
-            )}
-
-          </div>
-
-          {/* Sidebar */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Join Action */}
-            {!hasEventEnded && event.status !== 'cancelled' && (
-              <div className="hidden lg:block">
-                <JoinActionCard eventId={event.id} />
+                </Card>
               </div>
             )}
 
-            {/* Participants */}
+          {!hasEventEnded && event.status !== 'cancelled' && (
+            <div data-masonry-span="2" className="hidden lg:block">
+              <JoinActionCard eventId={event.id} />
+            </div>
+          )}
+
+          <div data-masonry-span="2">
             <Card>
               <CardHeader
                 className="cursor-pointer lg:cursor-default"
@@ -1968,9 +1966,10 @@ export const EventDetailsPage: React.FC = () => {
                 )}
               </CardContent>
             </Card>
+          </div>
 
-            {/* Waitlist */}
-            {!isSpotAvailable && (event.waitlist?.length ?? 0) > 0 && (
+          {!isSpotAvailable && (event.waitlist?.length ?? 0) > 0 && (
+            <div data-masonry-span="2">
               <Card>
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -2061,20 +2060,27 @@ export const EventDetailsPage: React.FC = () => {
                   </div>
                 </CardContent>
               </Card>
+            </div>
             )}
 
-          </div>
-        </div>
-
-        <div className="mt-8 grid grid-cols-1 items-start gap-8 lg:grid-cols-5">
-          <div className="lg:col-span-3">
+          <div data-masonry-span="3">
             {renderCommentsCard()}
           </div>
 
-          <div className="space-y-6 lg:col-span-2">
-            {renderPaymentCard()}
+          {event.price && (
+            <div data-masonry-span="2">
+              {renderPaymentCard()}
+            </div>
+          )}
 
-            {shouldShowWeather && (
+          {event.gameRules && (
+            <div data-masonry-span="2">
+              {renderGameRulesCard()}
+            </div>
+          )}
+
+          {shouldShowWeather && (
+            <div data-masonry-span="2">
               <WeatherWidget
                 date={event.date}
                 sport={event.sport}
@@ -2087,11 +2093,9 @@ export const EventDetailsPage: React.FC = () => {
                     : undefined
                 }
               />
-            )}
-
-            {renderGameRulesCard()}
-          </div>
-        </div>
+            </div>
+          )}
+        </MasonryGrid>
 
         {/* Venue Information - Full Width */}
         {venue && (

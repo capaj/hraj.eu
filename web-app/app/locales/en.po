@@ -13,14 +13,14 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/DiscoverPage.tsx:303
+#: src/pages/DiscoverPage.tsx:309
 msgid "(sorted by {label})"
 msgstr ""
 
 #. placeholder {0}: isSubscribed ? 'Subscribed for new city events' : 'Email me when a new game is created in this city'
 #. placeholder {0}: isSubscribed ? 'Subscribed for new city events' : 'Subscribe to new city events by email'
-#: src/pages/SeoLandingPage.tsx:82
-#: src/pages/SeoLandingPage.tsx:179
+#: src/pages/SeoLandingPage.tsx:93
+#: src/pages/SeoLandingPage.tsx:190
 msgid "{0}"
 msgstr ""
 
@@ -32,6 +32,10 @@ msgstr ""
 #. placeholder {0}: formData.duration
 #: src/components/events/CreateEventForm.tsx:796
 msgid "{0} min"
+msgstr ""
+
+#: src/pages/AdminEventBansPage.tsx:193
+msgid "{activeBanCount} active bans"
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:1023
@@ -46,7 +50,7 @@ msgstr ""
 msgid "{count} {sportName} events organized"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:266
+#: src/pages/DiscoverPage.tsx:272
 msgid "{count} event{count, plural, one {} other {s}} found"
 msgstr ""
 
@@ -66,7 +70,7 @@ msgstr ""
 msgid "{count} points this month"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:317
+#: src/pages/DiscoverPage.tsx:323
 msgid "{count} spots"
 msgstr ""
 
@@ -106,15 +110,15 @@ msgstr ""
 msgid "{minutes} minutes"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:703
+#: src/pages/EventDetailsPage.tsx:704
 msgid "{name} has been removed from the event."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2236
+#: src/pages/EventDetailsPage.tsx:2241
 msgid "{name} Orientation Plan"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2267
+#: src/pages/EventDetailsPage.tsx:2272
 msgid "{name} photo {index}"
 msgstr ""
 
@@ -171,7 +175,7 @@ msgstr ""
 msgid "+{0} more"
 msgstr ""
 
-#: src/components/events/JoinActionCard.tsx:246
+#: src/components/events/JoinActionCard.tsx:244
 msgid "+{count} participants reserved"
 msgstr ""
 
@@ -215,7 +219,7 @@ msgid "About this event"
 msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:746
-#: src/pages/EventDetailsPage.tsx:2128
+#: src/pages/EventDetailsPage.tsx:2133
 msgid "Access Instructions"
 msgstr ""
 
@@ -231,16 +235,16 @@ msgstr ""
 msgid "Account Security"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1057
+#: src/pages/EventDetailsPage.tsx:1058
 msgid "Actions"
 msgstr ""
 
-#: src/pages/HomePage.tsx:119
+#: src/pages/HomePage.tsx:125
 #: src/pages/LeaderboardPage.tsx:671
 msgid "Active Players"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2046
+#: src/pages/EventDetailsPage.tsx:2020
 msgid "Add GIF"
 msgstr ""
 
@@ -282,6 +286,10 @@ msgstr ""
 msgid "Address *"
 msgstr ""
 
+#: src/pages/AdminEventBansPage.tsx:159
+msgid "Administrator access required"
+msgstr ""
+
 #: src/components/ui/TagInput.tsx:121
 msgid "All options selected"
 msgstr ""
@@ -303,7 +311,7 @@ msgstr ""
 msgid "Any extra players will be put on a waitlist"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2178
+#: src/pages/EventDetailsPage.tsx:2183
 msgid "Approx. {price} {currency} / hour"
 msgstr ""
 
@@ -316,7 +324,19 @@ msgstr ""
 msgid "Are you sure you want to cancel this event? This action cannot be undone."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:706
+#: src/pages/AdminEventBansPage.tsx:125
+msgid "Attendance ban removed."
+msgstr ""
+
+#: src/pages/AdminEventBansPage.tsx:108
+msgid "Attendance ban updated."
+msgstr ""
+
+#: src/pages/AdminEventBansPage.tsx:181
+msgid "Attendance bans"
+msgstr ""
+
+#: src/pages/EventDetailsPage.tsx:707
 msgid "Attendee removed from the event."
 msgstr ""
 
@@ -328,8 +348,8 @@ msgstr ""
 msgid "Available Facilities"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:202
-#: src/pages/DiscoverPage.tsx:286
+#: src/pages/DiscoverPage.tsx:208
+#: src/pages/DiscoverPage.tsx:292
 msgid "Available Spots"
 msgstr ""
 
@@ -345,8 +365,20 @@ msgstr ""
 msgid "Avoid outdoor play during thunderstorms"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2301
+#: src/pages/EventDetailsPage.tsx:2306
 msgid "Back to Events"
+msgstr ""
+
+#: src/pages/AdminEventBansPage.tsx:322
+msgid "Ban"
+msgstr ""
+
+#: src/pages/AdminEventBansPage.tsx:282
+msgid "Ban duration"
+msgstr ""
+
+#: src/pages/AdminEventBansPage.tsx:296
+msgid "Ban duration unit"
 msgstr ""
 
 #: src/pages/UserProfilePage.tsx:171
@@ -361,7 +393,7 @@ msgstr ""
 #~ msgid "Be the first to bring your community together! Create an event and start building connections through sport."
 #~ msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1830
+#: src/pages/EventDetailsPage.tsx:1804
 msgid "Be the first to leave a comment."
 msgstr ""
 
@@ -381,11 +413,11 @@ msgstr ""
 msgid "Brief description of the venue..."
 msgstr ""
 
-#: src/components/events/JoinActionCard.tsx:270
+#: src/components/events/JoinActionCard.tsx:268
 msgid "Bringing guests?"
 msgstr ""
 
-#: src/pages/SeoLandingPage.tsx:87
+#: src/pages/SeoLandingPage.tsx:98
 msgid "Browse all games"
 msgstr ""
 
@@ -393,7 +425,7 @@ msgstr ""
 msgid "Browse Events"
 msgstr ""
 
-#: src/pages/HomePage.tsx:204
+#: src/pages/HomePage.tsx:210
 msgid "Build Community"
 msgstr ""
 
@@ -403,7 +435,7 @@ msgid "Café"
 msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:859
-#: src/pages/EventDetailsPage.tsx:1866
+#: src/pages/EventDetailsPage.tsx:1840
 #: src/pages/EventDetailsPage.tsx:2541
 #: src/pages/ManageCoreGroupsPage.tsx:205
 #: src/pages/UserProfilePage.tsx:605
@@ -463,7 +495,7 @@ msgstr ""
 msgid "City, Country"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1455
+#: src/pages/EventDetailsPage.tsx:1457
 msgid "Click a QR code to view it larger."
 msgstr ""
 
@@ -483,19 +515,19 @@ msgstr ""
 msgid "Comment (optional)"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:759
+#: src/pages/EventDetailsPage.tsx:760
 msgid "Comment cannot be empty."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:792
+#: src/pages/EventDetailsPage.tsx:793
 msgid "Comment deleted."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:773
+#: src/pages/EventDetailsPage.tsx:774
 msgid "Comment updated."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1819
+#: src/pages/EventDetailsPage.tsx:1793
 msgid "Comments"
 msgstr ""
 
@@ -507,7 +539,7 @@ msgstr ""
 msgid "Community Leaderboard"
 msgstr ""
 
-#: src/pages/HomePage.tsx:207
+#: src/pages/HomePage.tsx:213
 msgid "Connect with like-minded players, earn karma points, and climb the leaderboards."
 msgstr ""
 
@@ -555,7 +587,19 @@ msgstr ""
 msgid "Could not find location for weather forecast"
 msgstr ""
 
-#: src/pages/HomePage.tsx:127
+#: src/pages/AdminEventBansPage.tsx:59
+msgid "Could not load users."
+msgstr ""
+
+#: src/pages/AdminEventBansPage.tsx:130
+msgid "Could not remove the attendance ban."
+msgstr ""
+
+#: src/pages/AdminEventBansPage.tsx:113
+msgid "Could not update the attendance ban."
+msgstr ""
+
+#: src/pages/HomePage.tsx:133
 msgid "Countries"
 msgstr ""
 
@@ -563,7 +607,7 @@ msgstr ""
 msgid "Country *"
 msgstr ""
 
-#: src/pages/SeoLandingPage.tsx:95
+#: src/pages/SeoLandingPage.tsx:106
 msgid "Create a game"
 msgstr ""
 
@@ -574,12 +618,12 @@ msgstr ""
 #: src/components/events/CreateEventForm.tsx:1351
 #: src/components/layout/Header.tsx:109
 #: src/components/layout/Header.tsx:181
-#: src/pages/DiscoverPage.tsx:403
-#: src/pages/HomePage.tsx:160
+#: src/pages/DiscoverPage.tsx:409
+#: src/pages/HomePage.tsx:166
 msgid "Create Event"
 msgstr ""
 
-#: src/pages/HomePage.tsx:224
+#: src/pages/HomePage.tsx:230
 msgid "Create events with payment integration, team balancing, and automated notifications."
 msgstr ""
 
@@ -629,11 +673,15 @@ msgid "Date *"
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:758
-#: src/pages/DiscoverPage.tsx:198
 #: src/pages/DiscoverPage.tsx:204
-#: src/pages/DiscoverPage.tsx:280
+#: src/pages/DiscoverPage.tsx:210
+#: src/pages/DiscoverPage.tsx:286
 #: src/pages/EventDetailsPage.tsx:1323
 msgid "Date & Time"
+msgstr ""
+
+#: src/pages/AdminEventBansPage.tsx:306
+msgid "days"
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:980
@@ -644,7 +692,7 @@ msgstr ""
 msgid "Deadline:"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1902
+#: src/pages/EventDetailsPage.tsx:1876
 #: src/pages/ManageCoreGroupsPage.tsx:122
 msgid "Delete"
 msgstr ""
@@ -674,16 +722,16 @@ msgstr ""
 msgid "Discover Events"
 msgstr ""
 
-#: src/pages/HomePage.tsx:170
+#: src/pages/HomePage.tsx:176
 msgid "Discover Games"
 msgstr ""
 
-#: src/pages/HomePage.tsx:190
+#: src/pages/HomePage.tsx:196
 msgid "Discover sports events near you with advanced filtering by sport, skill level, and location."
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:200
-#: src/pages/DiscoverPage.tsx:283
+#: src/pages/DiscoverPage.tsx:206
+#: src/pages/DiscoverPage.tsx:289
 msgid "Distance"
 msgstr ""
 
@@ -699,8 +747,8 @@ msgstr ""
 msgid "Dress warmly and allow extra warm-up time"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1071
-#: src/pages/EventDetailsPage.tsx:1150
+#: src/pages/EventDetailsPage.tsx:1072
+#: src/pages/EventDetailsPage.tsx:1151
 msgid "Duplicate Event"
 msgstr ""
 
@@ -724,19 +772,19 @@ msgstr ""
 msgid "Earn Points For:"
 msgstr ""
 
-#: src/pages/HomePage.tsx:221
+#: src/pages/HomePage.tsx:227
 msgid "Easy Organization"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1893
+#: src/pages/EventDetailsPage.tsx:1867
 #: src/pages/ManageCoreGroupsPage.tsx:118
 #: src/pages/ManageVenuesPage.tsx:94
 msgid "Edit"
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:535
-#: src/pages/EventDetailsPage.tsx:1079
-#: src/pages/EventDetailsPage.tsx:1160
+#: src/pages/EventDetailsPage.tsx:1080
+#: src/pages/EventDetailsPage.tsx:1161
 msgid "Edit Event"
 msgstr ""
 
@@ -772,6 +820,10 @@ msgstr ""
 msgid "Enforce skill level restrictions"
 msgstr ""
 
+#: src/pages/AdminEventBansPage.tsx:100
+msgid "Enter a duration between 1 and 3650."
+msgstr ""
+
 #: src/components/venues/AddressAutocomplete.tsx:35
 msgid "Enter address"
 msgstr ""
@@ -802,15 +854,15 @@ msgstr ""
 msgid "Event cancelled: {title}"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1043
+#: src/pages/EventDetailsPage.tsx:1044
 msgid "Event Completed"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:554
+#: src/pages/EventDetailsPage.tsx:555
 msgid "Event confirmed - {count} more for ideal"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:548
+#: src/pages/EventDetailsPage.tsx:549
 msgid "Event confirmed - ideal number reached!"
 msgstr ""
 
@@ -818,7 +870,7 @@ msgstr ""
 msgid "Event created successfully!"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:660
+#: src/pages/EventDetailsPage.tsx:661
 msgid "Event created via hraj.eu"
 msgstr ""
 
@@ -838,7 +890,7 @@ msgstr ""
 msgid "Event emails enabled"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:508
+#: src/pages/EventDetailsPage.tsx:509
 msgid "Event not found"
 msgstr ""
 
@@ -870,7 +922,7 @@ msgstr ""
 msgid "Event venue changed: {title}"
 msgstr ""
 
-#: src/pages/HomePage.tsx:111
+#: src/pages/HomePage.tsx:117
 msgid "Events Created"
 msgstr ""
 
@@ -898,7 +950,7 @@ msgstr ""
 msgid "Experienced competitive players"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2189
+#: src/pages/EventDetailsPage.tsx:2194
 msgid "Facilities"
 msgstr ""
 
@@ -906,7 +958,7 @@ msgstr ""
 msgid "Facilities:"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:747
+#: src/pages/EventDetailsPage.tsx:748
 msgid "Failed to add comment. Please try again."
 msgstr ""
 
@@ -926,15 +978,18 @@ msgstr ""
 msgid "Failed to create venue. Please try again."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:797
+#: src/pages/EventDetailsPage.tsx:798
 msgid "Failed to delete comment. Please try again."
 msgstr ""
 
-#: src/components/events/JoinActionCard.tsx:159
+#: src/components/events/JoinActionCard.tsx:157
+#: src/pages/DiscoverPage.tsx:190
+#: src/pages/HomePage.tsx:97
+#: src/pages/SeoLandingPage.tsx:56
 msgid "Failed to join the event. Please try again."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:716
+#: src/pages/EventDetailsPage.tsx:717
 msgid "Failed to leave the event. Please try again."
 msgstr ""
 
@@ -966,7 +1021,7 @@ msgstr ""
 #~ msgid "Failed to update bank account. Please try again."
 #~ msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:778
+#: src/pages/EventDetailsPage.tsx:779
 msgid "Failed to update comment. Please try again."
 msgstr ""
 
@@ -982,7 +1037,7 @@ msgstr ""
 msgid "Failed to update event"
 msgstr ""
 
-#: src/components/events/JoinActionCard.tsx:188
+#: src/components/events/JoinActionCard.tsx:186
 msgid "Failed to update guests. Please try again."
 msgstr ""
 
@@ -990,8 +1045,8 @@ msgstr ""
 msgid "Failed to update notification"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:839
-#: src/pages/EventDetailsPage.tsx:879
+#: src/pages/EventDetailsPage.tsx:840
+#: src/pages/EventDetailsPage.tsx:880
 msgid "Failed to update payment status. Please try again."
 msgstr ""
 
@@ -1024,7 +1079,7 @@ msgstr ""
 msgid "Failed to upload orientation plan. Please try again."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:927
+#: src/pages/EventDetailsPage.tsx:928
 msgid "Feedback submitted successfully"
 msgstr ""
 
@@ -1045,7 +1100,7 @@ msgid "Filter by Sport"
 msgstr ""
 
 #. placeholder {0}: data.city
-#: src/pages/SeoLandingPage.tsx:64
+#: src/pages/SeoLandingPage.tsx:75
 msgid "Find amateur sports games in {0}"
 msgstr ""
 
@@ -1053,7 +1108,7 @@ msgstr ""
 #~ msgid "Find and join sports events in your area"
 #~ msgstr ""
 
-#: src/pages/HomePage.tsx:187
+#: src/pages/HomePage.tsx:193
 msgid "Find Local Games"
 msgstr ""
 
@@ -1077,19 +1132,19 @@ msgstr ""
 msgid "Game Rules (Optional)"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1002
+#: src/pages/EventDetailsPage.tsx:1003
 msgid "Game Rules & Guidelines"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:657
+#: src/pages/EventDetailsPage.tsx:658
 msgid "Game Rules:"
 msgstr ""
 
-#: src/pages/SeoLandingPage.tsx:125
+#: src/pages/SeoLandingPage.tsx:136
 msgid "Games map"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1602
+#: src/pages/EventDetailsPage.tsx:1577
 msgid "Games organized: {count}"
 msgstr ""
 
@@ -1097,15 +1152,15 @@ msgstr ""
 msgid "Give karma rating"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:935
+#: src/pages/EventDetailsPage.tsx:936
 msgid "Give Negative Karma"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:934
+#: src/pages/EventDetailsPage.tsx:935
 msgid "Give Neutral Karma"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:933
+#: src/pages/EventDetailsPage.tsx:934
 msgid "Give Positive Karma"
 msgstr ""
 
@@ -1121,15 +1176,15 @@ msgstr ""
 msgid "Group name"
 msgstr ""
 
-#: src/components/events/JoinActionCard.tsx:300
+#: src/components/events/JoinActionCard.tsx:298
 msgid "Guest {index, number} name (optional)"
 msgstr ""
 
-#: src/components/events/JoinActionCard.tsx:182
+#: src/components/events/JoinActionCard.tsx:180
 msgid "Guest list updated."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1612
+#: src/pages/EventDetailsPage.tsx:1587
 msgid "Guests:"
 msgstr ""
 
@@ -1145,7 +1200,7 @@ msgstr ""
 msgid "Have you paid?"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1702
+#: src/pages/EventDetailsPage.tsx:1677
 msgid "Help build our community by giving karma to players who showed good sportsmanship, or report issues if needed."
 msgstr ""
 
@@ -1201,8 +1256,8 @@ msgstr ""
 msgid "Ideal Players *"
 msgstr ""
 
-#: src/components/events/JoinActionCard.tsx:253
-#: src/pages/EventDetailsPage.tsx:637
+#: src/components/events/JoinActionCard.tsx:251
+#: src/pages/EventDetailsPage.tsx:638
 msgid "Ideal: {count} players"
 msgstr ""
 
@@ -1230,21 +1285,21 @@ msgstr ""
 msgid "Indoor"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:585
+#: src/pages/EventDetailsPage.tsx:586
 msgid "Indoor & outdoor venue"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:583
+#: src/pages/EventDetailsPage.tsx:584
 msgid "Indoor venue"
 msgstr ""
 
-#: src/components/events/JoinActionCard.tsx:73
+#: src/components/events/JoinActionCard.tsx:71
 #: src/components/map/EventMap.tsx:245
 msgid "Join Game"
 msgstr ""
 
 #. placeholder {0}: data.city
-#: src/pages/SeoLandingPage.tsx:74
+#: src/pages/SeoLandingPage.tsx:85
 msgid "Join local amateur players, discover team sports events, and find places to play in {0}."
 msgstr ""
 
@@ -1252,7 +1307,7 @@ msgstr ""
 #~ msgid "Join the largest community of sports enthusiasts across Europe. Organize games, discover events, and make new friends through sport."
 #~ msgstr ""
 
-#: src/pages/HomePage.tsx:150
+#: src/pages/HomePage.tsx:156
 msgid "Join the vibrant community of sports enthusiasts across Europe. Organize games, discover events, and make new friends through team sports."
 msgstr ""
 
@@ -1265,12 +1320,12 @@ msgstr ""
 msgid "Join Your First Event"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1592
+#: src/pages/EventDetailsPage.tsx:1567
 msgid "Joined"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1583
-#: src/pages/EventDetailsPage.tsx:1755
+#: src/pages/EventDetailsPage.tsx:1558
+#: src/pages/EventDetailsPage.tsx:1731
 msgid "Joined {timeAgo}"
 msgstr ""
 
@@ -1288,7 +1343,7 @@ msgstr ""
 msgid "Karma points: {0}"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1597
+#: src/pages/EventDetailsPage.tsx:1572
 msgid "Karma: {karmaPoints}"
 msgstr ""
 
@@ -1310,16 +1365,16 @@ msgstr ""
 msgid "Leaderboard Categories"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1630
-#: src/pages/EventDetailsPage.tsx:1775
+#: src/pages/EventDetailsPage.tsx:1605
+#: src/pages/EventDetailsPage.tsx:1751
 msgid "Leave"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1937
+#: src/pages/EventDetailsPage.tsx:1911
 msgid "Leave a comment"
 msgstr ""
 
-#: src/pages/HomePage.tsx:147
+#: src/pages/HomePage.tsx:153
 msgid "Let's Play Together"
 msgstr ""
 
@@ -1349,13 +1404,17 @@ msgstr ""
 msgid "Location Preview"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:662
+#: src/pages/EventDetailsPage.tsx:663
 #: src/pages/EventDetailsPage.tsx:1367
 msgid "Location TBD"
 msgstr ""
 
 #: src/pages/LeaderboardPage.tsx:729
 msgid "Lose Points For:"
+msgstr ""
+
+#: src/components/user/UserButton.tsx:218
+msgid "Manage attendance bans"
 msgstr ""
 
 #: src/pages/ManageCoreGroupsPage.tsx:139
@@ -1382,11 +1441,11 @@ msgstr ""
 msgid "Mark as read"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:579
+#: src/pages/EventDetailsPage.tsx:580
 msgid "Marked as paid"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:571
+#: src/pages/EventDetailsPage.tsx:572
 msgid "Marked as paid {timeAgo}"
 msgstr ""
 
@@ -1403,7 +1462,7 @@ msgid "Maximum Players *"
 msgstr ""
 
 #. placeholder {0}: data.city
-#: src/pages/SeoLandingPage.tsx:69
+#: src/pages/SeoLandingPage.tsx:80
 msgid "Meet local amateur {lowerSportName} players, join upcoming games, and find places to play in {0}."
 msgstr ""
 
@@ -1435,6 +1494,10 @@ msgstr ""
 msgid "Mixed (Indoor & Outdoor)"
 msgstr ""
 
+#: src/pages/AdminEventBansPage.tsx:308
+msgid "months"
+msgstr ""
+
 #: src/pages/LeaderboardPage.tsx:273
 msgid "Most active event organizers"
 msgstr ""
@@ -1452,7 +1515,7 @@ msgstr ""
 msgid "N/A"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:540
+#: src/pages/EventDetailsPage.tsx:541
 msgid "Need {count} more players to confirm"
 msgstr ""
 
@@ -1500,7 +1563,7 @@ msgstr ""
 msgid "No bio provided"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:397
+#: src/pages/DiscoverPage.tsx:403
 msgid "No events found"
 msgstr ""
 
@@ -1528,11 +1591,11 @@ msgstr ""
 msgid "No past events"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2150
+#: src/pages/EventDetailsPage.tsx:2155
 msgid "No phone number"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2146
+#: src/pages/EventDetailsPage.tsx:2151
 msgid "No phone number available"
 msgstr ""
 
@@ -1561,12 +1624,16 @@ msgstr ""
 msgid "No upcoming events"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:352
+#: src/pages/DiscoverPage.tsx:358
 msgid "No upcoming events found."
 msgstr ""
 
-#: src/pages/SeoLandingPage.tsx:173
+#: src/pages/SeoLandingPage.tsx:184
 msgid "No upcoming games are listed here yet. The venues below support this page, and new games will appear here automatically."
+msgstr ""
+
+#: src/pages/AdminEventBansPage.tsx:234
+msgid "No users match this search."
 msgstr ""
 
 #: src/components/venues/VenueSelector.tsx:349
@@ -1617,7 +1684,7 @@ msgstr ""
 msgid "Only {remainingSlots} more QR code images can be uploaded for this event."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1682
+#: src/pages/EventDetailsPage.tsx:1657
 msgid "Open spot"
 msgstr ""
 
@@ -1630,7 +1697,7 @@ msgstr ""
 #~ msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1423
-#: src/pages/EventDetailsPage.tsx:1563
+#: src/pages/EventDetailsPage.tsx:1538
 msgid "Organizer"
 msgstr ""
 
@@ -1638,7 +1705,7 @@ msgstr ""
 msgid "Organizing successful events (+10 points)"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2226
+#: src/pages/EventDetailsPage.tsx:2231
 msgid "Orientation Plan"
 msgstr ""
 
@@ -1646,7 +1713,7 @@ msgstr ""
 msgid "Orientation Plan (Optional)"
 msgstr ""
 
-#: src/pages/SeoLandingPage.tsx:230
+#: src/pages/SeoLandingPage.tsx:241
 msgid "Other active cities"
 msgstr ""
 
@@ -1654,7 +1721,7 @@ msgstr ""
 msgid "Outdoor"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:581
+#: src/pages/EventDetailsPage.tsx:582
 msgid "Outdoor venue"
 msgstr ""
 
@@ -1666,9 +1733,9 @@ msgstr ""
 msgid "Overcast with clouds"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1569
-#: src/pages/EventDetailsPage.tsx:1570
-#: src/pages/EventDetailsPage.tsx:1574
+#: src/pages/EventDetailsPage.tsx:1544
+#: src/pages/EventDetailsPage.tsx:1545
+#: src/pages/EventDetailsPage.tsx:1549
 msgid "Paid"
 msgstr ""
 
@@ -1681,7 +1748,7 @@ msgstr ""
 msgid "Participants"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:631
+#: src/pages/EventDetailsPage.tsx:632
 msgid "Participants: {current}/{max}"
 msgstr ""
 
@@ -1689,12 +1756,12 @@ msgstr ""
 msgid "Password changed successfully!"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:364
+#: src/pages/DiscoverPage.tsx:370
 #: src/pages/PublicProfilePage.tsx:180
 msgid "Past Events"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:951
+#: src/pages/EventDetailsPage.tsx:952
 msgid "Payment"
 msgstr ""
 
@@ -1706,7 +1773,7 @@ msgstr ""
 msgid "Payment Details"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:986
+#: src/pages/EventDetailsPage.tsx:987
 msgid "Payment details:"
 msgstr ""
 
@@ -1714,15 +1781,15 @@ msgstr ""
 #~ msgid "Payment Information"
 #~ msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:833
+#: src/pages/EventDetailsPage.tsx:834
 msgid "Payment marked as complete."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:873
+#: src/pages/EventDetailsPage.tsx:874
 msgid "Payment status cleared."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:651
+#: src/pages/EventDetailsPage.tsx:652
 msgid "Payment: {paymentDetails}"
 msgstr ""
 
@@ -1759,25 +1826,25 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2251
+#: src/pages/EventDetailsPage.tsx:2256
 msgid "Photos"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2218
+#: src/pages/EventDetailsPage.tsx:2223
 msgid "Photos & Orientation"
 msgstr ""
 
-#: src/pages/SeoLandingPage.tsx:109
+#: src/pages/SeoLandingPage.tsx:120
 msgid "Places to play"
 msgstr ""
 
 #. placeholder {0}: data.city
-#: src/pages/SeoLandingPage.tsx:190
+#: src/pages/SeoLandingPage.tsx:201
 msgid "Places to play in {0}"
 msgstr ""
 
 #. placeholder {0}: data.city
-#: src/pages/SeoLandingPage.tsx:62
+#: src/pages/SeoLandingPage.tsx:73
 msgid "Play {sportName} in {0}"
 msgstr ""
 
@@ -1785,7 +1852,7 @@ msgstr ""
 msgid "Playable conditions"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1751
+#: src/pages/EventDetailsPage.tsx:1727
 msgid "Player"
 msgstr ""
 
@@ -1797,11 +1864,11 @@ msgstr ""
 msgid "players"
 msgstr ""
 
-#: src/components/events/JoinActionCard.tsx:226
+#: src/components/events/JoinActionCard.tsx:224
 msgid "Players confirmed"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1801
+#: src/pages/EventDetailsPage.tsx:1777
 msgid "Players on the waitlist will automatically be added when spots become available."
 msgstr ""
 
@@ -1814,19 +1881,19 @@ msgstr ""
 msgid "Pleasant and sunny"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:594
+#: src/pages/EventDetailsPage.tsx:595
 msgid "Please describe the behavior issue..."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:592
+#: src/pages/EventDetailsPage.tsx:593
 msgid "Please describe what happened..."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:732
+#: src/pages/EventDetailsPage.tsx:733
 msgid "Please enter a comment before submitting."
 msgstr ""
 
-#: src/components/events/JoinActionCard.tsx:97
+#: src/components/events/JoinActionCard.tsx:95
 msgid "Please enter a name for each guest."
 msgstr ""
 
@@ -1866,15 +1933,15 @@ msgstr ""
 msgid "Please select at least one member."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:726
+#: src/pages/EventDetailsPage.tsx:727
 msgid "Please sign in to comment on this event."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:808
+#: src/pages/EventDetailsPage.tsx:809
 msgid "Please sign in to confirm payment."
 msgstr ""
 
-#: src/components/events/JoinActionCard.tsx:124
+#: src/components/events/JoinActionCard.tsx:122
 msgid "Please sign in to join this event."
 msgstr ""
 
@@ -1898,11 +1965,11 @@ msgstr ""
 msgid "Positive feedback from players (+3 points)"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2078
+#: src/pages/EventDetailsPage.tsx:2052
 msgid "Post comment"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2076
+#: src/pages/EventDetailsPage.tsx:2050
 msgid "Posting..."
 msgstr ""
 
@@ -1910,7 +1977,7 @@ msgstr ""
 msgid "Prague"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1180
+#: src/pages/EventDetailsPage.tsx:1181
 msgid "Preview"
 msgstr ""
 
@@ -1943,15 +2010,15 @@ msgstr ""
 #~ msgstr ""
 
 #. placeholder {0}: Math.max(event.minParticipants, reservedAwareHeadcount)
-#: src/pages/EventDetailsPage.tsx:966
+#: src/pages/EventDetailsPage.tsx:967
 msgid "Price per person({0}people):"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:958
+#: src/pages/EventDetailsPage.tsx:959
 msgid "Price total:"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:644
+#: src/pages/EventDetailsPage.tsx:645
 msgid "Price: €{price} per person"
 msgstr ""
 
@@ -1978,16 +2045,16 @@ msgstr ""
 
 #. placeholder {0}: index + 1
 #: src/components/events/CreateEventForm.tsx:732
-#: src/pages/EventDetailsPage.tsx:1467
+#: src/pages/EventDetailsPage.tsx:1469
 msgid "QR code image {0}"
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:689
-#: src/pages/EventDetailsPage.tsx:1448
+#: src/pages/EventDetailsPage.tsx:1450
 msgid "QR Codes"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1476
+#: src/pages/EventDetailsPage.tsx:1478
 msgid "QR codes are displayed only to participants."
 msgstr ""
 
@@ -1995,7 +2062,7 @@ msgstr ""
 msgid "Rain chance:"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1664
+#: src/pages/EventDetailsPage.tsx:1639
 msgid "Rate"
 msgstr ""
 
@@ -2003,11 +2070,11 @@ msgstr ""
 msgid "Rate Participant"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1535
+#: src/pages/EventDetailsPage.tsx:1510
 msgid "Rate Players"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1699
+#: src/pages/EventDetailsPage.tsx:1674
 msgid "Rate Your Fellow Players"
 msgstr ""
 
@@ -2037,17 +2104,17 @@ msgid "Regular players with some experience"
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:739
-#: src/components/events/JoinActionCard.tsx:310
+#: src/components/events/JoinActionCard.tsx:308
 #: src/components/venues/AddVenueModal.tsx:719
-#: src/pages/EventDetailsPage.tsx:1792
+#: src/pages/EventDetailsPage.tsx:1768
 msgid "Remove"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1645
+#: src/pages/EventDetailsPage.tsx:1620
 msgid "Remove attendee"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1789
+#: src/pages/EventDetailsPage.tsx:1765
 msgid "Remove from waitlist"
 msgstr ""
 
@@ -2055,7 +2122,7 @@ msgstr ""
 msgid "Report bad behavior"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:932
+#: src/pages/EventDetailsPage.tsx:933
 msgid "Report Bad Behavior"
 msgstr ""
 
@@ -2063,7 +2130,7 @@ msgstr ""
 msgid "Report no-show"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:931
+#: src/pages/EventDetailsPage.tsx:932
 msgid "Report No-Show"
 msgstr ""
 
@@ -2079,6 +2146,16 @@ msgstr ""
 msgid "Reserved spots"
 msgstr ""
 
+#. placeholder {0}: formatBanExpiry(bannedUntil)
+#: src/pages/AdminEventBansPage.tsx:270
+msgid "Restricted until {0}"
+msgstr ""
+
+#. placeholder {0}: formatBanExpiry(bannedUntil)
+#: src/pages/AdminEventBansPage.tsx:272
+msgid "Restriction expired {0}"
+msgstr ""
+
 #: src/pages/UserProfilePage.tsx:146
 msgid "Revolut tag updated!"
 msgstr ""
@@ -2087,9 +2164,9 @@ msgstr ""
 msgid "Revolut: @username or cash on spot"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1131
-#: src/pages/EventDetailsPage.tsx:1223
-#: src/pages/EventDetailsPage.tsx:1875
+#: src/pages/EventDetailsPage.tsx:1132
+#: src/pages/EventDetailsPage.tsx:1224
+#: src/pages/EventDetailsPage.tsx:1849
 #: src/pages/ManageCoreGroupsPage.tsx:202
 msgid "Save"
 msgstr ""
@@ -2098,7 +2175,7 @@ msgstr ""
 msgid "Save Changes"
 msgstr ""
 
-#: src/components/events/JoinActionCard.tsx:328
+#: src/components/events/JoinActionCard.tsx:326
 msgid "Save guests"
 msgstr ""
 
@@ -2110,13 +2187,21 @@ msgstr ""
 msgid "Saved Events"
 msgstr ""
 
-#: src/components/events/JoinActionCard.tsx:326
+#: src/components/events/JoinActionCard.tsx:324
 #: src/pages/EventDetailsPage.tsx:2371
 msgid "Saving..."
 msgstr ""
 
+#: src/pages/AdminEventBansPage.tsx:214
+msgid "Search by name or email"
+msgstr ""
+
 #: src/components/ui/GiphyPicker.tsx:209
 msgid "Search GIFs..."
+msgstr ""
+
+#: src/pages/AdminEventBansPage.tsx:202
+msgid "Search users"
 msgstr ""
 
 #: src/components/venues/VenueSelector.tsx:132
@@ -2157,16 +2242,16 @@ msgstr ""
 msgid "Set from 2 hours up to 14 days (336 hours), counted from now."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1086
-#: src/pages/EventDetailsPage.tsx:1174
+#: src/pages/EventDetailsPage.tsx:1087
+#: src/pages/EventDetailsPage.tsx:1175
 msgid "Share"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2007
+#: src/pages/EventDetailsPage.tsx:1981
 msgid "Share updates, ask questions, or tag players with @Name."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:589
+#: src/pages/EventDetailsPage.tsx:590
 msgid "Share your experience playing with this person..."
 msgstr ""
 
@@ -2184,6 +2269,12 @@ msgstr ""
 msgid "Showers"
 msgstr ""
 
+#. placeholder {0}: filteredUsers.length
+#. placeholder {1}: users.length
+#: src/pages/AdminEventBansPage.tsx:219
+msgid "Showing {0} of {1} users"
+msgstr ""
+
 #: src/pages/HomePage.tsx:124
 #~ msgid "Showing events near your location"
 #~ msgstr ""
@@ -2192,7 +2283,7 @@ msgstr ""
 msgid "Showing venues that support"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2084
+#: src/pages/EventDetailsPage.tsx:2058
 msgid "Sign in to join the conversation."
 msgstr ""
 
@@ -2200,7 +2291,7 @@ msgstr ""
 msgid "Skill Level Requirements"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:272
+#: src/pages/DiscoverPage.tsx:278
 msgid "Sort by:"
 msgstr ""
 
@@ -2212,16 +2303,16 @@ msgstr ""
 msgid "Sport-Specific Rankings"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:630
+#: src/pages/EventDetailsPage.tsx:631
 msgid "Sport: {sportName}"
 msgstr ""
 
-#: src/pages/SeoLandingPage.tsx:114
+#: src/pages/SeoLandingPage.tsx:125
 msgid "Sports covered"
 msgstr ""
 
 #. placeholder {0}: data.city
-#: src/pages/SeoLandingPage.tsx:221
+#: src/pages/SeoLandingPage.tsx:232
 msgid "Sports in {0}"
 msgstr ""
 
@@ -2261,7 +2352,7 @@ msgstr ""
 msgid "Supported Sports *"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1949
+#: src/pages/EventDetailsPage.tsx:1923
 msgid "Supports **bold**, *italic*, __underline__, @mentions, and GIFs."
 msgstr ""
 
@@ -2271,6 +2362,10 @@ msgstr ""
 
 #: src/pages/UserProfilePage.tsx:688
 msgid "Tell us about yourself and your sports interests..."
+msgstr ""
+
+#: src/pages/AdminEventBansPage.tsx:185
+msgid "Temporarily prevent a user from joining new games. They can still browse hraj.eu and keep their existing attendances."
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1277
@@ -2293,7 +2388,7 @@ msgstr ""
 msgid "This event has been cancelled"
 msgstr ""
 
-#: src/components/events/JoinActionCard.tsx:147
+#: src/components/events/JoinActionCard.tsx:145
 msgid "This event is full right now, so you were added to the waitlist."
 msgstr ""
 
@@ -2305,6 +2400,10 @@ msgstr ""
 
 #: src/pages/LeaderboardPage.tsx:242
 msgid "This Month"
+msgstr ""
+
+#: src/pages/AdminEventBansPage.tsx:162
+msgid "This page is only available to hraj.eu administrators."
 msgstr ""
 
 #: src/components/weather/WeatherWidget.tsx:102
@@ -2339,7 +2438,7 @@ msgstr ""
 msgid "Total Price"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:400
+#: src/pages/DiscoverPage.tsx:406
 msgid "Try adjusting your filters or create a new event."
 msgstr ""
 
@@ -2351,7 +2450,11 @@ msgstr ""
 msgid "Typical hourly rates for this venue"
 msgstr ""
 
-#: src/components/events/JoinActionCard.tsx:274
+#: src/pages/AdminEventBansPage.tsx:333
+msgid "Unban"
+msgstr ""
+
+#: src/components/events/JoinActionCard.tsx:272
 msgid "Up to {count} names"
 msgstr ""
 
@@ -2359,14 +2462,18 @@ msgstr ""
 #~ msgid "Up to 2 names"
 #~ msgstr ""
 
-#: src/pages/DiscoverPage.tsx:301
+#: src/pages/DiscoverPage.tsx:307
 #: src/pages/PublicProfilePage.tsx:87
 msgid "Upcoming Events"
 msgstr ""
 
-#: src/pages/SeoLandingPage.tsx:104
-#: src/pages/SeoLandingPage.tsx:139
+#: src/pages/SeoLandingPage.tsx:115
+#: src/pages/SeoLandingPage.tsx:150
 msgid "Upcoming games"
+msgstr ""
+
+#: src/pages/AdminEventBansPage.tsx:322
+msgid "Update ban"
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:1351
@@ -2415,7 +2522,7 @@ msgstr ""
 msgid "Uploading..."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2097
+#: src/pages/EventDetailsPage.tsx:2102
 msgid "Venue"
 msgstr ""
 
@@ -2488,12 +2595,12 @@ msgstr ""
 msgid "Visibility"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2172
+#: src/pages/EventDetailsPage.tsx:2177
 msgid "Visit website"
 msgstr ""
 
 #: src/components/map/EventMap.tsx:297
-#: src/pages/EventDetailsPage.tsx:1723
+#: src/pages/EventDetailsPage.tsx:1699
 msgid "Waitlist"
 msgstr ""
 
@@ -2537,6 +2644,10 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
+#: src/pages/AdminEventBansPage.tsx:307
+msgid "weeks"
+msgstr ""
+
 #: src/lib/email/sendCancellationEmail.ts:47
 #: src/lib/email/sendVenueChangeEmail.ts:40
 msgid "When"
@@ -2564,7 +2675,7 @@ msgstr ""
 msgid "Where: {location}"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1526
+#: src/pages/EventDetailsPage.tsx:1501
 msgid "Who's Playing"
 msgstr ""
 
@@ -2593,11 +2704,11 @@ msgstr ""
 msgid "Yes, Cancel Event"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1751
+#: src/pages/EventDetailsPage.tsx:1727
 msgid "You"
 msgstr ""
 
-#: src/components/events/JoinActionCard.tsx:71
+#: src/components/events/JoinActionCard.tsx:341
 #: src/components/map/EventMap.tsx:242
 msgid "You are playing"
 msgstr ""
@@ -2610,11 +2721,11 @@ msgstr ""
 msgid "You do not have any venues to manage yet. Start by adding your first venue!"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:709
+#: src/pages/EventDetailsPage.tsx:710
 msgid "You have left the event."
 msgstr ""
 
-#: src/components/events/JoinActionCard.tsx:151
+#: src/components/events/JoinActionCard.tsx:149
 msgid "You have successfully joined this game."
 msgstr ""
 
@@ -2630,7 +2741,7 @@ msgstr ""
 msgid "You haven't joined or created any upcoming events yet."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:814
+#: src/pages/EventDetailsPage.tsx:815
 msgid "You must join this event to confirm payment."
 msgstr ""
 
@@ -2638,10 +2749,10 @@ msgstr ""
 msgid "You'll see updates about your events here"
 msgstr ""
 
-#: src/pages/HomePage.tsx:29
-#: src/pages/HomePage.tsx:45
-#: src/pages/HomePage.tsx:50
-#: src/pages/HomePage.tsx:57
+#: src/pages/HomePage.tsx:30
+#: src/pages/HomePage.tsx:46
+#: src/pages/HomePage.tsx:51
+#: src/pages/HomePage.tsx:58
 msgid "your area"
 msgstr ""
 
@@ -2661,7 +2772,7 @@ msgstr ""
 msgid "Your Groups"
 msgstr ""
 
-#: src/components/events/JoinActionCard.tsx:153
+#: src/components/events/JoinActionCard.tsx:151
 msgid "Your request was received."
 msgstr ""
 

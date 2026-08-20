@@ -14,6 +14,7 @@ import { joinEvent } from '~/server-functions/joinEvent'
 import { authClient } from '../lib/auth-client'
 import { i18n } from '~/lib/i18n'
 import { getAvailablePublicSpots } from '../utils/participants'
+import { toast } from 'sonner'
 
 type SortOption = 'date' | 'distance' | 'spots'
 const MAX_PAST_EVENTS = 12
@@ -183,6 +184,11 @@ export const DiscoverPage: React.FC = () => {
       }
     } catch (error) {
       console.error('Failed to join event:', error)
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : i18n._(msg`Failed to join the event. Please try again.`)
+      )
     } finally {
       setJoiningEventId(null)
     }

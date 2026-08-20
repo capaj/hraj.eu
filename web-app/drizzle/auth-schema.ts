@@ -9,6 +9,9 @@ export const user = sqliteTable('user', {
     .$defaultFn(() => false)
     .notNull(),
   image: text('image'),
+  eventJoinBannedUntil: integer('event_join_banned_until', {
+    mode: 'timestamp'
+  }),
   phone: text('phone'),
   karmaPoints: integer('karma_points').default(0).notNull(),
   preferredCurrency: text('preferred_currency'),

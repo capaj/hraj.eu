@@ -1,8 +1,7 @@
 import { and, eq, inArray, not, or, sql } from 'drizzle-orm'
 import { db } from '../../drizzle/db'
 import { eventT, participantT, user, venueT } from '../../drizzle/schema'
-
-const ADMIN_EMAILS = ['capajj@gmail.com']
+import { isAdminEmail } from '~/lib/admin'
 
 type VenuePermissionTarget = {
   id: string
@@ -20,7 +19,7 @@ export async function isVenueAdmin(userId: string) {
     }
   })
 
-  return !!userData?.email && ADMIN_EMAILS.includes(userData.email)
+  return isAdminEmail(userData?.email)
 }
 
 export async function getSuccessfulOrganizerVenueIds(userId: string) {
