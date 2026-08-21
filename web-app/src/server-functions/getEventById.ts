@@ -137,6 +137,7 @@ export const getEventById = createServerFn({ method: 'GET' })
       participantJoinedAt,
       waitlistJoinedAt,
       status: event.status as Event['status'],
+      cancellationReason: event.cancellationReason || undefined,
       allowedSkillLevels: event.requiredSkillLevel
         ? [event.requiredSkillLevel]
         : undefined,

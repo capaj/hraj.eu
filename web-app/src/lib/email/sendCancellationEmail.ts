@@ -34,7 +34,7 @@ export async function sendCancellationEmail({
   event: CancellationEmailEvent
   location: string
   eventUrl: string
-  reason: string
+  reason?: string | null
   locale: EmailLocale
 }) {
   const i18n = createEmailI18n(locale)
@@ -42,6 +42,7 @@ export async function sendCancellationEmail({
   const greeting = name ? i18n._(msg`Hi ${name},`) : i18n._(msg`Hi,`)
   const when = `${event.date} ${event.startTime} (${event.duration} min)`
   const description = event.description?.trim()
+  const cancellationReason = reason?.trim()
   const heading = i18n._(msg`Event cancelled`)
   const cancelledText = i18n._(msg`was cancelled.`)
   const whenLabel = i18n._(msg`When`)
@@ -54,7 +55,9 @@ export async function sendCancellationEmail({
     i18n._(msg`Your event was cancelled: ${title}`),
     i18n._(msg`When: ${when}`),
     i18n._(msg`Where: ${location}`),
-    i18n._(msg`Reason: ${reason}`),
+    cancellationReason
+      ? i18n._(msg`Reason: ${cancellationReason}`)
+      : null,
     description ? '' : null,
     description || null,
     '',
@@ -70,9 +73,13 @@ export async function sendCancellationEmail({
       <p><strong>${escapeHtml(event.title)}</strong> ${escapeHtml(cancelledText)}</p>
       <p><strong>${escapeHtml(whenLabel)}:</strong> ${escapeHtml(when)}</p>
       <p><strong>${escapeHtml(whereLabel)}:</strong> ${escapeHtml(location)}</p>
-      <p><strong>${escapeHtml(reasonLabel)}:</strong> ${escapeHtml(reason)}</p>
+      ${
+        cancellationReason
+          ? `<p><strong>${escapeHtml(reasonLabel)}:</strong> ${escapeHtml(cancellationReason)}</p>`
+          : ''
+      }
       ${description ? `<p>${escapeHtml(description)}</p>` : ''}
-      <p><a href="${eventUrl}">${escapeHtml(viewEventText)}</a></p>
+      <p><a href="${escapeHtml(eventUrl)}">${escapeHtml(viewEventText)}</a></p>
     </div>
   `
 

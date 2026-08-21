@@ -140,6 +140,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const [showAddVenueModal, setShowAddVenueModal] = useState(false)
   const [showCancelConfirm, setShowCancelConfirm] = useState(false)
   const [cancellationReason, setCancellationReason] = useState('')
+  const [isCancellingEvent, setIsCancellingEvent] = useState(false)
   const [venues, setVenues] = useState<Venue[]>([])
   const [coreGroups, setCoreGroups] = useState<Array<{ id: string; name: string; userIds: string[] }>>([])
   const [isLoadingVenues, setIsLoadingVenues] = useState(true)
@@ -1380,25 +1381,44 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                   <textarea
                     value={cancellationReason}
                     onChange={(e) => setCancellationReason(e.target.value)}
+                    maxLength={1000}
+                    disabled={isCancellingEvent}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                     placeholder={i18n._(msg`e.g., Weather conditions, Insufficient players...`)}
                     rows={3}
                   />
                 </div>
                 <div className="flex justify-end space-x-3">
-                  <Button variant="outline" onClick={() => setShowCancelConfirm(false)}>
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowCancelConfirm(false)}
+                    disabled={isCancellingEvent}
+                  >
                     <Trans>Keep Event</Trans>
                   </Button>
                   <Button
                     variant="danger"
-                    onClick={() => {
-                      if (onCancelEvent) {
-                        onCancelEvent(cancellationReason);
-                        setShowCancelConfirm(false);
+                    disabled={isCancellingEvent}
+                    onClick={async () => {
+                      if (!onCancelEvent) return
+
+                      try {
+                        setIsCancellingEvent(true)
+                        await onCancelEvent(cancellationReason.trim() || undefined)
+                        setCancellationReason('')
+                        setShowCancelConfirm(false)
+                      } catch {
+                        // The parent shows the relevant error message.
+                      } finally {
+                        setIsCancellingEvent(false)
                       }
                     }}
                   >
-                    <Trans>Yes, Cancel Event</Trans>
+                    {isCancellingEvent ? (
+                      <Trans>Cancelling...</Trans>
+                    ) : (
+                      <Trans>Yes, Cancel Event</Trans>
+                    )}
                   </Button>
                 </div>
               </div>

@@ -108,6 +108,7 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
     } catch (error) {
       console.error('Failed to cancel event:', error)
       alert('Failed to cancel event')
+      throw error
     } finally {
       setIsUpdating(false)
     }
@@ -249,7 +250,7 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
                 onSubmit={handleEditSubmit}
                 onCancel={() => setIsEditOpen(false)}
                 initialData={initialFormData}
-                onCancelEvent={handleCancelEvent}
+                onCancelEvent={event.status === 'cancelled' ? undefined : handleCancelEvent}
               />
             </div>
           </div>

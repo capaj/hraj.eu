@@ -80,6 +80,7 @@ import { unmarkParticipantAsPaid } from '~/server-functions/unmarkParticipantAsP
 import { addEventComment } from '~/server-functions/addEventComment'
 import { deleteEventComment } from '~/server-functions/deleteEventComment'
 import { editEventComment } from '~/server-functions/editEventComment'
+import { cancelEvent } from '~/server-functions/cancelEvent'
 import { EventComment, User } from '../types'
 import { getEventDateTime } from '../utils/eventDateTime'
 import { getAvailablePublicSpots, getTotalReservedAwareHeadcount } from '../utils/participants'
@@ -343,6 +344,9 @@ export const EventDetailsPage: React.FC = () => {
   const [shareUrl, setShareUrl] = useState('')
   const [isParticipantsExpanded, setIsParticipantsExpanded] = useState(false)
   const [isMarkingPaid, setIsMarkingPaid] = useState(false)
+  const [showCancelEventModal, setShowCancelEventModal] = useState(false)
+  const [cancellationReason, setCancellationReason] = useState('')
+  const [isCancellingEvent, setIsCancellingEvent] = useState(false)
   const [selectedQrImage, setSelectedQrImage] = useState<string | null>(null)
   const declinePaymentButtonRef = useRef<HTMLButtonElement | null>(null)
   const previouslyFocusedElementRef = useRef<HTMLElement | null>(null)
@@ -534,6 +538,10 @@ export const EventDetailsPage: React.FC = () => {
   const durationMinutes = Number(event.duration) || 0
   const eventEndTime = addMinutes(eventStartTime, durationMinutes)
   const hasEventEnded = isPast(eventEndTime)
+  const canCurrentUserCancelEvent =
+    currentUserId === event.organizerId &&
+    !hasEventEnded &&
+    (event.status === 'open' || event.status === 'confirmed')
 
   const shouldShowWeather = venue?.type !== 'indoor'
 
@@ -618,6 +626,40 @@ export const EventDetailsPage: React.FC = () => {
   }
 
   const cancellationDeadline = getCancellationDeadline()
+
+  const handleCancelEvent = async () => {
+    if (!canCurrentUserCancelEvent) {
+      return
+    }
+
+    const reason = cancellationReason.trim()
+
+    try {
+      setIsCancellingEvent(true)
+      await cancelEvent({
+        data: {
+          eventId: event.id,
+          reason: reason || undefined
+        }
+      })
+      setEvent((previousEvent) => ({
+        ...previousEvent,
+        status: 'cancelled',
+        cancellationReason: reason || undefined
+      }))
+      setShowCancelEventModal(false)
+      setCancellationReason('')
+      toast.success(i18n._(msg`Event cancelled`))
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : i18n._(msg`Failed to cancel the event. Please try again.`)
+      toast.error(message)
+    } finally {
+      setIsCancellingEvent(false)
+    }
+  }
 
   const handleAddToCalendar = () => {
     // Parse the start time and create proper Date objects
@@ -1395,6 +1437,15 @@ export const EventDetailsPage: React.FC = () => {
                           <Trans>Edit Event</Trans>
                         </DropdownMenuItem>
                       )}
+                      {canCurrentUserCancelEvent && (
+                        <DropdownMenuItem
+                          className="gap-3 rounded-md px-3 py-2.5 text-base text-red-600 focus:text-red-700"
+                          onClick={() => setShowCancelEventModal(true)}
+                        >
+                          <XCircle size={16} />
+                          <Trans>Cancel Event</Trans>
+                        </DropdownMenuItem>
+                      )}
                       <DropdownMenuSeparator />
                     </>
                   )}
@@ -1466,15 +1517,27 @@ export const EventDetailsPage: React.FC = () => {
                       <Trans>Duplicate Event</Trans>
                     </Button>
                   ) : (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-                      onClick={() => navigate({ to: '/edit-event/$eventId', params: { eventId: event.id } })}
-                    >
-                      <Edit size={16} className="mr-2" />
-                      <Trans>Edit Event</Trans>
-                    </Button>
+                    <>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                        onClick={() => navigate({ to: '/edit-event/$eventId', params: { eventId: event.id } })}
+                      >
+                        <Edit size={16} className="mr-2" />
+                        <Trans>Edit Event</Trans>
+                      </Button>
+                      {canCurrentUserCancelEvent && (
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          onClick={() => setShowCancelEventModal(true)}
+                        >
+                          <XCircle size={16} className="mr-2" />
+                          <Trans>Cancel Event</Trans>
+                        </Button>
+                      )}
+                    </>
                   )}
                 </>
               )}
@@ -1597,6 +1660,14 @@ export const EventDetailsPage: React.FC = () => {
                         <p className="text-red-700">
                           <Trans>The organizer has cancelled this event.</Trans>
                         </p>
+                        {event.cancellationReason && (
+                          <p className="text-red-700 mt-2 whitespace-pre-wrap">
+                            <span className="font-medium">
+                              <Trans>Reason:</Trans>
+                            </span>{' '}
+                            {event.cancellationReason}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -2352,6 +2423,88 @@ export const EventDetailsPage: React.FC = () => {
           <Trans>Back to Events</Trans>
         </Button>
       </div>
+
+      {showCancelEventModal && (
+        <div
+          className="fixed inset-0 z-[4000] bg-black/60 flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="cancel-event-dialog-title"
+          onClick={() => {
+            if (!isCancellingEvent) setShowCancelEventModal(false)
+          }}
+        >
+          <div
+            className="w-full max-w-md"
+            onClick={(clickEvent) => clickEvent.stopPropagation()}
+          >
+            <Card>
+              <CardHeader>
+                <h2
+                  id="cancel-event-dialog-title"
+                  className="text-xl font-bold text-red-700"
+                >
+                  <Trans>Cancel this event?</Trans>
+                </h2>
+                <p className="mt-2 text-sm text-gray-600">
+                  <Trans>
+                    This cannot be undone. Everyone attending will receive a cancellation email.
+                  </Trans>
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <div>
+                  <label
+                    htmlFor="event-cancellation-reason"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    <Trans>Reason (optional)</Trans>
+                  </label>
+                  <textarea
+                    id="event-cancellation-reason"
+                    value={cancellationReason}
+                    onChange={(changeEvent) =>
+                      setCancellationReason(changeEvent.target.value)
+                    }
+                    maxLength={1000}
+                    rows={4}
+                    autoFocus
+                    disabled={isCancellingEvent}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent disabled:bg-gray-100"
+                    placeholder={i18n._(msg`Let attendees know why the event was cancelled`)}
+                  />
+                </div>
+                <div className="flex justify-end gap-3">
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowCancelEventModal(false)}
+                    disabled={isCancellingEvent}
+                  >
+                    <Trans>Keep Event</Trans>
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={handleCancelEvent}
+                    disabled={isCancellingEvent}
+                  >
+                    {isCancellingEvent ? (
+                      <>
+                        <Loader2 size={16} className="mr-2 animate-spin" />
+                        <Trans>Cancelling...</Trans>
+                      </>
+                    ) : (
+                      <>
+                        <XCircle size={16} className="mr-2" />
+                        <Trans>Cancel Event</Trans>
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      )}
 
       {selectedQrImage && (
         <div

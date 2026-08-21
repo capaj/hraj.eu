@@ -6,8 +6,9 @@ import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { i18n } from '~/lib/i18n'
 import { Trans } from '@lingui/react/macro'
-import { msg, t } from '@lingui/core/macro'
+import { msg } from '@lingui/core/macro'
 import { Event, SkillLevel } from '../types'
+import { useAuthSession } from '../lib/auth-client'
 
 interface EditEventPageProps {
   event: Event
@@ -15,7 +16,11 @@ interface EditEventPageProps {
 
 export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
   const navigate = useNavigate()
+  const session = useAuthSession()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const canCancelEvent =
+    session.data?.user?.id === event.organizerId &&
+    (event.status === 'open' || event.status === 'confirmed')
 
   const initialData: Partial<CreateEventFormData> = {
     title: event.title,
@@ -91,21 +96,22 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
   }
 
   const handleCancelEvent = async (reason?: string) => {
-    if (!confirm(i18n._(msg`Are you sure you want to cancel this event? This action cannot be undone.`))) {
-      return
-    }
-
     try {
       await cancelEvent({
         data: {
           eventId: event.id,
-          reason: reason?.trim() || 'Cancelled by organizer'
+          reason: reason?.trim() || undefined
         }
       })
       toast.success(i18n._(msg`Event cancelled`))
       navigate({ to: '/events/$eventId', params: { eventId: event.id } })
     } catch (error) {
-      toast.error(i18n._(msg`Failed to cancel event`))
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : i18n._(msg`Failed to cancel event`)
+      )
+      throw error
     }
   }
 
@@ -116,7 +122,7 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
           onSubmit={handleSubmit}
           onCancel={handleCancel}
           initialData={initialData}
-          onCancelEvent={handleCancelEvent}
+          onCancelEvent={canCancelEvent ? handleCancelEvent : undefined}
         />
       </div>
 

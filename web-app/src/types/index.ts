@@ -83,6 +83,7 @@ export interface Event {
   participantJoinedAt?: Record<string, Date>
   waitlistJoinedAt?: Record<string, Date>
   status: 'draft' | 'open' | 'confirmed' | 'cancelled' | 'completed'
+  cancellationReason?: string
   allowedSkillLevels?: string[]
   requireSkillLevel?: boolean
   qrCodeImages?: string[]

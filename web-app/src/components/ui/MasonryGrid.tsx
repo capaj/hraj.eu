@@ -179,7 +179,38 @@ export const MasonryGrid = ({
 
     const resizeObserver = new ResizeObserver(layoutItems)
     resizeObserver.observe(container)
-    getItems().forEach((item) => resizeObserver.observe(item))
+    const observedItems = new Set<HTMLElement>()
+
+    const observeItems = () => {
+      const items = getItems()
+
+      for (const item of items) {
+        if (!observedItems.has(item)) {
+          resizeObserver.observe(item)
+          observedItems.add(item)
+        }
+      }
+
+      for (const item of observedItems) {
+        if (!items.includes(item)) {
+          resizeObserver.unobserve(item)
+          observedItems.delete(item)
+        }
+      }
+    }
+
+    observeItems()
+
+    // React creates a new `children` value on every parent render. Re-running
+    // this effect for that value briefly clears the grid styles, which can make
+    // the browser jump the document scroll position while an input is edited.
+    // Observe actual direct-child additions and removals instead.
+    const mutationObserver = new MutationObserver(() => {
+      observeItems()
+      layoutItems()
+    })
+    mutationObserver.observe(container, { childList: true })
+
     desktopQuery.addEventListener('change', layoutItems)
     wideQuery.addEventListener('change', layoutItems)
     layoutItems()
@@ -190,11 +221,11 @@ export const MasonryGrid = ({
       }
       desktopQuery.removeEventListener('change', layoutItems)
       wideQuery.removeEventListener('change', layoutItems)
+      mutationObserver.disconnect()
       resizeObserver.disconnect()
       resetLayout()
     }
   }, [
-    children,
     columnGap,
     columns,
     desktopBreakpoint,

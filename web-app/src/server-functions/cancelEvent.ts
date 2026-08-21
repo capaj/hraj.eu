@@ -4,22 +4,24 @@ import { z } from 'zod'
 import { eventT, participantT, user, venueT } from '../../drizzle/schema'
 import { db } from 'drizzle/db'
 import { auth } from '~/lib/auth'
-import { and, eq, inArray, not } from 'drizzle-orm'
+import { and, eq, inArray } from 'drizzle-orm'
 import { env } from 'cloudflare:workers'
 import { Resend } from 'resend'
-import { msg } from '@lingui/core/macro'
 import {
-  createEmailI18n,
   sendCancellationEmail,
   type EmailLocale
 } from '~/lib/email/sendCancellationEmail'
+import {
+  isCancellableEventStatus,
+  normalizeCancellationReason
+} from './cancelEventPolicy'
 
 const LOCATION_FALLBACK = 'Location TBD'
 const resend = new Resend(env.RESEND_API_KEY)
 
 const CancelEventSchema = z.object({
   eventId: z.string().min(1),
-  reason: z.string().optional()
+  reason: z.string().trim().max(1000).optional()
 })
 
 export const cancelEvent = createServerFn({ method: 'POST' })
@@ -64,10 +66,12 @@ export const cancelEvent = createServerFn({ method: 'POST' })
       return { success: true }
     }
 
+    if (!isCancellableEventStatus(event.status)) {
+      throw new Error('Only active events can be cancelled')
+    }
+
     const locale = getEmailLocale(request.headers.get('accept-language'))
-    const emailI18n = createEmailI18n(locale)
-    const reason =
-      data.reason?.trim() || emailI18n._(msg`Cancelled by organizer`)
+    const reason = normalizeCancellationReason(data.reason)
 
     const updated = await db
       .update(eventT)
@@ -77,7 +81,10 @@ export const cancelEvent = createServerFn({ method: 'POST' })
         cancellationCheckRanAt: new Date()
       })
       .where(
-        and(eq(eventT.id, data.eventId), not(eq(eventT.status, 'cancelled')))
+        and(
+          eq(eventT.id, data.eventId),
+          inArray(eventT.status, ['open', 'confirmed'])
+        )
       )
       .returning({ id: eventT.id })
 
@@ -92,7 +99,7 @@ export const cancelEvent = createServerFn({ method: 'POST' })
       .where(
         and(
           eq(participantT.eventId, event.id),
-          inArray(participantT.status, ['confirmed', 'waitlisted', 'invited']),
+          eq(participantT.status, 'confirmed'),
           eq(user.emailNotificationsDisabled, false)
         )
       )
@@ -102,10 +109,6 @@ export const cancelEvent = createServerFn({ method: 'POST' })
 
     let emailsSent = 0
     for (const participant of participants) {
-      if (!participant.email) {
-        continue
-      }
-
       try {
         await sendCancellationEmail({
           resend,
@@ -127,7 +130,10 @@ export const cancelEvent = createServerFn({ method: 'POST' })
       }
     }
 
-    return { success: true, emailsSent }
+    return {
+      success: true,
+      emailsSent
+    }
   })
 
 function formatLocation(name: string | null, address: string | null): string {
