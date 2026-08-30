@@ -7,6 +7,7 @@ import { getUsersByIds } from '~/server-functions/getUsersByIds'
 import { getRequestOrigin } from '~/server-functions/getRequestOrigin'
 import { getEventComments } from '~/server-functions/getEventComments'
 import { SPORTS } from '~/lib/constants'
+import { getMentionableParticipantIds } from '~/utils/participants'
 
 export const Route = createFileRoute('/events/$eventId')({
   ssr: true,
@@ -17,7 +18,7 @@ export const Route = createFileRoute('/events/$eventId')({
     const organizer = await getUserById({ data: event.organizerId })
     const origin = await getRequestOrigin()
 
-    const participantIds = [...event.participants, ...(event.waitlist || [])]
+    const participantIds = getMentionableParticipantIds(event)
     const participants = participantIds.length > 0
       ? await getUsersByIds({ data: participantIds })
       : []

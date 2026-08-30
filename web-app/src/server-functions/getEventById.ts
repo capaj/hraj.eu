@@ -40,6 +40,11 @@ export const getEventById = createServerFn({ method: 'GET' })
       .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
       .map((p) => p.userId)
 
+    const formerParticipants = participants
+      .filter((p) => p.status === 'cancelled')
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+      .map((p) => p.userId)
+
     const paidParticipants = participants
       .filter((p) => p.markedAsPaidAt)
       .map((p) => p.userId)
@@ -131,6 +136,7 @@ export const getEventById = createServerFn({ method: 'GET' })
       organizerId: event.organizerId,
       participants: confirmedParticipants,
       waitlist: waitlistedParticipants,
+      formerParticipants,
       paidParticipants,
       paidParticipantsAt,
       participantPlusOnes,
