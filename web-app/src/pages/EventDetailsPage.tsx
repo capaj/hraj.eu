@@ -71,7 +71,11 @@ import {
   DropdownMenuSeparator
 } from '../components/ui/dropdown-menu'
 
-import { useLoaderData, useNavigate, useSearch } from '@tanstack/react-router'
+import {
+  useLoaderData,
+  useNavigate,
+  useRouter
+} from '@tanstack/react-router'
 import { useAuthSession } from '../lib/auth-client'
 import { leaveEvent } from '~/server-functions/leaveEvent'
 import { recordPaymentIntent } from '~/server-functions/recordPaymentIntent'
@@ -309,6 +313,7 @@ export const EventDetailsPage: React.FC = () => {
     comments: initialComments
   } = useLoaderData({ from: '/events/$eventId' })
   const navigate = useNavigate()
+  const router = useRouter()
   const session = useAuthSession()
   const [event, setEvent] = useState(initialEvent)
   const [showKarmaModal, setShowKarmaModal] = useState(false)
@@ -754,6 +759,8 @@ export const EventDetailsPage: React.FC = () => {
         } else {
           toast.info(i18n._(msg`You have left the event.`))
         }
+
+        await router.invalidate()
       }
     } catch (error) {
       const message =

@@ -3,6 +3,7 @@ import { Event } from '../types'
 import { db } from '../../drizzle/db'
 import { coreGroupMemberT, coreGroupT, eventT, participantT } from '../../drizzle/schema'
 import { eq } from 'drizzle-orm'
+import { getEventGuestNames, normalizeEventGuests } from '~/lib/eventGuests'
 
 export const getEventById = createServerFn({ method: 'GET' })
   .inputValidator((eventId: string) => eventId)
@@ -61,10 +62,18 @@ export const getEventById = createServerFn({ method: 'GET' })
 
     const participantPlusOnes = participants.reduce(
       (acc, participant) => {
-        acc[participant.userId] = participant.plusAttendees || []
+        acc[participant.userId] = getEventGuestNames(participant.plusAttendees)
         return acc
       },
       {} as Record<string, string[]>
+    )
+
+    const participantGuests = participants.reduce(
+      (acc, participant) => {
+        acc[participant.userId] = normalizeEventGuests(participant.plusAttendees)
+        return acc
+      },
+      {} as Record<string, ReturnType<typeof normalizeEventGuests>>
     )
 
     const participantJoinedAt = participants
@@ -140,6 +149,7 @@ export const getEventById = createServerFn({ method: 'GET' })
       paidParticipants,
       paidParticipantsAt,
       participantPlusOnes,
+      participantGuests,
       participantJoinedAt,
       waitlistJoinedAt,
       status: event.status as Event['status'],

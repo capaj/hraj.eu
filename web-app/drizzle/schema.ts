@@ -329,7 +329,7 @@ export const participantT = sqliteTable(
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
     plusAttendees: text('plus_attendees', { mode: 'json' })
-      .$type<string[]>()
+      .$type<Array<string | { name: string; userId?: string }>>()
       .notNull()
       .default(sql`'[]'`),
     status: text('status', {

@@ -81,6 +81,10 @@ export interface Event {
   paidParticipants?: string[]
   paidParticipantsAt?: Record<string, Date>
   participantPlusOnes: Record<string, string[]>
+  participantGuests?: Record<
+    string,
+    Array<{ name: string; userId?: string }>
+  >
   participantJoinedAt?: Record<string, Date>
   waitlistJoinedAt?: Record<string, Date>
   status: 'draft' | 'open' | 'confirmed' | 'cancelled' | 'completed'

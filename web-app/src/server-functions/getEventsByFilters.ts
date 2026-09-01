@@ -5,6 +5,7 @@ import { db } from '../../drizzle/db'
 import { coreGroupMemberT, eventT, participantT } from '../../drizzle/schema'
 import { and, eq, inArray, isNull, lte, or } from 'drizzle-orm'
 import { auth } from '~/lib/auth'
+import { getEventGuestNames } from '~/lib/eventGuests'
 
 export const getEventsByFilters = createServerFn({ method: 'GET' })
   .inputValidator(
@@ -70,7 +71,9 @@ export const getEventsByFilters = createServerFn({ method: 'GET' })
 
         const participantPlusOnes = participants.reduce(
           (acc, participant) => {
-            acc[participant.userId] = participant.plusAttendees || []
+            acc[participant.userId] = getEventGuestNames(
+              participant.plusAttendees
+            )
             return acc
           },
           {} as Record<string, string[]>

@@ -1,7 +1,7 @@
 export interface WaitlistPromotionParticipant {
   id: number
   status: string
-  plusAttendees: string[] | null
+  plusAttendees: unknown[] | null
 }
 
 export function getWaitlistParticipantIdsToPromote(

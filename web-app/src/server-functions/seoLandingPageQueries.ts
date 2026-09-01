@@ -11,6 +11,7 @@ import type {
   SeoLandingPageData,
   SeoLandingPageLink
 } from './getSeoLandingPageData'
+import { getEventGuestNames } from '~/lib/eventGuests'
 
 type EventRow = typeof eventT.$inferSelect
 type VenueRow = typeof venueT.$inferSelect
@@ -70,7 +71,7 @@ async function mapEvent(event: EventRow): Promise<Event> {
 
   const participantPlusOnes = participants.reduce(
     (acc, participant) => {
-      acc[participant.userId] = participant.plusAttendees || []
+      acc[participant.userId] = getEventGuestNames(participant.plusAttendees)
       return acc
     },
     {} as Record<string, string[]>

@@ -2,10 +2,11 @@ import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useRouter } from '@tanstack/react-router'
-import { CheckCircle, ChevronDown, Loader2, Trash2, Users } from 'lucide-react'
+import { CheckCircle, ChevronDown, Loader2, Users } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useAuthSession } from '~/lib/auth-client'
+import type { EventGuest } from '~/lib/eventGuests'
 import { i18n } from '~/lib/i18n'
 import { getEventById } from '~/server-functions/getEventById'
 import { joinEvent } from '~/server-functions/joinEvent'
@@ -13,6 +14,7 @@ import { updatePlusAttendees } from '~/server-functions/updatePlusAttendees'
 import { getAvailablePublicSpots, getTotalReservedAwareHeadcount } from '~/utils/participants'
 import { Button } from '../ui/Button'
 import { Card, CardContent } from '../ui/Card'
+import { GuestUserInput } from './GuestUserInput'
 
 const MAX_GUESTS_PER_USER = 2
 
@@ -20,14 +22,38 @@ interface JoinActionCardProps {
   eventId: string
 }
 
-const normalizePlusAttendees = (attendees: string[]) =>
-  attendees
-    .map((name) => name.trim())
-    .filter(Boolean)
-    .slice(0, MAX_GUESTS_PER_USER)
+type GuestDraft = {
+  value: string
+  userId?: string
+  selectedUserName?: string
+}
 
-const arePlusAttendeesEqual = (a: string[], b: string[]) =>
-  a.length === b.length && a.every((name, index) => name === b[index])
+const guestsToDrafts = (guests: EventGuest[]): GuestDraft[] =>
+  guests.map((guest) => ({
+    value: guest.userId ? `@${guest.name}` : guest.name,
+    ...(guest.userId
+      ? { userId: guest.userId, selectedUserName: guest.name }
+      : {})
+  }))
+
+const draftsToGuests = (drafts: GuestDraft[]): EventGuest[] =>
+  drafts.flatMap((draft) => {
+    const value = draft.value.trim()
+    if (!value) return []
+
+    if (draft.userId && draft.selectedUserName) {
+      return [{ name: draft.selectedUserName, userId: draft.userId }]
+    }
+
+    return [{ name: value }]
+  })
+
+const areGuestsEqual = (a: EventGuest[], b: EventGuest[]) =>
+  a.length === b.length &&
+  a.every(
+    (guest, index) =>
+      guest.name === b[index]?.name && guest.userId === b[index]?.userId
+  )
 
 export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
   const navigate = useNavigate()
@@ -35,7 +61,7 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
   const session = useAuthSession()
   const currentUserId = session.data?.user?.id
   const [isGuestsExpanded, setIsGuestsExpanded] = useState(false)
-  const [plusAttendees, setPlusAttendees] = useState<string[]>([])
+  const [guestDrafts, setGuestDrafts] = useState<GuestDraft[]>([])
   const [isJoining, setIsJoining] = useState(false)
   const [isUpdatingGuests, setIsUpdatingGuests] = useState(false)
 
@@ -59,11 +85,16 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
   const isMinimumReached = event
     ? reservedAwareHeadcount >= event.minParticipants
     : false
-  const savedPlusAttendees =
-    currentUserId && event ? (event.participantPlusOnes?.[currentUserId] ?? []) : []
-  const isGuestsFormDirty = !arePlusAttendeesEqual(
-    normalizePlusAttendees(plusAttendees),
-    normalizePlusAttendees(savedPlusAttendees)
+  const savedGuests: EventGuest[] =
+    currentUserId && event
+      ? (event.participantGuests?.[currentUserId] ??
+        (event.participantPlusOnes?.[currentUserId] ?? []).map((name) => ({
+          name
+        })))
+      : []
+  const isGuestsFormDirty = !areGuestsEqual(
+    draftsToGuests(guestDrafts),
+    savedGuests
   )
 
   let joinButtonText = i18n._(msg`Join Waitlist`)
@@ -73,41 +104,50 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
 
   useEffect(() => {
     if (!currentUserId || !event) {
-      setPlusAttendees([])
+      setGuestDrafts([])
       return
     }
 
-    setPlusAttendees(event.participantPlusOnes?.[currentUserId] || [])
-  }, [currentUserId, event?.participantPlusOnes, event?.participants])
+    const guests =
+      event.participantGuests?.[currentUserId] ??
+      (event.participantPlusOnes?.[currentUserId] ?? []).map((name) => ({ name }))
+    setGuestDrafts(guestsToDrafts(guests))
+  }, [
+    currentUserId,
+    event?.participantGuests,
+    event?.participantPlusOnes,
+    event?.participants
+  ])
 
   const refreshEventData = async () => {
     await Promise.all([refetch(), router.invalidate()])
   }
 
   const sanitizePlusAttendees = () => {
-    const trimmed = plusAttendees.map((name) => name.trim())
-    const hasAnyGuest = trimmed.some(Boolean)
+    const trimmed = guestDrafts.map((draft) => draft.value.trim())
+    const hasAnyGuest = trimmed.some((name) => Boolean(name))
     const hasEmptyName = trimmed.some(
-      (name, index) => hasAnyGuest && plusAttendees[index] !== undefined && !name
+      (name, index) => hasAnyGuest && guestDrafts[index] !== undefined && !name
     )
 
     if (hasEmptyName) {
       throw new Error(i18n._(msg`Please enter a name for each guest.`))
     }
 
-    return trimmed.filter(Boolean).slice(0, MAX_GUESTS_PER_USER)
+    return draftsToGuests(guestDrafts).slice(0, MAX_GUESTS_PER_USER)
   }
 
   const handlePlusAttendeeChange = (index: number, value: string) => {
-    setPlusAttendees((prev) => {
+    setGuestDrafts((prev) => {
       const updated = prev.slice()
-      updated[index] = value
+      while (updated.length < index) updated.push({ value: '' })
+      updated[index] = { value }
       return updated
     })
   }
 
   const handleRemovePlusAttendee = (index: number) => {
-    setPlusAttendees((prev) => {
+    setGuestDrafts((prev) => {
       if (index < 0 || index >= prev.length) return prev
       const updated = prev.slice()
       updated.splice(index, 1)
@@ -132,9 +172,10 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
       })
 
       if (response?.participants) {
-        setPlusAttendees(
-          response.participants.plusAttendees[currentUserId] ||
-          cleanedPlusAttendees
+        setGuestDrafts(
+          guestsToDrafts(
+            response.participants.guests[currentUserId] || cleanedPlusAttendees
+          )
         )
         await refreshEventData()
       }
@@ -172,9 +213,10 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
       })
 
       if (response?.participants) {
-        setPlusAttendees(
-          response.participants.plusAttendees[currentUserId] ||
-          cleanedPlusAttendees
+        setGuestDrafts(
+          guestsToDrafts(
+            response.participants.guests[currentUserId] || cleanedPlusAttendees
+          )
         )
         await refreshEventData()
         toast.success(i18n._(msg`Guest list updated.`))
@@ -287,30 +329,40 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
                 { length: MAX_GUESTS_PER_USER },
                 (_, index) => index
               ).map((index) => (
-                <div key={index} className="relative">
-                  <input
-                    type="text"
-                    value={plusAttendees[index] || ''}
-                    onChange={(e) =>
-                      handlePlusAttendeeChange(index, e.target.value)
-                    }
-                    placeholder={i18n._(
-                      msg`Guest {index, number} name (optional)`.id,
-                      { index: index + 1 }
-                    )}
-                    className="w-full rounded-lg border border-gray-200 pl-3 pr-10 py-2 text-sm focus:border-primary-500 focus:outline-none"
-                  />
-                  <button
-                    type="button"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed"
-                    disabled={index >= plusAttendees.length}
-                    onClick={() => handleRemovePlusAttendee(index)}
-                    aria-label={i18n._(msg`Remove`)}
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
+                <GuestUserInput
+                  key={index}
+                  eventId={event.id}
+                  value={guestDrafts[index]?.value ?? ''}
+                  selectedUserId={guestDrafts[index]?.userId}
+                  placeholder={i18n._(
+                    msg`Guest {index, number} name (optional)`.id,
+                    { index: index + 1 }
+                  )}
+                  canRemove={index < guestDrafts.length}
+                  onChange={(value) => handlePlusAttendeeChange(index, value)}
+                  onSelect={(user) => {
+                    setGuestDrafts((current) => {
+                      const updated = current.slice()
+                      while (updated.length < index) {
+                        updated.push({ value: '' })
+                      }
+                      updated[index] = {
+                        value: `@${user.name}`,
+                        userId: user.id,
+                        selectedUserName: user.name
+                      }
+                      return updated
+                    })
+                  }}
+                  onRemove={() => handleRemovePlusAttendee(index)}
+                />
               ))}
+
+              <p className="text-xs text-gray-500">
+                <Trans>
+                  Enter any guest name, or start with @ to link a player.
+                </Trans>
+              </p>
 
               {isParticipant && isGuestsFormDirty && (
                 <div className="flex justify-end">

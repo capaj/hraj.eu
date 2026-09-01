@@ -1,5 +1,6 @@
 import { coreGroupMemberT, eventStatuses, eventT, participantT } from '../../drizzle/schema'
 import { and, eq, inArray, isNull, lte, not, or, sql } from 'drizzle-orm'
+import { getEventGuestNames } from '../lib/eventGuests'
 
 export type GetEventsInput = {
   statuses?: Array<(typeof eventStatuses)[number]>
@@ -105,7 +106,9 @@ export async function getEventsHandler(
 
       const participantPlusOnes = participants.reduce(
         (acc: Record<string, string[]>, participant: any) => {
-          acc[participant.userId] = participant.plusAttendees || []
+          acc[participant.userId] = getEventGuestNames(
+            participant.plusAttendees
+          )
           return acc
         },
         {}

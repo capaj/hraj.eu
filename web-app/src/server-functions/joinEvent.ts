@@ -5,13 +5,23 @@ import { z } from 'zod'
 import { db } from '../../drizzle/db'
 import { eventT, participantT, user } from '../../drizzle/schema'
 import { auth } from '~/lib/auth'
-import { and, eq } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
+import { getEventGuestNames, normalizeEventGuests } from '~/lib/eventGuests'
+import { validateEventGuests } from './validateEventGuests'
 
 const MAX_GUESTS_PER_USER = 2
 
+const EventGuestSchema = z.union([
+  z.string().min(1, 'Guest name is required').trim(),
+  z.object({
+    name: z.string().min(1, 'Guest name is required').trim(),
+    userId: z.string().min(1).optional()
+  })
+])
+
 const JoinEventSchema = z.object({
   eventId: z.string().min(1, 'Event ID is required'),
-  plusAttendees: z.array(z.string().min(1, 'Guest name is required').trim()).optional()
+  plusAttendees: z.array(EventGuestSchema).optional()
 })
 
 export const joinEvent = createServerFn({ method: 'POST' })
@@ -71,12 +81,14 @@ export const joinEvent = createServerFn({ method: 'POST' })
       )
     }
 
-    const requestedPlusAttendees = (data.plusAttendees ??
-      existingParticipant?.plusAttendees ??
-      [])
-      .map((name) => name.trim())
-      .filter(Boolean)
-      .slice(0, MAX_GUESTS_PER_USER)
+    const requestedPlusAttendees = await validateEventGuests(
+      db,
+      normalizeEventGuests(
+        data.plusAttendees ?? existingParticipant?.plusAttendees ?? []
+      ).slice(0, MAX_GUESTS_PER_USER),
+      allParticipants,
+      session.user.id
+    )
 
     const confirmedHeadcount = allParticipants
       .filter((p) => p.status === 'confirmed')
@@ -165,10 +177,18 @@ async function getParticipants(eventId: string) {
 
   const participantPlusOnes = participants.reduce(
     (acc, participant) => {
-      acc[participant.userId] = participant.plusAttendees || []
+      acc[participant.userId] = getEventGuestNames(participant.plusAttendees)
       return acc
     },
     {} as Record<string, string[]>
+  )
+
+  const participantGuests = participants.reduce(
+    (acc, participant) => {
+      acc[participant.userId] = normalizeEventGuests(participant.plusAttendees)
+      return acc
+    },
+    {} as Record<string, ReturnType<typeof normalizeEventGuests>>
   )
 
   return {
@@ -181,6 +201,7 @@ async function getParticipants(eventId: string) {
       .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
       .map((p) => p.userId),
     plusAttendees: participantPlusOnes,
+    guests: participantGuests,
     participantJoinedAt: participants
       .filter((p) => p.status === 'confirmed')
       .reduce(

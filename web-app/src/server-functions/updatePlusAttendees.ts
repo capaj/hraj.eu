@@ -6,12 +6,22 @@ import { db } from '../../drizzle/db'
 import { eventT, participantT } from '../../drizzle/schema'
 import { auth } from '~/lib/auth'
 import { deleteOgImageFromR2 } from './utils'
+import { getEventGuestNames, normalizeEventGuests } from '~/lib/eventGuests'
+import { validateEventGuests } from './validateEventGuests'
 
 const MAX_GUESTS_PER_USER = 2
 
+const EventGuestSchema = z.union([
+  z.string().min(1, 'Guest name is required').trim(),
+  z.object({
+    name: z.string().min(1, 'Guest name is required').trim(),
+    userId: z.string().min(1).optional()
+  })
+])
+
 const UpdatePlusAttendeesSchema = z.object({
   eventId: z.string().min(1, 'Event ID is required'),
-  plusAttendees: z.array(z.string().min(1, 'Guest name is required').trim())
+  plusAttendees: z.array(EventGuestSchema)
 })
 
 export const updatePlusAttendees = createServerFn({ method: 'POST' })
@@ -56,10 +66,12 @@ export const updatePlusAttendees = createServerFn({ method: 'POST' })
       throw new Error('You need to join this event before adding guests')
     }
 
-    const sanitizedPlusAttendees = data.plusAttendees
-      .map((name) => name.trim())
-      .filter(Boolean)
-      .slice(0, MAX_GUESTS_PER_USER)
+    const sanitizedPlusAttendees = await validateEventGuests(
+      db,
+      normalizeEventGuests(data.plusAttendees).slice(0, MAX_GUESTS_PER_USER),
+      participants,
+      session.user.id
+    )
 
     const confirmedHeadcount = participants
       .filter((p) => p.status === 'confirmed')
@@ -114,10 +126,18 @@ async function getParticipants(eventId: string) {
 
   const participantPlusOnes = participants.reduce(
     (acc, participant) => {
-      acc[participant.userId] = participant.plusAttendees || []
+      acc[participant.userId] = getEventGuestNames(participant.plusAttendees)
       return acc
     },
     {} as Record<string, string[]>
+  )
+
+  const participantGuests = participants.reduce(
+    (acc, participant) => {
+      acc[participant.userId] = normalizeEventGuests(participant.plusAttendees)
+      return acc
+    },
+    {} as Record<string, ReturnType<typeof normalizeEventGuests>>
   )
 
   return {
@@ -130,6 +150,7 @@ async function getParticipants(eventId: string) {
       .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
       .map((p) => p.userId),
     plusAttendees: participantPlusOnes,
+    guests: participantGuests,
     participantJoinedAt: participants
       .filter((p) => p.status === 'confirmed')
       .reduce(

@@ -5,8 +5,9 @@ import { z } from 'zod'
 import { db } from '../../drizzle/db'
 import { eventT, participantT } from '../../drizzle/schema'
 import { auth } from '~/lib/auth'
-import { and, asc, eq, inArray } from 'drizzle-orm'
-import { getWaitlistParticipantIdsToPromote } from './waitlistPromotion'
+import { eq } from 'drizzle-orm'
+import { getEventGuestNames } from '~/lib/eventGuests'
+import { leaveEventHandler } from './leaveEventHandler'
 
 const LeaveEventSchema = z.object({
   eventId: z.string().min(1, 'Event ID is required'),
@@ -48,52 +49,9 @@ export const leaveEvent = createServerFn({ method: 'POST' })
       }
     }
 
-    await db.transaction(async (tx) => {
-      await tx
-        .update(participantT)
-        .set({ status: 'cancelled' })
-        .where(
-          and(
-            eq(participantT.eventId, data.eventId),
-            eq(participantT.userId, userIdToRemove)
-          )
-        )
-
-      const [event] = await tx
-        .select({
-          maxParticipants: eventT.maxParticipants,
-          reservedParticipants: eventT.reservedParticipants
-        })
-        .from(eventT)
-        .where(eq(eventT.id, data.eventId))
-        .limit(1)
-
-      if (!event) {
-        return
-      }
-
-      const participants = await tx
-        .select({
-          id: participantT.id,
-          status: participantT.status,
-          plusAttendees: participantT.plusAttendees
-        })
-        .from(participantT)
-        .where(eq(participantT.eventId, data.eventId))
-        .orderBy(asc(participantT.createdAt))
-
-      const participantIdsToPromote = getWaitlistParticipantIdsToPromote(
-        participants,
-        event.maxParticipants,
-        event.reservedParticipants ?? 0
-      )
-
-      if (participantIdsToPromote.length) {
-        await tx
-          .update(participantT)
-          .set({ status: 'confirmed' })
-          .where(inArray(participantT.id, participantIdsToPromote))
-      }
+    const { convertedGuestUserIds } = await leaveEventHandler(db, {
+      eventId: data.eventId,
+      userId: userIdToRemove
     })
 
     const participants = await getParticipants(data.eventId)
@@ -105,6 +63,7 @@ export const leaveEvent = createServerFn({ method: 'POST' })
 
     return {
       status: 'left',
+      convertedGuestUserIds,
       participants
     }
   })
@@ -122,7 +81,7 @@ async function getParticipants(eventId: string) {
 
   const participantPlusOnes = participants.reduce(
     (acc, participant) => {
-      acc[participant.userId] = participant.plusAttendees || []
+      acc[participant.userId] = getEventGuestNames(participant.plusAttendees)
       return acc
     },
     {} as Record<string, string[]>
