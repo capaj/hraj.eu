@@ -11,10 +11,12 @@ export const getUsersByIds = createServerFn({ method: 'GET' })
       return []
     }
 
-    const usersFromDb = await db
-      .select()
-      .from(userTable)
-      .where(inArray(userTable.id, userIds))
+    const usersFromDb = await db.query.user.findMany({
+      where: inArray(userTable.id, userIds),
+      with: {
+        skills: true
+      }
+    })
 
     const organizedCounts = await db
       .select({
@@ -29,22 +31,29 @@ export const getUsersByIds = createServerFn({ method: 'GET' })
       organizedCounts.map((result) => [result.userId, result.count])
     )
 
-    const users = usersFromDb.map((user) => ({
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      image: user.image || undefined,
-      karmaPoints: user.karmaPoints || 0,
-      eventsOrganized: organizedCountByUserId.get(user.id) ?? 0,
-      skillLevels: {},
-      notificationPreferences: {},
-      preferredCurrency: user.preferredCurrency || 'CZK',
-      location:
-        user.city && user.country ? `${user.city}, ${user.country}` : undefined,
-      revTag: user.revolutTag || undefined,
-      bankAccount: user.bankAccount || undefined,
-      createdAt: new Date(user.createdAt)
-    })) as User[]
+    const users = usersFromDb.map((user) => {
+      const skillLevels: User['skillLevels'] = {}
+      for (const skill of user.skills) {
+        skillLevels[skill.sport] = skill.skillLevel
+      }
+
+      return {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        image: user.image || undefined,
+        karmaPoints: user.karmaPoints || 0,
+        eventsOrganized: organizedCountByUserId.get(user.id) ?? 0,
+        skillLevels,
+        notificationPreferences: {},
+        preferredCurrency: user.preferredCurrency || 'CZK',
+        location:
+          user.city && user.country ? `${user.city}, ${user.country}` : undefined,
+        revTag: user.revolutTag || undefined,
+        bankAccount: user.bankAccount || undefined,
+        createdAt: new Date(user.createdAt)
+      }
+    }) as User[]
 
     return users
   })

@@ -11,6 +11,7 @@ import { Tooltip, TooltipTrigger, TooltipContent } from '../components/ui/toolti
 import { WeatherWidget } from '../components/weather/WeatherWidget'
 import { SPORTS, FACILITIES } from '../lib/constants'
 import { UserAvatar } from '../components/user/UserAvatar'
+import { SkillLevelBadge } from '../components/user/SkillLevelBadge'
 import {
   generateICalEvent,
   downloadICalFile,
@@ -1932,6 +1933,11 @@ export const EventDetailsPage: React.FC = () => {
                             <div className="font-medium text-gray-900">
                               {user?.name}
                             </div>
+                            {user?.skillLevels[event.sport] && (
+                              <SkillLevelBadge
+                                level={user.skillLevels[event.sport]}
+                              />
+                            )}
                             {event.organizerId === user?.id && (
                               <Badge variant="info" size="sm">
                                 <Trans>Organizer</Trans>
