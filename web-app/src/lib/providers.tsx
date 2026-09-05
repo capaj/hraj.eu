@@ -5,6 +5,7 @@ import { Link, useRouter } from '@tanstack/react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useEffect, useRef, type ComponentProps, type ReactNode } from 'react'
 import { Toaster } from 'sonner'
+import { OnboardingRedirect } from '~/components/auth/OnboardingRedirect'
 import { updateUserTimezone } from '~/server-functions/updateUserTimezone'
 import {
   authClient,
@@ -49,6 +50,7 @@ export function Providers({ children }: { children: ReactNode }) {
             replace={(href) => router.navigate({ href, replace: true })}
             Link={({ href, ...props }) => <Link to={href} {...props} />}
           >
+            <OnboardingRedirect />
             <UserTimezoneSync />
             {children}
             <Toaster position="bottom-right" richColors closeButton />

@@ -3,10 +3,13 @@ import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
-import { Toggle } from '../components/ui/Toggle'
 import { SPORTS, SKILL_LEVELS, EU_CURRENCIES } from '../lib/constants'
-import { User } from '../types'
+import { User, type SkillLevel } from '../types'
 import { UserAvatar } from '../components/user/UserAvatar'
+import {
+  NotificationSettingsCard,
+  SkillLevelSettingsCard
+} from '../components/user/SportsPreferencesCards'
 import {
   User as UserIcon,
   Camera,
@@ -17,7 +20,6 @@ import {
   Trophy,
   Settings,
   Globe,
-  Star,
   Edit3,
   Upload,
   X,
@@ -31,9 +33,7 @@ import {
   Shield,
   Key,
   Eye,
-  EyeOff,
-  Bell,
-  BellOff
+  EyeOff
 } from 'lucide-react'
 
 import { useLoaderData } from '@tanstack/react-router'
@@ -74,7 +74,7 @@ export const UserProfile: React.FC = () => {
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false)
   const [showAvatarUpload, setShowAvatarUpload] = useState(false)
   const [skillLevelChanges, setSkillLevelChanges] = useState<
-    Record<string, string | null>
+    Record<string, SkillLevel | null>
   >({})
   const [notificationChanges, setNotificationChanges] = useState<
     Record<string, boolean>
@@ -184,7 +184,7 @@ export const UserProfile: React.FC = () => {
 
   const handleSkillLevelChange = async (
     sport: string,
-    level: string | null
+    level: SkillLevel | null
   ) => {
     // Update the edited user state
     setEditedUser((prev) => {
@@ -192,10 +192,7 @@ export const UserProfile: React.FC = () => {
       if (level === null) {
         delete newSkillLevels[sport]
       } else {
-        newSkillLevels[sport] = level as
-          | 'beginner'
-          | 'intermediate'
-          | 'advanced'
+        newSkillLevels[sport] = level
       }
       return { ...prev, skillLevels: newSkillLevels }
     })
@@ -210,7 +207,7 @@ export const UserProfile: React.FC = () => {
         await updateUserSkill({
           data: {
             sport,
-            skillLevel: level as 'beginner' | 'intermediate' | 'advanced' | null
+            skillLevel: level
           }
         })
 
@@ -220,10 +217,7 @@ export const UserProfile: React.FC = () => {
           if (level === null) {
             delete newSkillLevels[sport]
           } else {
-            newSkillLevels[sport] = level as
-              | 'beginner'
-              | 'intermediate'
-              | 'advanced'
+            newSkillLevels[sport] = level
           }
           return { ...prev, skillLevels: newSkillLevels }
         })
