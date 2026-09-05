@@ -16,6 +16,7 @@ import { Route as DiscoverRouteImport } from './routes/discover'
 import { Route as LeaderboardRouteImport } from './routes/leaderboard'
 import { Route as ManageCoreGroupsRouteImport } from './routes/manage-core-groups'
 import { Route as ManageVenuesRouteImport } from './routes/manage-venues'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
@@ -27,7 +28,9 @@ import { Route as AuthPathnameRouteImport } from './routes/auth/$pathname'
 import { Route as CitiesCitySlugRouteImport } from './routes/cities/$citySlug'
 import { Route as EditEventEventIdRouteImport } from './routes/edit-event.$eventId'
 import { Route as EventsEventIdRouteImport } from './routes/events/$eventId'
+import { Route as ScenariosOnboardingRouteImport } from './routes/scenarios.onboarding'
 import { Route as ScenariosParticipantCapacityRouteImport } from './routes/scenarios.participant-capacity'
+import { Route as ScenariosProfileSportsPreferencesRouteImport } from './routes/scenarios.profile-sports-preferences'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiOgEventEventIdRouteImport } from './routes/api/og/event/$eventId'
 
@@ -64,6 +67,11 @@ const ManageCoreGroupsRoute = ManageCoreGroupsRouteImport.update({
 const ManageVenuesRoute = ManageVenuesRouteImport.update({
   id: '/manage-venues',
   path: '/manage-venues',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -121,10 +129,21 @@ const EventsEventIdRoute = EventsEventIdRouteImport.update({
   path: '/events/$eventId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScenariosOnboardingRoute = ScenariosOnboardingRouteImport.update({
+  id: '/scenarios/onboarding',
+  path: '/scenarios/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ScenariosParticipantCapacityRoute =
   ScenariosParticipantCapacityRouteImport.update({
     id: '/scenarios/participant-capacity',
     path: '/scenarios/participant-capacity',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ScenariosProfileSportsPreferencesRoute =
+  ScenariosProfileSportsPreferencesRouteImport.update({
+    id: '/scenarios/profile-sports-preferences',
+    path: '/scenarios/profile-sports-preferences',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -146,6 +165,7 @@ export interface FileRoutesByFullPath {
   '/leaderboard': typeof LeaderboardRoute
   '/manage-core-groups': typeof ManageCoreGroupsRoute
   '/manage-venues': typeof ManageVenuesRoute
+  '/onboarding': typeof OnboardingRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -157,7 +177,9 @@ export interface FileRoutesByFullPath {
   '/cities/$citySlug': typeof CitiesCitySlugRoute
   '/edit-event/$eventId': typeof EditEventEventIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
+  '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
+  '/scenarios/profile-sports-preferences': typeof ScenariosProfileSportsPreferencesRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/og/event/$eventId': typeof ApiOgEventEventIdRoute
 }
@@ -169,6 +191,7 @@ export interface FileRoutesByTo {
   '/leaderboard': typeof LeaderboardRoute
   '/manage-core-groups': typeof ManageCoreGroupsRoute
   '/manage-venues': typeof ManageVenuesRoute
+  '/onboarding': typeof OnboardingRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -180,7 +203,9 @@ export interface FileRoutesByTo {
   '/cities/$citySlug': typeof CitiesCitySlugRoute
   '/edit-event/$eventId': typeof EditEventEventIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
+  '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
+  '/scenarios/profile-sports-preferences': typeof ScenariosProfileSportsPreferencesRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/og/event/$eventId': typeof ApiOgEventEventIdRoute
 }
@@ -193,6 +218,7 @@ export interface FileRoutesById {
   '/leaderboard': typeof LeaderboardRoute
   '/manage-core-groups': typeof ManageCoreGroupsRoute
   '/manage-venues': typeof ManageVenuesRoute
+  '/onboarding': typeof OnboardingRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -204,7 +230,9 @@ export interface FileRoutesById {
   '/cities/$citySlug': typeof CitiesCitySlugRoute
   '/edit-event/$eventId': typeof EditEventEventIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
+  '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
+  '/scenarios/profile-sports-preferences': typeof ScenariosProfileSportsPreferencesRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/og/event/$eventId': typeof ApiOgEventEventIdRoute
 }
@@ -218,6 +246,7 @@ export interface FileRouteTypes {
     | '/leaderboard'
     | '/manage-core-groups'
     | '/manage-venues'
+    | '/onboarding'
     | '/privacy'
     | '/profile'
     | '/sitemap.xml'
@@ -229,7 +258,9 @@ export interface FileRouteTypes {
     | '/cities/$citySlug'
     | '/edit-event/$eventId'
     | '/events/$eventId'
+    | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
+    | '/scenarios/profile-sports-preferences'
     | '/api/auth/$'
     | '/api/og/event/$eventId'
   fileRoutesByTo: FileRoutesByTo
@@ -241,6 +272,7 @@ export interface FileRouteTypes {
     | '/leaderboard'
     | '/manage-core-groups'
     | '/manage-venues'
+    | '/onboarding'
     | '/privacy'
     | '/profile'
     | '/sitemap.xml'
@@ -252,7 +284,9 @@ export interface FileRouteTypes {
     | '/cities/$citySlug'
     | '/edit-event/$eventId'
     | '/events/$eventId'
+    | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
+    | '/scenarios/profile-sports-preferences'
     | '/api/auth/$'
     | '/api/og/event/$eventId'
   id:
@@ -264,6 +298,7 @@ export interface FileRouteTypes {
     | '/leaderboard'
     | '/manage-core-groups'
     | '/manage-venues'
+    | '/onboarding'
     | '/privacy'
     | '/profile'
     | '/sitemap.xml'
@@ -275,7 +310,9 @@ export interface FileRouteTypes {
     | '/cities/$citySlug'
     | '/edit-event/$eventId'
     | '/events/$eventId'
+    | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
+    | '/scenarios/profile-sports-preferences'
     | '/api/auth/$'
     | '/api/og/event/$eventId'
   fileRoutesById: FileRoutesById
@@ -288,6 +325,7 @@ export interface RootRouteChildren {
   LeaderboardRoute: typeof LeaderboardRoute
   ManageCoreGroupsRoute: typeof ManageCoreGroupsRoute
   ManageVenuesRoute: typeof ManageVenuesRoute
+  OnboardingRoute: typeof OnboardingRoute
   PrivacyRoute: typeof PrivacyRoute
   ProfileRoute: typeof ProfileRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -299,7 +337,9 @@ export interface RootRouteChildren {
   CitiesCitySlugRoute: typeof CitiesCitySlugRoute
   EditEventEventIdRoute: typeof EditEventEventIdRoute
   EventsEventIdRoute: typeof EventsEventIdRoute
+  ScenariosOnboardingRoute: typeof ScenariosOnboardingRoute
   ScenariosParticipantCapacityRoute: typeof ScenariosParticipantCapacityRoute
+  ScenariosProfileSportsPreferencesRoute: typeof ScenariosProfileSportsPreferencesRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiOgEventEventIdRoute: typeof ApiOgEventEventIdRoute
 }
@@ -353,6 +393,13 @@ declare module '@tanstack/react-router' {
       path: '/manage-venues'
       fullPath: '/manage-venues'
       preLoaderRoute: typeof ManageVenuesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -432,11 +479,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsEventIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scenarios/onboarding': {
+      id: '/scenarios/onboarding'
+      path: '/scenarios/onboarding'
+      fullPath: '/scenarios/onboarding'
+      preLoaderRoute: typeof ScenariosOnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scenarios/participant-capacity': {
       id: '/scenarios/participant-capacity'
       path: '/scenarios/participant-capacity'
       fullPath: '/scenarios/participant-capacity'
       preLoaderRoute: typeof ScenariosParticipantCapacityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scenarios/profile-sports-preferences': {
+      id: '/scenarios/profile-sports-preferences'
+      path: '/scenarios/profile-sports-preferences'
+      fullPath: '/scenarios/profile-sports-preferences'
+      preLoaderRoute: typeof ScenariosProfileSportsPreferencesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
@@ -464,6 +525,7 @@ const rootRouteChildren: RootRouteChildren = {
   LeaderboardRoute: LeaderboardRoute,
   ManageCoreGroupsRoute: ManageCoreGroupsRoute,
   ManageVenuesRoute: ManageVenuesRoute,
+  OnboardingRoute: OnboardingRoute,
   PrivacyRoute: PrivacyRoute,
   ProfileRoute: ProfileRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
@@ -475,7 +537,10 @@ const rootRouteChildren: RootRouteChildren = {
   CitiesCitySlugRoute: CitiesCitySlugRoute,
   EditEventEventIdRoute: EditEventEventIdRoute,
   EventsEventIdRoute: EventsEventIdRoute,
+  ScenariosOnboardingRoute: ScenariosOnboardingRoute,
   ScenariosParticipantCapacityRoute: ScenariosParticipantCapacityRoute,
+  ScenariosProfileSportsPreferencesRoute:
+    ScenariosProfileSportsPreferencesRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiOgEventEventIdRoute: ApiOgEventEventIdRoute,
 }

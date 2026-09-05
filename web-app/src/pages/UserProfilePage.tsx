@@ -3,7 +3,7 @@ import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
-import { SPORTS, SKILL_LEVELS, EU_CURRENCIES } from '../lib/constants'
+import { EU_CURRENCIES } from '../lib/constants'
 import { User, type SkillLevel } from '../types'
 import { UserAvatar } from '../components/user/UserAvatar'
 import {
@@ -43,7 +43,6 @@ import { deleteUserAccount } from '~/server-functions/deleteUserAccount'
 import { authClient } from '~/lib/auth-client'
 import { toast } from 'sonner'
 import { i18n } from '~/lib/i18n'
-import { SportIcon } from '../components/sports/SportIcon'
 
 export const UserProfile: React.FC = () => {
   const { user: userFromLoader } = useLoaderData({ from: '/user-profile' })
@@ -474,19 +473,6 @@ export const UserProfile: React.FC = () => {
       toast.error(i18n._(msg`Failed to process account deletion`))
     } finally {
       setIsDeletingAccount(false)
-    }
-  }
-
-  const getSkillLevelBadgeVariant = (level: string) => {
-    switch (level) {
-      case 'beginner':
-        return 'success' as const
-      case 'intermediate':
-        return 'warning' as const
-      case 'advanced':
-        return 'error' as const
-      default:
-        return 'default' as const
     }
   }
 
@@ -1188,259 +1174,22 @@ export const UserProfile: React.FC = () => {
           </div>
         </div>
 
-        <Card className="mt-8">
-          <CardHeader>
-            <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-              {user.emailNotificationsDisabled ? (
-                <BellOff size={20} className="mr-2" />
-              ) : (
-                <Bell size={20} className="mr-2" />
-              )}
-              <Trans>Event email notifications</Trans>
-            </h3>
-            <p className="text-gray-600 text-sm mt-1">
-              <Trans>
-                Control confirmation, cancellation, event-change, and comment
-                digest emails.
-              </Trans>
-            </p>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between gap-6">
-              <div>
-                <div className="font-medium text-gray-900">
-                  <Trans>Receive event emails</Trans>
-                </div>
-                <p className="text-sm text-gray-600 mt-1">
-                  <Trans>
-                    Comments are collected and sent as an hourly digest instead
-                    of one email per comment.
-                  </Trans>
-                </p>
-              </div>
-              <Toggle
-                checked={!user.emailNotificationsDisabled}
-                onChange={handleEmailNotificationsChange}
-                disabled={isSavingEmailPreference}
-              />
-            </div>
-          </CardContent>
-        </Card>
+        <SkillLevelSettingsCard
+          className="mt-8"
+          skillLevels={editedUser.skillLevels}
+          pendingChanges={skillLevelChanges}
+          onChange={handleSkillLevelChange}
+        />
 
-        {/* Sports & Skill Levels - Full Width with Two-Column Grid */}
-        <Card className="mt-8">
-          <CardHeader>
-            <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-              <Star size={20} className="mr-2" />
-              Sports & Skill Levels
-            </h3>
-            <p className="text-gray-600 text-sm mt-1">
-              Set your skill level for each sport and enable notifications for
-              new events
-            </p>
-          </CardHeader>
-          <CardContent className="p-6">
-            {/* Skill Level Legend */}
-            <div className="mb-6 bg-gray-50 border border-gray-200 rounded-lg p-4">
-              <h4 className="text-sm font-medium text-gray-900 mb-3">
-                Skill Level Legend
-              </h4>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                    B
-                  </div>
-                  <div>
-                    <div className="font-medium text-gray-900">Beginner</div>
-                    <div className="text-xs text-gray-600">
-                      New to the sport or casual players
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-yellow-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                    I
-                  </div>
-                  <div>
-                    <div className="font-medium text-gray-900">
-                      Intermediate
-                    </div>
-                    <div className="text-xs text-gray-600">
-                      Regular players with some experience
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                    A
-                  </div>
-                  <div>
-                    <div className="font-medium text-gray-900">Advanced</div>
-                    <div className="text-xs text-gray-600">
-                      Experienced competitive players
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              {SPORTS.map((sport) => {
-                const currentLevel = editedUser.skillLevels[sport.id]
-                const hasRecentChange =
-                  skillLevelChanges[sport.id] !== undefined
-                const notificationEnabled =
-                  editedUser.notificationPreferences?.[sport.id] ?? false
-                const hasNotificationChange =
-                  notificationChanges[sport.id] !== undefined
-
-                return (
-                  <div
-                    key={sport.id}
-                    className={`flex items-center justify-between p-4 border rounded-lg transition-all duration-300 ${hasRecentChange || hasNotificationChange
-                      ? 'border-green-300 bg-green-50'
-                      : 'border-gray-200 hover:border-gray-300'
-                      }`}
-                  >
-                    <div className="flex items-center space-x-3 min-w-0 flex-1">
-                      <SportIcon
-                        sport={sport.id}
-                        size={24}
-                        className="flex-shrink-0 text-primary-600"
-                      />
-                      <div className="min-w-0 flex-1">
-                        <div className="font-medium text-gray-900 truncate">
-                          {sport.name}
-                        </div>
-                        {(hasRecentChange || hasNotificationChange) && (
-                          <div className="flex items-center text-sm text-green-600 mt-1">
-                            <Check size={14} className="mr-1" />
-                            Updated!
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="flex items-center space-x-3 flex-shrink-0">
-                      {/* Notification Toggle */}
-                      <div className="flex items-center space-x-2">
-                        <div className="flex items-center text-xs text-gray-500">
-                          {notificationEnabled ? (
-                            <Bell size={14} className="text-primary-600" />
-                          ) : (
-                            <BellOff size={14} className="text-gray-400" />
-                          )}
-                        </div>
-                        <Toggle
-                          checked={notificationEnabled}
-                          onChange={(enabled) =>
-                            handleNotificationChange(sport.id, enabled)
-                          }
-                          disabled={hasNotificationChange}
-                          size="sm"
-                        />
-                      </div>
-
-                      {/* Skill Level Buttons */}
-                      <div className="flex items-center space-x-1">
-                        {SKILL_LEVELS.map((level) => {
-                          const isSelected = currentLevel === level.id
-                          const isChanging =
-                            hasRecentChange &&
-                            skillLevelChanges[sport.id] === level.id
-                          let selectedLevelClass = 'bg-red-500 text-white'
-                          if (level.id === 'beginner') {
-                            selectedLevelClass = 'bg-green-500 text-white'
-                          } else if (level.id === 'intermediate') {
-                            selectedLevelClass = 'bg-yellow-500 text-white'
-                          }
-
-                          const skillLevelClass = [
-                            'px-2 py-1 text-xs font-medium rounded-full transition-all duration-200',
-                            isSelected
-                              ? selectedLevelClass
-                              : 'bg-gray-100 text-gray-600 hover:bg-gray-200',
-                            hasRecentChange
-                              ? 'opacity-50 cursor-not-allowed'
-                              : 'cursor-pointer',
-                            isChanging ? 'ring-2 ring-green-400' : ''
-                          ]
-                            .filter(Boolean)
-                            .join(' ')
-
-                          return (
-                            <button
-                              key={level.id}
-                              onClick={() =>
-                                handleSkillLevelChange(
-                                  sport.id,
-                                  isSelected ? null : level.id
-                                )
-                              }
-                              disabled={hasRecentChange}
-                              className={skillLevelClass}
-                            >
-                              {isChanging ? (
-                                <div className="flex items-center">
-                                  <div className="animate-spin rounded-full h-3 w-3 border-b border-white mr-1"></div>
-                                  {level.name.charAt(0)}
-                                </div>
-                              ) : (
-                                level.name.charAt(0).toUpperCase()
-                              )}
-                            </button>
-                          )
-                        })}
-
-                        {/* Clear button */}
-                        {currentLevel && !hasRecentChange && (
-                          <button
-                            onClick={() =>
-                              handleSkillLevelChange(sport.id, null)
-                            }
-                            className="px-2 py-1 text-xs text-gray-500 hover:text-red-600 transition-colors"
-                            title="Remove skill level"
-                          >
-                            <X size={12} />
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-
-            {Object.keys(user.skillLevels).length === 0 &&
-              Object.keys(skillLevelChanges).length === 0 && (
-                <div className="text-center py-8 text-gray-500">
-                  <Star size={48} className="mx-auto mb-4 text-gray-400" />
-                  <p className="text-lg font-medium">No skill levels set</p>
-                  <p className="text-sm">
-                    Click on any sport above to set your skill level!
-                  </p>
-                </div>
-              )}
-
-            {/* Quick tip */}
-            <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <div className="flex items-start">
-                <Star
-                  size={16}
-                  className="text-blue-600 mr-2 mt-0.5 flex-shrink-0"
-                />
-                <div className="text-sm text-blue-800">
-                  <p className="font-medium mb-1">Quick Tip</p>
-                  <p>
-                    Setting accurate skill levels helps you find games with
-                    players of similar abilities. You can change these anytime
-                    by clicking the skill level buttons.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <NotificationSettingsCard
+          className="mt-8"
+          notificationPreferences={editedUser.notificationPreferences}
+          emailNotificationsEnabled={!user.emailNotificationsDisabled}
+          pendingChanges={notificationChanges}
+          isSavingEmailPreference={isSavingEmailPreference}
+          onSportChange={handleNotificationChange}
+          onEmailChange={handleEmailNotificationsChange}
+        />
       </div>
 
       {/* Avatar Upload Modal */}

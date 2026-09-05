@@ -3,7 +3,8 @@ import {
   createRootRoute,
   Outlet,
   HeadContent,
-  Scripts
+  Scripts,
+  useRouterState
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { useEffect } from 'react'
@@ -43,11 +44,15 @@ export const Route = createRootRoute({
 })
 
 function RootComponent() {
+  const isScenario = useRouterState({
+    select: (state) => state.location.pathname.startsWith('/scenarios/')
+  })
+
   useEffect(() => {
-    if (import.meta.env.DEV) {
+    if (import.meta.env.DEV && !isScenario) {
       void import('react-grab')
     }
-  }, [])
+  }, [isScenario])
 
   return (
     <RootDocument>
@@ -55,7 +60,7 @@ function RootComponent() {
         <Header />
         <Outlet />
       </div>
-      {import.meta.env.DEV && <TanStackRouterDevtools />}
+      {import.meta.env.DEV && !isScenario ? <TanStackRouterDevtools /> : null}
     </RootDocument>
   )
 }

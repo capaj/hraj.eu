@@ -219,6 +219,8 @@ export function NotificationSettingsCard({
   className,
   stepNumber
 }: NotificationSettingsCardProps) {
+  const NotificationIcon = emailNotificationsEnabled ? Bell : BellOff
+
   return (
     <Card className={className}>
       <CardHeader>
@@ -227,11 +229,7 @@ export function NotificationSettingsCard({
           <div>
             <h2 className="flex items-center text-xl font-semibold text-gray-900">
               {!stepNumber ? (
-                emailNotificationsEnabled ? (
-                  <Bell size={20} className="mr-2" />
-                ) : (
-                  <BellOff size={20} className="mr-2" />
-                )
+                <NotificationIcon size={20} className="mr-2" />
               ) : null}
               <Trans>Notifications</Trans>
             </h2>
