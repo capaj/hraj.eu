@@ -3,7 +3,6 @@ import {
   ChevronsUpDown,
   LogInIcon,
   LogOutIcon,
-  PlusCircleIcon,
   SettingsIcon,
   UserRoundPlus,
   Building2,
@@ -11,13 +10,8 @@ import {
   Shield
 } from 'lucide-react'
 import {
-  type ComponentProps,
-  Fragment,
   type ReactNode,
   useCallback,
-  useEffect,
-  useMemo,
-  useRef,
   useState
 } from 'react'
 import { Button } from '../ui/Button'
@@ -41,6 +35,8 @@ import { useQueryClient } from '@tanstack/react-query'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
 import { isAdminEmail } from '../../lib/admin'
 import { Trans } from '@lingui/react/macro'
+import { msg } from '@lingui/core/macro'
+import { i18n } from '../../lib/i18n'
 
 export interface UserButtonProps {
   className?: string
@@ -61,7 +57,7 @@ interface UserViewProps {
   size?: 'icon' | 'sm' | 'md' | 'lg'
 }
 
-const UserView = ({ user, isPending, size }: UserViewProps) => {
+const UserView = ({ user, isPending }: UserViewProps) => {
   if (isPending) {
     return (
       <div className="flex items-center space-x-2">
@@ -75,7 +71,11 @@ const UserView = ({ user, isPending, size }: UserViewProps) => {
   }
 
   if (!user) {
-    return <div className="text-muted-foreground text-xs">Account</div>
+    return (
+      <div className="text-muted-foreground text-xs">
+        <Trans>Account</Trans>
+      </div>
+    )
   }
 
   return (
@@ -120,18 +120,22 @@ export function UserButton({
           key={user?.image}
           className={cn('h-12 w-12', className)}
           user={user}
-          aria-label="Account"
+          aria-label={i18n._(msg`Account`)}
         />
       )
     }
 
     return (
       <Tooltip>
-        <TooltipTrigger>
-          <UserRoundPlus />
+        <TooltipTrigger asChild>
+          <span className="inline-flex">
+            <UserRoundPlus />
+          </span>
         </TooltipTrigger>
         <TooltipContent>
-          <p>Sign in to your account</p>
+          <p>
+            <Trans>Sign in to your account</Trans>
+          </p>
         </TooltipContent>
       </Tooltip>
     )
@@ -178,7 +182,9 @@ export function UserButton({
           {user || isPending ? (
             <UserView user={user} isPending={isPending} />
           ) : (
-            <div className="-my-1 text-muted-foreground text-xs">Account</div>
+            <div className="-my-1 text-muted-foreground text-xs">
+              <Trans>Account</Trans>
+            </div>
           )}
         </div>
 
@@ -189,14 +195,14 @@ export function UserButton({
             <Link to="/auth/$pathname" params={{ pathname: 'sign-in' }}>
               <DropdownMenuItem>
                 <LogInIcon />
-                Sign In
+                <Trans>Sign In</Trans>
               </DropdownMenuItem>
             </Link>
 
             <Link to="/auth/$pathname" params={{ pathname: 'sign-up' }}>
               <DropdownMenuItem>
                 <UserRoundPlus />
-                Sign Up
+                <Trans>Sign Up</Trans>
               </DropdownMenuItem>
             </Link>
           </>
@@ -207,13 +213,13 @@ export function UserButton({
                 <Link to="/manage-venues" className="cursor-pointer">
                   <DropdownMenuItem>
                     <Building2 />
-                    Manage Venues
+                    <Trans>Manage Venues</Trans>
                   </DropdownMenuItem>
                 </Link>
                 <Link to="/manage-core-groups" className="cursor-pointer">
                   <DropdownMenuItem>
                     <Users />
-                    Manage Core Groups
+                    <Trans>Manage Core Groups</Trans>
                   </DropdownMenuItem>
                 </Link>
                 {isAdminEmail(user.email) && (
@@ -227,7 +233,7 @@ export function UserButton({
                 <Link to="/user-profile" className="cursor-pointer">
                   <DropdownMenuItem>
                     <SettingsIcon />
-                    Settings
+                    <Trans>Settings</Trans>
                   </DropdownMenuItem>
                 </Link>
               </>
@@ -235,7 +241,7 @@ export function UserButton({
 
             <DropdownMenuItem onClick={handleSignOut}>
               <LogOutIcon />
-              Sign Out
+              <Trans>Sign Out</Trans>
             </DropdownMenuItem>
           </>
         )}

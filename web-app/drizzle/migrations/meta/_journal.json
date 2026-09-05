@@ -127,6 +127,13 @@
       "when": 1787223299819,
       "tag": "0017_spotty_venus",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "6",
+      "when": 1788606731795,
+      "tag": "0018_minor_rhodey",
+      "breakpoints": true
     }
   ]
 }

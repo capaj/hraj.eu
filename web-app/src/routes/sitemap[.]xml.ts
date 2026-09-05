@@ -120,6 +120,11 @@ export const Route = createFileRoute('/sitemap.xml')({
             changefreq: 'weekly',
             priority: 0.4
           },
+          {
+            loc: buildUrl(origin, '/venues'),
+            changefreq: 'weekly',
+            priority: 0.7
+          },
           ...(await querySeoLandingPageLinks()).map((link) => ({
             loc: buildUrl(
               origin,

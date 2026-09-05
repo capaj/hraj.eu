@@ -7,7 +7,6 @@ import { Button } from '../ui/Button'
 import { Badge } from '../ui/Badge'
 import {
   Bell,
-  User,
   Plus,
   Check,
   X,
@@ -44,7 +43,9 @@ export const Header: React.FC = () => {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-gray-600 hover:text-primary-600 transition-colors"
+            className="lg:hidden p-2 text-gray-600 hover:text-primary-600 transition-colors"
+            aria-label={i18n._(msg`Toggle navigation menu`)}
+            aria-expanded={isMobileMenuOpen}
           >
             <Menu size={20} />
           </button>
@@ -58,13 +59,21 @@ export const Header: React.FC = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden lg:flex space-x-6 xl:space-x-8">
             <Link
               to="/"
               className="transition-colors text-gray-700 hover:text-primary-600"
               activeProps={{ className: 'text-primary-600 font-medium' }}
             >
-              <Trans>Discover</Trans>
+              <Trans>Upcoming</Trans>
+            </Link>
+
+            <Link
+              to="/venues"
+              className="transition-colors text-gray-700 hover:text-primary-600"
+              activeProps={{ className: 'text-primary-600 font-medium' }}
+            >
+              <Trans>Venues</Trans>
             </Link>
 
             <Link
@@ -113,20 +122,15 @@ export const Header: React.FC = () => {
             {/* Notifications Dropdown */}
             {session.data?.user && <NotificationsDropdown />}
 
-            <Link
-              to="/user-profile"
-              className="text-gray-600 hover:text-primary-600 transition-colors"
-            >
-              <UserButton size="icon" />
-            </Link>
+            <UserButton size="icon" />
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-gray-200 bg-white">
+          <div className="lg:hidden border-t border-gray-200 bg-white">
             <nav className="px-4 py-4 space-y-4">
-              <div className="py-2">
+              <div className="py-2 sm:hidden">
                 <label className="block text-xs text-gray-500 mb-2">
                   <Trans>Language</Trans>
                 </label>
@@ -144,7 +148,16 @@ export const Header: React.FC = () => {
                 activeProps={{ className: 'text-primary-600 font-medium' }}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                <Trans>Discover</Trans>
+                <Trans>Upcoming</Trans>
+              </Link>
+
+              <Link
+                to="/venues"
+                className="block transition-colors text-gray-700 hover:text-primary-600 py-2"
+                activeProps={{ className: 'text-primary-600 font-medium' }}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Trans>Venues</Trans>
               </Link>
 
               <Link
@@ -173,7 +186,7 @@ export const Header: React.FC = () => {
               </Link>
               <Link
                 to="/create"
-                className="block transition-colors text-gray-700 hover:text-primary-600 py-2"
+                className="block sm:hidden transition-colors text-gray-700 hover:text-primary-600 py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <Button variant="primary" size="sm">

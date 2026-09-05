@@ -171,6 +171,38 @@ export const cityEventSubscriptionT = sqliteTable(
   })
 )
 
+export const venueEventSubscriptionT = sqliteTable(
+  'venue_event_subscription',
+  {
+    id: text('id')
+      .$defaultFn(() => createId())
+      .primaryKey()
+      .notNull(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    venueId: text('venue_id')
+      .notNull()
+      .references(() => venueT.id, { onDelete: 'cascade' }),
+    lastNotifiedEventCreatedAt: integer('last_notified_event_created_at', {
+      mode: 'timestamp'
+    }),
+    createdAt: integer('created_at', { mode: 'timestamp' })
+      .default(sql`unixepoch()`)
+      .notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp' })
+      .default(sql`unixepoch()`)
+      .$onUpdate(() => new Date())
+      .notNull()
+  },
+  (table) => ({
+    userVenueUniqueIdx: uniqueIndex(
+      'venue_event_subscription_user_venue_idx'
+    ).on(table.userId, table.venueId),
+    venueIdIdx: index('venue_event_subscription_venue_id_idx').on(table.venueId)
+  })
+)
+
 export const coreGroupT = sqliteTable(
   'core_group',
   {

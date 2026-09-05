@@ -24,6 +24,11 @@ msgstr "(seřazeno podle {label})"
 msgid "{0}"
 msgstr "{0}"
 
+#. placeholder {0}: cities.length
+#: src/pages/VenuesPage.tsx:162
+msgid "{0} cities"
+msgstr "{0} měst"
+
 #. placeholder {0}: weather.windSpeed
 #: src/components/weather/WeatherWidget.tsx:426
 msgid "{0} km/h"
@@ -38,6 +43,11 @@ msgstr "{0} min"
 #: src/components/user/OnboardingPreferencesScreen.tsx:167
 msgid "{0} sports selected — you're ready to go."
 msgstr "Počet vybraných sportů: {0} — můžete začít."
+
+#. placeholder {0}: venues.length
+#: src/pages/VenuesPage.tsx:158
+msgid "{0} venues"
+msgstr "{0} sportovišť"
 
 #: src/pages/AdminEventBansPage.tsx:193
 msgid "{activeBanCount} active bans"
@@ -214,8 +224,8 @@ msgstr "30m"
 msgid "60m"
 msgstr "60m"
 
-#: src/components/layout/Header.tsx:89
-#: src/components/layout/Header.tsx:172
+#: src/components/layout/Header.tsx:98
+#: src/components/layout/Header.tsx:185
 msgid "About"
 msgstr "O nás"
 
@@ -227,6 +237,12 @@ msgstr "O události"
 #: src/pages/EventDetailsPage.tsx:2277
 msgid "Access Instructions"
 msgstr "Pokyny k přístupu"
+
+#: src/components/user/UserButton.tsx:76
+#: src/components/user/UserButton.tsx:123
+#: src/components/user/UserButton.tsx:186
+msgid "Account"
+msgstr "Účet"
 
 #: src/pages/UserProfilePage.tsx:467
 msgid "Account deleted successfully"
@@ -304,6 +320,10 @@ msgstr "Vyžadován přístup správce"
 msgid "Advanced"
 msgstr "Pokročilý"
 
+#: src/pages/VenuesPage.tsx:219
+msgid "All cities"
+msgstr "Všechna města"
+
 #: src/components/ui/TagInput.tsx:121
 msgid "All options selected"
 msgstr "Všechny možnosti vybrány"
@@ -320,10 +340,18 @@ msgstr "Vše vybráno"
 msgid "All skill levels welcome"
 msgstr "Všechny úrovně dovedností vítány"
 
+#: src/pages/VenuesPage.tsx:241
+msgid "All sports"
+msgstr "Všechny sporty"
+
 #: src/pages/LeaderboardPage.tsx:387
 #: src/pages/LeaderboardPage.tsx:411
 msgid "All Sports"
 msgstr "Všechny sporty"
+
+#: src/pages/VenuesPage.tsx:259
+msgid "All venues"
+msgstr "Všechna sportoviště"
 
 #: src/components/events/ParticipantCapacityFields.tsx:61
 msgid "Any extra players will be put on a waitlist"
@@ -661,6 +689,10 @@ msgstr "Zákaz účasti se nepodařilo zrušit."
 msgid "Could not update the attendance ban."
 msgstr "Zákaz účasti se nepodařilo aktualizovat."
 
+#: src/pages/VenuesPage.tsx:125
+msgid "Could not update the venue subscription."
+msgstr "Odběr událostí na sportovišti se nepodařilo aktualizovat."
+
 #: src/pages/HomePage.tsx:133
 msgid "Countries"
 msgstr "Země"
@@ -678,8 +710,8 @@ msgid "Create and edit reusable groups for early event access."
 msgstr "Vytvářejte a upravujte opakovaně používané skupiny pro časný přístup k událostem."
 
 #: src/components/events/CreateEventForm.tsx:1241
-#: src/components/layout/Header.tsx:109
-#: src/components/layout/Header.tsx:181
+#: src/components/layout/Header.tsx:118
+#: src/components/layout/Header.tsx:194
 #: src/pages/DiscoverPage.tsx:409
 #: src/pages/HomePage.tsx:166
 msgid "Create Event"
@@ -759,7 +791,7 @@ msgstr "Uzávěrka:"
 msgid "Delete"
 msgstr "Smazat"
 
-#: src/components/layout/Header.tsx:358
+#: src/components/layout/Header.tsx:371
 msgid "Delete notification"
 msgstr "Smazat oznámení"
 
@@ -777,8 +809,8 @@ msgstr "Podrobnosti (povinné)"
 
 #: src/components/layout/Header.tsx:67
 #: src/components/layout/Header.tsx:147
-msgid "Discover"
-msgstr "Objevovat"
+#~ msgid "Discover"
+#~ msgstr "Objevovat"
 
 #: src/pages/PublicProfilePage.tsx:166
 msgid "Discover Events"
@@ -870,6 +902,10 @@ msgstr "E-mail"
 msgid "Email Address"
 msgstr "E-mailová adresa"
 
+#: src/pages/VenuesPage.tsx:166
+msgid "Email alerts for new events"
+msgstr "E-mailová upozornění na nové události"
+
 #: src/components/events/CreateEventForm.tsx:1169
 msgid "Enable private preview for selected users before public visibility"
 msgstr "Povolit soukromý náhled pro vybrané uživatele před veřejnou viditelností"
@@ -899,7 +935,7 @@ msgstr "Zadejte libovolné jméno hosta nebo začněte znakem @ a propojte hrá�
 msgid "Equipment"
 msgstr "Vybavení"
 
-#: src/components/layout/Header.tsx:333
+#: src/components/layout/Header.tsx:346
 msgid "Event"
 msgstr "Událost"
 
@@ -1029,6 +1065,10 @@ msgstr "Skvělý hráč!"
 #: src/components/user/SkillLevelBadge.tsx:35
 msgid "Experienced competitive players"
 msgstr "Zkušení soutěžní hráči"
+
+#: src/pages/VenuesPage.tsx:148
+msgid "Explore sports venues, see where they are, and get an email when someone creates a new event at your favorite place."
+msgstr "Prohlédněte si sportoviště, podívejte se, kde jsou, a nechte se upozornit e-mailem, když někdo vytvoří novou událost na vašem oblíbeném místě."
 
 #: src/pages/EventDetailsPage.tsx:2338
 msgid "Facilities"
@@ -1179,6 +1219,14 @@ msgstr "Hřiště/kurt může být kluzký"
 msgid "Fill in the details to organize your next game"
 msgstr "Vyplňte podrobnosti a uspořádejte svou další hru"
 
+#: src/pages/VenuesPage.tsx:212
+msgid "Filter by city"
+msgstr "Filtrovat podle města"
+
+#: src/pages/VenuesPage.tsx:234
+msgid "Filter by sport"
+msgstr "Filtrovat podle sportu"
+
 #: src/pages/LeaderboardPage.tsx:364
 msgid "Filter by Sport"
 msgstr "Filtrovat podle sportu"
@@ -1196,6 +1244,10 @@ msgstr "Najděte amatérské sportovní hry v {0}"
 msgid "Find Local Games"
 msgstr "Najděte místní hry"
 
+#: src/pages/VenuesPage.tsx:145
+msgid "Find your next venue"
+msgstr "Najděte si další sportoviště"
+
 #: src/pages/HomePage.tsx:116
 #~ msgid "Finding events near you..."
 #~ msgstr "Hledám události ve vašem okolí..."
@@ -1208,7 +1260,7 @@ msgstr "Hledám vaši polohu pro střed mapy místa..."
 msgid "Foggy conditions"
 msgstr "Mlhavé podmínky"
 
-#: src/components/layout/Header.tsx:338
+#: src/components/layout/Header.tsx:351
 msgid "from User"
 msgstr "od uživatele"
 
@@ -1374,8 +1426,13 @@ msgstr "Důležité"
 #~ msgstr "za 1 den"
 
 #: src/components/venues/AddVenueModal.tsx:539
+#: src/pages/VenuesPage.tsx:35
 msgid "Indoor"
 msgstr "Uvnitř"
+
+#: src/pages/VenuesPage.tsx:37
+msgid "Indoor & outdoor"
+msgstr "Uvnitř i venku"
 
 #: src/pages/EventDetailsPage.tsx:608
 msgid "Indoor & outdoor venue"
@@ -1449,13 +1506,13 @@ msgstr "Karma: {karmaPoints}"
 msgid "Keep Event"
 msgstr "Ponechat událost"
 
-#: src/components/layout/Header.tsx:97
-#: src/components/layout/Header.tsx:131
+#: src/components/layout/Header.tsx:106
+#: src/components/layout/Header.tsx:135
 msgid "Language"
 msgstr "Jazyk"
 
-#: src/components/layout/Header.tsx:82
-#: src/components/layout/Header.tsx:164
+#: src/components/layout/Header.tsx:91
+#: src/components/layout/Header.tsx:177
 msgid "Leaderboard"
 msgstr "Žebříček"
 
@@ -1492,6 +1549,10 @@ msgstr "Propojený hráč"
 msgid "Loading event details..."
 msgstr "Načítání detailů události..."
 
+#: src/components/venues/VenueMap.tsx:162
+msgid "Loading map…"
+msgstr "Načítám mapu…"
+
 #: src/components/events/CreateEventForm.tsx:634
 #: src/pages/ManageVenuesPage.tsx:194
 msgid "Loading venues..."
@@ -1527,10 +1588,11 @@ msgstr "Ztratíte body za:"
 msgid "Make every game a better match"
 msgstr "Ať vám každá hra lépe sedne"
 
-#: src/components/user/UserButton.tsx:223
+#: src/components/user/UserButton.tsx:229
 msgid "Manage attendance bans"
 msgstr "Správa zákazů účasti"
 
+#: src/components/user/UserButton.tsx:222
 #: src/pages/ManageCoreGroupsPage.tsx:139
 msgid "Manage Core Groups"
 msgstr "Spravovat základní skupiny"
@@ -1539,6 +1601,7 @@ msgstr "Spravovat základní skupiny"
 msgid "Manage groups"
 msgstr "Spravovat skupiny"
 
+#: src/components/user/UserButton.tsx:216
 #: src/pages/ManageVenuesPage.tsx:294
 msgid "Manage Venues"
 msgstr "Spravovat místa"
@@ -1547,11 +1610,11 @@ msgstr "Spravovat místa"
 msgid "Manage your password and account security settings"
 msgstr "Spravujte své heslo a nastavení zabezpečení účtu"
 
-#: src/components/layout/Header.tsx:286
+#: src/components/layout/Header.tsx:299
 msgid "Mark all read"
 msgstr "Označit vše jako přečtené"
 
-#: src/components/layout/Header.tsx:348
+#: src/components/layout/Header.tsx:361
 msgid "Mark as read"
 msgstr "Označit jako přečtené"
 
@@ -1620,8 +1683,8 @@ msgstr "Nejaktivnější organizátoři"
 msgid "Most active participants"
 msgstr "Nejaktivnější účastníci"
 
-#: src/components/layout/Header.tsx:75
-#: src/components/layout/Header.tsx:156
+#: src/components/layout/Header.tsx:84
+#: src/components/layout/Header.tsx:169
 msgid "My Events"
 msgstr "Moje události"
 
@@ -1636,6 +1699,10 @@ msgstr "Pro potvrzení chybí ještě {count} hráčů"
 #: src/pages/LeaderboardPage.tsx:744
 msgid "Negative behavior reports (-10 points)"
 msgstr "Nahlášení negativního chování (-10 bodů)"
+
+#: src/pages/VenuesPage.tsx:367
+msgid "New event emails"
+msgstr "E-maily o nových událostech"
 
 #: src/components/user/SportsPreferencesCards.tsx:277
 msgid "New game alerts by sport"
@@ -1710,7 +1777,7 @@ msgstr "Zatím žádné skupiny. Vytvořte si svou první!"
 msgid "No I have not paid"
 msgstr "Ne, nezaplatil(a) jsem"
 
-#: src/components/layout/Header.tsx:372
+#: src/components/layout/Header.tsx:385
 msgid "No notifications yet"
 msgstr "Zatím žádná oznámení"
 
@@ -1787,6 +1854,10 @@ msgstr "Žádná místa neodpovídají hledání \"{searchTerm}\""
 msgid "No venues match \"{searchTerm}\" for {sportName}"
 msgstr "Žádná místa pro {sportName} neodpovídají hledání \"{searchTerm}\""
 
+#: src/pages/VenuesPage.tsx:408
+msgid "No venues match your filters"
+msgstr "Žádná sportoviště neodpovídají vašim filtrům"
+
 #: src/pages/ManageVenuesPage.tsx:207
 msgid "No venues yet"
 msgstr "Zatím žádná místa"
@@ -1803,7 +1874,11 @@ msgstr "Nepřítomnost bez omluvy (-5 bodů)"
 msgid "Not specified"
 msgstr "Neuvedeno"
 
-#: src/components/layout/Header.tsx:278
+#: src/pages/VenuesPage.tsx:382
+msgid "Not subscribed"
+msgstr "Neodebíráte"
+
+#: src/components/layout/Header.tsx:291
 #: src/components/user/OnboardingPreferencesScreen.tsx:130
 #: src/components/user/SportsPreferencesCards.tsx:245
 msgid "Notifications"
@@ -1855,6 +1930,7 @@ msgid "Other active cities"
 msgstr "Další aktivní města"
 
 #: src/components/venues/AddVenueModal.tsx:538
+#: src/pages/VenuesPage.tsx:39
 msgid "Outdoor"
 msgstr "Venku"
 
@@ -1973,6 +2049,7 @@ msgid "Photos & Orientation"
 msgstr "Fotky a orientace"
 
 #: src/pages/SeoLandingPage.tsx:120
+#: src/pages/VenuesPage.tsx:142
 msgid "Places to play"
 msgstr "Místa ke hraní"
 
@@ -2367,6 +2444,10 @@ msgstr "Ukládám..."
 msgid "Search by name or email"
 msgstr "Hledat podle jména nebo e-mailu"
 
+#: src/pages/VenuesPage.tsx:205
+msgid "Search by name, address, or city"
+msgstr "Hledat podle názvu, adresy nebo města"
+
 #: src/components/ui/GiphyPicker.tsx:209
 msgid "Search GIFs..."
 msgstr "Hledat GIFy..."
@@ -2374,6 +2455,10 @@ msgstr "Hledat GIFy..."
 #: src/pages/AdminEventBansPage.tsx:202
 msgid "Search users"
 msgstr "Hledat uživatele"
+
+#: src/pages/VenuesPage.tsx:196
+msgid "Search venues"
+msgstr "Hledat sportoviště"
 
 #: src/components/venues/VenueSelector.tsx:132
 msgid "Search venues by name or location..."
@@ -2386,6 +2471,10 @@ msgstr "Vyhledávání hráčů..."
 #: src/components/events/CreateEventForm.tsx:1192
 msgid "Select a core group"
 msgstr "Vybrat základní skupinu"
+
+#: src/pages/VenuesPage.tsx:180
+msgid "Select a marker to find the venue in the list."
+msgstr "Výběrem značky najdete sportoviště v seznamu."
 
 #: src/components/events/CreateEventForm.tsx:560
 msgid "Select a sport"
@@ -2416,6 +2505,10 @@ msgstr "Vybráno"
 #: src/components/events/CreateEventForm.tsx:1216
 msgid "Set from 2 hours up to 14 days (336 hours), counted from now."
 msgstr "Nastavte od 2 hodin do 14 dnů (336 hodin), počítáno od teď."
+
+#: src/components/user/UserButton.tsx:236
+msgid "Settings"
+msgstr "Nastavení"
 
 #: src/pages/EventDetailsPage.tsx:1469
 #: src/pages/EventDetailsPage.tsx:1569
@@ -2450,6 +2543,12 @@ msgstr "Sprchy"
 msgid "Showing {0} of {1} users"
 msgstr "Zobrazeno {0} z {1} uživatelů"
 
+#. placeholder {0}: filteredVenues.length
+#. placeholder {1}: venues.length
+#: src/pages/VenuesPage.tsx:262
+msgid "Showing {0} of {1} venues"
+msgstr "Zobrazeno {0} z {1} sportovišť"
+
 #: src/pages/HomePage.tsx:124
 #~ msgid "Showing events near your location"
 #~ msgstr "Zobrazuji události poblíž vaší polohy"
@@ -2458,9 +2557,25 @@ msgstr "Zobrazeno {0} z {1} uživatelů"
 msgid "Showing venues that support"
 msgstr "Zobrazuji místa, která podporují"
 
+#: src/components/user/UserButton.tsx:198
+msgid "Sign In"
+msgstr "Přihlásit se"
+
 #: src/pages/EventDetailsPage.tsx:1389
 msgid "Sign in to join the conversation."
 msgstr "Přihlaste se, abyste se připojili k rozhovoru."
+
+#: src/components/user/UserButton.tsx:137
+msgid "Sign in to your account"
+msgstr "Přihlásit se k účtu"
+
+#: src/components/user/UserButton.tsx:244
+msgid "Sign Out"
+msgstr "Odhlásit se"
+
+#: src/components/user/UserButton.tsx:205
+msgid "Sign Up"
+msgstr "Zaregistrovat se"
 
 #: src/components/user/SportsPreferencesCards.tsx:85
 msgid "Skill level guide"
@@ -2524,6 +2639,14 @@ msgstr "Zůstaňte hydratovaní – přineste si extra vodu"
 msgid "Submitting..."
 msgstr "Odesílám..."
 
+#: src/pages/VenuesPage.tsx:277
+msgid "Subscribe"
+msgstr "Odebírat"
+
+#: src/pages/VenuesPage.tsx:377
+msgid "Subscribed"
+msgstr "Odebíráte"
+
 #: src/pages/HomePage.tsx:210
 #~ msgid "Success Rate"
 #~ msgstr "Úspěšnost"
@@ -2576,6 +2699,10 @@ msgstr "U vaší události se změnil termín: {title}"
 msgid "The venue changed for your event: {title}"
 msgstr "Místo se změnilo pro vaši událost: {title}"
 
+#: src/components/venues/VenueMap.tsx:153
+msgid "The venue map could not be loaded."
+msgstr "Mapu sportovišť se nepodařilo načíst."
+
 #: src/pages/EventDetailsPage.tsx:2477
 msgid "This cannot be undone. Everyone attending will receive a cancellation email."
 msgstr "Tuto akci nelze vrátit zpět. Všichni účastníci obdrží e-mail o zrušení."
@@ -2618,6 +2745,10 @@ msgstr "Tipy pro {sport}"
 msgid "today"
 msgstr "dnes"
 
+#: src/components/layout/Header.tsx:47
+msgid "Toggle navigation menu"
+msgstr "Přepnout navigační nabídku"
+
 #: src/pages/LeaderboardPage.tsx:283
 msgid "Top performers this month"
 msgstr "Nejlepší tento měsíc"
@@ -2642,6 +2773,10 @@ msgstr "Zkuste upravit filtry nebo vytvořte novou událost."
 msgid "Try again"
 msgstr "Zkuste znovu"
 
+#: src/pages/VenuesPage.tsx:411
+msgid "Try another search, city, or sport."
+msgstr "Zkuste jiné hledání, město nebo sport."
+
 #: src/components/venues/AddVenueModal.tsx:894
 msgid "Typical hourly rates for this venue"
 msgstr "Typické hodinové sazby pro toto místo"
@@ -2650,6 +2785,10 @@ msgstr "Typické hodinové sazby pro toto místo"
 msgid "Unban"
 msgstr "Zrušit zákaz"
 
+#: src/pages/VenuesPage.tsx:287
+msgid "Unsubscribe"
+msgstr "Odhlásit odběr"
+
 #: src/components/events/JoinActionCard.tsx:295
 msgid "Up to {count} names"
 msgstr "Až {count} jmen"
@@ -2657,6 +2796,11 @@ msgstr "Až {count} jmen"
 #: src/pages/EventDetailsPage.tsx:1584
 #~ msgid "Up to 2 names"
 #~ msgstr "Až 2 jména"
+
+#: src/components/layout/Header.tsx:68
+#: src/components/layout/Header.tsx:151
+msgid "Upcoming"
+msgstr "Nadcházející"
 
 #: src/pages/DiscoverPage.tsx:307
 #: src/pages/PublicProfilePage.tsx:87
@@ -2700,6 +2844,10 @@ msgstr "Aktualizuji událost..."
 msgid "Updating Venue..."
 msgstr "Aktualizuji místo..."
 
+#: src/pages/VenuesPage.tsx:283
+msgid "Updating…"
+msgstr "Aktualizuji…"
+
 #: src/components/venues/AddVenueModal.tsx:755
 msgid "Upload a map or diagram showing how to access the playing area"
 msgstr "Nahrajte mapu nebo diagram znázorňující přístup k herní ploše"
@@ -2730,6 +2878,10 @@ msgstr "Místo konání"
 msgid "Venue created successfully! It will be reviewed by our team before being made available to all users."
 msgstr "Místo bylo úspěšně vytvořeno! Před zveřejněním všem uživatelům jej zkontroluje náš tým."
 
+#: src/pages/VenuesPage.tsx:121
+msgid "Venue emails have been turned off."
+msgstr "E-maily z tohoto sportoviště byly vypnuty."
+
 #: src/components/venues/AddVenueModal.tsx:682
 msgid "Venue Images"
 msgstr "Fotky místa"
@@ -2741,6 +2893,10 @@ msgstr "Fotky místa"
 #: src/components/venues/AddVenueModal.tsx:607
 msgid "Venue location set."
 msgstr "Místo konání nastaveno."
+
+#: src/pages/VenuesPage.tsx:177
+msgid "Venue map"
+msgstr "Mapa sportovišť"
 
 #: src/components/venues/AddVenueModal.tsx:516
 msgid "Venue Name *"
@@ -2754,6 +2910,11 @@ msgstr "Výběr místa"
 msgid "Venue Type *"
 msgstr "Typ místa *"
 
+#: src/components/layout/Header.tsx:76
+#: src/components/layout/Header.tsx:160
+msgid "Venues"
+msgstr "Sportoviště"
+
 #: src/components/venues/VenueSelector.tsx:234
 #: src/pages/ManageVenuesPage.tsx:55
 msgid "Verified"
@@ -2763,11 +2924,15 @@ msgstr "Ověřeno"
 #~ msgid "Verified member"
 #~ msgstr "Ověřený člen"
 
+#: src/pages/VenuesPage.tsx:335
+msgid "Verified venue"
+msgstr "Ověřené sportoviště"
+
 #: src/pages/HomePage.tsx:135
 #~ msgid "View All Events"
 #~ msgstr "Zobrazit všechny události"
 
-#: src/components/layout/Header.tsx:392
+#: src/components/layout/Header.tsx:405
 msgid "View all notifications"
 msgstr "Zobrazit všechna oznámení"
 
@@ -2965,7 +3130,11 @@ msgstr "Zatím jste se nepřipojili k žádným nadcházejícím událostem ani 
 msgid "You must join this event to confirm payment."
 msgstr "Musíte se připojit k této události pro potvrzení platby."
 
-#: src/components/layout/Header.tsx:375
+#: src/pages/VenuesPage.tsx:120
+msgid "You will receive emails about new events at this venue."
+msgstr "Budete dostávat e-maily o nových událostech na tomto sportovišti."
+
+#: src/components/layout/Header.tsx:388
 msgid "You'll see updates about your events here"
 msgstr "Zde uvidíte aktualizace o vašich událostech"
 

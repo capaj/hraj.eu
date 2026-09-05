@@ -1,9 +1,17 @@
 import { Resend } from 'resend'
-import { and, eq, gte, isNull, sql } from 'drizzle-orm'
-import { cityEventSubscriptionT, eventT, participantT, user, venueT } from '../../web-app/drizzle/schema'
+import { and, eq, gt, gte, isNull, lte, or, sql } from 'drizzle-orm'
+import {
+	cityEventSubscriptionT,
+	eventT,
+	participantT,
+	user,
+	venueEventSubscriptionT,
+	venueT
+} from '../../web-app/drizzle/schema'
 import { sendCancellationEmail } from './email/sendCancellationEmail'
 import { sendConfirmationEmail } from './email/sendConfirmationEmail'
 import { sendCitySubscriptionEmail } from './email/sendCitySubscriptionEmail'
+import { sendVenueSubscriptionEmail } from './email/sendVenueSubscriptionEmail'
 import { sendPendingCommentDigests } from './commentDigests'
 import type { Env, EventRow, ParticipantRow } from './types'
 
@@ -26,7 +34,8 @@ export async function runScheduledJob({
 	database,
 	resend = new Resend(requireEnv(env, 'RESEND_API_KEY')),
 	sendConfirmation = sendConfirmationEmail,
-	sendCancellation = sendCancellationEmail
+	sendCancellation = sendCancellationEmail,
+	sendVenueSubscription = sendVenueSubscriptionEmail
 }: {
 	event: ScheduledController
 	env: Env
@@ -34,6 +43,7 @@ export async function runScheduledJob({
 	resend?: Resend
 	sendConfirmation?: typeof sendConfirmationEmail
 	sendCancellation?: typeof sendCancellationEmail
+	sendVenueSubscription?: typeof sendVenueSubscriptionEmail
 }): Promise<void> {
 	const senderEmail = requireEnv(env, 'SENDER_EMAIL')
 	const today = new Date().toISOString().split('T')[0]
@@ -233,6 +243,91 @@ export async function runScheduledJob({
 				.update(cityEventSubscriptionT)
 				.set({ lastNotifiedEventCreatedAt: latestCreatedAt, updatedAt: new Date() })
 				.where(eq(cityEventSubscriptionT.id, subscription.id))
+		}
+	}
+
+	const venueSubscriptions = await database
+		.select({
+			id: venueEventSubscriptionT.id,
+			venueId: venueEventSubscriptionT.venueId,
+			venueName: venueT.name,
+			lastNotifiedEventCreatedAt:
+				venueEventSubscriptionT.lastNotifiedEventCreatedAt,
+			email: user.email
+		})
+		.from(venueEventSubscriptionT)
+		.innerJoin(user, eq(user.id, venueEventSubscriptionT.userId))
+		.innerJoin(venueT, eq(venueT.id, venueEventSubscriptionT.venueId))
+		.where(eq(user.emailNotificationsDisabled, false))
+
+	for (const subscription of venueSubscriptions) {
+		if (!subscription.email) continue
+
+		const eventsAtVenue = await database
+			.select({
+				id: eventT.id,
+				title: eventT.title,
+				date: eventT.date,
+				startTime: eventT.startTime,
+				createdAt: eventT.createdAt
+			})
+			.from(eventT)
+			.where(
+				and(
+					eq(eventT.venueId, subscription.venueId),
+					eq(eventT.isPublic, true),
+					gte(eventT.date, today),
+					sql`${eventT.status} in ('open','confirmed')`,
+					or(
+						isNull(eventT.coreGroupExclusiveUntil),
+						lte(eventT.coreGroupExclusiveUntil, new Date())
+					),
+					subscription.lastNotifiedEventCreatedAt
+						? gt(
+								eventT.createdAt,
+								subscription.lastNotifiedEventCreatedAt
+							)
+						: sql`1=1`
+				)
+			)
+
+		if (!eventsAtVenue.length) continue
+
+		try {
+			await sendVenueSubscription({
+				resend,
+				from: senderEmail,
+				to: subscription.email,
+				venueName: subscription.venueName,
+				events: eventsAtVenue,
+				baseUrl
+			})
+		} catch (error) {
+			console.error(
+				`Failed to send venue subscription email for venue ${subscription.venueId} to ${subscription.email}`,
+				error
+			)
+			continue
+		}
+
+		const latestCreatedAt = eventsAtVenue.reduce(
+			(latest: Date | null, current: { createdAt: Date }) => {
+				if (!latest) return current.createdAt
+				return new Date(current.createdAt) > new Date(latest)
+					? current.createdAt
+					: latest
+			},
+			subscription.lastNotifiedEventCreatedAt as Date | null
+		)
+
+		if (latestCreatedAt) {
+			await database
+				.update(venueEventSubscriptionT)
+				.set({
+					lastNotifiedEventCreatedAt: latestCreatedAt,
+					updatedAt: new Date()
+				})
+				.where(eq(venueEventSubscriptionT.id, subscription.id))
 		}
 	}
 

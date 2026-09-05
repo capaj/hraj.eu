@@ -24,6 +24,11 @@ msgstr ""
 msgid "{0}"
 msgstr ""
 
+#. placeholder {0}: cities.length
+#: src/pages/VenuesPage.tsx:162
+msgid "{0} cities"
+msgstr ""
+
 #. placeholder {0}: weather.windSpeed
 #: src/components/weather/WeatherWidget.tsx:426
 msgid "{0} km/h"
@@ -37,6 +42,11 @@ msgstr ""
 #. placeholder {0}: selectedSports.length
 #: src/components/user/OnboardingPreferencesScreen.tsx:167
 msgid "{0} sports selected — you're ready to go."
+msgstr ""
+
+#. placeholder {0}: venues.length
+#: src/pages/VenuesPage.tsx:158
+msgid "{0} venues"
 msgstr ""
 
 #: src/pages/AdminEventBansPage.tsx:193
@@ -214,8 +224,8 @@ msgstr ""
 msgid "60m"
 msgstr ""
 
-#: src/components/layout/Header.tsx:89
-#: src/components/layout/Header.tsx:172
+#: src/components/layout/Header.tsx:98
+#: src/components/layout/Header.tsx:185
 msgid "About"
 msgstr ""
 
@@ -226,6 +236,12 @@ msgstr ""
 #: src/components/venues/AddVenueModal.tsx:825
 #: src/pages/EventDetailsPage.tsx:2277
 msgid "Access Instructions"
+msgstr ""
+
+#: src/components/user/UserButton.tsx:76
+#: src/components/user/UserButton.tsx:123
+#: src/components/user/UserButton.tsx:186
+msgid "Account"
 msgstr ""
 
 #: src/pages/UserProfilePage.tsx:467
@@ -304,6 +320,10 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
+#: src/pages/VenuesPage.tsx:219
+msgid "All cities"
+msgstr ""
+
 #: src/components/ui/TagInput.tsx:121
 msgid "All options selected"
 msgstr ""
@@ -320,9 +340,17 @@ msgstr ""
 msgid "All skill levels welcome"
 msgstr ""
 
+#: src/pages/VenuesPage.tsx:241
+msgid "All sports"
+msgstr ""
+
 #: src/pages/LeaderboardPage.tsx:387
 #: src/pages/LeaderboardPage.tsx:411
 msgid "All Sports"
+msgstr ""
+
+#: src/pages/VenuesPage.tsx:259
+msgid "All venues"
 msgstr ""
 
 #: src/components/events/ParticipantCapacityFields.tsx:61
@@ -661,6 +689,10 @@ msgstr ""
 msgid "Could not update the attendance ban."
 msgstr ""
 
+#: src/pages/VenuesPage.tsx:125
+msgid "Could not update the venue subscription."
+msgstr ""
+
 #: src/pages/HomePage.tsx:133
 msgid "Countries"
 msgstr ""
@@ -678,8 +710,8 @@ msgid "Create and edit reusable groups for early event access."
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:1241
-#: src/components/layout/Header.tsx:109
-#: src/components/layout/Header.tsx:181
+#: src/components/layout/Header.tsx:118
+#: src/components/layout/Header.tsx:194
 #: src/pages/DiscoverPage.tsx:409
 #: src/pages/HomePage.tsx:166
 msgid "Create Event"
@@ -759,7 +791,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: src/components/layout/Header.tsx:358
+#: src/components/layout/Header.tsx:371
 msgid "Delete notification"
 msgstr ""
 
@@ -777,8 +809,8 @@ msgstr ""
 
 #: src/components/layout/Header.tsx:67
 #: src/components/layout/Header.tsx:147
-msgid "Discover"
-msgstr ""
+#~ msgid "Discover"
+#~ msgstr ""
 
 #: src/pages/PublicProfilePage.tsx:166
 msgid "Discover Events"
@@ -870,6 +902,10 @@ msgstr ""
 msgid "Email Address"
 msgstr ""
 
+#: src/pages/VenuesPage.tsx:166
+msgid "Email alerts for new events"
+msgstr ""
+
 #: src/components/events/CreateEventForm.tsx:1169
 msgid "Enable private preview for selected users before public visibility"
 msgstr ""
@@ -899,7 +935,7 @@ msgstr ""
 msgid "Equipment"
 msgstr ""
 
-#: src/components/layout/Header.tsx:333
+#: src/components/layout/Header.tsx:346
 msgid "Event"
 msgstr ""
 
@@ -1028,6 +1064,10 @@ msgstr ""
 #: src/components/events/CreateEventForm.tsx:995
 #: src/components/user/SkillLevelBadge.tsx:35
 msgid "Experienced competitive players"
+msgstr ""
+
+#: src/pages/VenuesPage.tsx:148
+msgid "Explore sports venues, see where they are, and get an email when someone creates a new event at your favorite place."
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:2338
@@ -1179,6 +1219,14 @@ msgstr ""
 msgid "Fill in the details to organize your next game"
 msgstr ""
 
+#: src/pages/VenuesPage.tsx:212
+msgid "Filter by city"
+msgstr ""
+
+#: src/pages/VenuesPage.tsx:234
+msgid "Filter by sport"
+msgstr ""
+
 #: src/pages/LeaderboardPage.tsx:364
 msgid "Filter by Sport"
 msgstr ""
@@ -1196,6 +1244,10 @@ msgstr ""
 msgid "Find Local Games"
 msgstr ""
 
+#: src/pages/VenuesPage.tsx:145
+msgid "Find your next venue"
+msgstr ""
+
 #: src/pages/HomePage.tsx:116
 #~ msgid "Finding events near you..."
 #~ msgstr ""
@@ -1208,7 +1260,7 @@ msgstr ""
 msgid "Foggy conditions"
 msgstr ""
 
-#: src/components/layout/Header.tsx:338
+#: src/components/layout/Header.tsx:351
 msgid "from User"
 msgstr ""
 
@@ -1374,7 +1426,12 @@ msgstr ""
 #~ msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:539
+#: src/pages/VenuesPage.tsx:35
 msgid "Indoor"
+msgstr ""
+
+#: src/pages/VenuesPage.tsx:37
+msgid "Indoor & outdoor"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:608
@@ -1449,13 +1506,13 @@ msgstr ""
 msgid "Keep Event"
 msgstr ""
 
-#: src/components/layout/Header.tsx:97
-#: src/components/layout/Header.tsx:131
+#: src/components/layout/Header.tsx:106
+#: src/components/layout/Header.tsx:135
 msgid "Language"
 msgstr ""
 
-#: src/components/layout/Header.tsx:82
-#: src/components/layout/Header.tsx:164
+#: src/components/layout/Header.tsx:91
+#: src/components/layout/Header.tsx:177
 msgid "Leaderboard"
 msgstr ""
 
@@ -1490,6 +1547,10 @@ msgstr ""
 
 #: src/pages/CreateEventPage.tsx:135
 msgid "Loading event details..."
+msgstr ""
+
+#: src/components/venues/VenueMap.tsx:162
+msgid "Loading map…"
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:634
@@ -1527,10 +1588,11 @@ msgstr ""
 msgid "Make every game a better match"
 msgstr ""
 
-#: src/components/user/UserButton.tsx:223
+#: src/components/user/UserButton.tsx:229
 msgid "Manage attendance bans"
 msgstr ""
 
+#: src/components/user/UserButton.tsx:222
 #: src/pages/ManageCoreGroupsPage.tsx:139
 msgid "Manage Core Groups"
 msgstr ""
@@ -1539,6 +1601,7 @@ msgstr ""
 msgid "Manage groups"
 msgstr ""
 
+#: src/components/user/UserButton.tsx:216
 #: src/pages/ManageVenuesPage.tsx:294
 msgid "Manage Venues"
 msgstr ""
@@ -1547,11 +1610,11 @@ msgstr ""
 msgid "Manage your password and account security settings"
 msgstr ""
 
-#: src/components/layout/Header.tsx:286
+#: src/components/layout/Header.tsx:299
 msgid "Mark all read"
 msgstr ""
 
-#: src/components/layout/Header.tsx:348
+#: src/components/layout/Header.tsx:361
 msgid "Mark as read"
 msgstr ""
 
@@ -1620,8 +1683,8 @@ msgstr ""
 msgid "Most active participants"
 msgstr ""
 
-#: src/components/layout/Header.tsx:75
-#: src/components/layout/Header.tsx:156
+#: src/components/layout/Header.tsx:84
+#: src/components/layout/Header.tsx:169
 msgid "My Events"
 msgstr ""
 
@@ -1635,6 +1698,10 @@ msgstr ""
 
 #: src/pages/LeaderboardPage.tsx:744
 msgid "Negative behavior reports (-10 points)"
+msgstr ""
+
+#: src/pages/VenuesPage.tsx:367
+msgid "New event emails"
 msgstr ""
 
 #: src/components/user/SportsPreferencesCards.tsx:277
@@ -1710,7 +1777,7 @@ msgstr ""
 msgid "No I have not paid"
 msgstr ""
 
-#: src/components/layout/Header.tsx:372
+#: src/components/layout/Header.tsx:385
 msgid "No notifications yet"
 msgstr ""
 
@@ -1787,6 +1854,10 @@ msgstr ""
 msgid "No venues match \"{searchTerm}\" for {sportName}"
 msgstr ""
 
+#: src/pages/VenuesPage.tsx:408
+msgid "No venues match your filters"
+msgstr ""
+
 #: src/pages/ManageVenuesPage.tsx:207
 msgid "No venues yet"
 msgstr ""
@@ -1803,7 +1874,11 @@ msgstr ""
 msgid "Not specified"
 msgstr ""
 
-#: src/components/layout/Header.tsx:278
+#: src/pages/VenuesPage.tsx:382
+msgid "Not subscribed"
+msgstr ""
+
+#: src/components/layout/Header.tsx:291
 #: src/components/user/OnboardingPreferencesScreen.tsx:130
 #: src/components/user/SportsPreferencesCards.tsx:245
 msgid "Notifications"
@@ -1855,6 +1930,7 @@ msgid "Other active cities"
 msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:538
+#: src/pages/VenuesPage.tsx:39
 msgid "Outdoor"
 msgstr ""
 
@@ -1973,6 +2049,7 @@ msgid "Photos & Orientation"
 msgstr ""
 
 #: src/pages/SeoLandingPage.tsx:120
+#: src/pages/VenuesPage.tsx:142
 msgid "Places to play"
 msgstr ""
 
@@ -2367,12 +2444,20 @@ msgstr ""
 msgid "Search by name or email"
 msgstr ""
 
+#: src/pages/VenuesPage.tsx:205
+msgid "Search by name, address, or city"
+msgstr ""
+
 #: src/components/ui/GiphyPicker.tsx:209
 msgid "Search GIFs..."
 msgstr ""
 
 #: src/pages/AdminEventBansPage.tsx:202
 msgid "Search users"
+msgstr ""
+
+#: src/pages/VenuesPage.tsx:196
+msgid "Search venues"
 msgstr ""
 
 #: src/components/venues/VenueSelector.tsx:132
@@ -2385,6 +2470,10 @@ msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:1192
 msgid "Select a core group"
+msgstr ""
+
+#: src/pages/VenuesPage.tsx:180
+msgid "Select a marker to find the venue in the list."
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:560
@@ -2415,6 +2504,10 @@ msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:1216
 msgid "Set from 2 hours up to 14 days (336 hours), counted from now."
+msgstr ""
+
+#: src/components/user/UserButton.tsx:236
+msgid "Settings"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1469
@@ -2450,6 +2543,12 @@ msgstr ""
 msgid "Showing {0} of {1} users"
 msgstr ""
 
+#. placeholder {0}: filteredVenues.length
+#. placeholder {1}: venues.length
+#: src/pages/VenuesPage.tsx:262
+msgid "Showing {0} of {1} venues"
+msgstr ""
+
 #: src/pages/HomePage.tsx:124
 #~ msgid "Showing events near your location"
 #~ msgstr ""
@@ -2458,8 +2557,24 @@ msgstr ""
 msgid "Showing venues that support"
 msgstr ""
 
+#: src/components/user/UserButton.tsx:198
+msgid "Sign In"
+msgstr ""
+
 #: src/pages/EventDetailsPage.tsx:1389
 msgid "Sign in to join the conversation."
+msgstr ""
+
+#: src/components/user/UserButton.tsx:137
+msgid "Sign in to your account"
+msgstr ""
+
+#: src/components/user/UserButton.tsx:244
+msgid "Sign Out"
+msgstr ""
+
+#: src/components/user/UserButton.tsx:205
+msgid "Sign Up"
 msgstr ""
 
 #: src/components/user/SportsPreferencesCards.tsx:85
@@ -2524,6 +2639,14 @@ msgstr ""
 msgid "Submitting..."
 msgstr ""
 
+#: src/pages/VenuesPage.tsx:277
+msgid "Subscribe"
+msgstr ""
+
+#: src/pages/VenuesPage.tsx:377
+msgid "Subscribed"
+msgstr ""
+
 #: src/pages/HomePage.tsx:210
 #~ msgid "Success Rate"
 #~ msgstr ""
@@ -2576,6 +2699,10 @@ msgstr ""
 msgid "The venue changed for your event: {title}"
 msgstr ""
 
+#: src/components/venues/VenueMap.tsx:153
+msgid "The venue map could not be loaded."
+msgstr ""
+
 #: src/pages/EventDetailsPage.tsx:2477
 msgid "This cannot be undone. Everyone attending will receive a cancellation email."
 msgstr ""
@@ -2618,6 +2745,10 @@ msgstr ""
 msgid "today"
 msgstr ""
 
+#: src/components/layout/Header.tsx:47
+msgid "Toggle navigation menu"
+msgstr ""
+
 #: src/pages/LeaderboardPage.tsx:283
 msgid "Top performers this month"
 msgstr ""
@@ -2642,12 +2773,20 @@ msgstr ""
 msgid "Try again"
 msgstr ""
 
+#: src/pages/VenuesPage.tsx:411
+msgid "Try another search, city, or sport."
+msgstr ""
+
 #: src/components/venues/AddVenueModal.tsx:894
 msgid "Typical hourly rates for this venue"
 msgstr ""
 
 #: src/pages/AdminEventBansPage.tsx:333
 msgid "Unban"
+msgstr ""
+
+#: src/pages/VenuesPage.tsx:287
+msgid "Unsubscribe"
 msgstr ""
 
 #: src/components/events/JoinActionCard.tsx:295
@@ -2657,6 +2796,11 @@ msgstr ""
 #: src/pages/EventDetailsPage.tsx:1584
 #~ msgid "Up to 2 names"
 #~ msgstr ""
+
+#: src/components/layout/Header.tsx:68
+#: src/components/layout/Header.tsx:151
+msgid "Upcoming"
+msgstr ""
 
 #: src/pages/DiscoverPage.tsx:307
 #: src/pages/PublicProfilePage.tsx:87
@@ -2700,6 +2844,10 @@ msgstr ""
 msgid "Updating Venue..."
 msgstr ""
 
+#: src/pages/VenuesPage.tsx:283
+msgid "Updating…"
+msgstr ""
+
 #: src/components/venues/AddVenueModal.tsx:755
 msgid "Upload a map or diagram showing how to access the playing area"
 msgstr ""
@@ -2730,6 +2878,10 @@ msgstr ""
 msgid "Venue created successfully! It will be reviewed by our team before being made available to all users."
 msgstr ""
 
+#: src/pages/VenuesPage.tsx:121
+msgid "Venue emails have been turned off."
+msgstr ""
+
 #: src/components/venues/AddVenueModal.tsx:682
 msgid "Venue Images"
 msgstr ""
@@ -2740,6 +2892,10 @@ msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:607
 msgid "Venue location set."
+msgstr ""
+
+#: src/pages/VenuesPage.tsx:177
+msgid "Venue map"
 msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:516
@@ -2754,6 +2910,11 @@ msgstr ""
 msgid "Venue Type *"
 msgstr ""
 
+#: src/components/layout/Header.tsx:76
+#: src/components/layout/Header.tsx:160
+msgid "Venues"
+msgstr ""
+
 #: src/components/venues/VenueSelector.tsx:234
 #: src/pages/ManageVenuesPage.tsx:55
 msgid "Verified"
@@ -2763,11 +2924,15 @@ msgstr ""
 #~ msgid "Verified member"
 #~ msgstr ""
 
+#: src/pages/VenuesPage.tsx:335
+msgid "Verified venue"
+msgstr ""
+
 #: src/pages/HomePage.tsx:135
 #~ msgid "View All Events"
 #~ msgstr ""
 
-#: src/components/layout/Header.tsx:392
+#: src/components/layout/Header.tsx:405
 msgid "View all notifications"
 msgstr ""
 
@@ -2965,7 +3130,11 @@ msgstr ""
 msgid "You must join this event to confirm payment."
 msgstr ""
 
-#: src/components/layout/Header.tsx:375
+#: src/pages/VenuesPage.tsx:120
+msgid "You will receive emails about new events at this venue."
+msgstr ""
+
+#: src/components/layout/Header.tsx:388
 msgid "You'll see updates about your events here"
 msgstr ""
 
