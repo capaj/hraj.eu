@@ -1,5 +1,29 @@
 import type { Event } from '~/types'
 
+export interface EventParticipantsUpdate {
+  confirmed: string[]
+  waitlisted: string[]
+  plusAttendees: Record<string, string[]>
+  guests?: NonNullable<Event['participantGuests']>
+  participantJoinedAt: Record<string, Date>
+  waitlistJoinedAt: Record<string, Date>
+}
+
+export function applyEventParticipantsUpdate(
+  event: Event,
+  participants: EventParticipantsUpdate
+): Event {
+  return {
+    ...event,
+    participants: participants.confirmed,
+    waitlist: participants.waitlisted,
+    participantPlusOnes: participants.plusAttendees,
+    participantGuests: participants.guests ?? event.participantGuests,
+    participantJoinedAt: participants.participantJoinedAt,
+    waitlistJoinedAt: participants.waitlistJoinedAt
+  }
+}
+
 export function getMentionableParticipantIds(
   event: Pick<Event, 'participants' | 'waitlist' | 'formerParticipants'>
 ): string[] {

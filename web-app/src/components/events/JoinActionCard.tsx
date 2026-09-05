@@ -1,17 +1,20 @@
 import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
-import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useRouter } from '@tanstack/react-router'
-import { CheckCircle, ChevronDown, Loader2, Users } from 'lucide-react'
+import { CheckCircle, ChevronDown, Users } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useAuthSession } from '~/lib/auth-client'
 import type { EventGuest } from '~/lib/eventGuests'
 import { i18n } from '~/lib/i18n'
-import { getEventById } from '~/server-functions/getEventById'
 import { joinEvent } from '~/server-functions/joinEvent'
 import { updatePlusAttendees } from '~/server-functions/updatePlusAttendees'
-import { getAvailablePublicSpots, getTotalReservedAwareHeadcount } from '~/utils/participants'
+import type { Event } from '~/types'
+import {
+  getAvailablePublicSpots,
+  getTotalReservedAwareHeadcount,
+  type EventParticipantsUpdate
+} from '~/utils/participants'
 import { Button } from '../ui/Button'
 import { Card, CardContent } from '../ui/Card'
 import { GuestUserInput } from './GuestUserInput'
@@ -19,7 +22,8 @@ import { GuestUserInput } from './GuestUserInput'
 const MAX_GUESTS_PER_USER = 2
 
 interface JoinActionCardProps {
-  eventId: string
+  event: Event
+  onParticipantsChange: (participants: EventParticipantsUpdate) => void
 }
 
 type GuestDraft = {
@@ -55,7 +59,10 @@ const areGuestsEqual = (a: EventGuest[], b: EventGuest[]) =>
       guest.name === b[index]?.name && guest.userId === b[index]?.userId
   )
 
-export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
+export const JoinActionCard = ({
+  event,
+  onParticipantsChange
+}: JoinActionCardProps) => {
   const navigate = useNavigate()
   const router = useRouter()
   const session = useAuthSession()
@@ -65,28 +72,16 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
   const [isJoining, setIsJoining] = useState(false)
   const [isUpdatingGuests, setIsUpdatingGuests] = useState(false)
 
-  const {
-    data: event,
-    isLoading,
-    isError,
-    refetch
-  } = useQuery({
-    queryKey: ['join-action-event', eventId],
-    queryFn: () => getEventById({ data: eventId })
-  })
-
   const isParticipant = currentUserId
-    ? event?.participants.includes(currentUserId) ?? false
+    ? event.participants.includes(currentUserId)
     : false
-  const reservedAwareHeadcount = event ? getTotalReservedAwareHeadcount(event) : 0
-  const reservedParticipants = event?.reservedParticipants ?? 0
-  const availablePublicSpots = event ? getAvailablePublicSpots(event) : 0
+  const reservedAwareHeadcount = getTotalReservedAwareHeadcount(event)
+  const reservedParticipants = event.reservedParticipants ?? 0
+  const availablePublicSpots = getAvailablePublicSpots(event)
   const isSpotAvailable = availablePublicSpots > 0
-  const isMinimumReached = event
-    ? reservedAwareHeadcount >= event.minParticipants
-    : false
+  const isMinimumReached = reservedAwareHeadcount >= event.minParticipants
   const savedGuests: EventGuest[] =
-    currentUserId && event
+    currentUserId
       ? (event.participantGuests?.[currentUserId] ??
         (event.participantPlusOnes?.[currentUserId] ?? []).map((name) => ({
           name
@@ -103,7 +98,7 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
   }
 
   useEffect(() => {
-    if (!currentUserId || !event) {
+    if (!currentUserId) {
       setGuestDrafts([])
       return
     }
@@ -114,13 +109,13 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
     setGuestDrafts(guestsToDrafts(guests))
   }, [
     currentUserId,
-    event?.participantGuests,
-    event?.participantPlusOnes,
-    event?.participants
+    event.participantGuests,
+    event.participantPlusOnes,
+    event.participants
   ])
 
   const refreshEventData = async () => {
-    await Promise.all([refetch(), router.invalidate()])
+    await router.invalidate()
   }
 
   const sanitizePlusAttendees = () => {
@@ -156,8 +151,6 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
   }
 
   const handleJoinEvent = async () => {
-    if (!event) return
-
     if (!currentUserId) {
       toast.error(i18n._(msg`Please sign in to join this event.`))
       navigate({ to: '/auth/$pathname', params: { pathname: 'sign-in' } })
@@ -172,6 +165,7 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
       })
 
       if (response?.participants) {
+        onParticipantsChange(response.participants)
         setGuestDrafts(
           guestsToDrafts(
             response.participants.guests[currentUserId] || cleanedPlusAttendees
@@ -203,7 +197,7 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
   }
 
   const handleSavePlusAttendees = async () => {
-    if (!event || !currentUserId) return
+    if (!currentUserId) return
 
     try {
       setIsUpdatingGuests(true)
@@ -213,6 +207,7 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
       })
 
       if (response?.participants) {
+        onParticipantsChange(response.participants)
         setGuestDrafts(
           guestsToDrafts(
             response.participants.guests[currentUserId] || cleanedPlusAttendees
@@ -230,20 +225,6 @@ export const JoinActionCard = ({ eventId }: JoinActionCardProps) => {
     } finally {
       setIsUpdatingGuests(false)
     }
-  }
-
-  if (isLoading) {
-    return (
-      <Card>
-        <CardContent className="p-6 flex justify-center">
-          <Loader2 size={24} className="animate-spin text-primary-600" />
-        </CardContent>
-      </Card>
-    )
-  }
-
-  if (isError || !event) {
-    return null
   }
 
   return (

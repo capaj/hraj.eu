@@ -88,7 +88,12 @@ import { editEventComment } from '~/server-functions/editEventComment'
 import { cancelEvent } from '~/server-functions/cancelEvent'
 import { EventComment, User } from '../types'
 import { getEventDateTime } from '../utils/eventDateTime'
-import { getAvailablePublicSpots, getTotalReservedAwareHeadcount } from '../utils/participants'
+import {
+  applyEventParticipantsUpdate,
+  getAvailablePublicSpots,
+  getTotalReservedAwareHeadcount,
+  type EventParticipantsUpdate
+} from '../utils/participants'
 import { SportIcon } from '../components/sports/SportIcon'
 
 interface KarmaFeedback {
@@ -739,14 +744,9 @@ export const EventDetailsPage: React.FC = () => {
       })
 
       if (response?.participants) {
-        setEvent((prev) => ({
-          ...prev,
-          participants: response.participants.confirmed,
-          waitlist: response.participants.waitlisted,
-          participantPlusOnes: response.participants.plusAttendees,
-          participantJoinedAt: response.participants.participantJoinedAt,
-          waitlistJoinedAt: response.participants.waitlistJoinedAt
-        }))
+        setEvent((previousEvent) =>
+          applyEventParticipantsUpdate(previousEvent, response.participants)
+        )
 
         if (isRemovingOther) {
           const removedUser = participantsMap.get(targetUserId!)
@@ -772,6 +772,14 @@ export const EventDetailsPage: React.FC = () => {
     } finally {
       setIsJoining(false)
     }
+  }
+
+  const handleParticipantsChange = (
+    participantsUpdate: EventParticipantsUpdate
+  ) => {
+    setEvent((previousEvent) =>
+      applyEventParticipantsUpdate(previousEvent, participantsUpdate)
+    )
   }
 
   const handleSubmitComment = async () => {
@@ -1615,7 +1623,10 @@ export const EventDetailsPage: React.FC = () => {
 
         {!hasEventEnded && event.status !== 'cancelled' && (
           <div className="mb-8 lg:hidden">
-            <JoinActionCard eventId={event.id} />
+            <JoinActionCard
+              event={event}
+              onParticipantsChange={handleParticipantsChange}
+            />
           </div>
         )}
 
@@ -1885,7 +1896,10 @@ export const EventDetailsPage: React.FC = () => {
 
           {!hasEventEnded && event.status !== 'cancelled' && (
             <div className="hidden lg:block">
-              <JoinActionCard eventId={event.id} />
+              <JoinActionCard
+                event={event}
+                onParticipantsChange={handleParticipantsChange}
+              />
             </div>
           )}
 

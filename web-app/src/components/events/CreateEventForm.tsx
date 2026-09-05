@@ -16,7 +16,12 @@ import {
 import { VenueSelector } from '../venues/VenueSelector'
 import { AddVenueModal } from '../venues/AddVenueModal'
 import { SportIcon } from '../sports/SportIcon'
+import { ParticipantCapacityFields } from './ParticipantCapacityFields'
 import { SPORTS, SKILL_LEVELS } from '../../lib/constants'
+import {
+  normalizeEventParticipantLimits,
+  type EventParticipantLimits
+} from '../../utils/eventParticipantLimits'
 import { getVenues } from '~/server-functions/getVenues'
 import { getCoreGroups } from '~/server-functions/getCoreGroups'
 import { uploadEventQrImages } from '~/server-functions/uploadEventQrImages'
@@ -109,6 +114,12 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     return date.toISOString().split('T')[0] // Format as YYYY-MM-DD
   }
 
+  const initialParticipantLimits = normalizeEventParticipantLimits({
+    minParticipants: initialData?.minParticipants ?? 2,
+    idealParticipants: initialData?.idealParticipants ?? 8,
+    maxParticipants: initialData?.maxParticipants ?? 10
+  })
+
   const [formData, setFormData] = useState<CreateEventFormData>({
     title: initialData?.title || '',
     sport: initialData?.sport || '',
@@ -116,9 +127,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     date: initialData?.date || getDefaultDate(),
     startTime: initialData?.startTime || '18:00',
     duration: initialData?.duration || 90,
-    minParticipants: initialData?.minParticipants || 2,
-    idealParticipants: initialData?.idealParticipants || 8,
-    maxParticipants: initialData?.maxParticipants || 10,
+    ...initialParticipantLimits,
     reservedParticipants: initialData?.reservedParticipants || 0,
     cancellationHours: initialData?.cancellationHours ?? 2,
     cancellationMinutes: initialData?.cancellationMinutes ?? 0,
@@ -149,35 +158,44 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   // Fetch venues from database
   useEffect(() => {
     if (initialData) {
-      setFormData((prev) => ({
-        ...prev,
-        title: initialData.title || prev.title,
-        sport: initialData.sport || prev.sport,
-        venueId: initialData.venueId || prev.venueId,
-        date: initialData.date || prev.date,
-        startTime: initialData.startTime || prev.startTime,
-        duration: initialData.duration || prev.duration,
-        minParticipants: initialData.minParticipants || prev.minParticipants,
-        idealParticipants: initialData.idealParticipants || prev.idealParticipants,
-        maxParticipants: initialData.maxParticipants || prev.maxParticipants,
-        reservedParticipants:
-          initialData.reservedParticipants ?? prev.reservedParticipants,
-        cancellationHours: initialData.cancellationHours ?? prev.cancellationHours,
-        cancellationMinutes: initialData.cancellationMinutes ?? prev.cancellationMinutes,
-        price: initialData.price ?? prev.price,
-        currency: initialData.currency || prev.currency,
-        paymentDetails: initialData.paymentDetails || prev.paymentDetails,
-        gameRules: initialData.gameRules || prev.gameRules,
-        isPublic: initialData.isPublic ?? prev.isPublic,
-        allowedSkillLevels: initialData.allowedSkillLevels || prev.allowedSkillLevels,
-        requireSkillLevel: initialData.requireSkillLevel ?? prev.requireSkillLevel,
-        qrCodeImages: initialData.qrCodeImages || prev.qrCodeImages,
-        enableCoreGroup: initialData.coreGroupId ? true : prev.enableCoreGroup,
-        coreGroupId: initialData.coreGroupId || prev.coreGroupId,
-        coreGroupExclusiveHours: initialData.coreGroupExclusiveUntil
-          ? Math.min(24 * 14, Math.max(2, Math.round((new Date(initialData.coreGroupExclusiveUntil).getTime() - Date.now()) / (60 * 60 * 1000))))
-          : prev.coreGroupExclusiveHours
-      }))
+      setFormData((prev) => {
+        const participantLimits = normalizeEventParticipantLimits({
+          minParticipants:
+            initialData.minParticipants ?? prev.minParticipants,
+          idealParticipants:
+            initialData.idealParticipants ?? prev.idealParticipants,
+          maxParticipants:
+            initialData.maxParticipants ?? prev.maxParticipants
+        })
+
+        return {
+          ...prev,
+          ...participantLimits,
+          title: initialData.title || prev.title,
+          sport: initialData.sport || prev.sport,
+          venueId: initialData.venueId || prev.venueId,
+          date: initialData.date || prev.date,
+          startTime: initialData.startTime || prev.startTime,
+          duration: initialData.duration || prev.duration,
+          reservedParticipants:
+            initialData.reservedParticipants ?? prev.reservedParticipants,
+          cancellationHours: initialData.cancellationHours ?? prev.cancellationHours,
+          cancellationMinutes: initialData.cancellationMinutes ?? prev.cancellationMinutes,
+          price: initialData.price ?? prev.price,
+          currency: initialData.currency || prev.currency,
+          paymentDetails: initialData.paymentDetails || prev.paymentDetails,
+          gameRules: initialData.gameRules || prev.gameRules,
+          isPublic: initialData.isPublic ?? prev.isPublic,
+          allowedSkillLevels: initialData.allowedSkillLevels || prev.allowedSkillLevels,
+          requireSkillLevel: initialData.requireSkillLevel ?? prev.requireSkillLevel,
+          qrCodeImages: initialData.qrCodeImages || prev.qrCodeImages,
+          enableCoreGroup: initialData.coreGroupId ? true : prev.enableCoreGroup,
+          coreGroupId: initialData.coreGroupId || prev.coreGroupId,
+          coreGroupExclusiveHours: initialData.coreGroupExclusiveUntil
+            ? Math.min(24 * 14, Math.max(2, Math.round((new Date(initialData.coreGroupExclusiveUntil).getTime() - Date.now()) / (60 * 60 * 1000))))
+            : prev.coreGroupExclusiveHours
+        }
+      })
     }
   }, [initialData])
 
@@ -291,48 +309,23 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     field: K,
     value: CreateEventFormData[K]
   ) => {
-    setFormData((prev) => {
-      const newData = { ...prev, [field]: value } satisfies CreateEventFormData
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value
+    }))
+  }
 
-      // Auto-adjust ideal and max when min changes
-      if (field === 'minParticipants') {
-        const v = value as number
-        if (newData.idealParticipants < v) {
-          newData.idealParticipants = v
-        }
-        if (newData.maxParticipants < v) {
-          newData.maxParticipants = v
-        }
-      }
-
-      // Auto-adjust max when ideal changes
-      if (field === 'idealParticipants') {
-        const v = value as number
-        if (newData.maxParticipants < v) {
-          newData.maxParticipants = v
-        }
-      }
-
-      // Auto-adjust min/ideal when max changes
-      if (field === 'maxParticipants') {
-        const v = value as number
-        if (Number.isFinite(v)) {
-          if (v >= 2) {
-            if (newData.idealParticipants > v) {
-              newData.idealParticipants = v
-            }
-            if (newData.minParticipants > v) {
-              newData.minParticipants = v
-            }
-          }
-        }
-        if ((newData.reservedParticipants ?? 0) > Math.max(v - 1, 0)) {
-          newData.reservedParticipants = Math.max(v - 1, 0)
-        }
-      }
-
-      return newData
-    })
+  const handleParticipantLimitsChange = (
+    participantLimits: EventParticipantLimits
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      ...participantLimits,
+      reservedParticipants: Math.min(
+        prev.reservedParticipants ?? 0,
+        participantLimits.maxParticipants - 1
+      )
+    }))
   }
 
   const handleSkillLevelToggle = (skillLevel: SkillLevel) => {
@@ -509,9 +502,6 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   }
 
   const _selectedVenue = venues.find((v) => v.id === formData.venueId)
-  const participantsRangeMax = Number.isFinite(formData.maxParticipants)
-    ? Math.max(formData.maxParticipants, 2)
-    : 2
   const cancellationTotalMinutes =
     formData.cancellationHours * 60 + formData.cancellationMinutes
   const cancellationSliderValue = Math.min(
@@ -859,111 +849,10 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                 <Trans>Participants</Trans>
               </h3>
 
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                <div className="lg:col-span-2 space-y-4">
-                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                    <div className="flex items-center justify-between">
-                      <label
-                        htmlFor="minParticipants"
-                        className="text-sm font-medium text-gray-700"
-                      >
-                        <Trans>Minimum Players *</Trans>
-                      </label>
-                      <span className="text-lg font-semibold text-gray-900">
-                        {formData.minParticipants}
-                      </span>
-                    </div>
-                    <input
-                      id="minParticipants"
-                      type="range"
-                      value={formData.minParticipants}
-                      min="2"
-                      max={participantsRangeMax}
-                      step="1"
-                      onChange={(e) =>
-                        handleChange(
-                          'minParticipants',
-                          parseInt(e.target.value, 10)
-                        )
-                      }
-                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-600 mt-3"
-                    />
-                    <div className="flex justify-between text-xs text-gray-500 mt-1">
-                      <span>2</span>
-                      <span>{participantsRangeMax}</span>
-                    </div>
-                    <p className="text-xs text-gray-500 mt-2">
-                      <Trans>Required to confirm event</Trans>
-                    </p>
-                    <p className="text-xs text-amber-700 mt-1">
-                      <Trans>If fewer than the minimum number of players join by the
-                        cancellation deadline, the event will be automatically
-                        cancelled and all participants will be notified.</Trans>
-                    </p>
-                  </div>
-
-                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                    <div className="flex items-center justify-between">
-                      <label
-                        htmlFor="idealParticipants"
-                        className="text-sm font-medium text-gray-700"
-                      >
-                        <Trans>Ideal Players *</Trans>
-                      </label>
-                      <span className="text-lg font-semibold text-gray-900">
-                        {formData.idealParticipants}
-                      </span>
-                    </div>
-                    <input
-                      id="idealParticipants"
-                      type="range"
-                      value={formData.idealParticipants}
-                      min={formData.minParticipants}
-                      max={participantsRangeMax}
-                      step="1"
-                      onChange={(e) =>
-                        handleChange(
-                          'idealParticipants',
-                          parseInt(e.target.value, 10)
-                        )
-                      }
-                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-600 mt-3"
-                    />
-                    <div className="flex justify-between text-xs text-gray-500 mt-1">
-                      <span>{formData.minParticipants}</span>
-                      <span>{participantsRangeMax}</span>
-                    </div>
-                    <p className="text-xs text-gray-500 mt-2">
-                      <Trans>Perfect number for the best game</Trans>
-                    </p>
-                  </div>
-
-
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <Trans>Maximum Players *</Trans>
-                  </label>
-                  <input
-                    type="number"
-                    required
-                    value={formData.maxParticipants}
-                    onChange={(e) =>
-                      handleChange('maxParticipants', parseInt(e.target.value))
-                    }
-                    min={formData.idealParticipants}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  />
-                  <p className="text-xs text-gray-500 mt-1"><Trans>Maximum capacity</Trans></p>
-                  <p className="text-xs text-blue-700 mt-2">
-                    <Trans>Any extra players will be put on a waitlist</Trans>
-                  </p>
-                  <p className="text-xs text-gray-500 mt-2">
-                    <Trans>Tip: Increase max players to widen the sliders.</Trans>
-                  </p>
-                </div>
-              </div>
+              <ParticipantCapacityFields
+                value={formData}
+                onChange={handleParticipantLimitsChange}
+              />
 
               {/* Cancellation Timing */}
               <div className="space-y-3">

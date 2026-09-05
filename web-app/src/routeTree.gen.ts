@@ -27,6 +27,7 @@ import { Route as AuthPathnameRouteImport } from './routes/auth/$pathname'
 import { Route as CitiesCitySlugRouteImport } from './routes/cities/$citySlug'
 import { Route as EditEventEventIdRouteImport } from './routes/edit-event.$eventId'
 import { Route as EventsEventIdRouteImport } from './routes/events/$eventId'
+import { Route as ScenariosParticipantCapacityRouteImport } from './routes/scenarios.participant-capacity'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiOgEventEventIdRouteImport } from './routes/api/og/event/$eventId'
 
@@ -120,6 +121,12 @@ const EventsEventIdRoute = EventsEventIdRouteImport.update({
   path: '/events/$eventId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScenariosParticipantCapacityRoute =
+  ScenariosParticipantCapacityRouteImport.update({
+    id: '/scenarios/participant-capacity',
+    path: '/scenarios/participant-capacity',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -150,6 +157,7 @@ export interface FileRoutesByFullPath {
   '/cities/$citySlug': typeof CitiesCitySlugRoute
   '/edit-event/$eventId': typeof EditEventEventIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
+  '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/og/event/$eventId': typeof ApiOgEventEventIdRoute
 }
@@ -172,6 +180,7 @@ export interface FileRoutesByTo {
   '/cities/$citySlug': typeof CitiesCitySlugRoute
   '/edit-event/$eventId': typeof EditEventEventIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
+  '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/og/event/$eventId': typeof ApiOgEventEventIdRoute
 }
@@ -195,6 +204,7 @@ export interface FileRoutesById {
   '/cities/$citySlug': typeof CitiesCitySlugRoute
   '/edit-event/$eventId': typeof EditEventEventIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
+  '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/og/event/$eventId': typeof ApiOgEventEventIdRoute
 }
@@ -219,6 +229,7 @@ export interface FileRouteTypes {
     | '/cities/$citySlug'
     | '/edit-event/$eventId'
     | '/events/$eventId'
+    | '/scenarios/participant-capacity'
     | '/api/auth/$'
     | '/api/og/event/$eventId'
   fileRoutesByTo: FileRoutesByTo
@@ -241,6 +252,7 @@ export interface FileRouteTypes {
     | '/cities/$citySlug'
     | '/edit-event/$eventId'
     | '/events/$eventId'
+    | '/scenarios/participant-capacity'
     | '/api/auth/$'
     | '/api/og/event/$eventId'
   id:
@@ -263,6 +275,7 @@ export interface FileRouteTypes {
     | '/cities/$citySlug'
     | '/edit-event/$eventId'
     | '/events/$eventId'
+    | '/scenarios/participant-capacity'
     | '/api/auth/$'
     | '/api/og/event/$eventId'
   fileRoutesById: FileRoutesById
@@ -286,6 +299,7 @@ export interface RootRouteChildren {
   CitiesCitySlugRoute: typeof CitiesCitySlugRoute
   EditEventEventIdRoute: typeof EditEventEventIdRoute
   EventsEventIdRoute: typeof EventsEventIdRoute
+  ScenariosParticipantCapacityRoute: typeof ScenariosParticipantCapacityRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiOgEventEventIdRoute: typeof ApiOgEventEventIdRoute
 }
@@ -418,6 +432,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsEventIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scenarios/participant-capacity': {
+      id: '/scenarios/participant-capacity'
+      path: '/scenarios/participant-capacity'
+      fullPath: '/scenarios/participant-capacity'
+      preLoaderRoute: typeof ScenariosParticipantCapacityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -454,6 +475,7 @@ const rootRouteChildren: RootRouteChildren = {
   CitiesCitySlugRoute: CitiesCitySlugRoute,
   EditEventEventIdRoute: EditEventEventIdRoute,
   EventsEventIdRoute: EventsEventIdRoute,
+  ScenariosParticipantCapacityRoute: ScenariosParticipantCapacityRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiOgEventEventIdRoute: ApiOgEventEventIdRoute,
 }
