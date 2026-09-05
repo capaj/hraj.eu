@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { UserProfile } from '../pages/UserProfilePage'
-import { getCurrentUserEmailPreferences } from '~/server-functions/getCurrentUserEmailPreferences'
+import { getCurrentUserPreferences } from '~/server-functions/getCurrentUserPreferences'
 import { getUserById } from '~/server-functions/getUserById'
 import { authClient } from '~/lib/auth-client'
 
@@ -13,11 +13,11 @@ export const Route = createFileRoute('/user-profile')({
         params: { pathname: 'sign-in' },
       })
     }
-    const [user, emailPreferences] = await Promise.all([
+    const [user, currentUserPreferences] = await Promise.all([
       getUserById({ data: session.data.user.id }),
-      getCurrentUserEmailPreferences()
+      getCurrentUserPreferences()
     ])
-    return { user: { ...user, ...emailPreferences } }
+    return { user: { ...user, ...currentUserPreferences } }
   },
   component: UserProfile
 })

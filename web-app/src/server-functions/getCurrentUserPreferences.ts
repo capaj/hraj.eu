@@ -5,18 +5,19 @@ import { db } from '../../drizzle/db'
 import { user } from '../../drizzle/schema'
 import { auth } from '~/lib/auth'
 
-export const getCurrentUserEmailPreferences = createServerFn({
+export const getCurrentUserPreferences = createServerFn({
   method: 'GET'
 }).handler(async () => {
   const request = getRequest()
   const session = await auth.api.getSession({ headers: request.headers })
 
   if (!session?.user?.id) {
-    throw new Error('You must be signed in to view your email preferences')
+    throw new Error('You must be signed in to view your preferences')
   }
 
   const [preferences] = await db
     .select({
+      notificationPreferences: user.notificationPreferences,
       emailNotificationsDisabled: user.emailNotificationsDisabled
     })
     .from(user)
@@ -27,5 +28,8 @@ export const getCurrentUserEmailPreferences = createServerFn({
     throw new Error('User not found')
   }
 
-  return preferences
+  return {
+    notificationPreferences: preferences.notificationPreferences ?? {},
+    emailNotificationsDisabled: preferences.emailNotificationsDisabled
+  }
 })

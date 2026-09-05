@@ -39,12 +39,8 @@ const onboardingPreferencesSchema = z
     }
   })
 
-export type OnboardingPreferences = z.infer<
-  typeof onboardingPreferencesSchema
->
-
 export const saveOnboardingPreferences = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => onboardingPreferencesSchema.parse(payload))
+  .validator((payload: unknown) => onboardingPreferencesSchema.parse(payload))
   .handler(async ({ data }) => {
     const request = getRequest()
     const session = await auth.api.getSession({ headers: request.headers })

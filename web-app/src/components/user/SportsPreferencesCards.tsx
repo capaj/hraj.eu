@@ -14,6 +14,8 @@ interface SkillLevelSettingsCardProps {
   skillLevels: SkillLevels
   onChange: (sportId: string, level: SkillLevel | null) => void
   pendingChanges?: Record<string, SkillLevel | null>
+  sports?: readonly Sport[]
+  columns?: 1 | 2
   className?: string
   stepNumber?: number
 }
@@ -26,6 +28,7 @@ interface NotificationSettingsCardProps {
   pendingChanges?: Record<string, boolean>
   isSavingEmailPreference?: boolean
   sports?: readonly Sport[]
+  columns?: 1 | 2
   className?: string
   stepNumber?: number
 }
@@ -51,6 +54,8 @@ export function SkillLevelSettingsCard({
   skillLevels,
   onChange,
   pendingChanges = {},
+  sports = SPORTS,
+  columns = 2,
   className,
   stepNumber
 }: SkillLevelSettingsCardProps) {
@@ -101,8 +106,13 @@ export function SkillLevelSettingsCard({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-          {SPORTS.map((sport) => {
+        <div
+          className={clsx(
+            'grid grid-cols-1 gap-3',
+            columns === 2 && 'lg:grid-cols-2'
+          )}
+        >
+          {sports.map((sport) => {
             const currentLevel = skillLevels[sport.id]
             const isPending = pendingChanges[sport.id] !== undefined
 
@@ -216,6 +226,7 @@ export function NotificationSettingsCard({
   pendingChanges = {},
   isSavingEmailPreference = false,
   sports = SPORTS,
+  columns = 2,
   className,
   stepNumber
 }: NotificationSettingsCardProps) {
@@ -257,6 +268,7 @@ export function NotificationSettingsCard({
             checked={emailNotificationsEnabled}
             onChange={onEmailChange}
             disabled={isSavingEmailPreference}
+            ariaLabel="Event activity emails"
           />
         </div>
 
@@ -269,7 +281,12 @@ export function NotificationSettingsCard({
           </p>
 
           {sports.length > 0 ? (
-            <div className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-2">
+            <div
+              className={clsx(
+                'mt-4 grid grid-cols-1 gap-3',
+                columns === 2 && 'lg:grid-cols-2'
+              )}
+            >
               {sports.map((sport) => {
                 const isEnabled =
                   notificationPreferences[sport.id] ?? false
@@ -305,6 +322,7 @@ export function NotificationSettingsCard({
                       }
                       disabled={isPending}
                       size="sm"
+                      ariaLabel={`${sport.name} new game alerts`}
                     />
                   </div>
                 )

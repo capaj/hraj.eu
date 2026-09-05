@@ -2,7 +2,7 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import { OnboardingPage } from '~/pages/OnboardingPage'
 import { authClient } from '~/lib/auth-client'
 import { getUserById } from '~/server-functions/getUserById'
-import { getCurrentUserEmailPreferences } from '~/server-functions/getCurrentUserEmailPreferences'
+import { getCurrentUserPreferences } from '~/server-functions/getCurrentUserPreferences'
 
 export const Route = createFileRoute('/onboarding')({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -17,12 +17,12 @@ export const Route = createFileRoute('/onboarding')({
       })
     }
 
-    const [user, emailPreferences] = await Promise.all([
+    const [user, currentUserPreferences] = await Promise.all([
       getUserById({ data: session.data.user.id }),
-      getCurrentUserEmailPreferences()
+      getCurrentUserPreferences()
     ])
 
-    return { user: { ...user, ...emailPreferences } }
+    return { user: { ...user, ...currentUserPreferences } }
   },
   component: OnboardingPage
 })

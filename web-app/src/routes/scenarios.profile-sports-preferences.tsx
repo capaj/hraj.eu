@@ -4,6 +4,7 @@ import {
   NotificationSettingsCard,
   SkillLevelSettingsCard
 } from '~/components/user/SportsPreferencesCards'
+import { SPORTS } from '~/lib/constants'
 import type { SkillLevel } from '~/types'
 
 export const Route = createFileRoute('/scenarios/profile-sports-preferences')({
@@ -16,6 +17,7 @@ export const Route = createFileRoute('/scenarios/profile-sports-preferences')({
 })
 
 function ProfileSportsPreferencesScenario() {
+  const scenarioSports = SPORTS.slice(0, 2)
   const [skillLevels, setSkillLevels] = useState<Record<string, SkillLevel>>({
     soccer: 'intermediate',
     basketball: 'beginner',
@@ -43,30 +45,35 @@ function ProfileSportsPreferencesScenario() {
           </p>
         </div>
 
-        <SkillLevelSettingsCard
-          skillLevels={skillLevels}
-          onChange={(sportId, level) => {
-            setSkillLevels((current) => {
-              const next = { ...current }
-              if (level) next[sportId] = level
-              else delete next[sportId]
-              return next
-            })
-          }}
-        />
+        <div className="grid items-start gap-6 lg:grid-cols-2">
+          <SkillLevelSettingsCard
+            skillLevels={skillLevels}
+            sports={scenarioSports}
+            columns={1}
+            onChange={(sportId, level) => {
+              setSkillLevels((current) => {
+                const next = { ...current }
+                if (level) next[sportId] = level
+                else delete next[sportId]
+                return next
+              })
+            }}
+          />
 
-        <NotificationSettingsCard
-          className="mt-8"
-          notificationPreferences={notificationPreferences}
-          emailNotificationsEnabled={emailNotificationsEnabled}
-          onSportChange={(sportId, enabled) =>
-            setNotificationPreferences((current) => ({
-              ...current,
-              [sportId]: enabled
-            }))
-          }
-          onEmailChange={setEmailNotificationsEnabled}
-        />
+          <NotificationSettingsCard
+            notificationPreferences={notificationPreferences}
+            emailNotificationsEnabled={emailNotificationsEnabled}
+            sports={scenarioSports}
+            columns={1}
+            onSportChange={(sportId, enabled) =>
+              setNotificationPreferences((current) => ({
+                ...current,
+                [sportId]: enabled
+              }))
+            }
+            onEmailChange={setEmailNotificationsEnabled}
+          />
+        </div>
       </div>
     </main>
   )

@@ -8,6 +8,7 @@ interface ToggleProps {
   size?: 'sm' | 'md' | 'lg';
   className?: string;
   children?: React.ReactNode;
+  ariaLabel?: string;
 }
 
 export const Toggle: React.FC<ToggleProps> = ({
@@ -17,6 +18,7 @@ export const Toggle: React.FC<ToggleProps> = ({
   size = 'md',
   className,
   children,
+  ariaLabel,
 }) => {
   const handleClick = () => {
     if (!disabled) {
@@ -53,6 +55,7 @@ export const Toggle: React.FC<ToggleProps> = ({
           onChange={() => {}}
           onClick={handleClick}
           disabled={disabled}
+          aria-label={ariaLabel}
           className="sr-only"
         />
         <div
