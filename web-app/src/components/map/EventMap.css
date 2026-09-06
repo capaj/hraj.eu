@@ -1,0 +1,80 @@
+.event-map-legend__details {
+  visibility: hidden;
+}
+
+.event-map-legend:hover .event-map-legend__details,
+.event-map-legend:has(:focus-visible) .event-map-legend__details {
+  visibility: visible;
+}
+
+.event-map-marker {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 2px 8px #0003;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.custom-event-marker:hover .event-map-marker,
+.custom-event-marker:focus-visible .event-map-marker {
+  transform: scale(1.1);
+}
+
+.event-map-marker[data-status='too-few'] {
+  --gauge-color: #dc2626;
+  --gauge-track: #fee2e2;
+  --gauge-text: #b91c1c;
+}
+
+.event-map-marker[data-status='ideal'] {
+  --gauge-color: #16a34a;
+  --gauge-track: #dcfce7;
+  --gauge-text: #15803d;
+}
+
+.event-map-marker[data-status='full'] {
+  --gauge-color: #eab308;
+  --gauge-track: #fef9c3;
+  --gauge-text: #854d0e;
+}
+
+.event-map-marker__sport {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.event-map-marker__players {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1px 6px;
+  border: 1px solid var(--gauge-track);
+  border-radius: 10px;
+  background: white;
+  color: var(--gauge-text);
+  font: 700 11px/16px system-ui, sans-serif;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px #0002;
+}
+
+.event-map-marker__events {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 3px;
+  border: 2px solid white;
+  border-radius: 10px;
+  background: #6d28d9;
+  color: white;
+  font: 700 10px/15px system-ui, sans-serif;
+  text-align: center;
+}

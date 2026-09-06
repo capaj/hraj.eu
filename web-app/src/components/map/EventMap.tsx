@@ -2,16 +2,21 @@ import React, {
   useEffect,
   useRef,
   useState,
+  useId,
   useImperativeHandle,
   forwardRef
 } from 'react'
 import 'leaflet/dist/leaflet.css'
+import './EventMap.css'
 import { Event, Venue } from '../../types'
 import { SPORTS } from '../../lib/constants'
 import { format, isPast } from 'date-fns'
 import { getEventDateTime } from '../../utils/eventDateTime'
 import { getAvailablePublicSpots, getTotalReservedAwareHeadcount } from '../../utils/participants'
 import { sportIconSvg } from '../sports/SportIcon'
+import { getEventPlayerGauge } from '../../utils/eventPlayerGauge'
+import { Trans } from '@lingui/react/macro'
+import { Info } from 'lucide-react'
 
 import dayjs from 'dayjs'
 import { t } from "@lingui/core/macro";
@@ -30,6 +35,7 @@ export interface EventMapRef {
 
 export const EventMap = forwardRef<EventMapRef, EventMapProps>(
   ({ events, venues, onEventSelect, onJoinEvent, currentUserId }, ref) => {
+    const legendId = useId()
     const mapRef = useRef<HTMLDivElement>(null)
     const mapInstanceRef = useRef<any>(null)
     const markersRef = useRef<any[]>([])
@@ -189,25 +195,45 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
 
           const mainSport = SPORTS.find((s) => s.id === venueEvents[0].sport)
           const mainSportIcon = sportIconSvg(mainSport?.id ?? venueEvents[0].sport, {
-            size: 16,
+            size: 20,
             color: '#6d28d9'
           })
+          // The gauge and sport icon describe the same event in a venue group.
+          const mainEvent = venueEvents[0]
+          const gauge = getEventPlayerGauge(mainEvent)
+          const gaugeStatus = {
+            full: t`At capacity`,
+            ideal: t`Ideal reached`,
+            'too-few': t`Below ideal`
+          }[gauge.status]
+          const markerLabel = `${mainEvent.title}: ${gauge.count}/${mainEvent.maxParticipants} ${t`players`} — ${gaugeStatus}`
 
           const countBadge =
             venueEvents.length > 1
-              ? `<div style="position: absolute; top: -6px; right: -6px; background-color: #ef4444; color: white; border-radius: 9999px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; border: 2px solid white; box-shadow: 0 1px 2px rgba(0,0,0,0.1); z-index: 10;">${venueEvents.length}</div>`
+              ? `<span class="event-map-marker__events">${venueEvents.length}</span>`
               : ''
 
           const customIcon = L.divIcon({
             className: 'custom-event-marker',
-            html: `<div style="position: relative; width: 32px; height: 32px; background-color: white; border: 2px solid #8b5cf6; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><span style="display: flex;">${mainSportIcon}</span>${countBadge}</div>`,
-            iconSize: [32, 32],
-            iconAnchor: [16, 16]
+            html: `<div class="event-map-marker" data-status="${gauge.status}">
+              <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true">
+                <circle cx="24" cy="24" r="21" fill="none" stroke="var(--gauge-track)" stroke-width="4" />
+                <circle cx="24" cy="24" r="21" fill="none" stroke="var(--gauge-color)" stroke-width="4" pathLength="100" stroke-dasharray="${gauge.progress * 100} 100" transform="rotate(-90 24 24)" />
+              </svg>
+              <span class="event-map-marker__sport">${mainSportIcon}</span>
+              <span class="event-map-marker__players">${gauge.count}/${mainEvent.maxParticipants}</span>
+              ${countBadge}
+            </div>`,
+            iconSize: [48, 60],
+            iconAnchor: [24, 24],
+            popupAnchor: [0, -26]
           })
 
           const marker = L.marker([venue.lat, venue.lng], {
-            icon: customIcon
+            icon: customIcon,
+            title: markerLabel
           }).addTo(mapInstanceRef.current)
+          marker.getElement()?.setAttribute('aria-label', markerLabel)
 
           let popupContent = `<div style="min-width: 280px; font-family: system-ui, -apple-system, sans-serif;">`
 
@@ -342,7 +368,7 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
       }
 
       updateMarkers()
-    }, [mounted, events, userLocation, isMapReady, currentUserId])
+    }, [mounted, events, venues, userLocation, isMapReady, currentUserId])
 
     if (!mounted) {
       return (
@@ -359,16 +385,32 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
         <div ref={mapRef} className="w-full h-full min-h-[500px]" />
 
         {/* Map Legend */}
-        <div className="absolute bottom-4 left-4 bg-white rounded-lg shadow-lg p-3 z-20">
-          <h4 className="text-sm font-medium text-gray-900 mb-2">Map Legend</h4>
-          <div className="space-y-1">
-            <div className="flex items-center text-xs text-gray-600">
-              <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-              Your location
-            </div>
-            <div className="flex items-center text-xs text-gray-600">
-              <div className="w-3 h-3 bg-white border-2 border-primary-500 rounded-full mr-2"></div>
-              Sports events
+        <div className="event-map-legend absolute bottom-6 left-4 z-[400]">
+          <button
+            type="button"
+            aria-label={t`Players / capacity`}
+            aria-describedby={legendId}
+            className="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-gray-600 shadow-lg hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+          >
+            <Info size={18} aria-hidden="true" />
+          </button>
+          <div id={legendId} role="tooltip" className="event-map-legend__details absolute bottom-full left-0 pb-2">
+            <div className="w-max rounded-lg bg-white p-3 shadow-lg">
+              <h4 className="text-sm font-medium text-gray-900 mb-2"><Trans>Players / capacity</Trans></h4>
+              <div className="space-y-1">
+                <div className="flex items-center text-xs text-gray-600">
+                  <div className="w-3 h-3 border-[3px] border-red-600 rounded-full mr-2" />
+                  <Trans>Below ideal</Trans>
+                </div>
+                <div className="flex items-center text-xs text-gray-600">
+                  <div className="w-3 h-3 border-[3px] border-green-600 rounded-full mr-2" />
+                  <Trans>Ideal reached</Trans>
+                </div>
+                <div className="flex items-center text-xs text-gray-600">
+                  <div className="w-3 h-3 border-[3px] border-yellow-500 rounded-full mr-2" />
+                  <Trans>At capacity</Trans>
+                </div>
+              </div>
             </div>
           </div>
         </div>

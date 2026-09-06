@@ -369,6 +369,11 @@ msgstr ""
 msgid "Are you sure you want to cancel this event? This action cannot be undone."
 msgstr ""
 
+#: src/components/map/EventMap.tsx:202
+#: src/components/map/EventMap.tsx:398
+msgid "At capacity"
+msgstr ""
+
 #: src/pages/AdminEventBansPage.tsx:125
 msgid "Attendance ban removed."
 msgstr ""
@@ -453,6 +458,11 @@ msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:2708
 msgid "Below average"
+msgstr ""
+
+#: src/components/map/EventMap.tsx:205
+#: src/components/map/EventMap.tsx:390
+msgid "Below ideal"
 msgstr ""
 
 #: src/pages/UserProfilePage.tsx:654
@@ -1400,6 +1410,11 @@ msgstr ""
 msgid "Ideal Players *"
 msgstr ""
 
+#: src/components/map/EventMap.tsx:204
+#: src/components/map/EventMap.tsx:394
+msgid "Ideal reached"
+msgstr ""
+
 #: src/components/events/JoinActionCard.tsx:274
 #: src/pages/EventDetailsPage.tsx:694
 msgid "Ideal: {count} players"
@@ -1448,7 +1463,7 @@ msgid "Intermediate"
 msgstr ""
 
 #: src/components/events/JoinActionCard.tsx:97
-#: src/components/map/EventMap.tsx:245
+#: src/components/map/EventMap.tsx:268
 msgid "Join Game"
 msgstr ""
 
@@ -1466,7 +1481,7 @@ msgid "Join the vibrant community of sports enthusiasts across Europe. Organize 
 msgstr ""
 
 #: src/components/events/JoinActionCard.tsx:95
-#: src/components/map/EventMap.tsx:245
+#: src/components/map/EventMap.tsx:268
 msgid "Join Waitlist"
 msgstr ""
 
@@ -2016,7 +2031,7 @@ msgid "per hour"
 msgstr ""
 
 #: src/components/events/EventCard.tsx:153
-#: src/components/map/EventMap.tsx:287
+#: src/components/map/EventMap.tsx:310
 msgid "per person"
 msgstr ""
 
@@ -2075,8 +2090,13 @@ msgstr ""
 msgid "Player Requirements"
 msgstr ""
 
-#: src/components/map/EventMap.tsx:281
+#: src/components/map/EventMap.tsx:206
+#: src/components/map/EventMap.tsx:304
 msgid "players"
+msgstr ""
+
+#: src/components/map/EventMap.tsx:386
+msgid "Players / capacity"
 msgstr ""
 
 #: src/components/events/JoinActionCard.tsx:247
@@ -2968,7 +2988,7 @@ msgstr ""
 msgid "Visit website"
 msgstr ""
 
-#: src/components/map/EventMap.tsx:297
+#: src/components/map/EventMap.tsx:320
 #: src/pages/EventDetailsPage.tsx:2118
 msgid "Waitlist"
 msgstr ""
@@ -3090,7 +3110,7 @@ msgid "You"
 msgstr ""
 
 #: src/components/events/JoinActionCard.tsx:374
-#: src/components/map/EventMap.tsx:242
+#: src/components/map/EventMap.tsx:265
 msgid "You are playing"
 msgstr ""
 

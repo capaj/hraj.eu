@@ -369,6 +369,11 @@ msgstr "Přibl. {price} {currency} / hod"
 msgid "Are you sure you want to cancel this event? This action cannot be undone."
 msgstr "Opravdu chcete tuto událost zrušit? Tuto akci nelze vrátit zpět."
 
+#: src/components/map/EventMap.tsx:202
+#: src/components/map/EventMap.tsx:398
+msgid "At capacity"
+msgstr "Plná kapacita"
+
 #: src/pages/AdminEventBansPage.tsx:125
 msgid "Attendance ban removed."
 msgstr "Zákaz účasti byl zrušen."
@@ -454,6 +459,11 @@ msgstr "Nahlášení nevhodného chování bereme vážně a může vést k omez
 #: src/pages/EventDetailsPage.tsx:2708
 msgid "Below average"
 msgstr "Podprůměrný"
+
+#: src/components/map/EventMap.tsx:205
+#: src/components/map/EventMap.tsx:390
+msgid "Below ideal"
+msgstr "Chybí hráči do ideálu"
 
 #: src/pages/UserProfilePage.tsx:654
 msgid "Bio"
@@ -1400,6 +1410,11 @@ msgstr "Ideál"
 msgid "Ideal Players *"
 msgstr "Ideální počet hráčů *"
 
+#: src/components/map/EventMap.tsx:204
+#: src/components/map/EventMap.tsx:394
+msgid "Ideal reached"
+msgstr "Ideální počet dosažen"
+
 #: src/components/events/JoinActionCard.tsx:274
 #: src/pages/EventDetailsPage.tsx:694
 msgid "Ideal: {count} players"
@@ -1448,7 +1463,7 @@ msgid "Intermediate"
 msgstr "Středně pokročilý"
 
 #: src/components/events/JoinActionCard.tsx:97
-#: src/components/map/EventMap.tsx:245
+#: src/components/map/EventMap.tsx:268
 msgid "Join Game"
 msgstr "Připojit se ke hře"
 
@@ -1466,7 +1481,7 @@ msgid "Join the vibrant community of sports enthusiasts across Europe. Organize 
 msgstr "Připojte se k živé komunitě sportovních nadšenců v celé Evropě. Organizujte hry, objevujte události a navazujte nová přátelství prostřednictvím týmových sportů."
 
 #: src/components/events/JoinActionCard.tsx:95
-#: src/components/map/EventMap.tsx:245
+#: src/components/map/EventMap.tsx:268
 msgid "Join Waitlist"
 msgstr "Přidat na čekací listinu"
 
@@ -2016,7 +2031,7 @@ msgid "per hour"
 msgstr "za hodinu"
 
 #: src/components/events/EventCard.tsx:153
-#: src/components/map/EventMap.tsx:287
+#: src/components/map/EventMap.tsx:310
 msgid "per person"
 msgstr "za osobu"
 
@@ -2075,9 +2090,14 @@ msgstr "Hráč"
 msgid "Player Requirements"
 msgstr "Požadavky na hráče"
 
-#: src/components/map/EventMap.tsx:281
+#: src/components/map/EventMap.tsx:206
+#: src/components/map/EventMap.tsx:304
 msgid "players"
 msgstr "hráči"
+
+#: src/components/map/EventMap.tsx:386
+msgid "Players / capacity"
+msgstr "Hráči / kapacita"
 
 #: src/components/events/JoinActionCard.tsx:247
 msgid "Players confirmed"
@@ -2968,7 +2988,7 @@ msgstr "Viditelnost"
 msgid "Visit website"
 msgstr "Navštívit web"
 
-#: src/components/map/EventMap.tsx:297
+#: src/components/map/EventMap.tsx:320
 #: src/pages/EventDetailsPage.tsx:2118
 msgid "Waitlist"
 msgstr "Čekací listina"
@@ -3090,7 +3110,7 @@ msgid "You"
 msgstr "Vy"
 
 #: src/components/events/JoinActionCard.tsx:374
-#: src/components/map/EventMap.tsx:242
+#: src/components/map/EventMap.tsx:265
 msgid "You are playing"
 msgstr "Jste přihlášen(a)"
 
