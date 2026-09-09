@@ -4,6 +4,7 @@ import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { GiphyPicker } from '../components/ui/GiphyPicker'
 import { JoinActionCard } from '../components/events/JoinActionCard'
+import { AttendeePhoneNumber } from '../components/events/AttendeePhoneNumber'
 import { MentionDropdown } from '../components/ui/MentionDropdown'
 import { MasonryGrid } from '../components/ui/MasonryGrid'
 import { Toggle } from '../components/ui/Toggle'
@@ -1999,6 +2000,10 @@ export const EventDetailsPage: React.FC = () => {
                               </div>
                             </TooltipContent>
                           </Tooltip>
+                          <AttendeePhoneNumber
+                            name={user.name}
+                            phone={user.phone}
+                          />
                           {user?.id &&
                             (event.participantPlusOnes?.[user.id]?.length ?? 0) >
                             0 && (

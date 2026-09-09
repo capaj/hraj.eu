@@ -103,8 +103,11 @@ For every new user-visible UI feature, add or update a route scenario that rende
 - [Onboarding](http://localhost:5173/scenarios/onboarding): `web-app/src/routes/scenarios.onboarding.tsx`
 - [Sport preferences](http://localhost:5173/scenarios/profile-sports-preferences): `web-app/src/routes/scenarios.profile-sports-preferences.tsx`
 - [Participant capacity](http://localhost:5173/scenarios/participant-capacity): `web-app/src/routes/scenarios.participant-capacity.tsx`
+- [Attendee phone numbers](http://localhost:5173/scenarios/phone-numbers): `web-app/src/routes/scenarios.phone-numbers.tsx`
 
 Follow their fixture-data and callback patterns, and keep the development-only guard. Existing screenshot artifacts are in `web-app/artifacts/screenshots/`.
+
+Scenarios should look like the real page state they represent: preserve the production page shell, layout, surrounding controls, and realistic fixture content instead of arranging isolated components in a UI-lab composition.
 
 ### Translations
 

@@ -17,6 +17,7 @@ export const getCurrentUserPreferences = createServerFn({
 
   const [preferences] = await db
     .select({
+      phone: user.phone,
       notificationPreferences: user.notificationPreferences,
       emailNotificationsDisabled: user.emailNotificationsDisabled
     })
@@ -29,6 +30,7 @@ export const getCurrentUserPreferences = createServerFn({
   }
 
   return {
+    phone: preferences.phone ?? '',
     notificationPreferences: preferences.notificationPreferences ?? {},
     emailNotificationsDisabled: preferences.emailNotificationsDisabled
   }

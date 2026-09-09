@@ -32,6 +32,7 @@ import { Route as EventsEventIdRouteImport } from './routes/events/$eventId'
 import { Route as ScenariosEventMapRouteImport } from './routes/scenarios.event-map'
 import { Route as ScenariosOnboardingRouteImport } from './routes/scenarios.onboarding'
 import { Route as ScenariosParticipantCapacityRouteImport } from './routes/scenarios.participant-capacity'
+import { Route as ScenariosPhoneNumbersRouteImport } from './routes/scenarios.phone-numbers'
 import { Route as ScenariosProfileSportsPreferencesRouteImport } from './routes/scenarios.profile-sports-preferences'
 import { Route as ScenariosVenuesRouteImport } from './routes/scenarios.venues'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
@@ -153,6 +154,11 @@ const ScenariosParticipantCapacityRoute =
     path: '/scenarios/participant-capacity',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ScenariosPhoneNumbersRoute = ScenariosPhoneNumbersRouteImport.update({
+  id: '/scenarios/phone-numbers',
+  path: '/scenarios/phone-numbers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ScenariosProfileSportsPreferencesRoute =
   ScenariosProfileSportsPreferencesRouteImport.update({
     id: '/scenarios/profile-sports-preferences',
@@ -199,6 +205,7 @@ export interface FileRoutesByFullPath {
   '/scenarios/event-map': typeof ScenariosEventMapRoute
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
+  '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
   '/scenarios/profile-sports-preferences': typeof ScenariosProfileSportsPreferencesRoute
   '/scenarios/venues': typeof ScenariosVenuesRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -228,6 +235,7 @@ export interface FileRoutesByTo {
   '/scenarios/event-map': typeof ScenariosEventMapRoute
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
+  '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
   '/scenarios/profile-sports-preferences': typeof ScenariosProfileSportsPreferencesRoute
   '/scenarios/venues': typeof ScenariosVenuesRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -258,6 +266,7 @@ export interface FileRoutesById {
   '/scenarios/event-map': typeof ScenariosEventMapRoute
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
+  '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
   '/scenarios/profile-sports-preferences': typeof ScenariosProfileSportsPreferencesRoute
   '/scenarios/venues': typeof ScenariosVenuesRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -289,6 +298,7 @@ export interface FileRouteTypes {
     | '/scenarios/event-map'
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
+    | '/scenarios/phone-numbers'
     | '/scenarios/profile-sports-preferences'
     | '/scenarios/venues'
     | '/api/auth/$'
@@ -318,6 +328,7 @@ export interface FileRouteTypes {
     | '/scenarios/event-map'
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
+    | '/scenarios/phone-numbers'
     | '/scenarios/profile-sports-preferences'
     | '/scenarios/venues'
     | '/api/auth/$'
@@ -347,6 +358,7 @@ export interface FileRouteTypes {
     | '/scenarios/event-map'
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
+    | '/scenarios/phone-numbers'
     | '/scenarios/profile-sports-preferences'
     | '/scenarios/venues'
     | '/api/auth/$'
@@ -377,6 +389,7 @@ export interface RootRouteChildren {
   ScenariosEventMapRoute: typeof ScenariosEventMapRoute
   ScenariosOnboardingRoute: typeof ScenariosOnboardingRoute
   ScenariosParticipantCapacityRoute: typeof ScenariosParticipantCapacityRoute
+  ScenariosPhoneNumbersRoute: typeof ScenariosPhoneNumbersRoute
   ScenariosProfileSportsPreferencesRoute: typeof ScenariosProfileSportsPreferencesRoute
   ScenariosVenuesRoute: typeof ScenariosVenuesRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
@@ -546,6 +559,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScenariosParticipantCapacityRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scenarios/phone-numbers': {
+      id: '/scenarios/phone-numbers'
+      path: '/scenarios/phone-numbers'
+      fullPath: '/scenarios/phone-numbers'
+      preLoaderRoute: typeof ScenariosPhoneNumbersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scenarios/profile-sports-preferences': {
       id: '/scenarios/profile-sports-preferences'
       path: '/scenarios/profile-sports-preferences'
@@ -601,6 +621,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScenariosEventMapRoute: ScenariosEventMapRoute,
   ScenariosOnboardingRoute: ScenariosOnboardingRoute,
   ScenariosParticipantCapacityRoute: ScenariosParticipantCapacityRoute,
+  ScenariosPhoneNumbersRoute: ScenariosPhoneNumbersRoute,
   ScenariosProfileSportsPreferencesRoute:
     ScenariosProfileSportsPreferencesRoute,
   ScenariosVenuesRoute: ScenariosVenuesRoute,

@@ -4,6 +4,7 @@ import { getEventById } from '~/server-functions/getEventById'
 import { getVenues } from '~/server-functions/getVenues'
 import { getUserById } from '~/server-functions/getUserById'
 import { getUsersByIds } from '~/server-functions/getUsersByIds'
+import { getEventParticipantPhones } from '~/server-functions/getEventParticipantPhones'
 import { getRequestOrigin } from '~/server-functions/getRequestOrigin'
 import { getEventComments } from '~/server-functions/getEventComments'
 import { SPORTS } from '~/lib/constants'
@@ -19,9 +20,16 @@ export const Route = createFileRoute('/events/$eventId')({
     const origin = await getRequestOrigin()
 
     const participantIds = getMentionableParticipantIds(event)
-    const participants = participantIds.length > 0
-      ? await getUsersByIds({ data: participantIds })
-      : []
+    const [participantUsers, participantPhones] = await Promise.all([
+      participantIds.length > 0
+        ? getUsersByIds({ data: participantIds })
+        : Promise.resolve([]),
+      getEventParticipantPhones({ data: { eventId: event.id } })
+    ])
+    const participants = participantUsers.map((participant) => ({
+      ...participant,
+      phone: participantPhones[participant.id]
+    }))
     const comments = await getEventComments({ data: event.id })
 
     return {

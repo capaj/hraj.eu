@@ -6,6 +6,7 @@ import { Button } from '../components/ui/Button'
 import { EU_CURRENCIES } from '../lib/constants'
 import { User, type SkillLevel } from '../types'
 import { UserAvatar } from '../components/user/UserAvatar'
+import { ProfilePhoneField } from '../components/user/ProfilePhoneField'
 import {
   NotificationSettingsCard,
   SkillLevelSettingsCard
@@ -56,6 +57,7 @@ export const UserProfile: React.FC = () => {
     emailNotificationsDisabled:
       userFromLoader.emailNotificationsDisabled ?? false,
     preferredCurrency: userFromLoader.preferredCurrency ?? 'EUR',
+    phone: userFromLoader.phone ?? '',
     location: userFromLoader.location ?? '',
     revTag: userFromLoader.revTag ?? '',
     bankAccount: userFromLoader.bankAccount ?? '',
@@ -104,6 +106,7 @@ export const UserProfile: React.FC = () => {
       await updateUserProfile({
         data: {
           name: editedUser.name,
+          phone: editedUser.phone,
           location: editedUser.location,
           bio: editedUser.bio,
           image: editedUser.image
@@ -624,6 +627,15 @@ export const UserProfile: React.FC = () => {
                       <Trans>Contact support to change email</Trans>
                     </div>
                   </div>
+
+                  <ProfilePhoneField
+                    isEditing={isEditing}
+                    phone={user.phone}
+                    editedPhone={editedUser.phone}
+                    onChange={(phone) =>
+                      setEditedUser((previous) => ({ ...previous, phone }))
+                    }
+                  />
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">

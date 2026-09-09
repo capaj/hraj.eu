@@ -8,6 +8,7 @@ import { eq } from 'drizzle-orm'
 
 const UpdateUserProfileSchema = z.object({
   name: z.string().optional(),
+  phone: z.string().trim().max(30).optional(),
   location: z.string().optional(),
   bio: z.string().optional(),
   preferredCurrency: z.string().optional(),
