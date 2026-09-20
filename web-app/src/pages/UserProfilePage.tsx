@@ -3,12 +3,11 @@ import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
-import { EU_CURRENCIES } from '../lib/constants'
 import { User, type SkillLevel } from '../types'
 import { UserAvatar } from '../components/user/UserAvatar'
-import { BankAccountHint } from '../components/user/BankAccountHint'
 import { normalizeAccountNumberForQrPayment } from '../lib/qrCodeGenerator'
 import { ProfilePhoneField } from '../components/user/ProfilePhoneField'
+import { PaymentInformationCard } from '../components/user/PaymentInformationCard'
 import {
   NotificationSettingsCard,
   SkillLevelSettingsCard
@@ -22,14 +21,9 @@ import {
   Calendar,
   Trophy,
   Settings,
-  Globe,
   Edit3,
   Upload,
   X,
-  Check,
-  CreditCard,
-  Building2,
-  ChevronDown,
   Lock,
   Trash2,
   AlertTriangle,
@@ -67,13 +61,7 @@ export const UserProfile: React.FC = () => {
   })
 
   const [isEditing, setIsEditing] = useState(false)
-  const [isEditingRevTag, setIsEditingRevTag] = useState(false)
-  const [isEditingBankAccount, setIsEditingBankAccount] = useState(false)
   const [editedUser, setEditedUser] = useState<User>(() => ({ ...user }))
-  const [editedRevTag, setEditedRevTag] = useState(user.revTag || '')
-  const [editedBankAccount, setEditedBankAccount] = useState(
-    user.bankAccount || ''
-  )
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false)
   const [showAvatarUpload, setShowAvatarUpload] = useState(false)
   const [skillLevelChanges, setSkillLevelChanges] = useState<
@@ -134,61 +122,51 @@ export const UserProfile: React.FC = () => {
     setNotificationChanges({})
   }
 
-  const handleSaveRevTag = async () => {
+  const handleSaveRevTag = async (revolutTag: string) => {
     try {
       await updateUserProfile({
         data: {
-          revolutTag: editedRevTag
+          revolutTag
         }
       })
 
-      const updatedUser = { ...user, revTag: editedRevTag }
+      const updatedUser = { ...user, revTag: revolutTag }
       setUser(updatedUser)
       setEditedUser(updatedUser)
-      setIsEditingRevTag(false)
 
       toast.success(i18n._(msg`Revolut tag updated!`))
+      return true
     } catch (error) {
       console.error('Failed to update Revolut tag:', error)
       toast.error(i18n._(msg`Failed to update Revolut tag`))
+      return false
     }
   }
 
-  const handleCancelRevTag = () => {
-    setEditedRevTag(user.revTag || '')
-    setIsEditingRevTag(false)
-  }
-
-  const handleSaveBankAccount = async () => {
-    if (editedBankAccount.trim() && !normalizeAccountNumberForQrPayment(editedBankAccount)) {
+  const handleSaveBankAccount = async (bankAccount: string) => {
+    if (bankAccount.trim() && !normalizeAccountNumberForQrPayment(bankAccount)) {
       toast.error(i18n._(msg`Enter a valid Czech bank account or IBAN.`))
-      return
+      return false
     }
     try {
       await updateUserProfile({
         data: {
-          bankAccount: editedBankAccount
+          bankAccount
         }
       })
 
-      const updatedUser = { ...user, bankAccount: editedBankAccount }
+      const updatedUser = { ...user, bankAccount }
       setUser(updatedUser)
       setEditedUser(updatedUser)
-      setIsEditingBankAccount(false)
 
       toast.success(i18n._(msg`Bank account updated!`))
+      return true
     } catch (error) {
       console.error('Failed to update bank account:', error)
       toast.error(i18n._(msg`Failed to update bank account`))
+      return false
     }
   }
-
-  const handleCancelBankAccount = () => {
-    setEditedBankAccount(user.bankAccount || '')
-    setIsEditingBankAccount(false)
-  }
-
-
 
   const handleSkillLevelChange = async (
     sport: string,
@@ -484,10 +462,6 @@ export const UserProfile: React.FC = () => {
       setIsDeletingAccount(false)
     }
   }
-
-  const selectedCurrency = EU_CURRENCIES.find(
-    (c) => c.code === editedUser.preferredCurrency
-  )
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-600 to-secondary-600 py-8">
@@ -987,204 +961,14 @@ export const UserProfile: React.FC = () => {
 
           {/* Right Column */}
           <div className="space-y-8">
-            {/* Payment Information with Currency Preference */}
-            <Card>
-              <CardHeader>
-                <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                  <CreditCard size={20} className="mr-2" />
-                  Payment Information
-                </h3>
-                <p className="text-gray-600 text-sm mt-1">
-                  Add your payment details and currency preference for easy
-                  event transactions
-                </p>
-              </CardHeader>
-              <CardContent className="p-6">
-                <div className="space-y-8">
-                  {/* Currency Preference Section */}
-                  <div>
-                    <h4 className="text-md font-semibold text-gray-900 flex items-center mb-4">
-                      <Globe size={18} className="mr-2 text-primary-600" />
-                      Currency Preference
-                    </h4>
-                    <p className="text-sm text-gray-600 mb-4">
-                      Choose your preferred currency for event pricing
-                    </p>
-
-                    <div className="relative">
-                      <select
-                        value={editedUser.preferredCurrency}
-                        onChange={(e) => handleCurrencyChange(e.target.value)}
-                        className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent appearance-none bg-white pr-10"
-                      >
-                        {EU_CURRENCIES.map((currency) => (
-                          <option key={currency.code} value={currency.code}>
-                            {currency.symbol} {currency.name} ({currency.code})
-                            - {currency.countries.slice(0, 2).join(', ')}
-                            {currency.countries.length > 2 &&
-                              ` +${currency.countries.length - 2} more`}
-                          </option>
-                        ))}
-                      </select>
-                      <ChevronDown
-                        size={16}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"
-                      />
-                    </div>
-
-                    {selectedCurrency && (
-                      <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                        <div className="flex items-center text-sm text-blue-800">
-                          <Check size={16} className="mr-2 text-blue-600" />
-                          <span>
-                            Selected:{' '}
-                            <strong>
-                              {selectedCurrency.symbol} {selectedCurrency.name}
-                            </strong>{' '}
-                            - Used in {selectedCurrency.countries.length}{' '}
-                            countries
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Divider */}
-                  <div className="border-t border-gray-200"></div>
-
-                  {/* Revolut Tag Section */}
-                  <div className="border border-gray-200 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <label className="block text-sm font-medium text-gray-700">
-                        Revolut Tag
-                      </label>
-                      {!isEditingRevTag ? (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setIsEditingRevTag(true)}
-                        >
-                          <Edit3 size={14} className="mr-1" />
-                          Edit
-                        </Button>
-                      ) : (
-                        <div className="flex space-x-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={handleCancelRevTag}
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            variant="primary"
-                            size="sm"
-                            onClick={handleSaveRevTag}
-                          >
-                            <Save size={14} className="mr-1" />
-                            Save
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-
-                    {isEditingRevTag ? (
-                      <div className="relative">
-                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                          @
-                        </span>
-                        <input
-                          type="text"
-                          value={editedRevTag}
-                          onChange={(e) => setEditedRevTag(e.target.value)}
-                          className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                          placeholder="username"
-                          autoFocus
-                        />
-                      </div>
-                    ) : (
-                      <div className="py-2 text-gray-900">
-                        {user.revTag ? `@${user.revTag}` : 'Not specified'}
-                      </div>
-                    )}
-
-                    <div className="text-xs text-gray-500 mt-2">
-                      Your Revolut username for quick payments
-                    </div>
-                  </div>
-
-                  {/* Bank Account Section */}
-                  <div className="border border-gray-200 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <label className="block text-sm font-medium text-gray-700">
-                        Czech Bank Account
-                      </label>
-                      {!isEditingBankAccount ? (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setIsEditingBankAccount(true)}
-                        >
-                          <Edit3 size={14} className="mr-1" />
-                          Edit
-                        </Button>
-                      ) : (
-                        <div className="flex space-x-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={handleCancelBankAccount}
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            variant="primary"
-                            size="sm"
-                            onClick={handleSaveBankAccount}
-                          >
-                            <Save size={14} className="mr-1" />
-                            Save
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-
-                    {isEditingBankAccount ? (
-                      <input
-                        type="text"
-                        value={editedBankAccount}
-                        onChange={(e) => setEditedBankAccount(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent font-mono"
-                        placeholder="123456789/0100"
-                        autoFocus
-                      />
-                    ) : (
-                      <div className="py-2 text-gray-900 font-mono">
-                        {user.bankAccount || 'Not specified'}
-                      </div>
-                    )}
-
-                    <BankAccountHint />
-                  </div>
-
-                  {/* Security Notice */}
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <div className="flex items-start">
-                      <Building2
-                        size={16}
-                        className="text-blue-600 mr-2 mt-0.5 flex-shrink-0"
-                      />
-                      <div className="text-sm text-blue-800">
-                        <p className="font-medium mb-1">Payment Security</p>
-                        <p>
-                          <Trans>Your saved bank account is displayed on events you organize so players can pay you.</Trans>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <PaymentInformationCard
+              preferredCurrency={editedUser.preferredCurrency}
+              revolutTag={user.revTag}
+              bankAccount={user.bankAccount}
+              onCurrencyChange={handleCurrencyChange}
+              onSaveRevolutTag={handleSaveRevTag}
+              onSaveBankAccount={handleSaveBankAccount}
+            />
           </div>
         </div>
 

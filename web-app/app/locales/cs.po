@@ -17,6 +17,11 @@ msgstr ""
 msgid "(sorted by {label})"
 msgstr "(seřazeno podle {label})"
 
+#. placeholder {0}: selectedCurrency.countries.length
+#: src/components/user/PaymentInformationCard.tsx:187
+msgid "{0, plural, one {Used in # country} few {Used in # countries} many {Used in # countries} other {Used in # countries}}"
+msgstr "{0, plural, one {Používá se v # zemi} few {Používá se v # zemích} many {Používá se v # zemích} other {Používá se v # zemích}}"
+
 #. placeholder {0}: isSubscribed ? 'Subscribed for new city events' : 'Email me when a new game is created in this city'
 #. placeholder {0}: isSubscribed ? 'Subscribed for new city events' : 'Subscribe to new city events by email'
 #: src/pages/SeoLandingPage.tsx:93
@@ -190,6 +195,10 @@ msgstr "{totalMinutes} minut"
 msgid "+{0} more"
 msgstr "+{0} dalších"
 
+#: src/components/user/PaymentInformationCard.tsx:162
+msgid "+{count} more"
+msgstr "+{count} dalších"
+
 #: src/components/events/JoinActionCard.tsx:267
 msgid "+{count} participants reserved"
 msgstr "+{count} zapsaných účastníků"
@@ -245,7 +254,7 @@ msgstr "Pokyny k přístupu"
 msgid "Account"
 msgstr "Účet"
 
-#: src/pages/UserProfilePage.tsx:476
+#: src/pages/UserProfilePage.tsx:454
 msgid "Account deleted successfully"
 msgstr "Účet byl úspěšně smazán"
 
@@ -253,7 +262,7 @@ msgstr "Účet byl úspěšně smazán"
 #~ msgid "Account deletion request submitted. You will receive an email with further instructions."
 #~ msgstr "Žádost o smazání účtu byla odeslána. Obdržíte e-mail s dalšími pokyny."
 
-#: src/pages/UserProfilePage.tsx:704
+#: src/pages/UserProfilePage.tsx:678
 msgid "Account Security"
 msgstr "Zabezpečení účtu"
 
@@ -300,6 +309,10 @@ msgstr "Přidat do kalendáře"
 #: src/pages/ManageVenuesPage.tsx:217
 msgid "Add Your First Venue"
 msgstr "Přidejte své první místo"
+
+#: src/components/user/PaymentInformationCard.tsx:128
+msgid "Add your payment details and currency preference for easy event transactions"
+msgstr "Přidejte své platební údaje a preferovanou měnu pro snadné platby na událostech"
 
 #: src/components/ui/TagInput.tsx:37
 msgid "Add..."
@@ -396,6 +409,10 @@ msgstr "Účastník byl odstraněn ze události."
 msgid "Attending events (+5 points)"
 msgstr "Účast na událostech (+5 bodů)"
 
+#: src/components/user/PaymentInformationCard.tsx:35
+msgid "Austria"
+msgstr "Rakousko"
+
 #: src/components/venues/AddVenueModal.tsx:648
 msgid "Available Facilities"
 msgstr "Dostupné vybavení"
@@ -434,7 +451,7 @@ msgstr "Délka zákazu"
 msgid "Ban duration unit"
 msgstr "Jednotka délky zákazu"
 
-#: src/pages/UserProfilePage.tsx:179
+#: src/pages/UserProfilePage.tsx:162
 msgid "Bank account updated!"
 msgstr "Bankovní účet aktualizován!"
 
@@ -459,6 +476,10 @@ msgstr "Začátečník"
 msgid "Behavior reports are taken seriously and may result in account restrictions."
 msgstr "Nahlášení nevhodného chování bereme vážně a může vést k omezení účtu."
 
+#: src/components/user/PaymentInformationCard.tsx:36
+msgid "Belgium"
+msgstr "Belgie"
+
 #: src/pages/EventDetailsPage.tsx:2663
 msgid "Below average"
 msgstr "Podprůměrný"
@@ -468,7 +489,7 @@ msgstr "Podprůměrný"
 msgid "Below ideal"
 msgstr "Chybí hráči do ideálu"
 
-#: src/pages/UserProfilePage.tsx:672
+#: src/pages/UserProfilePage.tsx:646
 msgid "Bio"
 msgstr "O mně"
 
@@ -493,6 +514,14 @@ msgstr "Procházet události"
 msgid "Build Community"
 msgstr "Budujte komunitu"
 
+#: src/components/user/PaymentInformationCard.tsx:54
+msgid "Bulgaria"
+msgstr "Bulharsko"
+
+#: src/components/user/PaymentInformationCard.tsx:24
+msgid "Bulgarian Lev"
+msgstr "Bulharský lev"
+
 #: src/components/venues/AddVenueModal.tsx:244
 #: src/components/venues/VenueSelector.tsx:95
 msgid "Café"
@@ -502,11 +531,13 @@ msgstr "Kavárna"
 msgid "Call {name} at {phone}"
 msgstr "Zavolat uživateli {name} na číslo {phone}"
 
+#: src/components/user/PaymentInformationCard.tsx:222
+#: src/components/user/PaymentInformationCard.tsx:282
 #: src/components/venues/AddVenueModal.tsx:938
 #: src/pages/EventDetailsPage.tsx:1094
 #: src/pages/EventDetailsPage.tsx:2722
 #: src/pages/ManageCoreGroupsPage.tsx:205
-#: src/pages/UserProfilePage.tsx:594
+#: src/pages/UserProfilePage.tsx:568
 #: src/routes/scenarios.phone-numbers.tsx:161
 msgid "Cancel"
 msgstr "Zrušit"
@@ -588,11 +619,15 @@ msgstr "Vyberte, která oznámení chcete dostávat."
 msgid "Choose your level for every sport you play. You can add more sports or change a level at any time."
 msgstr "Vyberte svou úroveň u každého sportu, který hrajete. Další sporty můžete přidat nebo úroveň kdykoli změnit."
 
+#: src/components/user/PaymentInformationCard.tsx:142
+msgid "Choose your preferred currency for event pricing"
+msgstr "Zvolte preferovanou měnu pro ceny událostí"
+
 #: src/components/venues/AddVenueModal.tsx:561
 msgid "City *"
 msgstr "Město *"
 
-#: src/pages/UserProfilePage.tsx:661
+#: src/pages/UserProfilePage.tsx:635
 msgid "City, Country"
 msgstr "Město, země"
 
@@ -664,7 +699,7 @@ msgstr "Zvažte ochranu před sluncem"
 msgid "Contact Information (Optional)"
 msgstr "Kontaktní údaje (nepovinné)"
 
-#: src/pages/UserProfilePage.tsx:633
+#: src/pages/UserProfilePage.tsx:607
 #: src/routes/scenarios.phone-numbers.tsx:178
 msgid "Contact support to change email"
 msgstr "Pro změnu e-mailu kontaktujte podporu"
@@ -765,12 +800,24 @@ msgstr "Vytvářím událost..."
 msgid "Creating Venue..."
 msgstr "Vytvářím místo..."
 
+#: src/components/user/PaymentInformationCard.tsx:61
+msgid "Croatia"
+msgstr "Chorvatsko"
+
+#: src/components/user/PaymentInformationCard.tsx:31
+msgid "Croatian Kuna"
+msgstr "Chorvatská kuna"
+
 #: src/components/events/CreateEventForm.tsx:1094
 #: src/components/venues/AddVenueModal.tsx:915
 msgid "Currency"
 msgstr "Měna"
 
-#: src/pages/UserProfilePage.tsx:360
+#: src/components/user/PaymentInformationCard.tsx:139
+msgid "Currency Preference"
+msgstr "Preferovaná měna"
+
+#: src/pages/UserProfilePage.tsx:338
 msgid "Currency updated"
 msgstr "Měna aktualizována"
 
@@ -781,6 +828,26 @@ msgstr "Aktuální šampion"
 #: src/components/events/CreateEventForm.tsx:1011
 msgid "Current Restriction"
 msgstr "Současné omezení"
+
+#: src/components/user/PaymentInformationCard.tsx:37
+msgid "Cyprus"
+msgstr "Kypr"
+
+#: src/components/user/PaymentInformationCard.tsx:264
+msgid "Czech Bank Account"
+msgstr "Český bankovní účet"
+
+#: src/components/user/PaymentInformationCard.tsx:25
+msgid "Czech Koruna"
+msgstr "Česká koruna"
+
+#: src/components/user/PaymentInformationCard.tsx:55
+msgid "Czech Republic"
+msgstr "Česká republika"
+
+#: src/components/user/PaymentInformationCard.tsx:26
+msgid "Danish Krone"
+msgstr "Dánská koruna"
 
 #: src/components/events/CreateEventForm.tsx:755
 msgid "Date *"
@@ -819,6 +886,10 @@ msgstr "Smazat oznámení"
 #: src/pages/ManageCoreGroupsPage.tsx:83
 msgid "Delete this core group?"
 msgstr "Smazat tuto základní skupinu?"
+
+#: src/components/user/PaymentInformationCard.tsx:56
+msgid "Denmark"
+msgstr "Dánsko"
 
 #: src/components/venues/AddVenueModal.tsx:810
 msgid "Description"
@@ -895,6 +966,8 @@ msgstr "Získejte body za:"
 msgid "Easy Organization"
 msgstr "Snadná organizace"
 
+#: src/components/user/PaymentInformationCard.tsx:213
+#: src/components/user/PaymentInformationCard.tsx:273
 #: src/pages/EventDetailsPage.tsx:1121
 #: src/pages/ManageCoreGroupsPage.tsx:118
 #: src/pages/ManageVenuesPage.tsx:94
@@ -911,7 +984,7 @@ msgstr "Upravit událost"
 msgid "Edit Group"
 msgstr "Upravit skupinu"
 
-#: src/pages/UserProfilePage.tsx:589
+#: src/pages/UserProfilePage.tsx:563
 msgid "Edit Profile"
 msgstr "Upravit profil"
 
@@ -923,7 +996,7 @@ msgstr "Upravit místo"
 msgid "Email"
 msgstr "E-mail"
 
-#: src/pages/UserProfilePage.tsx:629
+#: src/pages/UserProfilePage.tsx:603
 #: src/routes/scenarios.phone-numbers.tsx:174
 msgid "Email Address"
 msgstr "E-mailová adresa"
@@ -948,7 +1021,7 @@ msgstr "Vynutit omezení úrovně dovedností"
 msgid "Enter a duration between 1 and 3650."
 msgstr "Zadejte dobu mezi 1 a 3650."
 
-#: src/pages/UserProfilePage.tsx:164
+#: src/pages/UserProfilePage.tsx:148
 msgid "Enter a valid Czech bank account or IBAN."
 msgstr "Zadejte platné české číslo účtu nebo IBAN."
 
@@ -960,7 +1033,7 @@ msgstr "Zadejte adresu"
 msgid "Enter any guest name, or start with @ to link a player."
 msgstr "Zadejte libovolné jméno hosta nebo začněte znakem @ a propojte hráče."
 
-#: src/components/events/EventPaymentCard.tsx:69
+#: src/components/events/EventPaymentCard.tsx:72
 msgid "Enter the amount in your banking app."
 msgstr "Částku zadejte ve své bankovní aplikaci."
 
@@ -968,6 +1041,14 @@ msgstr "Částku zadejte ve své bankovní aplikaci."
 #: src/components/venues/VenueSelector.tsx:99
 msgid "Equipment"
 msgstr "Vybavení"
+
+#: src/components/user/PaymentInformationCard.tsx:38
+msgid "Estonia"
+msgstr "Estonsko"
+
+#: src/components/user/PaymentInformationCard.tsx:23
+msgid "Euro"
+msgstr "Euro"
 
 #: src/components/layout/Header.tsx:346
 msgid "Event"
@@ -1028,11 +1109,11 @@ msgstr "Detaily události"
 #~ msgid "Event email notifications"
 #~ msgstr "E-mailová upozornění k událostem"
 
-#: src/pages/UserProfilePage.tsx:334
+#: src/pages/UserProfilePage.tsx:312
 msgid "Event emails disabled"
 msgstr "E-maily k událostem vypnuty"
 
-#: src/pages/UserProfilePage.tsx:333
+#: src/pages/UserProfilePage.tsx:311
 msgid "Event emails enabled"
 msgstr "E-maily k událostem zapnuty"
 
@@ -1160,7 +1241,7 @@ msgstr "Nepodařilo se načíst GIFy"
 msgid "Failed to load weather data"
 msgstr "Nepodařilo se načíst data o počasí"
 
-#: src/pages/UserProfilePage.tsx:482
+#: src/pages/UserProfilePage.tsx:460
 msgid "Failed to process account deletion"
 msgstr "Nepodařilo se zpracovat smazání účtu"
 
@@ -1172,7 +1253,7 @@ msgstr "Nepodařilo se zpracovat smazání účtu"
 msgid "Failed to search GIFs"
 msgstr "Nepodařilo se vyhledat GIFy"
 
-#: src/pages/UserProfilePage.tsx:182
+#: src/pages/UserProfilePage.tsx:166
 msgid "Failed to update bank account"
 msgstr "Nepodařilo se aktualizovat bankovní účet"
 
@@ -1184,11 +1265,11 @@ msgstr "Nepodařilo se aktualizovat bankovní účet"
 msgid "Failed to update comment. Please try again."
 msgstr "Nepodařilo se aktualizovat komentář. Zkuste to prosím znovu."
 
-#: src/pages/UserProfilePage.tsx:363
+#: src/pages/UserProfilePage.tsx:341
 msgid "Failed to update currency"
 msgstr "Nepodařilo se aktualizovat měnu"
 
-#: src/pages/UserProfilePage.tsx:338
+#: src/pages/UserProfilePage.tsx:316
 msgid "Failed to update email preference"
 msgstr "Nastavení e-mailů se nepodařilo změnit"
 
@@ -1200,7 +1281,7 @@ msgstr "Nepodařilo se aktualizovat událost"
 msgid "Failed to update guests. Please try again."
 msgstr "Nepodařilo se aktualizovat hosty. Zkuste to prosím znovu."
 
-#: src/pages/UserProfilePage.tsx:300
+#: src/pages/UserProfilePage.tsx:278
 msgid "Failed to update notification"
 msgstr "Nepodařilo se aktualizovat oznámení"
 
@@ -1209,11 +1290,11 @@ msgstr "Nepodařilo se aktualizovat oznámení"
 msgid "Failed to update payment status. Please try again."
 msgstr "Nepodařilo se aktualizovat stav platby. Zkuste to prosím znovu."
 
-#: src/pages/UserProfilePage.tsx:126
+#: src/pages/UserProfilePage.tsx:114
 msgid "Failed to update profile"
 msgstr "Nepodařilo se aktualizovat profil"
 
-#: src/pages/UserProfilePage.tsx:153
+#: src/pages/UserProfilePage.tsx:141
 msgid "Failed to update Revolut tag"
 msgstr "Nepodařilo se aktualizovat Revolut tag"
 
@@ -1225,7 +1306,7 @@ msgstr "Nepodařilo se aktualizovat Revolut tag"
 msgid "Failed to update venue. Please try again."
 msgstr "Nepodařilo se aktualizovat místo. Zkuste to prosím znovu."
 
-#: src/pages/UserProfilePage.tsx:411
+#: src/pages/UserProfilePage.tsx:389
 msgid "Failed to upload image. Please try again."
 msgstr "Nepodařilo se nahrát obrázek. Zkuste to prosím znovu."
 
@@ -1291,9 +1372,17 @@ msgstr "Najděte si další sportoviště"
 msgid "Finding your location to center the venue map..."
 msgstr "Hledám vaši polohu pro střed mapy místa..."
 
+#: src/components/user/PaymentInformationCard.tsx:39
+msgid "Finland"
+msgstr "Finsko"
+
 #: src/components/weather/WeatherWidget.tsx:96
 msgid "Foggy conditions"
 msgstr "Mlhavé podmínky"
+
+#: src/components/user/PaymentInformationCard.tsx:40
+msgid "France"
+msgstr "Francie"
 
 #: src/components/layout/Header.tsx:351
 msgid "from User"
@@ -1323,6 +1412,10 @@ msgstr "Mapa her"
 msgid "Games organized: {count}"
 msgstr "Zorganizovaných her: {count}"
 
+#: src/components/user/PaymentInformationCard.tsx:41
+msgid "Germany"
+msgstr "Německo"
+
 #: src/components/user/SportsPreferencesCards.tsx:280
 msgid "Get notified when a new game is added for a sport."
 msgstr "Nechte se upozornit, když přibude nová hra pro daný sport."
@@ -1350,6 +1443,10 @@ msgstr "Dobré podmínky"
 #: src/pages/EventDetailsPage.tsx:2665
 msgid "Good sportsmanship"
 msgstr "Dobré sportovní chování"
+
+#: src/components/user/PaymentInformationCard.tsx:42
+msgid "Greece"
+msgstr "Řecko"
 
 #: src/pages/ManageCoreGroupsPage.tsx:162
 msgid "Group name"
@@ -1427,6 +1524,14 @@ msgstr "Jak najít a vstoupit na herní plochu..."
 msgid "Humidity:"
 msgstr "Vlhkost:"
 
+#: src/components/user/PaymentInformationCard.tsx:27
+msgid "Hungarian Forint"
+msgstr "Maďarský forint"
+
+#: src/components/user/PaymentInformationCard.tsx:57
+msgid "Hungary"
+msgstr "Maďarsko"
+
 #: src/pages/EventDetailsPage.tsx:1760
 msgid "Ideal"
 msgstr "Ideál"
@@ -1449,7 +1554,7 @@ msgstr "Ideál: {count} hráčů"
 msgid "If fewer than the minimum number of players join by the cancellation deadline, the event will be automatically cancelled and all participants will be notified."
 msgstr "Pokud se do uzávěrky nepřihlásí alespoň minimální počet hráčů, událost bude automaticky zrušena a všichni účastníci budou informováni."
 
-#: src/pages/UserProfilePage.tsx:387
+#: src/pages/UserProfilePage.tsx:365
 msgid "Image must be smaller than 5MB"
 msgstr "Obrázek musí být menší než 5 MB"
 
@@ -1486,6 +1591,14 @@ msgstr "Vnitřní areál"
 #: src/components/user/SportsPreferencesCards.tsx:97
 msgid "Intermediate"
 msgstr "Středně pokročilý"
+
+#: src/components/user/PaymentInformationCard.tsx:43
+msgid "Ireland"
+msgstr "Irsko"
+
+#: src/components/user/PaymentInformationCard.tsx:44
+msgid "Italy"
+msgstr "Itálie"
 
 #: src/components/events/JoinActionCard.tsx:97
 #: src/components/map/EventMap.tsx:271
@@ -1528,7 +1641,7 @@ msgstr "Připojil se {timeAgo}"
 msgid "JPG, PNG up to 10MB each"
 msgstr "JPG, PNG do 10 MB každý"
 
-#: src/pages/UserProfilePage.tsx:561
+#: src/pages/UserProfilePage.tsx:535
 #: src/routes/scenarios.phone-numbers.tsx:143
 msgid "Karma Points"
 msgstr "Body karmy"
@@ -1551,6 +1664,10 @@ msgstr "Ponechat událost"
 #: src/components/layout/Header.tsx:135
 msgid "Language"
 msgstr "Jazyk"
+
+#: src/components/user/PaymentInformationCard.tsx:45
+msgid "Latvia"
+msgstr "Lotyšsko"
 
 #: src/components/layout/Header.tsx:91
 #: src/components/layout/Header.tsx:177
@@ -1586,6 +1703,10 @@ msgstr "Pojďme si zahrát společně"
 msgid "Linked player"
 msgstr "Propojený hráč"
 
+#: src/components/user/PaymentInformationCard.tsx:46
+msgid "Lithuania"
+msgstr "Litva"
+
 #: src/pages/CreateEventPage.tsx:135
 msgid "Loading event details..."
 msgstr "Načítání detailů události..."
@@ -1608,7 +1729,7 @@ msgid "Loading..."
 msgstr "Načítání..."
 
 #: src/pages/EventDetailsPage.tsx:1720
-#: src/pages/UserProfilePage.tsx:648
+#: src/pages/UserProfilePage.tsx:622
 #: src/routes/scenarios.phone-numbers.tsx:295
 msgid "Location"
 msgstr "Poloha"
@@ -1626,9 +1747,17 @@ msgstr "Místo bude upřesněno"
 msgid "Lose Points For:"
 msgstr "Ztratíte body za:"
 
+#: src/components/user/PaymentInformationCard.tsx:47
+msgid "Luxembourg"
+msgstr "Lucembursko"
+
 #: src/components/user/OnboardingPreferencesScreen.tsx:107
 msgid "Make every game a better match"
 msgstr "Ať vám každá hra lépe sedne"
+
+#: src/components/user/PaymentInformationCard.tsx:48
+msgid "Malta"
+msgstr "Malta"
 
 #: src/components/user/UserButton.tsx:229
 msgid "Manage attendance bans"
@@ -1648,7 +1777,7 @@ msgstr "Spravovat skupiny"
 msgid "Manage Venues"
 msgstr "Spravovat místa"
 
-#: src/pages/UserProfilePage.tsx:707
+#: src/pages/UserProfilePage.tsx:681
 msgid "Manage your password and account security settings"
 msgstr "Spravujte své heslo a nastavení zabezpečení účtu"
 
@@ -1685,7 +1814,7 @@ msgstr "Maximální počet hráčů *"
 msgid "Meet local amateur {lowerSportName} players, join upcoming games, and find places to play in {0}."
 msgstr "Seznamte se s místními amatérskými hráči sportu {lowerSportName}, přidejte se k nadcházejícím hrám a najděte místa, kde si zahrát v {0}."
 
-#: src/pages/UserProfilePage.tsx:545
+#: src/pages/UserProfilePage.tsx:519
 #: src/routes/scenarios.phone-numbers.tsx:135
 msgid "Member since"
 msgstr "Členem od"
@@ -1747,6 +1876,10 @@ msgstr "Pro potvrzení chybí ještě {count} hráčů"
 msgid "Negative behavior reports (-10 points)"
 msgstr "Nahlášení negativního chování (-10 bodů)"
 
+#: src/components/user/PaymentInformationCard.tsx:49
+msgid "Netherlands"
+msgstr "Nizozemsko"
+
 #: src/pages/VenuesPage.tsx:367
 msgid "New event emails"
 msgstr "E-maily o nových událostech"
@@ -1763,11 +1896,11 @@ msgstr "Nová skupina"
 msgid "New or casual player"
 msgstr "Nový nebo rekreační hráč"
 
-#: src/pages/UserProfilePage.tsx:434
+#: src/pages/UserProfilePage.tsx:412
 msgid "New password must be at least 8 characters long."
 msgstr "Nové heslo musí mít alespoň 8 znaků."
 
-#: src/pages/UserProfilePage.tsx:429
+#: src/pages/UserProfilePage.tsx:407
 msgid "New passwords do not match."
 msgstr "Nová hesla se neshodují."
 
@@ -1796,7 +1929,7 @@ msgstr "Nové místo: {newVenue}"
 msgid "Newest First"
 msgstr "Nejnovější nejdříve"
 
-#: src/pages/UserProfilePage.tsx:691
+#: src/pages/UserProfilePage.tsx:665
 msgid "No bio provided"
 msgstr "Žádné bio"
 
@@ -1917,8 +2050,10 @@ msgstr "Nahlášení nedostavení se odečte body karmy a může ovlivnit účas
 msgid "No-shows without notice (-5 points)"
 msgstr "Nepřítomnost bez omluvy (-5 bodů)"
 
+#: src/components/user/PaymentInformationCard.tsx:252
+#: src/components/user/PaymentInformationCard.tsx:307
 #: src/components/user/ProfilePhoneField.tsx:41
-#: src/pages/UserProfilePage.tsx:665
+#: src/pages/UserProfilePage.tsx:639
 msgid "Not specified"
 msgstr "Neuvedeno"
 
@@ -2016,7 +2151,7 @@ msgstr "Účastníci"
 msgid "Participants: {current}/{max}"
 msgstr "Účastníci: {current}/{max}"
 
-#: src/pages/UserProfilePage.tsx:455
+#: src/pages/UserProfilePage.tsx:433
 msgid "Password changed successfully!"
 msgstr "Heslo bylo úspěšně změněno!"
 
@@ -2025,7 +2160,7 @@ msgstr "Heslo bylo úspěšně změněno!"
 msgid "Past Events"
 msgstr "Minulé události"
 
-#: src/components/events/EventPaymentCard.tsx:30
+#: src/components/events/EventPaymentCard.tsx:33
 msgid "Payment"
 msgstr "Platba"
 
@@ -2033,21 +2168,29 @@ msgstr "Platba"
 msgid "Payment (Optional)"
 msgstr "Platba (nepovinná)"
 
+#: src/routes/scenarios.profile-payment-info.tsx:43
+msgid "Payment details"
+msgstr "Platební údaje"
+
 #: src/components/events/CreateEventForm.tsx:1108
 msgid "Payment Details"
 msgstr "Platební údaje"
 
-#: src/components/events/EventPaymentCard.tsx:50
+#: src/components/events/EventPaymentCard.tsx:53
 msgid "Payment details:"
 msgstr "Platební údaje:"
 
-#: src/pages/EventDetailsPage.tsx:732
-#~ msgid "Payment Information"
-#~ msgstr "Informace o platbě"
+#: src/components/user/PaymentInformationCard.tsx:125
+msgid "Payment Information"
+msgstr "Informace o platbě"
 
 #: src/pages/EventDetailsPage.tsx:902
 msgid "Payment marked as complete."
 msgstr "Platba byla označena jako dokončená."
+
+#: src/components/user/PaymentInformationCard.tsx:322
+msgid "Payment Security"
+msgstr "Bezpečnost plateb"
 
 #: src/pages/EventDetailsPage.tsx:942
 msgid "Payment status cleared."
@@ -2082,7 +2225,7 @@ msgstr "Ideální velikost hry"
 msgid "Perfect number for the best game"
 msgstr "Ideální počet pro nejlepší hru"
 
-#: src/pages/UserProfilePage.tsx:581
+#: src/pages/UserProfilePage.tsx:555
 #: src/routes/scenarios.phone-numbers.tsx:158
 msgid "Personal Information"
 msgstr "Osobní údaje"
@@ -2171,7 +2314,7 @@ msgstr "Prosím, zadejte komentář před odesláním."
 msgid "Please enter a name for each guest."
 msgstr "Prosím, zadejte jméno pro každého hosta."
 
-#: src/pages/UserProfilePage.tsx:424
+#: src/pages/UserProfilePage.tsx:402
 msgid "Please fill in all password fields."
 msgstr "Vyplňte prosím všechna pole pro heslo."
 
@@ -2199,7 +2342,7 @@ msgstr "Prosím, vyberte sport pro vaši událost."
 msgid "Please select a venue for your event."
 msgstr "Vyberte prosím místo konání své události."
 
-#: src/pages/UserProfilePage.tsx:381
+#: src/pages/UserProfilePage.tsx:359
 msgid "Please select an image file"
 msgstr "Vyberte prosím soubor s obrázkem"
 
@@ -2223,9 +2366,17 @@ msgstr "Pro potvrzení platby se prosím přihlaste."
 msgid "Please sign in to join this event."
 msgstr "Pro připojení k této události se prosím přihlaste."
 
-#: src/pages/UserProfilePage.tsx:467
+#: src/pages/UserProfilePage.tsx:445
 msgid "Please type \"DELETE\" to confirm account deletion."
 msgstr "Pro potvrzení smazání účtu napište \"DELETE\"."
+
+#: src/components/user/PaymentInformationCard.tsx:58
+msgid "Poland"
+msgstr "Polsko"
+
+#: src/components/user/PaymentInformationCard.tsx:28
+msgid "Polish Złoty"
+msgstr "Polský zlotý"
 
 #: src/pages/EventDetailsPage.tsx:2662
 msgid "Poor sportsmanship"
@@ -2238,6 +2389,10 @@ msgstr "Špatné sportovní chování"
 #: src/pages/HomePage.tsx:107
 #~ msgid "Popular Events in {userLocation}"
 #~ msgstr "Populární události v {userLocation}"
+
+#: src/components/user/PaymentInformationCard.tsx:50
+msgid "Portugal"
+msgstr "Portugalsko"
 
 #: src/pages/LeaderboardPage.tsx:721
 msgid "Positive feedback from players (+3 points)"
@@ -2279,7 +2434,7 @@ msgstr "Předchozí místo: {previousVenue}"
 msgid "Price per Hour"
 msgstr "Cena za hodinu"
 
-#: src/components/events/EventPaymentCard.tsx:41
+#: src/components/events/EventPaymentCard.tsx:44
 msgid "Price per person ({people} people):"
 msgstr "Cena za osobu ({people} osob):"
 
@@ -2296,7 +2451,7 @@ msgstr "Cena za osobu ({people} osob):"
 #~ msgid "Price per person({0}people):"
 #~ msgstr "Cena za osobu ({0} lidí):"
 
-#: src/components/events/EventPaymentCard.tsx:37
+#: src/components/events/EventPaymentCard.tsx:40
 msgid "Price total:"
 msgstr "Celková cena:"
 
@@ -2312,7 +2467,7 @@ msgstr "Ceník (nepovinný)"
 msgid "Private (invite-only)"
 msgstr "Soukromá (jen pro pozvané)"
 
-#: src/pages/UserProfilePage.tsx:123
+#: src/pages/UserProfilePage.tsx:111
 msgid "Profile updated successfully!"
 msgstr "Profil byl úspěšně aktualizován!"
 
@@ -2340,7 +2495,7 @@ msgstr "QR kódy"
 msgid "QR codes are displayed only to participants."
 msgstr "QR kódy jsou zobrazeny pouze účastníkům."
 
-#: src/components/events/EventPaymentCard.tsx:55
+#: src/components/events/EventPaymentCard.tsx:58
 msgid "QR payment"
 msgstr "QR platba"
 
@@ -2463,7 +2618,11 @@ msgstr "Omezeno do {0}"
 msgid "Restriction expired {0}"
 msgstr "Omezení vypršelo {0}"
 
-#: src/pages/UserProfilePage.tsx:150
+#: src/components/user/PaymentInformationCard.tsx:204
+msgid "Revolut Tag"
+msgstr "Revolut tag"
+
+#: src/pages/UserProfilePage.tsx:137
 msgid "Revolut tag updated!"
 msgstr "Revolut tag aktualizován!"
 
@@ -2471,6 +2630,16 @@ msgstr "Revolut tag aktualizován!"
 msgid "Revolut: @username or cash on spot"
 msgstr "Revolut: @uživatelskéjméno nebo hotovost na místě"
 
+#: src/components/user/PaymentInformationCard.tsx:59
+msgid "Romania"
+msgstr "Rumunsko"
+
+#: src/components/user/PaymentInformationCard.tsx:29
+msgid "Romanian Leu"
+msgstr "Rumunský leu"
+
+#: src/components/user/PaymentInformationCard.tsx:230
+#: src/components/user/PaymentInformationCard.tsx:290
 #: src/pages/EventDetailsPage.tsx:1103
 #: src/pages/EventDetailsPage.tsx:1465
 #: src/pages/EventDetailsPage.tsx:1569
@@ -2482,7 +2651,7 @@ msgstr "Uložit"
 msgid "Save and start playing"
 msgstr "Uložit a začít hrát"
 
-#: src/pages/UserProfilePage.tsx:598
+#: src/pages/UserProfilePage.tsx:572
 #: src/routes/scenarios.phone-numbers.tsx:164
 msgid "Save Changes"
 msgstr "Uložit změny"
@@ -2508,7 +2677,7 @@ msgstr "Ukládám nastavení..."
 msgid "Saving..."
 msgstr "Ukládám..."
 
-#: src/components/events/EventPaymentCard.tsx:56
+#: src/components/events/EventPaymentCard.tsx:59
 msgid "Scan with your banking app to pay the organizer."
 msgstr "Naskenujte kód bankovní aplikací a zaplaťte organizátorovi."
 
@@ -2573,6 +2742,10 @@ msgstr "Vyberte, které úrovně dovedností se mohou připojit. Jen hráči s t
 #: src/components/venues/VenueSelector.tsx:160
 msgid "Selected"
 msgstr "Vybráno"
+
+#: src/components/user/PaymentInformationCard.tsx:181
+msgid "Selected:"
+msgstr "Vybráno:"
 
 #: src/components/events/CreateEventForm.tsx:1216
 msgid "Set from 2 hours up to 14 days (336 hours), counted from now."
@@ -2671,9 +2844,21 @@ msgstr "Úrovně dovedností"
 msgid "Skip for now"
 msgstr "Prozatím přeskočit"
 
+#: src/components/user/PaymentInformationCard.tsx:51
+msgid "Slovakia"
+msgstr "Slovensko"
+
+#: src/components/user/PaymentInformationCard.tsx:52
+msgid "Slovenia"
+msgstr "Slovinsko"
+
 #: src/pages/DiscoverPage.tsx:278
 msgid "Sort by:"
 msgstr "Seřadit podle:"
+
+#: src/components/user/PaymentInformationCard.tsx:53
+msgid "Spain"
+msgstr "Španělsko"
 
 #: src/components/events/CreateEventForm.tsx:539
 msgid "Sport *"
@@ -2748,7 +2933,15 @@ msgstr "Podporuje **tučné**, *kurzívu*, __podtržení__, @zmínky a GIFy."
 #~ msgid "Supports **bold**, *italic*, __underline__, and @mentions."
 #~ msgstr ""
 
-#: src/pages/UserProfilePage.tsx:686
+#: src/components/user/PaymentInformationCard.tsx:60
+msgid "Sweden"
+msgstr "Švédsko"
+
+#: src/components/user/PaymentInformationCard.tsx:30
+msgid "Swedish Krona"
+msgstr "Švédská koruna"
+
+#: src/pages/UserProfilePage.tsx:660
 msgid "Tell us about yourself and your sports interests..."
 msgstr "Napište nám něco o sobě a svých sportovních zájmech..."
 
@@ -2764,7 +2957,7 @@ msgstr "Dočasně zabraňte uživateli připojit se k novým hrám. Stále můž
 msgid "The organizer has cancelled this event."
 msgstr "Organizátor tuto událost zrušil."
 
-#: src/components/events/EventPaymentCard.tsx:70
+#: src/components/events/EventPaymentCard.tsx:73
 msgid "The QR code includes the current price for one person."
 msgstr "QR kód obsahuje aktuální cenu za jednu osobu."
 
@@ -2954,6 +3147,10 @@ msgstr "Nahrávám..."
 #: src/components/user/BankAccountHint.tsx:6
 msgid "Use account/bank code, prefix-account/bank code, or IBAN. A payment QR code will appear on all events you organize."
 msgstr "Zadejte účet/kód banky, předčíslí-účet/kód banky nebo IBAN. Platební QR kód se zobrazí u všech událostí, které pořádáte."
+
+#: src/components/user/PaymentInformationCard.tsx:246
+msgid "username"
+msgstr "uživatelské jméno"
 
 #: src/pages/EventDetailsPage.tsx:2201
 msgid "Venue"
@@ -3256,7 +3453,11 @@ msgstr "Vaše nastavení je připraveno!"
 msgid "Your request was received."
 msgstr "Vaše žádost byla přijata."
 
-#: src/pages/UserProfilePage.tsx:1180
+#: src/components/user/PaymentInformationCard.tsx:257
+msgid "Your Revolut username for quick payments"
+msgstr "Vaše uživatelské jméno Revolut pro rychlé platby"
+
+#: src/components/user/PaymentInformationCard.tsx:325
 msgid "Your saved bank account is displayed on events you organize so players can pay you."
 msgstr "Váš uložený bankovní účet se zobrazuje u událostí, které pořádáte, aby vám hráči mohli zaplatit."
 

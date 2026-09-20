@@ -17,6 +17,11 @@ msgstr ""
 msgid "(sorted by {label})"
 msgstr ""
 
+#. placeholder {0}: selectedCurrency.countries.length
+#: src/components/user/PaymentInformationCard.tsx:187
+msgid "{0, plural, one {Used in # country} few {Used in # countries} many {Used in # countries} other {Used in # countries}}"
+msgstr ""
+
 #. placeholder {0}: isSubscribed ? 'Subscribed for new city events' : 'Email me when a new game is created in this city'
 #. placeholder {0}: isSubscribed ? 'Subscribed for new city events' : 'Subscribe to new city events by email'
 #: src/pages/SeoLandingPage.tsx:93
@@ -190,6 +195,10 @@ msgstr ""
 msgid "+{0} more"
 msgstr ""
 
+#: src/components/user/PaymentInformationCard.tsx:162
+msgid "+{count} more"
+msgstr ""
+
 #: src/components/events/JoinActionCard.tsx:267
 msgid "+{count} participants reserved"
 msgstr ""
@@ -245,7 +254,7 @@ msgstr ""
 msgid "Account"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:476
+#: src/pages/UserProfilePage.tsx:454
 msgid "Account deleted successfully"
 msgstr ""
 
@@ -253,7 +262,7 @@ msgstr ""
 #~ msgid "Account deletion request submitted. You will receive an email with further instructions."
 #~ msgstr ""
 
-#: src/pages/UserProfilePage.tsx:704
+#: src/pages/UserProfilePage.tsx:678
 msgid "Account Security"
 msgstr ""
 
@@ -299,6 +308,10 @@ msgstr ""
 
 #: src/pages/ManageVenuesPage.tsx:217
 msgid "Add Your First Venue"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:128
+msgid "Add your payment details and currency preference for easy event transactions"
 msgstr ""
 
 #: src/components/ui/TagInput.tsx:37
@@ -396,6 +409,10 @@ msgstr ""
 msgid "Attending events (+5 points)"
 msgstr ""
 
+#: src/components/user/PaymentInformationCard.tsx:35
+msgid "Austria"
+msgstr ""
+
 #: src/components/venues/AddVenueModal.tsx:648
 msgid "Available Facilities"
 msgstr ""
@@ -434,7 +451,7 @@ msgstr ""
 msgid "Ban duration unit"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:179
+#: src/pages/UserProfilePage.tsx:162
 msgid "Bank account updated!"
 msgstr ""
 
@@ -459,6 +476,10 @@ msgstr ""
 msgid "Behavior reports are taken seriously and may result in account restrictions."
 msgstr ""
 
+#: src/components/user/PaymentInformationCard.tsx:36
+msgid "Belgium"
+msgstr ""
+
 #: src/pages/EventDetailsPage.tsx:2663
 msgid "Below average"
 msgstr ""
@@ -468,7 +489,7 @@ msgstr ""
 msgid "Below ideal"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:672
+#: src/pages/UserProfilePage.tsx:646
 msgid "Bio"
 msgstr ""
 
@@ -493,6 +514,14 @@ msgstr ""
 msgid "Build Community"
 msgstr ""
 
+#: src/components/user/PaymentInformationCard.tsx:54
+msgid "Bulgaria"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:24
+msgid "Bulgarian Lev"
+msgstr ""
+
 #: src/components/venues/AddVenueModal.tsx:244
 #: src/components/venues/VenueSelector.tsx:95
 msgid "Café"
@@ -502,11 +531,13 @@ msgstr ""
 msgid "Call {name} at {phone}"
 msgstr ""
 
+#: src/components/user/PaymentInformationCard.tsx:222
+#: src/components/user/PaymentInformationCard.tsx:282
 #: src/components/venues/AddVenueModal.tsx:938
 #: src/pages/EventDetailsPage.tsx:1094
 #: src/pages/EventDetailsPage.tsx:2722
 #: src/pages/ManageCoreGroupsPage.tsx:205
-#: src/pages/UserProfilePage.tsx:594
+#: src/pages/UserProfilePage.tsx:568
 #: src/routes/scenarios.phone-numbers.tsx:161
 msgid "Cancel"
 msgstr ""
@@ -588,11 +619,15 @@ msgstr ""
 msgid "Choose your level for every sport you play. You can add more sports or change a level at any time."
 msgstr ""
 
+#: src/components/user/PaymentInformationCard.tsx:142
+msgid "Choose your preferred currency for event pricing"
+msgstr ""
+
 #: src/components/venues/AddVenueModal.tsx:561
 msgid "City *"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:661
+#: src/pages/UserProfilePage.tsx:635
 msgid "City, Country"
 msgstr ""
 
@@ -664,7 +699,7 @@ msgstr ""
 msgid "Contact Information (Optional)"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:633
+#: src/pages/UserProfilePage.tsx:607
 #: src/routes/scenarios.phone-numbers.tsx:178
 msgid "Contact support to change email"
 msgstr ""
@@ -765,12 +800,24 @@ msgstr ""
 msgid "Creating Venue..."
 msgstr ""
 
+#: src/components/user/PaymentInformationCard.tsx:61
+msgid "Croatia"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:31
+msgid "Croatian Kuna"
+msgstr ""
+
 #: src/components/events/CreateEventForm.tsx:1094
 #: src/components/venues/AddVenueModal.tsx:915
 msgid "Currency"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:360
+#: src/components/user/PaymentInformationCard.tsx:139
+msgid "Currency Preference"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:338
 msgid "Currency updated"
 msgstr ""
 
@@ -780,6 +827,26 @@ msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:1011
 msgid "Current Restriction"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:37
+msgid "Cyprus"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:264
+msgid "Czech Bank Account"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:25
+msgid "Czech Koruna"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:55
+msgid "Czech Republic"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:26
+msgid "Danish Krone"
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:755
@@ -818,6 +885,10 @@ msgstr ""
 
 #: src/pages/ManageCoreGroupsPage.tsx:83
 msgid "Delete this core group?"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:56
+msgid "Denmark"
 msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:810
@@ -895,6 +966,8 @@ msgstr ""
 msgid "Easy Organization"
 msgstr ""
 
+#: src/components/user/PaymentInformationCard.tsx:213
+#: src/components/user/PaymentInformationCard.tsx:273
 #: src/pages/EventDetailsPage.tsx:1121
 #: src/pages/ManageCoreGroupsPage.tsx:118
 #: src/pages/ManageVenuesPage.tsx:94
@@ -911,7 +984,7 @@ msgstr ""
 msgid "Edit Group"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:589
+#: src/pages/UserProfilePage.tsx:563
 msgid "Edit Profile"
 msgstr ""
 
@@ -923,7 +996,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:629
+#: src/pages/UserProfilePage.tsx:603
 #: src/routes/scenarios.phone-numbers.tsx:174
 msgid "Email Address"
 msgstr ""
@@ -948,7 +1021,7 @@ msgstr ""
 msgid "Enter a duration between 1 and 3650."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:164
+#: src/pages/UserProfilePage.tsx:148
 msgid "Enter a valid Czech bank account or IBAN."
 msgstr ""
 
@@ -960,13 +1033,21 @@ msgstr ""
 msgid "Enter any guest name, or start with @ to link a player."
 msgstr ""
 
-#: src/components/events/EventPaymentCard.tsx:69
+#: src/components/events/EventPaymentCard.tsx:72
 msgid "Enter the amount in your banking app."
 msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:248
 #: src/components/venues/VenueSelector.tsx:99
 msgid "Equipment"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:38
+msgid "Estonia"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:23
+msgid "Euro"
 msgstr ""
 
 #: src/components/layout/Header.tsx:346
@@ -1028,11 +1109,11 @@ msgstr ""
 #~ msgid "Event email notifications"
 #~ msgstr ""
 
-#: src/pages/UserProfilePage.tsx:334
+#: src/pages/UserProfilePage.tsx:312
 msgid "Event emails disabled"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:333
+#: src/pages/UserProfilePage.tsx:311
 msgid "Event emails enabled"
 msgstr ""
 
@@ -1160,7 +1241,7 @@ msgstr ""
 msgid "Failed to load weather data"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:482
+#: src/pages/UserProfilePage.tsx:460
 msgid "Failed to process account deletion"
 msgstr ""
 
@@ -1172,7 +1253,7 @@ msgstr ""
 msgid "Failed to search GIFs"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:182
+#: src/pages/UserProfilePage.tsx:166
 msgid "Failed to update bank account"
 msgstr ""
 
@@ -1184,11 +1265,11 @@ msgstr ""
 msgid "Failed to update comment. Please try again."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:363
+#: src/pages/UserProfilePage.tsx:341
 msgid "Failed to update currency"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:338
+#: src/pages/UserProfilePage.tsx:316
 msgid "Failed to update email preference"
 msgstr ""
 
@@ -1200,7 +1281,7 @@ msgstr ""
 msgid "Failed to update guests. Please try again."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:300
+#: src/pages/UserProfilePage.tsx:278
 msgid "Failed to update notification"
 msgstr ""
 
@@ -1209,11 +1290,11 @@ msgstr ""
 msgid "Failed to update payment status. Please try again."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:126
+#: src/pages/UserProfilePage.tsx:114
 msgid "Failed to update profile"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:153
+#: src/pages/UserProfilePage.tsx:141
 msgid "Failed to update Revolut tag"
 msgstr ""
 
@@ -1225,7 +1306,7 @@ msgstr ""
 msgid "Failed to update venue. Please try again."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:411
+#: src/pages/UserProfilePage.tsx:389
 msgid "Failed to upload image. Please try again."
 msgstr ""
 
@@ -1291,8 +1372,16 @@ msgstr ""
 msgid "Finding your location to center the venue map..."
 msgstr ""
 
+#: src/components/user/PaymentInformationCard.tsx:39
+msgid "Finland"
+msgstr ""
+
 #: src/components/weather/WeatherWidget.tsx:96
 msgid "Foggy conditions"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:40
+msgid "France"
 msgstr ""
 
 #: src/components/layout/Header.tsx:351
@@ -1323,6 +1412,10 @@ msgstr ""
 msgid "Games organized: {count}"
 msgstr ""
 
+#: src/components/user/PaymentInformationCard.tsx:41
+msgid "Germany"
+msgstr ""
+
 #: src/components/user/SportsPreferencesCards.tsx:280
 msgid "Get notified when a new game is added for a sport."
 msgstr ""
@@ -1349,6 +1442,10 @@ msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:2665
 msgid "Good sportsmanship"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:42
+msgid "Greece"
 msgstr ""
 
 #: src/pages/ManageCoreGroupsPage.tsx:162
@@ -1427,6 +1524,14 @@ msgstr ""
 msgid "Humidity:"
 msgstr ""
 
+#: src/components/user/PaymentInformationCard.tsx:27
+msgid "Hungarian Forint"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:57
+msgid "Hungary"
+msgstr ""
+
 #: src/pages/EventDetailsPage.tsx:1760
 msgid "Ideal"
 msgstr ""
@@ -1449,7 +1554,7 @@ msgstr ""
 msgid "If fewer than the minimum number of players join by the cancellation deadline, the event will be automatically cancelled and all participants will be notified."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:387
+#: src/pages/UserProfilePage.tsx:365
 msgid "Image must be smaller than 5MB"
 msgstr ""
 
@@ -1485,6 +1590,14 @@ msgstr ""
 #: src/components/user/SkillLevelBadge.tsx:28
 #: src/components/user/SportsPreferencesCards.tsx:97
 msgid "Intermediate"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:43
+msgid "Ireland"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:44
+msgid "Italy"
 msgstr ""
 
 #: src/components/events/JoinActionCard.tsx:97
@@ -1528,7 +1641,7 @@ msgstr ""
 msgid "JPG, PNG up to 10MB each"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:561
+#: src/pages/UserProfilePage.tsx:535
 #: src/routes/scenarios.phone-numbers.tsx:143
 msgid "Karma Points"
 msgstr ""
@@ -1550,6 +1663,10 @@ msgstr ""
 #: src/components/layout/Header.tsx:106
 #: src/components/layout/Header.tsx:135
 msgid "Language"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:45
+msgid "Latvia"
 msgstr ""
 
 #: src/components/layout/Header.tsx:91
@@ -1586,6 +1703,10 @@ msgstr ""
 msgid "Linked player"
 msgstr ""
 
+#: src/components/user/PaymentInformationCard.tsx:46
+msgid "Lithuania"
+msgstr ""
+
 #: src/pages/CreateEventPage.tsx:135
 msgid "Loading event details..."
 msgstr ""
@@ -1608,7 +1729,7 @@ msgid "Loading..."
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1720
-#: src/pages/UserProfilePage.tsx:648
+#: src/pages/UserProfilePage.tsx:622
 #: src/routes/scenarios.phone-numbers.tsx:295
 msgid "Location"
 msgstr ""
@@ -1626,8 +1747,16 @@ msgstr ""
 msgid "Lose Points For:"
 msgstr ""
 
+#: src/components/user/PaymentInformationCard.tsx:47
+msgid "Luxembourg"
+msgstr ""
+
 #: src/components/user/OnboardingPreferencesScreen.tsx:107
 msgid "Make every game a better match"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:48
+msgid "Malta"
 msgstr ""
 
 #: src/components/user/UserButton.tsx:229
@@ -1648,7 +1777,7 @@ msgstr ""
 msgid "Manage Venues"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:707
+#: src/pages/UserProfilePage.tsx:681
 msgid "Manage your password and account security settings"
 msgstr ""
 
@@ -1685,7 +1814,7 @@ msgstr ""
 msgid "Meet local amateur {lowerSportName} players, join upcoming games, and find places to play in {0}."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:545
+#: src/pages/UserProfilePage.tsx:519
 #: src/routes/scenarios.phone-numbers.tsx:135
 msgid "Member since"
 msgstr ""
@@ -1747,6 +1876,10 @@ msgstr ""
 msgid "Negative behavior reports (-10 points)"
 msgstr ""
 
+#: src/components/user/PaymentInformationCard.tsx:49
+msgid "Netherlands"
+msgstr ""
+
 #: src/pages/VenuesPage.tsx:367
 msgid "New event emails"
 msgstr ""
@@ -1763,11 +1896,11 @@ msgstr ""
 msgid "New or casual player"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:434
+#: src/pages/UserProfilePage.tsx:412
 msgid "New password must be at least 8 characters long."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:429
+#: src/pages/UserProfilePage.tsx:407
 msgid "New passwords do not match."
 msgstr ""
 
@@ -1796,7 +1929,7 @@ msgstr ""
 msgid "Newest First"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:691
+#: src/pages/UserProfilePage.tsx:665
 msgid "No bio provided"
 msgstr ""
 
@@ -1917,8 +2050,10 @@ msgstr ""
 msgid "No-shows without notice (-5 points)"
 msgstr ""
 
+#: src/components/user/PaymentInformationCard.tsx:252
+#: src/components/user/PaymentInformationCard.tsx:307
 #: src/components/user/ProfilePhoneField.tsx:41
-#: src/pages/UserProfilePage.tsx:665
+#: src/pages/UserProfilePage.tsx:639
 msgid "Not specified"
 msgstr ""
 
@@ -2016,7 +2151,7 @@ msgstr ""
 msgid "Participants: {current}/{max}"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:455
+#: src/pages/UserProfilePage.tsx:433
 msgid "Password changed successfully!"
 msgstr ""
 
@@ -2025,7 +2160,7 @@ msgstr ""
 msgid "Past Events"
 msgstr ""
 
-#: src/components/events/EventPaymentCard.tsx:30
+#: src/components/events/EventPaymentCard.tsx:33
 msgid "Payment"
 msgstr ""
 
@@ -2033,20 +2168,28 @@ msgstr ""
 msgid "Payment (Optional)"
 msgstr ""
 
+#: src/routes/scenarios.profile-payment-info.tsx:43
+msgid "Payment details"
+msgstr ""
+
 #: src/components/events/CreateEventForm.tsx:1108
 msgid "Payment Details"
 msgstr ""
 
-#: src/components/events/EventPaymentCard.tsx:50
+#: src/components/events/EventPaymentCard.tsx:53
 msgid "Payment details:"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:732
-#~ msgid "Payment Information"
-#~ msgstr ""
+#: src/components/user/PaymentInformationCard.tsx:125
+msgid "Payment Information"
+msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:902
 msgid "Payment marked as complete."
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:322
+msgid "Payment Security"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:942
@@ -2082,7 +2225,7 @@ msgstr ""
 msgid "Perfect number for the best game"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:581
+#: src/pages/UserProfilePage.tsx:555
 #: src/routes/scenarios.phone-numbers.tsx:158
 msgid "Personal Information"
 msgstr ""
@@ -2171,7 +2314,7 @@ msgstr ""
 msgid "Please enter a name for each guest."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:424
+#: src/pages/UserProfilePage.tsx:402
 msgid "Please fill in all password fields."
 msgstr ""
 
@@ -2199,7 +2342,7 @@ msgstr ""
 msgid "Please select a venue for your event."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:381
+#: src/pages/UserProfilePage.tsx:359
 msgid "Please select an image file"
 msgstr ""
 
@@ -2223,8 +2366,16 @@ msgstr ""
 msgid "Please sign in to join this event."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:467
+#: src/pages/UserProfilePage.tsx:445
 msgid "Please type \"DELETE\" to confirm account deletion."
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:58
+msgid "Poland"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:28
+msgid "Polish Złoty"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:2662
@@ -2238,6 +2389,10 @@ msgstr ""
 #: src/pages/HomePage.tsx:107
 #~ msgid "Popular Events in {userLocation}"
 #~ msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:50
+msgid "Portugal"
+msgstr ""
 
 #: src/pages/LeaderboardPage.tsx:721
 msgid "Positive feedback from players (+3 points)"
@@ -2279,7 +2434,7 @@ msgstr ""
 msgid "Price per Hour"
 msgstr ""
 
-#: src/components/events/EventPaymentCard.tsx:41
+#: src/components/events/EventPaymentCard.tsx:44
 msgid "Price per person ({people} people):"
 msgstr ""
 
@@ -2296,7 +2451,7 @@ msgstr ""
 #~ msgid "Price per person({0}people):"
 #~ msgstr ""
 
-#: src/components/events/EventPaymentCard.tsx:37
+#: src/components/events/EventPaymentCard.tsx:40
 msgid "Price total:"
 msgstr ""
 
@@ -2312,7 +2467,7 @@ msgstr ""
 msgid "Private (invite-only)"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:123
+#: src/pages/UserProfilePage.tsx:111
 msgid "Profile updated successfully!"
 msgstr ""
 
@@ -2340,7 +2495,7 @@ msgstr ""
 msgid "QR codes are displayed only to participants."
 msgstr ""
 
-#: src/components/events/EventPaymentCard.tsx:55
+#: src/components/events/EventPaymentCard.tsx:58
 msgid "QR payment"
 msgstr ""
 
@@ -2463,7 +2618,11 @@ msgstr ""
 msgid "Restriction expired {0}"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:150
+#: src/components/user/PaymentInformationCard.tsx:204
+msgid "Revolut Tag"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:137
 msgid "Revolut tag updated!"
 msgstr ""
 
@@ -2471,6 +2630,16 @@ msgstr ""
 msgid "Revolut: @username or cash on spot"
 msgstr ""
 
+#: src/components/user/PaymentInformationCard.tsx:59
+msgid "Romania"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:29
+msgid "Romanian Leu"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:230
+#: src/components/user/PaymentInformationCard.tsx:290
 #: src/pages/EventDetailsPage.tsx:1103
 #: src/pages/EventDetailsPage.tsx:1465
 #: src/pages/EventDetailsPage.tsx:1569
@@ -2482,7 +2651,7 @@ msgstr ""
 msgid "Save and start playing"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:598
+#: src/pages/UserProfilePage.tsx:572
 #: src/routes/scenarios.phone-numbers.tsx:164
 msgid "Save Changes"
 msgstr ""
@@ -2508,7 +2677,7 @@ msgstr ""
 msgid "Saving..."
 msgstr ""
 
-#: src/components/events/EventPaymentCard.tsx:56
+#: src/components/events/EventPaymentCard.tsx:59
 msgid "Scan with your banking app to pay the organizer."
 msgstr ""
 
@@ -2572,6 +2741,10 @@ msgstr ""
 
 #: src/components/venues/VenueSelector.tsx:160
 msgid "Selected"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:181
+msgid "Selected:"
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:1216
@@ -2671,8 +2844,20 @@ msgstr ""
 msgid "Skip for now"
 msgstr ""
 
+#: src/components/user/PaymentInformationCard.tsx:51
+msgid "Slovakia"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:52
+msgid "Slovenia"
+msgstr ""
+
 #: src/pages/DiscoverPage.tsx:278
 msgid "Sort by:"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:53
+msgid "Spain"
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:539
@@ -2748,7 +2933,15 @@ msgstr ""
 #~ msgid "Supports **bold**, *italic*, __underline__, and @mentions."
 #~ msgstr ""
 
-#: src/pages/UserProfilePage.tsx:686
+#: src/components/user/PaymentInformationCard.tsx:60
+msgid "Sweden"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:30
+msgid "Swedish Krona"
+msgstr ""
+
+#: src/pages/UserProfilePage.tsx:660
 msgid "Tell us about yourself and your sports interests..."
 msgstr ""
 
@@ -2764,7 +2957,7 @@ msgstr ""
 msgid "The organizer has cancelled this event."
 msgstr ""
 
-#: src/components/events/EventPaymentCard.tsx:70
+#: src/components/events/EventPaymentCard.tsx:73
 msgid "The QR code includes the current price for one person."
 msgstr ""
 
@@ -2953,6 +3146,10 @@ msgstr ""
 
 #: src/components/user/BankAccountHint.tsx:6
 msgid "Use account/bank code, prefix-account/bank code, or IBAN. A payment QR code will appear on all events you organize."
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:246
+msgid "username"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:2201
@@ -3256,7 +3453,11 @@ msgstr ""
 msgid "Your request was received."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:1180
+#: src/components/user/PaymentInformationCard.tsx:257
+msgid "Your Revolut username for quick payments"
+msgstr ""
+
+#: src/components/user/PaymentInformationCard.tsx:325
 msgid "Your saved bank account is displayed on events you organize so players can pay you."
 msgstr ""
 

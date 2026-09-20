@@ -33,6 +33,7 @@ import { Route as ScenariosEventMapRouteImport } from './routes/scenarios.event-
 import { Route as ScenariosOnboardingRouteImport } from './routes/scenarios.onboarding'
 import { Route as ScenariosParticipantCapacityRouteImport } from './routes/scenarios.participant-capacity'
 import { Route as ScenariosPhoneNumbersRouteImport } from './routes/scenarios.phone-numbers'
+import { Route as ScenariosProfilePaymentInfoRouteImport } from './routes/scenarios.profile-payment-info'
 import { Route as ScenariosProfileSportsPreferencesRouteImport } from './routes/scenarios.profile-sports-preferences'
 import { Route as ScenariosQrPaymentRouteImport } from './routes/scenarios.qr-payment'
 import { Route as ScenariosVenuesRouteImport } from './routes/scenarios.venues'
@@ -160,6 +161,12 @@ const ScenariosPhoneNumbersRoute = ScenariosPhoneNumbersRouteImport.update({
   path: '/scenarios/phone-numbers',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScenariosProfilePaymentInfoRoute =
+  ScenariosProfilePaymentInfoRouteImport.update({
+    id: '/scenarios/profile-payment-info',
+    path: '/scenarios/profile-payment-info',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ScenariosProfileSportsPreferencesRoute =
   ScenariosProfileSportsPreferencesRouteImport.update({
     id: '/scenarios/profile-sports-preferences',
@@ -212,6 +219,7 @@ export interface FileRoutesByFullPath {
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
   '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
+  '/scenarios/profile-payment-info': typeof ScenariosProfilePaymentInfoRoute
   '/scenarios/profile-sports-preferences': typeof ScenariosProfileSportsPreferencesRoute
   '/scenarios/qr-payment': typeof ScenariosQrPaymentRoute
   '/scenarios/venues': typeof ScenariosVenuesRoute
@@ -243,6 +251,7 @@ export interface FileRoutesByTo {
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
   '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
+  '/scenarios/profile-payment-info': typeof ScenariosProfilePaymentInfoRoute
   '/scenarios/profile-sports-preferences': typeof ScenariosProfileSportsPreferencesRoute
   '/scenarios/qr-payment': typeof ScenariosQrPaymentRoute
   '/scenarios/venues': typeof ScenariosVenuesRoute
@@ -275,6 +284,7 @@ export interface FileRoutesById {
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
   '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
+  '/scenarios/profile-payment-info': typeof ScenariosProfilePaymentInfoRoute
   '/scenarios/profile-sports-preferences': typeof ScenariosProfileSportsPreferencesRoute
   '/scenarios/qr-payment': typeof ScenariosQrPaymentRoute
   '/scenarios/venues': typeof ScenariosVenuesRoute
@@ -308,6 +318,7 @@ export interface FileRouteTypes {
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
     | '/scenarios/phone-numbers'
+    | '/scenarios/profile-payment-info'
     | '/scenarios/profile-sports-preferences'
     | '/scenarios/qr-payment'
     | '/scenarios/venues'
@@ -339,6 +350,7 @@ export interface FileRouteTypes {
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
     | '/scenarios/phone-numbers'
+    | '/scenarios/profile-payment-info'
     | '/scenarios/profile-sports-preferences'
     | '/scenarios/qr-payment'
     | '/scenarios/venues'
@@ -370,6 +382,7 @@ export interface FileRouteTypes {
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
     | '/scenarios/phone-numbers'
+    | '/scenarios/profile-payment-info'
     | '/scenarios/profile-sports-preferences'
     | '/scenarios/qr-payment'
     | '/scenarios/venues'
@@ -402,6 +415,7 @@ export interface RootRouteChildren {
   ScenariosOnboardingRoute: typeof ScenariosOnboardingRoute
   ScenariosParticipantCapacityRoute: typeof ScenariosParticipantCapacityRoute
   ScenariosPhoneNumbersRoute: typeof ScenariosPhoneNumbersRoute
+  ScenariosProfilePaymentInfoRoute: typeof ScenariosProfilePaymentInfoRoute
   ScenariosProfileSportsPreferencesRoute: typeof ScenariosProfileSportsPreferencesRoute
   ScenariosQrPaymentRoute: typeof ScenariosQrPaymentRoute
   ScenariosVenuesRoute: typeof ScenariosVenuesRoute
@@ -579,6 +593,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScenariosPhoneNumbersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scenarios/profile-payment-info': {
+      id: '/scenarios/profile-payment-info'
+      path: '/scenarios/profile-payment-info'
+      fullPath: '/scenarios/profile-payment-info'
+      preLoaderRoute: typeof ScenariosProfilePaymentInfoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scenarios/profile-sports-preferences': {
       id: '/scenarios/profile-sports-preferences'
       path: '/scenarios/profile-sports-preferences'
@@ -642,6 +663,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScenariosOnboardingRoute: ScenariosOnboardingRoute,
   ScenariosParticipantCapacityRoute: ScenariosParticipantCapacityRoute,
   ScenariosPhoneNumbersRoute: ScenariosPhoneNumbersRoute,
+  ScenariosProfilePaymentInfoRoute: ScenariosProfilePaymentInfoRoute,
   ScenariosProfileSportsPreferencesRoute:
     ScenariosProfileSportsPreferencesRoute,
   ScenariosQrPaymentRoute: ScenariosQrPaymentRoute,
