@@ -5,6 +5,7 @@ import { db } from '../../drizzle/db'
 import { user } from '../../drizzle/schema'
 import { auth } from '~/lib/auth'
 import { eq } from 'drizzle-orm'
+import { normalizeAccountNumberForQrPayment } from '../lib/qrCodeGenerator'
 
 const UpdateUserProfileSchema = z.object({
   name: z.string().optional(),
@@ -13,7 +14,10 @@ const UpdateUserProfileSchema = z.object({
   bio: z.string().optional(),
   preferredCurrency: z.string().optional(),
   revolutTag: z.string().optional(),
-  bankAccount: z.string().optional(),
+  bankAccount: z.string().trim().refine(
+    (value) => !value || normalizeAccountNumberForQrPayment(value) !== null,
+    'Enter a valid Czech bank account or IBAN.'
+  ).optional(),
   image: z.string().optional(),
   notificationPreferences: z.record(z.string(), z.boolean()).optional(),
   emailNotificationsDisabled: z.boolean().optional()

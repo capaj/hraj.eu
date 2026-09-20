@@ -3,6 +3,7 @@ import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { GiphyPicker } from '../components/ui/GiphyPicker'
+import { EventPaymentCard } from '../components/events/EventPaymentCard'
 import { JoinActionCard } from '../components/events/JoinActionCard'
 import { AttendeePhoneNumber } from '../components/events/AttendeePhoneNumber'
 import { MentionDropdown } from '../components/ui/MentionDropdown'
@@ -1009,57 +1010,6 @@ export const EventDetailsPage: React.FC = () => {
     if (rating >= 3) return 'outline' as const
     return 'secondary' as const
   }
-
-  const renderPaymentCard = (className?: string) =>
-    event.price ? (
-      <Card className={className}>
-        <CardHeader>
-          <h2 className="text-xl font-semibold text-gray-900 flex items-center">
-            <CoinsIcon size={20} className="mr-2 text-primary-600" />
-            <Trans>Payment</Trans>
-          </h2>
-        </CardHeader>
-        <CardContent className="p-6">
-          <div className="bg-gray-50 rounded-lg p-4">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-gray-700 text-lg">
-                <Trans>Price total:</Trans>
-              </span>
-              <span className="font-bold text-2xl text-primary-600">
-                {event.price} {event.currency ?? 'CZK'}
-              </span>
-            </div>
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-gray-700 text-lg">
-                <Trans>
-                  Price per person(
-                  {Math.max(event.minParticipants, reservedAwareHeadcount)}
-                  people):
-                </Trans>
-              </span>
-              <span className="font-bold text-2xl text-primary-600">
-                {(
-                  event.price /
-                  Math.max(event.minParticipants, reservedAwareHeadcount)
-                ).toLocaleString(undefined, {
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 2,
-                })}{' '}
-                {event.currency ?? 'CZK'}
-              </span>
-            </div>
-            {event.paymentDetails && (
-              <div className="text-gray-600">
-                <strong>
-                  <Trans>Payment details:</Trans>
-                </strong>{' '}
-                {event.paymentDetails}
-              </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-    ) : null
 
   const renderGameRulesCard = (className?: string) =>
     event.gameRules ? (
@@ -2212,9 +2162,9 @@ export const EventDetailsPage: React.FC = () => {
             {renderCommentsCard()}
           </div>
 
-          {event.price && (
+          {(event.price || organizer?.bankAccount) && (
             <div>
-              {renderPaymentCard()}
+              <EventPaymentCard event={event} bankAccount={organizer?.bankAccount} />
             </div>
           )}
 

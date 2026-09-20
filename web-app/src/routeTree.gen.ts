@@ -34,6 +34,7 @@ import { Route as ScenariosOnboardingRouteImport } from './routes/scenarios.onbo
 import { Route as ScenariosParticipantCapacityRouteImport } from './routes/scenarios.participant-capacity'
 import { Route as ScenariosPhoneNumbersRouteImport } from './routes/scenarios.phone-numbers'
 import { Route as ScenariosProfileSportsPreferencesRouteImport } from './routes/scenarios.profile-sports-preferences'
+import { Route as ScenariosQrPaymentRouteImport } from './routes/scenarios.qr-payment'
 import { Route as ScenariosVenuesRouteImport } from './routes/scenarios.venues'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiOgEventEventIdRouteImport } from './routes/api/og/event/$eventId'
@@ -165,6 +166,11 @@ const ScenariosProfileSportsPreferencesRoute =
     path: '/scenarios/profile-sports-preferences',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ScenariosQrPaymentRoute = ScenariosQrPaymentRouteImport.update({
+  id: '/scenarios/qr-payment',
+  path: '/scenarios/qr-payment',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ScenariosVenuesRoute = ScenariosVenuesRouteImport.update({
   id: '/scenarios/venues',
   path: '/scenarios/venues',
@@ -207,6 +213,7 @@ export interface FileRoutesByFullPath {
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
   '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
   '/scenarios/profile-sports-preferences': typeof ScenariosProfileSportsPreferencesRoute
+  '/scenarios/qr-payment': typeof ScenariosQrPaymentRoute
   '/scenarios/venues': typeof ScenariosVenuesRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/og/event/$eventId': typeof ApiOgEventEventIdRoute
@@ -237,6 +244,7 @@ export interface FileRoutesByTo {
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
   '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
   '/scenarios/profile-sports-preferences': typeof ScenariosProfileSportsPreferencesRoute
+  '/scenarios/qr-payment': typeof ScenariosQrPaymentRoute
   '/scenarios/venues': typeof ScenariosVenuesRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/og/event/$eventId': typeof ApiOgEventEventIdRoute
@@ -268,6 +276,7 @@ export interface FileRoutesById {
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
   '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
   '/scenarios/profile-sports-preferences': typeof ScenariosProfileSportsPreferencesRoute
+  '/scenarios/qr-payment': typeof ScenariosQrPaymentRoute
   '/scenarios/venues': typeof ScenariosVenuesRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/og/event/$eventId': typeof ApiOgEventEventIdRoute
@@ -300,6 +309,7 @@ export interface FileRouteTypes {
     | '/scenarios/participant-capacity'
     | '/scenarios/phone-numbers'
     | '/scenarios/profile-sports-preferences'
+    | '/scenarios/qr-payment'
     | '/scenarios/venues'
     | '/api/auth/$'
     | '/api/og/event/$eventId'
@@ -330,6 +340,7 @@ export interface FileRouteTypes {
     | '/scenarios/participant-capacity'
     | '/scenarios/phone-numbers'
     | '/scenarios/profile-sports-preferences'
+    | '/scenarios/qr-payment'
     | '/scenarios/venues'
     | '/api/auth/$'
     | '/api/og/event/$eventId'
@@ -360,6 +371,7 @@ export interface FileRouteTypes {
     | '/scenarios/participant-capacity'
     | '/scenarios/phone-numbers'
     | '/scenarios/profile-sports-preferences'
+    | '/scenarios/qr-payment'
     | '/scenarios/venues'
     | '/api/auth/$'
     | '/api/og/event/$eventId'
@@ -391,6 +403,7 @@ export interface RootRouteChildren {
   ScenariosParticipantCapacityRoute: typeof ScenariosParticipantCapacityRoute
   ScenariosPhoneNumbersRoute: typeof ScenariosPhoneNumbersRoute
   ScenariosProfileSportsPreferencesRoute: typeof ScenariosProfileSportsPreferencesRoute
+  ScenariosQrPaymentRoute: typeof ScenariosQrPaymentRoute
   ScenariosVenuesRoute: typeof ScenariosVenuesRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiOgEventEventIdRoute: typeof ApiOgEventEventIdRoute
@@ -573,6 +586,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScenariosProfileSportsPreferencesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scenarios/qr-payment': {
+      id: '/scenarios/qr-payment'
+      path: '/scenarios/qr-payment'
+      fullPath: '/scenarios/qr-payment'
+      preLoaderRoute: typeof ScenariosQrPaymentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scenarios/venues': {
       id: '/scenarios/venues'
       path: '/scenarios/venues'
@@ -624,6 +644,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScenariosPhoneNumbersRoute: ScenariosPhoneNumbersRoute,
   ScenariosProfileSportsPreferencesRoute:
     ScenariosProfileSportsPreferencesRoute,
+  ScenariosQrPaymentRoute: ScenariosQrPaymentRoute,
   ScenariosVenuesRoute: ScenariosVenuesRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiOgEventEventIdRoute: ApiOgEventEventIdRoute,

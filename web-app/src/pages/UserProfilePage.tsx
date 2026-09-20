@@ -6,6 +6,8 @@ import { Button } from '../components/ui/Button'
 import { EU_CURRENCIES } from '../lib/constants'
 import { User, type SkillLevel } from '../types'
 import { UserAvatar } from '../components/user/UserAvatar'
+import { BankAccountHint } from '../components/user/BankAccountHint'
+import { normalizeAccountNumberForQrPayment } from '../lib/qrCodeGenerator'
 import { ProfilePhoneField } from '../components/user/ProfilePhoneField'
 import {
   NotificationSettingsCard,
@@ -158,6 +160,10 @@ export const UserProfile: React.FC = () => {
   }
 
   const handleSaveBankAccount = async () => {
+    if (editedBankAccount.trim() && !normalizeAccountNumberForQrPayment(editedBankAccount)) {
+      toast.error(i18n._(msg`Enter a valid Czech bank account or IBAN.`))
+      return
+    }
     try {
       await updateUserProfile({
         data: {
@@ -1158,9 +1164,7 @@ export const UserProfile: React.FC = () => {
                       </div>
                     )}
 
-                    <div className="text-xs text-gray-500 mt-2">
-                      Czech bank account number (format: account/bank code)
-                    </div>
+                    <BankAccountHint />
                   </div>
 
                   {/* Security Notice */}
@@ -1173,9 +1177,7 @@ export const UserProfile: React.FC = () => {
                       <div className="text-sm text-blue-800">
                         <p className="font-medium mb-1">Payment Security</p>
                         <p>
-                          Your payment information is encrypted and only shared
-                          with event organizers when you join paid events. You
-                          can always choose to pay in cash at the venue instead.
+                          <Trans>Your saved bank account is displayed on events you organize so players can pay you.</Trans>
                         </p>
                       </div>
                     </div>
