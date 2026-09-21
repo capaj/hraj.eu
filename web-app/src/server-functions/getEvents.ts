@@ -13,7 +13,8 @@ export const getEvents = createServerFn({ method: 'GET' })
         statuses: z
           .array(z.enum(eventStatuses))
           .optional(),
-        pastEventsLimit: z.number().int().positive().max(50).optional()
+        pastEventsLimit: z.number().int().positive().max(50).optional(),
+        includeOwnPrivateEvents: z.boolean().optional()
       })
       .optional()
       .parse(data)

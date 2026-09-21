@@ -15,6 +15,7 @@ export const Route = createFileRoute('/profile')({
       getUserNotifications({ data: mockUserId }),
       getEvents({
         data: {
+          includeOwnPrivateEvents: true,
           statuses: ['open', 'confirmed', 'cancelled', 'completed']
         }
       }),

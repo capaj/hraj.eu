@@ -38,7 +38,7 @@ export const getEventsByFilters = createServerFn({ method: 'GET' })
             lte(eventT.coreGroupExclusiveUntil, new Date())
           )
 
-    const whereConditions = [visibilityClause]
+    const whereConditions = [eq(eventT.isPublic, true), visibilityClause]
 
     if (filters.sport) {
       whereConditions.push(eq(eventT.sport, filters.sport))

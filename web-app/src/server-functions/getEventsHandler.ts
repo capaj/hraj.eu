@@ -5,6 +5,7 @@ import { getEventGuestNames } from '../lib/eventGuests'
 export type GetEventsInput = {
   statuses?: Array<(typeof eventStatuses)[number]>
   pastEventsLimit?: number
+  includeOwnPrivateEvents?: boolean
 }
 
 export async function getEventsHandler(
@@ -41,7 +42,15 @@ export async function getEventsHandler(
     statuses && statuses.length > 0
       ? inArray(eventT.status, statuses)
       : not(eq(eventT.status, 'cancelled')),
-    visibilityClause
+    or(
+      and(eq(eventT.isPublic, true), visibilityClause),
+      data?.includeOwnPrivateEvents && viewerId
+        ? or(
+            eq(eventT.organizerId, viewerId),
+            sql`exists (select 1 from ${participantT} where ${participantT.eventId} = ${eventT.id} and ${participantT.userId} = ${viewerId} and ${participantT.status} in ('confirmed', 'waitlisted', 'invited'))`
+          )
+        : undefined
+    )
   )
 
   const pastEventsLimit = data?.pastEventsLimit
