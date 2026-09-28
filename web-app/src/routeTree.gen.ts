@@ -29,6 +29,7 @@ import { Route as AuthPathnameRouteImport } from './routes/auth/$pathname'
 import { Route as CitiesCitySlugRouteImport } from './routes/cities/$citySlug'
 import { Route as EditEventEventIdRouteImport } from './routes/edit-event.$eventId'
 import { Route as EventsEventIdRouteImport } from './routes/events/$eventId'
+import { Route as ScenariosAboutStatsRouteImport } from './routes/scenarios.about-stats'
 import { Route as ScenariosEventMapRouteImport } from './routes/scenarios.event-map'
 import { Route as ScenariosOnboardingRouteImport } from './routes/scenarios.onboarding'
 import { Route as ScenariosParticipantCapacityRouteImport } from './routes/scenarios.participant-capacity'
@@ -140,6 +141,11 @@ const EventsEventIdRoute = EventsEventIdRouteImport.update({
   path: '/events/$eventId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScenariosAboutStatsRoute = ScenariosAboutStatsRouteImport.update({
+  id: '/scenarios/about-stats',
+  path: '/scenarios/about-stats',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ScenariosEventMapRoute = ScenariosEventMapRouteImport.update({
   id: '/scenarios/event-map',
   path: '/scenarios/event-map',
@@ -215,6 +221,7 @@ export interface FileRoutesByFullPath {
   '/cities/$citySlug': typeof CitiesCitySlugRoute
   '/edit-event/$eventId': typeof EditEventEventIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
+  '/scenarios/about-stats': typeof ScenariosAboutStatsRoute
   '/scenarios/event-map': typeof ScenariosEventMapRoute
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
@@ -247,6 +254,7 @@ export interface FileRoutesByTo {
   '/cities/$citySlug': typeof CitiesCitySlugRoute
   '/edit-event/$eventId': typeof EditEventEventIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
+  '/scenarios/about-stats': typeof ScenariosAboutStatsRoute
   '/scenarios/event-map': typeof ScenariosEventMapRoute
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
@@ -280,6 +288,7 @@ export interface FileRoutesById {
   '/cities/$citySlug': typeof CitiesCitySlugRoute
   '/edit-event/$eventId': typeof EditEventEventIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
+  '/scenarios/about-stats': typeof ScenariosAboutStatsRoute
   '/scenarios/event-map': typeof ScenariosEventMapRoute
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
@@ -314,6 +323,7 @@ export interface FileRouteTypes {
     | '/cities/$citySlug'
     | '/edit-event/$eventId'
     | '/events/$eventId'
+    | '/scenarios/about-stats'
     | '/scenarios/event-map'
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
@@ -346,6 +356,7 @@ export interface FileRouteTypes {
     | '/cities/$citySlug'
     | '/edit-event/$eventId'
     | '/events/$eventId'
+    | '/scenarios/about-stats'
     | '/scenarios/event-map'
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
@@ -378,6 +389,7 @@ export interface FileRouteTypes {
     | '/cities/$citySlug'
     | '/edit-event/$eventId'
     | '/events/$eventId'
+    | '/scenarios/about-stats'
     | '/scenarios/event-map'
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
@@ -411,6 +423,7 @@ export interface RootRouteChildren {
   CitiesCitySlugRoute: typeof CitiesCitySlugRoute
   EditEventEventIdRoute: typeof EditEventEventIdRoute
   EventsEventIdRoute: typeof EventsEventIdRoute
+  ScenariosAboutStatsRoute: typeof ScenariosAboutStatsRoute
   ScenariosEventMapRoute: typeof ScenariosEventMapRoute
   ScenariosOnboardingRoute: typeof ScenariosOnboardingRoute
   ScenariosParticipantCapacityRoute: typeof ScenariosParticipantCapacityRoute
@@ -565,6 +578,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsEventIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scenarios/about-stats': {
+      id: '/scenarios/about-stats'
+      path: '/scenarios/about-stats'
+      fullPath: '/scenarios/about-stats'
+      preLoaderRoute: typeof ScenariosAboutStatsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scenarios/event-map': {
       id: '/scenarios/event-map'
       path: '/scenarios/event-map'
@@ -659,6 +679,7 @@ const rootRouteChildren: RootRouteChildren = {
   CitiesCitySlugRoute: CitiesCitySlugRoute,
   EditEventEventIdRoute: EditEventEventIdRoute,
   EventsEventIdRoute: EventsEventIdRoute,
+  ScenariosAboutStatsRoute: ScenariosAboutStatsRoute,
   ScenariosEventMapRoute: ScenariosEventMapRoute,
   ScenariosOnboardingRoute: ScenariosOnboardingRoute,
   ScenariosParticipantCapacityRoute: ScenariosParticipantCapacityRoute,

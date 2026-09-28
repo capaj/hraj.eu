@@ -10,6 +10,7 @@ import { joinEvent } from '~/server-functions/joinEvent'
 import { useAuthSession } from '../lib/auth-client'
 import { i18n } from '~/lib/i18n'
 import { toast } from 'sonner'
+import { AboutStats } from '../components/about/AboutStats'
 
 export const AboutPage: React.FC = () => {
   const { upcomingEvents: initialUpcomingEvents, stats } = useLoaderData({ from: '/about' })
@@ -105,45 +106,7 @@ export const AboutPage: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-primary-600 to-secondary-600">
 
 
-      {/* Stats Section */}
-      <section className="py-16 bg-black/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 text-center">
-            <div>
-              <div className="text-4xl font-bold text-white mb-2">
-                {stats.eventsCreated.toLocaleString()}
-              </div>
-              <div className="text-white/80">
-                <Trans>Events Created</Trans>
-              </div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-white mb-2">
-                {stats.activeUsers.toLocaleString()}
-              </div>
-              <div className="text-white/80">
-                <Trans>Active Players</Trans>
-              </div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-white mb-2">
-                {stats.countries}
-              </div>
-              <div className="text-white/80">
-                <Trans>Countries</Trans>
-              </div>
-            </div>
-            {/* <div>
-              <div className="text-4xl font-bold text-white mb-2">
-                {stats.successRate}%
-              </div>
-              <div className="text-white/80">
-                <Trans>Success Rate</Trans>
-              </div>
-            </div> */}
-          </div>
-        </div>
-      </section>
+      <AboutStats stats={stats} />
 
       {/* Hero Section */}
       <section className="text-white py-20">

@@ -1,0 +1,94 @@
+.about-stats__item {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+}
+
+.about-stats__illustration {
+  width: min(100%, 180px);
+  height: auto;
+  margin-bottom: 12px;
+  overflow: visible;
+}
+
+.about-stats__number {
+  order: 1;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.035em;
+  line-height: 1.2;
+}
+
+.about-stats__label {
+  order: 2;
+  margin-top: 8px;
+  color: rgb(255 255 255 / 85%);
+  font-size: clamp(.875rem, 1.5vw, 1rem);
+}
+
+/* Short celebrations settle after a few loops so the page stays calm. */
+@media (prefers-reduced-motion: no-preference) {
+  .about-stats__ball {
+    animation: about-ball-bounce 1.6s ease-in-out 3;
+  }
+
+  .about-stats__ball-shadow {
+    transform-origin: 127px 106px;
+    animation: about-ball-shadow 1.6s ease-in-out 3;
+  }
+
+  .about-stats__player {
+    animation: about-player-hop 1.6s ease-in-out 3;
+  }
+
+  .about-stats__player--right {
+    animation-delay: .12s;
+  }
+
+  .about-stats__cheer {
+    transform-origin: 90px 27px;
+    animation: about-cheer 1.6s ease-in-out 3;
+  }
+
+  .about-stats__orbit {
+    transform-origin: 90px 61px;
+    animation: about-orbit 4.8s ease-in-out 1;
+  }
+
+  .about-stats__pin {
+    animation: about-pin-bob 2.4s ease-in-out 2;
+  }
+}
+
+@keyframes about-ball-bounce {
+  0%, 100% { transform: translateY(0); }
+  45% { transform: translateY(-17px); }
+}
+
+@keyframes about-ball-shadow {
+  0%, 100% { transform: scaleX(1); opacity: .25; }
+  45% { transform: scaleX(.65); opacity: .12; }
+}
+
+@keyframes about-player-hop {
+  0%, 65%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-7px); }
+}
+
+@keyframes about-cheer {
+  0%, 65%, 100% { transform: scale(.85); opacity: .35; }
+  30% { transform: scale(1.1); opacity: 1; }
+}
+
+@keyframes about-orbit {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes about-pin-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
