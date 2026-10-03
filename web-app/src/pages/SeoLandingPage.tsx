@@ -1,3 +1,6 @@
+import { getLocalizedErrorMessage } from '~/lib/errorMessages'
+import { useLingui } from '@lingui/react'
+import { getSportName } from '~/lib/localizedNames'
 import { Link, useNavigate } from '@tanstack/react-router'
 import React from 'react'
 import { MapPin, Trophy, Users } from 'lucide-react'
@@ -21,11 +24,13 @@ type SeoLandingPageProps = {
 }
 
 export function SeoLandingPage({ data }: SeoLandingPageProps) {
+  useLingui()
+
   const navigate = useNavigate()
   const session = useAuthSession()
   const [isSubscribed, setIsSubscribed] = React.useState(false)
 
-  const sportName = data.sportName
+  const sportName = data.sportId ? getSportName(data.sportId) : data.sportName
   const lowerSportName = sportName?.toLowerCase()
 
 
@@ -51,9 +56,7 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
       await joinEvent({ data: { eventId } })
     } catch (error) {
       toast.error(
-        error instanceof Error
-          ? error.message
-          : i18n._(msg`Failed to join the event. Please try again.`)
+        getLocalizedErrorMessage(error, i18n._(msg`Failed to join the event. Please try again.`))
       )
     }
   }
@@ -66,7 +69,7 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
             <div className="mb-4 flex flex-wrap gap-2">
               <Badge variant="success">{data.city}</Badge>
               {data.country && <Badge variant="info">{data.country}</Badge>}
-              {data.sportName && <Badge variant="warning">{data.sportName}</Badge>}
+              {data.sportName && <Badge variant="warning">{sportName}</Badge>}
             </div>
             <h1 className="text-4xl font-bold tracking-normal md:text-5xl">
               {sportName ? (
@@ -90,7 +93,7 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button variant="secondary" onClick={handleSubscribe} disabled={isSubscribed}>
-                <Trans>{isSubscribed ? 'Subscribed for new city events' : 'Subscribe to new city events by email'}</Trans>
+                {isSubscribed ? <Trans>Subscribed for new city events</Trans> : <Trans>Subscribe to new city events by email</Trans>}
               </Button>
 
               <Link to="/">
@@ -160,7 +163,7 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
                       sportSlug: link.sportSlug!
                     }}
                   >
-                    <Badge variant="info">{link.sportName}</Badge>
+                    <Badge variant="info">{link.sportId ? getSportName(link.sportId) : link.sportName}</Badge>
                   </Link>
                 ))}
               </div>
@@ -187,7 +190,7 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
               </Trans>
               <div className="mt-4">
                 <Button variant="secondary" onClick={handleSubscribe} disabled={isSubscribed}>
-                  <Trans>{isSubscribed ? 'Subscribed for new city events' : 'Email me when a new game is created in this city'}</Trans>
+                  {isSubscribed ? <Trans>Subscribed for new city events</Trans> : <Trans>Email me when a new game is created in this city</Trans>}
                 </Button>
               </div>
             </div>
@@ -213,7 +216,7 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
                       const sport = SPORTS.find((candidate) => candidate.id === sportId)
                       return sport ? (
                         <Badge key={sport.id} variant="info">
-                          {sport.name}
+                          {getSportName(sport.id)}
                         </Badge>
                       ) : null
                     })}
@@ -231,7 +234,7 @@ export function SeoLandingPage({ data }: SeoLandingPageProps) {
             <LinkList
               title={<Trans>Sports in {data.city}</Trans>}
               links={data.sportLinks.map((link) => ({
-                label: link.sportName || '',
+                label: link.sportId ? getSportName(link.sportId) : link.sportName || '',
                 to: `/${link.citySlug}/${link.sportSlug}`,
                 count: link.eventCount || link.venueCount
               }))}
@@ -263,6 +266,8 @@ function Stat({
   label: React.ReactNode
   value: number
 }) {
+  useLingui()
+
   return (
     <div className="rounded-lg border border-white/20 bg-white/15 p-4 text-white backdrop-blur">
       <div className="flex items-center gap-3">
@@ -283,6 +288,8 @@ function LinkList({
   title: React.ReactNode
   links: Array<{ label: string; to: string; count: number }>
 }) {
+  useLingui()
+
   if (links.length === 0) return null
 
   return (

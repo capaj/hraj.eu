@@ -1,3 +1,4 @@
+import { getEmailCopy, formatEmailDate, type EmailLocale } from './localization'
 import type { Resend } from 'resend'
 
 type VenueEvent = {
@@ -17,6 +18,7 @@ function escapeHtml(value: string) {
 }
 
 export async function sendVenueSubscriptionEmail({
+  locale = 'cs',
   resend,
   from,
   to,
@@ -24,6 +26,7 @@ export async function sendVenueSubscriptionEmail({
   events,
   baseUrl
 }: {
+  locale?: EmailLocale
   resend: Resend
   from: string
   to: string
@@ -31,19 +34,20 @@ export async function sendVenueSubscriptionEmail({
   events: VenueEvent[]
   baseUrl: string
 }) {
+  const copy = getEmailCopy(locale)
   const safeVenueName = escapeHtml(venueName)
   const list = events
     .map((event) => {
       const eventUrl = `${baseUrl}/events/${encodeURIComponent(event.id)}`
-      return `<li><a href="${eventUrl}">${escapeHtml(event.title)}</a> – ${escapeHtml(event.date)} ${escapeHtml(event.startTime)}</li>`
+      return `<li><a href="${eventUrl}">${escapeHtml(event.title)}</a> – ${escapeHtml(formatEmailDate(event.date, locale))} ${escapeHtml(event.startTime)}</li>`
     })
     .join('')
 
   const result = await resend.emails.send({
     from,
     to,
-    subject: `New upcoming events at ${venueName}`,
-    html: `<div><p>New events were added at ${safeVenueName}:</p><ul>${list}</ul><p>Browse all venues: <a href="${baseUrl}/venues">${baseUrl}/venues</a></p></div>`
+    subject: copy.venueSubject(venueName),
+    html: `<div><p>${copy.venueIntro(safeVenueName)}</p><ul>${list}</ul><p>${copy.browseVenues}: <a href="${baseUrl}/venues">${baseUrl}/venues</a></p></div>`
   })
 
   if (result.error) {

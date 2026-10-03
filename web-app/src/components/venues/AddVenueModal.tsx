@@ -1,3 +1,6 @@
+import { getLocalizedErrorMessage } from '~/lib/errorMessages'
+import { useLingui } from '@lingui/react'
+import { getFacilityName, getSportName } from '~/lib/localizedNames'
 import React, { useState, useEffect, useRef } from 'react'
 import { Trans } from '@lingui/react/macro'
 import { msg } from '@lingui/core/macro'
@@ -55,6 +58,8 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
   onSubmit,
   initialData
 }) => {
+  useLingui()
+
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
 
   const [images, setImages] = useState<string[]>([])
@@ -234,24 +239,6 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
     }
   }, [isOpen, isSubmitting, onClose, formData, images, orientationPlan, location])
 
-  const getFacilityName = (facility: string) => {
-    switch (facility) {
-      case 'parking':
-        return i18n._(msg`Parking`)
-      case 'wifi':
-        return i18n._(msg`WiFi`)
-      case 'cafe':
-        return i18n._(msg`Café`)
-      case 'showers':
-        return i18n._(msg`Showers`)
-      case 'equipment_rental':
-        return i18n._(msg`Equipment`)
-      case 'changing_rooms':
-        return i18n._(msg`Changing Rooms`)
-      default:
-        return facility
-    }
-  }
 
 
 
@@ -287,9 +274,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
     } catch (error) {
       console.error('Upload failed:', error)
       const errorMessage =
-        error instanceof Error
-          ? error.message
-          : i18n._(msg`Failed to upload images. Please try again.`)
+        getLocalizedErrorMessage(error, i18n._(msg`Failed to upload images. Please try again.`))
       alert(errorMessage)
     } finally {
       setUploadingImage(false)
@@ -313,9 +298,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
     } catch (error) {
       console.error('Upload failed:', error)
       const errorMessage =
-        error instanceof Error
-          ? error.message
-          : i18n._(msg`Failed to upload orientation plan. Please try again.`)
+        getLocalizedErrorMessage(error, i18n._(msg`Failed to upload orientation plan. Please try again.`))
       alert(errorMessage)
     } finally {
       setUploadingPlan(false)
@@ -616,7 +599,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                       onLocationChange={handleLocationChange}
                     />
                     <p className="text-xs text-gray-500 mt-2">
-                      📍 Coordinates: {location.lat.toFixed(6)},{' '}
+                      📍 <Trans>Coordinates:</Trans> {location.lat.toFixed(6)},{' '}
                       {location.lng.toFixed(6)}
                     </p>
                   </div>
@@ -629,7 +612,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                   <Trans>Supported Sports *</Trans>
                 </label>
                 <TagInput
-                  options={SPORTS}
+                  options={SPORTS.map((sport) => ({ ...sport, name: getSportName(sport.id) }))}
                   selected={formData.sports}
                   onChange={(selected) => handleChange('sports', selected)}
                   renderOptionIcon={(sport) => (
@@ -730,7 +713,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                       <div key={index} className="relative">
                         <img
                           src={image}
-                          alt={`Venue ${index + 1}`}
+                          alt={i18n._(msg`Venue ${index + 1}`)}
                           className="w-full h-24 object-cover rounded-lg"
                         />
                         <button
@@ -787,7 +770,7 @@ export const AddVenueModal: React.FC<AddVenueModalProps> = ({
                       <div className="mt-4">
                         <img
                           src={orientationPlan}
-                          alt="Orientation plan"
+                          alt={i18n._(msg`Orientation plan`)}
                           className="max-w-xs mx-auto rounded-lg"
                         />
                         <button

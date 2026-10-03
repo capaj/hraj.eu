@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import React from 'react'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import {
@@ -17,14 +18,14 @@ export const TermsOfService: React.FC = () => {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white mb-4 flex items-center justify-center">
             <FileText className="text-white mr-3" size={32} />
-            Terms of Service
+            <Trans>Terms of Service</Trans>
           </h1>
           <p className="text-lg text-white/80 max-w-2xl mx-auto">
-            Please read these terms carefully before using hraj.eu. By using our
-            platform, you agree to these terms.
+            <Trans>Please read these terms carefully before using hraj.eu. By using our
+            platform, you agree to these terms.</Trans>
           </p>
           <p className="text-sm text-white/60 mt-2">
-            Last updated: December 2024
+            <Trans>Last updated: December 2024</Trans>
           </p>
         </div>
 
@@ -34,21 +35,21 @@ export const TermsOfService: React.FC = () => {
             <CardHeader>
               <h2 className="text-xl font-bold text-gray-900 flex items-center">
                 <Gavel className="text-primary-600 mr-2" size={20} />
-                Acceptance of Terms
+                <Trans>Acceptance of Terms</Trans>
               </h2>
             </CardHeader>
             <CardContent className="p-6">
               <p className="text-gray-700 mb-4">
-                By accessing and using hraj.eu ("the Platform"), you accept and
+                <Trans>By accessing and using hraj.eu ("the Platform"), you accept and
                 agree to be bound by the terms and provision of this agreement.
                 If you do not agree to abide by the above, please do not use
-                this service.
+                this service.</Trans>
               </p>
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <p className="text-blue-800 text-sm">
-                  <strong>Important:</strong> These terms constitute a legally
+                  <Trans><strong>Important:</strong> These terms constitute a legally
                   binding agreement between you and hraj.eu. Please read them
-                  carefully.
+                  carefully.</Trans>
                 </p>
               </div>
             </CardContent>
@@ -59,25 +60,25 @@ export const TermsOfService: React.FC = () => {
             <CardHeader>
               <h2 className="text-xl font-bold text-gray-900 flex items-center">
                 <Users className="text-primary-600 mr-2" size={20} />
-                Platform Description
+                <Trans>Platform Description</Trans>
               </h2>
             </CardHeader>
             <CardContent className="p-6">
               <p className="text-gray-700 mb-4">
-                hraj.eu is a community platform that connects amateur sports
-                enthusiasts across Europe. Our services include:
+                <Trans>hraj.eu is a community platform that connects amateur sports
+                enthusiasts across Europe. Our services include:</Trans>
               </p>
               <ul className="list-disc list-inside text-gray-700 space-y-2">
                 <li>
-                  Event creation and management tools for sports activities
+                  <Trans>Event creation and management tools for sports activities</Trans>
                 </li>
                 <li>
-                  User profiles with skill level tracking and karma system
+                  <Trans>User profiles with skill level tracking and karma system</Trans>
                 </li>
-                <li>Venue database and location services</li>
-                <li>Payment facilitation for event costs</li>
-                <li>Community features including ratings and feedback</li>
-                <li>Notification and communication systems</li>
+                <li><Trans>Venue database and location services</Trans></li>
+                <li><Trans>Payment facilitation for event costs</Trans></li>
+                <li><Trans>Community features including ratings and feedback</Trans></li>
+                <li><Trans>Notification and communication systems</Trans></li>
               </ul>
             </CardContent>
           </Card>
@@ -87,58 +88,58 @@ export const TermsOfService: React.FC = () => {
             <CardHeader>
               <h2 className="text-xl font-bold text-gray-900 flex items-center">
                 <Shield className="text-primary-600 mr-2" size={20} />
-                User Accounts and Responsibilities
+                <Trans>User Accounts and Responsibilities</Trans>
               </h2>
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-4">
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">
-                    Account Creation
+                    <Trans>Account Creation</Trans>
                   </h3>
                   <ul className="list-disc list-inside text-gray-700 space-y-1">
                     <li>
-                      You must be at least 16 years old to create an account
+                      <Trans>You must be at least 16 years old to create an account</Trans>
                     </li>
-                    <li>You must provide accurate and complete information</li>
+                    <li><Trans>You must provide accurate and complete information</Trans></li>
                     <li>
-                      You are responsible for maintaining the security of your
-                      account
+                      <Trans>You are responsible for maintaining the security of your
+                      account</Trans>
                     </li>
-                    <li>One person may only maintain one account</li>
+                    <li><Trans>One person may only maintain one account</Trans></li>
                   </ul>
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">
-                    User Conduct
+                    <Trans>User Conduct</Trans>
                   </h3>
                   <ul className="list-disc list-inside text-gray-700 space-y-1">
                     <li>
-                      Treat all community members with respect and courtesy
+                      <Trans>Treat all community members with respect and courtesy</Trans>
                     </li>
                     <li>
-                      Provide honest feedback and accurate skill level
-                      assessments
+                      <Trans>Provide honest feedback and accurate skill level
+                      assessments</Trans>
                     </li>
                     <li>
-                      Honor your commitments to attend events you've joined
+                      <Trans>Honor your commitments to attend events you've joined</Trans>
                     </li>
                     <li>
-                      Report any safety concerns or inappropriate behavior
+                      <Trans>Report any safety concerns or inappropriate behavior</Trans>
                     </li>
-                    <li>Comply with all applicable laws and regulations</li>
+                    <li><Trans>Comply with all applicable laws and regulations</Trans></li>
                   </ul>
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">
-                    Prohibited Activities
+                    <Trans>Prohibited Activities</Trans>
                   </h3>
                   <ul className="list-disc list-inside text-gray-700 space-y-1">
-                    <li>Creating fake accounts or impersonating others</li>
-                    <li>Harassment, discrimination, or abusive behavior</li>
-                    <li>Spam, fraud, or misleading information</li>
-                    <li>Commercial activities without prior authorization</li>
-                    <li>Attempting to hack or disrupt the platform</li>
+                    <li><Trans>Creating fake accounts or impersonating others</Trans></li>
+                    <li><Trans>Harassment, discrimination, or abusive behavior</Trans></li>
+                    <li><Trans>Spam, fraud, or misleading information</Trans></li>
+                    <li><Trans>Commercial activities without prior authorization</Trans></li>
+                    <li><Trans>Attempting to hack or disrupt the platform</Trans></li>
                   </ul>
                 </div>
               </div>
@@ -150,57 +151,57 @@ export const TermsOfService: React.FC = () => {
             <CardHeader>
               <h2 className="text-xl font-bold text-gray-900 flex items-center">
                 <Users className="text-primary-600 mr-2" size={20} />
-                Events and Payments
+                <Trans>Events and Payments</Trans>
               </h2>
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-4">
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">
-                    Event Organization
+                    <Trans>Event Organization</Trans>
                   </h3>
                   <ul className="list-disc list-inside text-gray-700 space-y-1">
                     <li>
-                      Event organizers are responsible for the safety and
-                      conduct of their events
+                      <Trans>Event organizers are responsible for the safety and
+                      conduct of their events</Trans>
                     </li>
                     <li>
-                      Organizers must provide accurate event information and
-                      venue details
+                      <Trans>Organizers must provide accurate event information and
+                      venue details</Trans>
                     </li>
                     <li>
-                      Cancellation policies must be clearly communicated to
-                      participants
+                      <Trans>Cancellation policies must be clearly communicated to
+                      participants</Trans>
                     </li>
                     <li>
-                      Organizers should have appropriate insurance coverage
+                      <Trans>Organizers should have appropriate insurance coverage</Trans>
                     </li>
                   </ul>
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">
-                    Event Participation
+                    <Trans>Event Participation</Trans>
                   </h3>
                   <ul className="list-disc list-inside text-gray-700 space-y-1">
-                    <li>Participants join events at their own risk</li>
+                    <li><Trans>Participants join events at their own risk</Trans></li>
                     <li>
-                      You must honor your commitment to attend events you've
-                      joined
+                      <Trans>You must honor your commitment to attend events you've
+                      joined</Trans>
                     </li>
-                    <li>Notify organizers promptly if you cannot attend</li>
-                    <li>Follow all event rules and safety guidelines</li>
+                    <li><Trans>Notify organizers promptly if you cannot attend</Trans></li>
+                    <li><Trans>Follow all event rules and safety guidelines</Trans></li>
                   </ul>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Payments</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2"><Trans>Payments</Trans></h3>
                   <ul className="list-disc list-inside text-gray-700 space-y-1">
                     <li>
-                      hraj.eu facilitates payments but is not responsible for
-                      disputes
+                      <Trans>hraj.eu facilitates payments but is not responsible for
+                      disputes</Trans>
                     </li>
-                    <li>Refund policies are determined by event organizers</li>
-                    <li>Payment information must be accurate and up-to-date</li>
-                    <li>Users are responsible for any applicable taxes</li>
+                    <li><Trans>Refund policies are determined by event organizers</Trans></li>
+                    <li><Trans>Payment information must be accurate and up-to-date</Trans></li>
+                    <li><Trans>Users are responsible for any applicable taxes</Trans></li>
                   </ul>
                 </div>
               </div>
@@ -212,36 +213,36 @@ export const TermsOfService: React.FC = () => {
             <CardHeader>
               <h2 className="text-xl font-bold text-gray-900 flex items-center">
                 <Shield className="text-primary-600 mr-2" size={20} />
-                Karma System and Community Standards
+                <Trans>Karma System and Community Standards</Trans>
               </h2>
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-3">
                 <p className="text-gray-700">
-                  Our karma system is designed to promote good sportsmanship and
-                  reliable participation:
+                  <Trans>Our karma system is designed to promote good sportsmanship and
+                  reliable participation:</Trans>
                 </p>
                 <ul className="list-disc list-inside text-gray-700 space-y-1">
                   <li>
-                    Karma points reflect your reputation within the community
+                    <Trans>Karma points reflect your reputation within the community</Trans>
                   </li>
                   <li>
-                    Points are awarded for positive behavior and deducted for
-                    negative actions
+                    <Trans>Points are awarded for positive behavior and deducted for
+                    negative actions</Trans>
                   </li>
-                  <li>Feedback should be honest and constructive</li>
+                  <li><Trans>Feedback should be honest and constructive</Trans></li>
                   <li>
-                    False or malicious reports may result in account penalties
+                    <Trans>False or malicious reports may result in account penalties</Trans>
                   </li>
                   <li>
-                    We reserve the right to adjust karma scores for system
-                    integrity
+                    <Trans>We reserve the right to adjust karma scores for system
+                    integrity</Trans>
                   </li>
                 </ul>
                 <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mt-4">
                   <p className="text-amber-800 text-sm">
-                    <strong>Note:</strong> Consistently low karma scores may
-                    result in restricted access to certain platform features.
+                    <Trans><strong>Note:</strong> Consistently low karma scores may
+                    result in restricted access to certain platform features.</Trans>
                   </p>
                 </div>
               </div>
@@ -253,49 +254,49 @@ export const TermsOfService: React.FC = () => {
             <CardHeader>
               <h2 className="text-xl font-bold text-gray-900 flex items-center">
                 <AlertTriangle className="text-primary-600 mr-2" size={20} />
-                Liability and Disclaimers
+                <Trans>Liability and Disclaimers</Trans>
               </h2>
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-4">
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">
-                    Platform Liability
+                    <Trans>Platform Liability</Trans>
                   </h3>
                   <p className="text-gray-700">
-                    hraj.eu provides a platform for connecting sports
-                    enthusiasts but is not responsible for:
+                    <Trans>hraj.eu provides a platform for connecting sports
+                    enthusiasts but is not responsible for:</Trans>
                   </p>
                   <ul className="list-disc list-inside text-gray-700 space-y-1 mt-2">
                     <li>
-                      Injuries or accidents that occur during sports activities
+                      <Trans>Injuries or accidents that occur during sports activities</Trans>
                     </li>
-                    <li>Disputes between users or event-related conflicts</li>
-                    <li>The accuracy of user-provided information</li>
-                    <li>Venue conditions or third-party services</li>
-                    <li>Weather conditions or event cancellations</li>
+                    <li><Trans>Disputes between users or event-related conflicts</Trans></li>
+                    <li><Trans>The accuracy of user-provided information</Trans></li>
+                    <li><Trans>Venue conditions or third-party services</Trans></li>
+                    <li><Trans>Weather conditions or event cancellations</Trans></li>
                   </ul>
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">
-                    User Responsibility
+                    <Trans>User Responsibility</Trans>
                   </h3>
                   <p className="text-gray-700">
-                    Users participate in sports activities at their own risk and
-                    are responsible for:
+                    <Trans>Users participate in sports activities at their own risk and
+                    are responsible for:</Trans>
                   </p>
                   <ul className="list-disc list-inside text-gray-700 space-y-1 mt-2">
-                    <li>Their own safety and well-being during events</li>
-                    <li>Having appropriate insurance coverage</li>
-                    <li>Assessing their own fitness level for activities</li>
-                    <li>Following safety guidelines and venue rules</li>
+                    <li><Trans>Their own safety and well-being during events</Trans></li>
+                    <li><Trans>Having appropriate insurance coverage</Trans></li>
+                    <li><Trans>Assessing their own fitness level for activities</Trans></li>
+                    <li><Trans>Following safety guidelines and venue rules</Trans></li>
                   </ul>
                 </div>
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                   <p className="text-red-800 text-sm">
-                    <strong>Important:</strong> Sports activities involve
+                    <Trans><strong>Important:</strong> Sports activities involve
                     inherent risks. Please ensure you have appropriate insurance
-                    coverage and assess your fitness level before participating.
+                    coverage and assess your fitness level before participating.</Trans>
                   </p>
                 </div>
               </div>
@@ -307,30 +308,30 @@ export const TermsOfService: React.FC = () => {
             <CardHeader>
               <h2 className="text-xl font-bold text-gray-900 flex items-center">
                 <FileText className="text-primary-600 mr-2" size={20} />
-                Intellectual Property
+                <Trans>Intellectual Property</Trans>
               </h2>
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-3">
                 <p className="text-gray-700">
-                  The hraj.eu platform, including its design, features, and
-                  content, is protected by intellectual property laws:
+                  <Trans>The hraj.eu platform, including its design, features, and
+                  content, is protected by intellectual property laws:</Trans>
                 </p>
                 <ul className="list-disc list-inside text-gray-700 space-y-1">
                   <li>
-                    You may not copy, modify, or distribute our platform or
-                    content
+                    <Trans>You may not copy, modify, or distribute our platform or
+                    content</Trans>
                   </li>
                   <li>
-                    User-generated content remains owned by the user but grants
-                    us usage rights
+                    <Trans>User-generated content remains owned by the user but grants
+                    us usage rights</Trans>
                   </li>
                   <li>
-                    You must respect the intellectual property rights of other
-                    users
+                    <Trans>You must respect the intellectual property rights of other
+                    users</Trans>
                   </li>
                   <li>
-                    Report any copyright infringement to our designated agent
+                    <Trans>Report any copyright infringement to our designated agent</Trans>
                   </li>
                 </ul>
               </div>
@@ -342,36 +343,36 @@ export const TermsOfService: React.FC = () => {
             <CardHeader>
               <h2 className="text-xl font-bold text-gray-900 flex items-center">
                 <AlertTriangle className="text-primary-600 mr-2" size={20} />
-                Account Termination
+                <Trans>Account Termination</Trans>
               </h2>
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-3">
                 <p className="text-gray-700 mb-3">
-                  We reserve the right to suspend or terminate accounts for
-                  violations of these terms:
+                  <Trans>We reserve the right to suspend or terminate accounts for
+                  violations of these terms:</Trans>
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <h4 className="font-medium text-gray-900 mb-2">
-                      Grounds for Termination
+                      <Trans>Grounds for Termination</Trans>
                     </h4>
                     <ul className="list-disc list-inside text-gray-700 text-sm space-y-1">
-                      <li>Violation of community guidelines</li>
-                      <li>Fraudulent or illegal activity</li>
-                      <li>Repeated no-shows or bad behavior</li>
-                      <li>Harassment of other users</li>
+                      <li><Trans>Violation of community guidelines</Trans></li>
+                      <li><Trans>Fraudulent or illegal activity</Trans></li>
+                      <li><Trans>Repeated no-shows or bad behavior</Trans></li>
+                      <li><Trans>Harassment of other users</Trans></li>
                     </ul>
                   </div>
                   <div>
                     <h4 className="font-medium text-gray-900 mb-2">
-                      Your Rights
+                      <Trans>Your Rights</Trans>
                     </h4>
                     <ul className="list-disc list-inside text-gray-700 text-sm space-y-1">
-                      <li>You may delete your account at any time</li>
-                      <li>You can appeal termination decisions</li>
-                      <li>Data export available before deletion</li>
-                      <li>Refunds handled case-by-case</li>
+                      <li><Trans>You may delete your account at any time</Trans></li>
+                      <li><Trans>You can appeal termination decisions</Trans></li>
+                      <li><Trans>Data export available before deletion</Trans></li>
+                      <li><Trans>Refunds handled case-by-case</Trans></li>
                     </ul>
                   </div>
                 </div>
@@ -384,26 +385,26 @@ export const TermsOfService: React.FC = () => {
             <CardHeader>
               <h2 className="text-xl font-bold text-gray-900 flex items-center">
                 <Gavel className="text-primary-600 mr-2" size={20} />
-                Governing Law and Disputes
+                <Trans>Governing Law and Disputes</Trans>
               </h2>
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-3">
                 <p className="text-gray-700">
-                  These terms are governed by the laws of the Czech Republic.
-                  Any disputes will be resolved through:
+                  <Trans>These terms are governed by the laws of the Czech Republic.
+                  Any disputes will be resolved through:</Trans>
                 </p>
                 <ol className="list-decimal list-inside text-gray-700 space-y-1">
-                  <li>Good faith negotiation between the parties</li>
-                  <li>Mediation through a mutually agreed mediator</li>
+                  <li><Trans>Good faith negotiation between the parties</Trans></li>
+                  <li><Trans>Mediation through a mutually agreed mediator</Trans></li>
                   <li>
-                    Arbitration or court proceedings in Prague, Czech Republic
+                    <Trans>Arbitration or court proceedings in Prague, Czech Republic</Trans>
                   </li>
                 </ol>
                 <div className="bg-gray-50 rounded-lg p-4 mt-4">
                   <p className="text-gray-700 text-sm">
-                    <strong>EU Users:</strong> Nothing in these terms affects
-                    your statutory rights as a consumer under applicable EU law.
+                    <Trans><strong>EU Users:</strong> Nothing in these terms affects
+                    your statutory rights as a consumer under applicable EU law.</Trans>
                   </p>
                 </div>
               </div>
@@ -415,19 +416,19 @@ export const TermsOfService: React.FC = () => {
             <CardHeader>
               <h2 className="text-xl font-bold text-gray-900 flex items-center">
                 <Mail className="text-primary-600 mr-2" size={20} />
-                Contact Information
+                <Trans>Contact Information</Trans>
               </h2>
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-3">
                 <p className="text-gray-700">
-                  If you have questions about these Terms of Service, please
-                  contact us:
+                  <Trans>If you have questions about these Terms of Service, please
+                  contact us:</Trans>
                 </p>
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="space-y-2">
                     <p className="text-gray-700">
-                      <strong>Email:</strong> info@hraj.eu
+                      <Trans><strong>Email:</strong> info@hraj.eu</Trans>
                     </p>
                   </div>
                 </div>
@@ -440,21 +441,21 @@ export const TermsOfService: React.FC = () => {
             <CardHeader>
               <h2 className="text-xl font-bold text-gray-900 flex items-center">
                 <FileText className="text-primary-600 mr-2" size={20} />
-                Changes to Terms
+                <Trans>Changes to Terms</Trans>
               </h2>
             </CardHeader>
             <CardContent className="p-6">
               <p className="text-gray-700">
-                We may update these Terms of Service from time to time. When we
+                <Trans>We may update these Terms of Service from time to time. When we
                 make significant changes, we will notify users by email or
                 through a prominent notice on our platform. Continued use of
                 hraj.eu after such modifications constitutes acceptance of the
-                updated terms.
+                updated terms.</Trans>
               </p>
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
                 <p className="text-blue-800 text-sm">
-                  <strong>Tip:</strong> We recommend reviewing these terms
-                  periodically to stay informed of any updates.
+                  <Trans><strong>Tip:</strong> We recommend reviewing these terms
+                  periodically to stay informed of any updates.</Trans>
                 </p>
               </div>
             </CardContent>

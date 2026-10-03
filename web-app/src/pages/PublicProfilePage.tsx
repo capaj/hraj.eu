@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react'
 import React from 'react'
 import { useNavigate, useLoaderData } from '@tanstack/react-router'
 import { UserProfile } from '../components/user/UserProfile'
@@ -17,6 +18,8 @@ import { getEventDateTime } from '../utils/eventDateTime'
 import { ArrowDownWideNarrow, ArrowUpNarrowWide } from 'lucide-react'
 
 export const PublicProfilePage: React.FC = () => {
+  useLingui()
+
   const [pastEventsSort, setPastEventsSort] = React.useState<'newest' | 'oldest'>('newest')
 
   const { notifications, events, venues, users } = useLoaderData({

@@ -1,3 +1,5 @@
+import { useLingui } from '@lingui/react'
+import { getSportName, getVenueTypeName } from '~/lib/localizedNames'
 import React, { useState } from 'react'
 import { Card, CardContent } from '../ui/Card'
 import { Button } from '../ui/Button'
@@ -39,6 +41,8 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
   onAddVenue,
   sportFilter
 }) => {
+  useLingui()
+
   const [searchTerm, setSearchTerm] = useState('')
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [showAllVenues, setShowAllVenues] = useState(false)
@@ -164,7 +168,7 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
                     size="sm"
                     className={getVenueTypeColor(selectedVenue.type)}
                   >
-                    {selectedVenue.type}
+                    {getVenueTypeName(selectedVenue.type)}
                   </Badge>
                 </div>
                 <div className="flex items-center text-sm text-gray-600 mb-2">
@@ -177,8 +181,7 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
                       size={14}
                       className="mr-1 text-yellow-500 fill-current"
                     />
-                    {selectedVenue.rating} ({selectedVenue.totalRatings}{' '}
-                    reviews)
+                    <Trans>{selectedVenue.rating} ({selectedVenue.totalRatings} reviews)</Trans>
                   </div>
                 )}
               </div>
@@ -226,7 +229,7 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
                             size="sm"
                             className={getVenueTypeColor(venue.type)}
                           >
-                            {venue.type}
+                            {getVenueTypeName(venue.type)}
                           </Badge>
                           {venue.isVerified && (
                             <Badge variant="success" size="sm">
@@ -253,7 +256,7 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
                             <span
                               key={sportId}
                               className="text-lg"
-                              title={sport.name}
+                              title={getSportName(sport.id)}
                             >
                               <SportIcon sport={sport.id} size={18} />
                             </span>
@@ -334,17 +337,17 @@ export const VenueSelector: React.FC<VenueSelectorProps> = ({
               </h3>
               <p className="text-sm text-gray-600 mb-4">
                 {(() => {
-                  const sportName = sportFilter ? SPORTS.find((s) => s.id === sportFilter)?.name : undefined;
+                  const sportName = sportFilter ? getSportName(sportFilter) : undefined;
 
                   if (searchTerm) {
                     if (sportName) {
-                      return t(i18n)`No venues match "{searchTerm}" for {sportName}`
+                      return t(i18n)`No venues match "${searchTerm}" for ${sportName}`
                     } else {
-                      return t(i18n)`No venues match "{searchTerm}"`
+                      return t(i18n)`No venues match "${searchTerm}"`
                     }
                   } else {
                     if (sportName) {
-                      return t(i18n)`No venues available for {sportName}`
+                      return t(i18n)`No venues available for ${sportName}`
                     } else {
                       return t(i18n)`No venues available`
                     }

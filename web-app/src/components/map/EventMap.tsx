@@ -1,3 +1,6 @@
+import { useLingui } from '@lingui/react'
+import { enUS, cs } from 'date-fns/locale'
+import { i18n } from '~/lib/i18n'
 import React, {
   useEffect,
   useRef,
@@ -36,6 +39,8 @@ export interface EventMapRef {
 export const EventMap = forwardRef<EventMapRef, EventMapProps>(
   ({ events, venues, onEventSelect, onJoinEvent, currentUserId }, ref) => {
     const legendId = useId()
+
+    useLingui()
     const mapRef = useRef<HTMLDivElement>(null)
     const mapInstanceRef = useRef<any>(null)
     const markersRef = useRef<any[]>([])
@@ -241,7 +246,7 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
             popupContent += `
                <div style="padding-bottom: 8px; border-bottom: 1px solid #e5e7eb; margin-bottom: 12px;">
                  <h3 style="margin: 0; font-size: 14px; font-weight: 600; color: #374151;">
-                   ${venueEvents.length} events at ${venue.name}
+                   ${t`${venueEvents.length} events at ${venue.name}`}
                  </h3>
                </div>
                <div style="max-height: 320px; overflow-y: auto; padding-right: 4px;">
@@ -296,7 +301,7 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
                 <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px;">
                   <div style="display: flex; align-items: center; font-size: 14px; color: #4b5563;">
                     <span style="margin-right: 8px;">📅</span>
-                    ${format(event.date, 'EEEE, MMM d')}
+                    ${format(event.date, 'PPPP', { locale: i18n.locale === 'cs' ? cs : enUS })}
                   </div>
                   <div style="display: flex; align-items: center; font-size: 14px; color: #4b5563;">
                     <span style="margin-right: 8px;">🕐</span>
@@ -320,7 +325,7 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
                   <span style="font-size: 12px; padding: 4px 8px; border-radius: 4px; background-color: ${spotsLeft > 0 ? '#dcfce7' : '#fef3c7'
               }; color: ${spotsLeft > 0 ? '#166534' : '#92400e'
               }; font-weight: 500;">
-                    ${spotsLeft > 0 ? `${spotsLeft} spots left` : t`Waitlist`}
+                    ${spotsLeft > 0 ? t`${spotsLeft} spots left` : t`Waitlist`}
                   </span>
                   ${eventActionButton} 
                 </div>
@@ -368,13 +373,13 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
       }
 
       updateMarkers()
-    }, [mounted, events, venues, userLocation, isMapReady, currentUserId])
+    }, [mounted, events, venues, userLocation, isMapReady, currentUserId, i18n.locale])
 
     if (!mounted) {
       return (
         <div className="relative w-full h-full">
           <div className="w-full h-full min-h-[500px] flex items-center justify-center bg-gray-100">
-            <div className="text-gray-500">Loading map...</div>
+            <div className="text-gray-500"><Trans>Loading map...</Trans></div>
           </div>
         </div>
       )

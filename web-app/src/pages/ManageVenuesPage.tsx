@@ -1,3 +1,7 @@
+import { i18n } from '~/lib/i18n'
+import { useLingui } from '@lingui/react'
+import { enUS, cs } from 'date-fns/locale'
+import { getSportName, getVenueTypeName } from '~/lib/localizedNames'
 import React, { useState, useEffect } from 'react'
 import { Card, CardContent } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
@@ -38,7 +42,9 @@ const VenueCard = ({
   venue: Venue
   onEditVenue: (venue: Venue) => void
 }) => {
-  const createdAtLabel = format(venue.createdAt, 'MMM d, yyyy')
+  useLingui()
+
+  const createdAtLabel = format(venue.createdAt, 'PP', { locale: i18n.locale === 'cs' ? cs : enUS })
 
   return (
     <Card className="hover:shadow-lg transition-shadow">
@@ -71,7 +77,7 @@ const VenueCard = ({
             <div className="flex items-center space-x-4 text-sm text-gray-500">
               <div className="flex items-center">
                 <Building2 size={14} className="mr-1" />
-                {venue.type}
+                {getVenueTypeName(venue.type)}
               </div>
               {venue.price > 0 && (
                 <div className="flex items-center">
@@ -110,7 +116,7 @@ const VenueCard = ({
               {venue.sports.map((sportId) => (
                 <Badge key={sportId} variant="info" size="sm">
                   <SportIcon sport={sportId} size={14} className="mr-1" />
-                  {SPORTS.find((s) => s.id === sportId)?.name || sportId}
+                  {getSportName(sportId) || sportId}
                 </Badge>
               ))}
             </div>
@@ -185,6 +191,8 @@ const ManageVenuesContent = ({
   onAddVenue,
   onEditVenue
 }: ManageVenuesContentProps) => {
+  useLingui()
+
   if (isLoading) {
     return (
       <Card>
@@ -231,6 +239,8 @@ const ManageVenuesContent = ({
 }
 
 export const ManageVenuesPage: React.FC = () => {
+  useLingui()
+
   const user = useUser()
   const [venues, setVenues] = useState<Venue[]>([])
   const [isLoading, setIsLoading] = useState(true)

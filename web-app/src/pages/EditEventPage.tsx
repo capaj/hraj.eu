@@ -1,3 +1,5 @@
+import { getLocalizedErrorMessage } from '~/lib/errorMessages'
+import { useLingui } from '@lingui/react'
 import React, { useState } from 'react'
 import { CreateEventForm, CreateEventFormData } from '../components/events/CreateEventForm'
 import { updateEvent } from '../server-functions/updateEvent'
@@ -15,6 +17,8 @@ interface EditEventPageProps {
 }
 
 export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
+  useLingui()
+
   const navigate = useNavigate()
   const session = useAuthSession()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -107,9 +111,7 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
       navigate({ to: '/events/$eventId', params: { eventId: event.id } })
     } catch (error) {
       toast.error(
-        error instanceof Error
-          ? error.message
-          : i18n._(msg`Failed to cancel event`)
+        getLocalizedErrorMessage(error, i18n._(msg`Failed to cancel event`))
       )
       throw error
     }

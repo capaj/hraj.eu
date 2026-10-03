@@ -1,3 +1,7 @@
+import { useLingui } from '@lingui/react'
+import { t } from '@lingui/core/macro'
+import { getSkillLevelName, getSportName } from '~/lib/localizedNames'
+import { Trans } from '@lingui/react/macro'
 import React from 'react'
 import { Badge } from '../ui/Badge'
 import { Button } from '../ui/Button'
@@ -28,9 +32,11 @@ export const EventFilters: React.FC<EventFiltersProps> = ({
   onSkillLevelChange,
   onClearSports
 }) => {
+  useLingui()
+
   const selectedLevelName = selectedSkillLevel
-    ? SKILL_LEVELS.find(l => l.id === selectedSkillLevel)?.name
-    : 'All Levels'
+    ? getSkillLevelName(selectedSkillLevel)
+    : t`All Levels`
 
   const activeFiltersCount = selectedSports.length + (selectedSkillLevel ? 1 : 0)
 
@@ -40,7 +46,7 @@ export const EventFilters: React.FC<EventFiltersProps> = ({
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="gap-2 relative">
             <Filter size={16} />
-            Filters
+            <Trans>Filters</Trans>
             {activeFiltersCount > 0 && (
               <span className="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary-600 text-xs text-white">
                 {activeFiltersCount}
@@ -52,13 +58,13 @@ export const EventFilters: React.FC<EventFiltersProps> = ({
           {/* Sports Filter */}
           <div className="mb-4">
             <div className="flex items-center justify-between mb-2">
-              <DropdownMenuLabel className="px-0">Sport</DropdownMenuLabel>
+              <DropdownMenuLabel className="px-0"><Trans>Sport</Trans></DropdownMenuLabel>
               {selectedSports.length > 0 && (
                 <button
                   onClick={onClearSports}
                   className="text-xs text-gray-500 hover:text-primary-600 flex items-center gap-1"
                 >
-                  <X size={12} /> Clear
+                  <X size={12} /> <Trans>Clear</Trans>
                 </button>
               )}
             </div>
@@ -78,7 +84,7 @@ export const EventFilters: React.FC<EventFiltersProps> = ({
                     )}
                   >
                     <SportIcon sport={sport.id} size={14} />
-                    <span>{sport.name}</span>
+                    <span>{getSportName(sport.id)}</span>
                   </button>
                 )
               })}
@@ -90,13 +96,13 @@ export const EventFilters: React.FC<EventFiltersProps> = ({
           {/* Skill Level Filter */}
           <div className="mt-4">
             <div className="flex items-center justify-between mb-2">
-              <DropdownMenuLabel className="px-0">Skill Level</DropdownMenuLabel>
+              <DropdownMenuLabel className="px-0"><Trans>Skill Level</Trans></DropdownMenuLabel>
               {selectedSkillLevel && (
                 <button
                   onClick={() => onSkillLevelChange(undefined)}
                   className="text-xs text-gray-500 hover:text-primary-600 flex items-center gap-1"
                 >
-                  <X size={12} /> Clear
+                  <X size={12} /> <Trans>Clear</Trans>
                 </button>
               )}
             </div>
@@ -114,7 +120,7 @@ export const EventFilters: React.FC<EventFiltersProps> = ({
                       : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300"
                   )}
                 >
-                  {level.name}
+                  {getSkillLevelName(level.id)}
                 </button>
               ))}
             </div>
@@ -130,7 +136,7 @@ export const EventFilters: React.FC<EventFiltersProps> = ({
           return (
             <Badge key={sportId} variant="info" className="flex items-center gap-1 pl-2 pr-1 py-1">
               <SportIcon sport={sport.id} size={14} />
-              {sport.name}
+              {getSportName(sport.id)}
               <button onClick={() => onSportToggle(sportId)} className="hover:bg-blue-200 rounded-full p-0.5 ml-1">
                 <X size={12} />
               </button>

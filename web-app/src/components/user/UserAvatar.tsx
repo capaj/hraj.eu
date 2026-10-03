@@ -1,3 +1,5 @@
+import { useLingui } from '@lingui/react'
+import { t } from '@lingui/core/macro'
 import React from 'react'
 import { Avatar, AvatarFallback } from '../ui/avatar'
 import { cn } from '~/lib/utils'
@@ -17,6 +19,8 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({
   fallbackClassName,
   ...props
 }) => {
+  useLingui()
+
   const getInitials = (name?: string | null, email?: string | null) => {
     if (name && name.trim().length > 0) {
       const parts = name.trim().split(/\s+/)
@@ -45,7 +49,7 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({
         <img
           key={user.image}
           src={user.image}
-          alt={user.name || 'User avatar'}
+          alt={user.name || t`User avatar`}
           referrerPolicy="no-referrer"
           className="absolute inset-0 aspect-square size-full object-cover"
           onError={(event) => {

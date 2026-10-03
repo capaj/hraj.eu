@@ -1,6 +1,8 @@
 import { AuthQueryProvider } from '@daveyplate/better-auth-tanstack'
 import { AuthUIProviderTanstack } from '@daveyplate/better-auth-ui/tanstack'
-import { I18nProvider } from '@lingui/react'
+import { I18nProvider, useLingui } from '@lingui/react'
+import { msg } from '@lingui/core/macro'
+import { getAuthLocalization } from './authLocalization'
 import { Link, useRouter } from '@tanstack/react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useEffect, useRef, type ComponentProps, type ReactNode } from 'react'
@@ -28,7 +30,17 @@ const authUIClient = authClient as unknown as ComponentProps<
 >['authClient']
 
 export function Providers({ children }: { children: ReactNode }) {
+  return (
+    <I18nProvider i18n={i18n}>
+      <AppProviders>{children}</AppProviders>
+    </I18nProvider>
+  )
+}
+
+function AppProviders({ children }: { children: ReactNode }) {
+  const { i18n } = useLingui()
   const router = useRouter()
+  const previousLocale = useRef(i18n.locale)
 
   useEffect(() => {
     const stored =
@@ -36,28 +48,42 @@ export function Providers({ children }: { children: ReactNode }) {
     if (stored === 'en' || stored === 'cs') activateLocale(stored as AppLocale)
   }, [])
 
+  useEffect(() => {
+    document.documentElement.lang = i18n.locale
+    if (previousLocale.current !== i18n.locale) {
+      previousLocale.current = i18n.locale
+      // Route head functions need to run again to translate page metadata.
+      void router.invalidate()
+    }
+  }, [i18n.locale, router])
+
   return (
-    <I18nProvider i18n={i18n}>
-      <QueryClientProvider client={queryClient}>
-        <AuthQueryProvider sessionKey={authSessionQueryKey}>
-          <AuthUIProviderTanstack
-            social={{
-              providers: ['google', 'facebook']
-            }}
-            magicLink={true}
-            authClient={authUIClient}
-            navigate={(href) => router.navigate({ href })}
-            replace={(href) => router.navigate({ href, replace: true })}
-            Link={({ href, ...props }) => <Link to={href} {...props} />}
-          >
-            <OnboardingRedirect />
-            <UserTimezoneSync />
-            {children}
-            <Toaster position="bottom-right" richColors closeButton />
-          </AuthUIProviderTanstack>
-        </AuthQueryProvider>
-      </QueryClientProvider>
-    </I18nProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthQueryProvider sessionKey={authSessionQueryKey}>
+        <AuthUIProviderTanstack
+          localization={getAuthLocalization()}
+          social={{
+            providers: ['google', 'facebook']
+          }}
+          magicLink={true}
+          authClient={authUIClient}
+          navigate={(href) => router.navigate({ href })}
+          replace={(href) => router.navigate({ href, replace: true })}
+          Link={({ href, ...props }) => <Link to={href} {...props} />}
+        >
+          <OnboardingRedirect />
+          <UserTimezoneSync />
+          {children}
+          <Toaster
+            position="bottom-right"
+            richColors
+            closeButton
+            containerAriaLabel={i18n._(msg`Notifications`)}
+            toastOptions={{ closeButtonAriaLabel: i18n._(msg`Dismiss notification`) }}
+          />
+        </AuthUIProviderTanstack>
+      </AuthQueryProvider>
+    </QueryClientProvider>
   )
 }
 

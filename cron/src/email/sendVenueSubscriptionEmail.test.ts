@@ -31,7 +31,7 @@ describe('sendVenueSubscriptionEmail', () => {
       expect.objectContaining({
         from: 'events@example.com',
         to: 'player@example.com',
-        subject: 'New upcoming events at Arena <North>',
+        subject: 'Nové nadcházející události – Arena <North>',
         html: expect.stringContaining(
           '<a href="https://example.com/events/event%2Fone">Five &amp; five</a>'
         )

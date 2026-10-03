@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Card, CardContent, CardHeader } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
@@ -19,6 +20,8 @@ type EditableGroup = {
 }
 
 export const ManageCoreGroupsPage: React.FC = () => {
+  useLingui()
+
   const [groups, setGroups] = useState<Array<{ id: string; name: string; userIds: string[] }>>([])
   const [users, setUsers] = useState<User[]>([])
   const [isLoading, setIsLoading] = useState(true)

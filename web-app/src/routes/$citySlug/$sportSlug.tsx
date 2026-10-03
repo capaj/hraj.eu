@@ -1,3 +1,5 @@
+import { getSportName } from '~/lib/localizedNames'
+import { t } from '@lingui/core/macro'
 import { createFileRoute, notFound } from '@tanstack/react-router'
 import { SeoLandingPage } from '../../pages/SeoLandingPage'
 import { getSeoLandingPageData } from '~/server-functions/getSeoLandingPageData'
@@ -18,14 +20,16 @@ export const Route = createFileRoute('/$citySlug/$sportSlug')({
     if (!loaderData) {
       return {
         meta: [
-          { title: `Sports page not found | ${SITE_NAME}` },
+          { title: t`Sports page not found | ${SITE_NAME}` },
           { name: 'robots', content: 'noindex' }
         ]
       }
     }
 
-    const title = `Play ${loaderData.sportName} in ${loaderData.city} | ${SITE_NAME}`
-    const description = `Find amateur ${loaderData.sportName?.toLowerCase()} games in ${loaderData.city}. Join local players, discover upcoming games, and meet people who want to play.`
+    const city = loaderData.city
+    const sportName = loaderData.sportId ? getSportName(loaderData.sportId) : (loaderData.sportName ?? '')
+    const title = t`Play ${sportName} in ${city} | ${SITE_NAME}`
+    const description = t`Find amateur ${sportName} games in ${city}. Join local players, discover upcoming games, and meet people who want to play.`
     const pathname = `/${loaderData.citySlug}/${loaderData.sportSlug}`
     const url = `${SITE_URL}${pathname}`
 
@@ -41,7 +45,7 @@ export const Route = createFileRoute('/$citySlug/$sportSlug')({
             url,
             about: {
               '@type': 'SportsEvent',
-              sport: loaderData.sportName,
+              sport: sportName,
               location: {
                 '@type': 'City',
                 name: loaderData.city

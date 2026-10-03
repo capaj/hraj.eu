@@ -97,7 +97,7 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="cs">
       <head>
         <HeadContent />
       </head>

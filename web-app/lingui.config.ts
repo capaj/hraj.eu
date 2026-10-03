@@ -5,6 +5,7 @@ const config: LinguiConfig = {
     default: 'en'
   },
   locales: ['en', 'cs'],
+  sourceLocale: 'en',
   compileNamespace: 'es',
   catalogs: [
     {

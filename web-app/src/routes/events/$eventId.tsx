@@ -1,3 +1,6 @@
+import { t } from '@lingui/core/macro'
+import { i18n } from '~/lib/i18n'
+import { getSportName } from '~/lib/localizedNames'
 import { createFileRoute } from '@tanstack/react-router'
 import { EventDetailsPage } from '../../pages/EventDetailsPage'
 import { getEventById } from '~/server-functions/getEventById'
@@ -7,7 +10,6 @@ import { getUsersByIds } from '~/server-functions/getUsersByIds'
 import { getEventParticipantPhones } from '~/server-functions/getEventParticipantPhones'
 import { getRequestOrigin } from '~/server-functions/getRequestOrigin'
 import { getEventComments } from '~/server-functions/getEventComments'
-import { SPORTS } from '~/lib/constants'
 import { getMentionableParticipantIds } from '~/utils/participants'
 
 export const Route = createFileRoute('/events/$eventId')({
@@ -55,6 +57,7 @@ export const Route = createFileRoute('/events/$eventId')({
           ? (event as any).updatedAt.getTime()
           : undefined
       const imageUrl = new URL(`/api/og/event/${event.id}`, origin)
+      imageUrl.searchParams.set('locale', i18n.locale)
       if (v) imageUrl.searchParams.set('v', String(v))
       return imageUrl.toString()
     })()
@@ -62,15 +65,14 @@ export const Route = createFileRoute('/events/$eventId')({
     if (!event) {
       return {
         meta: [
-          { title: 'Event not found | hraj.eu' },
+          { title: t`Event not found | hraj.eu` },
           { name: 'robots', content: 'noindex' }
         ]
       }
     }
 
-    const title = event.title?.trim() ? event.title.trim() : 'Event'
-    const sport = SPORTS.find((s) => s.id === event.sport)
-    const sportName = sport?.name ?? event.sport
+    const title = event.title?.trim() ? event.title.trim() : t`Event`
+    const sportName = getSportName(event.sport)
 
     const start = (() => {
       const date = new Date(event.date)
@@ -84,7 +86,7 @@ export const Route = createFileRoute('/events/$eventId')({
 
     const when = (() => {
       try {
-        return new Intl.DateTimeFormat('en-GB', {
+        return new Intl.DateTimeFormat(i18n.locale, {
           dateStyle: 'medium',
           timeStyle: 'short'
         }).format(start)
@@ -98,8 +100,8 @@ export const Route = createFileRoute('/events/$eventId')({
       : undefined
 
     const fallbackDescriptionParts = [
-      where ? `at ${where}` : null,
-      when ? `on ${when}` : null
+      where ? t`at ${where}` : null,
+      when ? t`on ${when}` : null
     ].filter(Boolean)
 
     const rawDescription =
@@ -111,11 +113,11 @@ export const Route = createFileRoute('/events/$eventId')({
 
     const ogTitle = where ? `${title} @ ${where}` : title
     const seoTitleParts = [
-      sportName ? `${sportName} game` : null,
+      sportName ? t`${sportName} game` : null,
       title,
       venue?.city ? venue.city : null
     ].filter(Boolean)
-    const seoTitle = `${seoTitleParts.join(' - ')} | hraj.eu`
+    const seoTitle = [seoTitleParts.join(' - '), 'hraj.eu'].join(' | ')
     const isPubliclyIndexable =
       event.isPublic &&
       event.status !== 'cancelled' &&

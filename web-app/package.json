@@ -18,8 +18,8 @@
     "postinstall": "pnpm run cf-typegen",
     "typecheck": "tsc --noEmit",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv",
-    "lingui:extract": "lingui extract",
-    "lingui:compile": "lingui compile"
+    "lingui:extract": "lingui extract --clean",
+    "lingui:compile": "lingui compile --strict"
   },
   "dependencies": {
     "@daveyplate/better-auth-tanstack": "^1.3.6",

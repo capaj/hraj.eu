@@ -1,3 +1,5 @@
+import { getLocalizedErrorMessage } from '~/lib/errorMessages'
+import { useLingui } from '@lingui/react'
 import React, { useState } from 'react'
 import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
@@ -42,6 +44,8 @@ import { toast } from 'sonner'
 import { i18n } from '~/lib/i18n'
 
 export const UserProfile: React.FC = () => {
+  useLingui()
+
   const { user: userFromLoader } = useLoaderData({ from: '/user-profile' })
 
   const [user, setUser] = useState<User>({
@@ -433,7 +437,7 @@ export const UserProfile: React.FC = () => {
       toast.success(i18n._(msg`Password changed successfully!`))
     } catch (error) {
       console.error('Failed to change password:', error)
-      const message = error instanceof Error ? error.message : 'Failed to change password'
+      const message = getLocalizedErrorMessage(error, i18n._(msg`Failed to change password`))
       toast.error(message)
     } finally {
       setIsChangingPassword(false)
@@ -470,10 +474,10 @@ export const UserProfile: React.FC = () => {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white flex items-center">
             <UserIcon className="mr-3 text-white" size={32} />
-            My Profile
+            <Trans>My Profile</Trans>
           </h1>
           <p className="text-white/80 mt-2">
-            Manage your account settings and sports preferences
+            <Trans>Manage your account settings and sports preferences</Trans>
           </p>
         </div>
 
@@ -517,7 +521,7 @@ export const UserProfile: React.FC = () => {
                   <div className="flex items-center justify-center lg:justify-start">
                     <Calendar size={16} className="mr-2" />
                     <Trans>Member since</Trans>{' '}
-                    {editedUser.createdAt.toLocaleDateString(undefined, {
+                    {editedUser.createdAt.toLocaleDateString(i18n.locale, {
                       month: 'long',
                       year: 'numeric'
                     })}
@@ -579,7 +583,7 @@ export const UserProfile: React.FC = () => {
                 <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Full Name
+                      <Trans>Full Name</Trans>
                     </label>
                     {isEditing ? (
                       <input
@@ -688,10 +692,10 @@ export const UserProfile: React.FC = () => {
                     <div className="flex items-center justify-between mb-3">
                       <div>
                         <h4 className="text-sm font-medium text-gray-700">
-                          Password
+                          <Trans>Password</Trans>
                         </h4>
                         <p className="text-xs text-gray-500">
-                          Last changed 3 months ago
+                          <Trans>Last changed 3 months ago</Trans>
                         </p>
                       </div>
                       {!showPasswordChange ? (
@@ -701,7 +705,7 @@ export const UserProfile: React.FC = () => {
                           onClick={() => setShowPasswordChange(true)}
                         >
                           <Key size={14} className="mr-1" />
-                          Change
+                          <Trans>Change</Trans>
                         </Button>
                       ) : (
                         <Button
@@ -709,7 +713,7 @@ export const UserProfile: React.FC = () => {
                           size="sm"
                           onClick={() => setShowPasswordChange(false)}
                         >
-                          Cancel
+                          <Trans>Cancel</Trans>
                         </Button>
                       )}
                     </div>
@@ -718,7 +722,7 @@ export const UserProfile: React.FC = () => {
                       <div className="space-y-4 mt-4 pt-4 border-t border-gray-200">
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Current Password
+                            <Trans>Current Password</Trans>
                           </label>
                           <div className="relative">
                             <input
@@ -731,7 +735,7 @@ export const UserProfile: React.FC = () => {
                                 }))
                               }
                               className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                              placeholder="Enter current password"
+                              placeholder={i18n._(msg`Enter current password`)}
                             />
                             <button
                               type="button"
@@ -754,7 +758,7 @@ export const UserProfile: React.FC = () => {
 
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            New Password
+                            <Trans>New Password</Trans>
                           </label>
                           <div className="relative">
                             <input
@@ -767,7 +771,7 @@ export const UserProfile: React.FC = () => {
                                 }))
                               }
                               className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                              placeholder="Enter new password"
+                              placeholder={i18n._(msg`Enter new password`)}
                             />
                             <button
                               type="button"
@@ -787,13 +791,13 @@ export const UserProfile: React.FC = () => {
                             </button>
                           </div>
                           <p className="text-xs text-gray-500 mt-1">
-                            Must be at least 8 characters long
+                            <Trans>Must be at least 8 characters long</Trans>
                           </p>
                         </div>
 
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Confirm New Password
+                            <Trans>Confirm New Password</Trans>
                           </label>
                           <div className="relative">
                             <input
@@ -806,7 +810,7 @@ export const UserProfile: React.FC = () => {
                                 }))
                               }
                               className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                              placeholder="Confirm new password"
+                              placeholder={i18n._(msg`Confirm new password`)}
                             />
                             <button
                               type="button"
@@ -836,12 +840,12 @@ export const UserProfile: React.FC = () => {
                           {isChangingPassword ? (
                             <>
                               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                              Changing Password...
+                              <Trans>Changing Password...</Trans>
                             </>
                           ) : (
                             <>
                               <Lock size={16} className="mr-2" />
-                              Change Password
+                              <Trans>Change Password</Trans>
                             </>
                           )}
                         </Button>
@@ -854,10 +858,10 @@ export const UserProfile: React.FC = () => {
                     <div className="flex items-center justify-between mb-3">
                       <div>
                         <h4 className="text-sm font-medium text-red-800">
-                          Delete Account
+                          <Trans>Delete Account</Trans>
                         </h4>
                         <p className="text-xs text-red-600">
-                          Permanently delete your account and all data
+                          <Trans>Permanently delete your account and all data</Trans>
                         </p>
                       </div>
                       {!showDeleteConfirm ? (
@@ -868,7 +872,7 @@ export const UserProfile: React.FC = () => {
                           className="border-red-300 text-red-700 hover:bg-red-100"
                         >
                           <Trash2 size={14} className="mr-1" />
-                          Delete
+                          <Trans>Delete</Trans>
                         </Button>
                       ) : (
                         <Button
@@ -877,7 +881,7 @@ export const UserProfile: React.FC = () => {
                           onClick={() => setShowDeleteConfirm(false)}
                           className="border-gray-300 text-gray-700"
                         >
-                          Cancel
+                          <Trans>Cancel</Trans>
                         </Button>
                       )}
                     </div>
@@ -892,24 +896,24 @@ export const UserProfile: React.FC = () => {
                             />
                             <div className="text-sm text-red-800">
                               <p className="font-medium mb-1">
-                                Warning: This action cannot be undone
+                                <Trans>Warning: This action cannot be undone</Trans>
                               </p>
                               <ul className="list-disc list-inside space-y-1 text-red-700">
                                 <li>
-                                  Your profile and all personal data will be
-                                  permanently deleted
+                                  <Trans>Your profile and all personal data will be
+                                  permanently deleted</Trans>
                                 </li>
                                 <li>
-                                  You will be removed from all events and
-                                  waitlists
+                                  <Trans>You will be removed from all events and
+                                  waitlists</Trans>
                                 </li>
                                 <li>
-                                  Your karma points and achievements will be
-                                  lost
+                                  <Trans>Your karma points and achievements will be
+                                  lost</Trans>
                                 </li>
                                 <li>
-                                  Any organized events will be transferred or
-                                  cancelled
+                                  <Trans>Any organized events will be transferred or
+                                  cancelled</Trans>
                                 </li>
                               </ul>
                             </div>
@@ -918,7 +922,7 @@ export const UserProfile: React.FC = () => {
 
                         <div>
                           <label className="block text-sm font-medium text-red-800 mb-2">
-                            Type "DELETE" to confirm account deletion
+                            <Trans>Type "DELETE" to confirm account deletion</Trans>
                           </label>
                           <input
                             type="text"
@@ -942,12 +946,12 @@ export const UserProfile: React.FC = () => {
                           {isDeletingAccount ? (
                             <>
                               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
-                              Processing Deletion...
+                              <Trans>Processing Deletion...</Trans>
                             </>
                           ) : (
                             <>
                               <Trash2 size={16} className="mr-2" />
-                              Permanently Delete Account
+                              <Trans>Permanently Delete Account</Trans>
                             </>
                           )}
                         </Button>
@@ -997,7 +1001,7 @@ export const UserProfile: React.FC = () => {
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Upload Profile Picture
+                  <Trans>Upload Profile Picture</Trans>
                 </h3>
                 <button
                   onClick={() => setShowAvatarUpload(false)}
@@ -1012,8 +1016,8 @@ export const UserProfile: React.FC = () => {
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
                   <Upload className="mx-auto mb-4 text-gray-400" size={48} />
                   <div className="text-sm text-gray-600 mb-4">
-                    <p className="font-medium">Choose a profile picture</p>
-                    <p>JPG, PNG or GIF up to 5MB</p>
+                    <p className="font-medium"><Trans>Choose a profile picture</Trans></p>
+                    <p><Trans>JPG, PNG or GIF up to 5MB</Trans></p>
                   </div>
 
                   <input
@@ -1032,21 +1036,21 @@ export const UserProfile: React.FC = () => {
                     {isUploadingAvatar ? (
                       <>
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                        Uploading...
+                        <Trans>Uploading...</Trans>
                       </>
                     ) : (
                       <>
                         <Upload size={16} className="mr-2" />
-                        Select Image
+                        <Trans>Select Image</Trans>
                       </>
                     )}
                   </label>
                 </div>
 
                 <div className="text-xs text-gray-500">
-                  <p>• Image will be cropped to a square</p>
-                  <p>• Recommended size: 400x400 pixels</p>
-                  <p>• Supported formats: JPG, PNG, GIF</p>
+                  <p><Trans>• Image will be cropped to a square</Trans></p>
+                  <p><Trans>• Recommended size: 400x400 pixels</Trans></p>
+                  <p><Trans>• Supported formats: JPG, PNG, GIF</Trans></p>
                 </div>
               </div>
             </div>

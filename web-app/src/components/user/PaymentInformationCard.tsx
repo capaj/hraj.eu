@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react'
 import { useState } from 'react'
 import { msg, plural } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
@@ -86,6 +87,8 @@ export function PaymentInformationCard({
   onSaveRevolutTag,
   onSaveBankAccount
 }: PaymentInformationCardProps) {
+  useLingui()
+
   const [isEditingRevTag, setIsEditingRevTag] = useState(false)
   const [isEditingBankAccount, setIsEditingBankAccount] = useState(false)
   const [editedRevTag, setEditedRevTag] = useState(revolutTag)

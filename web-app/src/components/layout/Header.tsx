@@ -20,6 +20,7 @@ import {
 } from 'lucide-react'
 import { Notification } from '../../types'
 import { formatDistanceToNow } from 'date-fns'
+import { cs, enUS } from 'date-fns/locale'
 import { UserButton } from '../user/UserButton'
 import { useAuthSession } from '~/lib/auth-client'
 import { activateLocale, type AppLocale } from '~/lib/i18n'
@@ -336,6 +337,7 @@ export const NotificationsDropdown = () => {
                           <div className="flex items-center space-x-2 mt-2">
                             <span className="text-xs text-gray-500">
                               {formatDistanceToNow(notification.createdAt, {
+                                locale: i18n.locale === 'cs' ? cs : enUS,
                                 addSuffix: true
                               })}
                             </span>

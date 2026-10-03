@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import { User } from 'better-auth'
 import { inferAdditionalFields } from 'better-auth/client/plugins'
 import { magicLinkClient } from 'better-auth/client/plugins'
@@ -28,7 +29,7 @@ export const AuthContext = createContext<User | null>(null)
 export const ProtectedRoute = (props: { children: React.ReactNode }) => {
   const session = useAuthSession()
   if (session.isPending) {
-    return <div>Loading...</div>
+    return <div><Trans>Loading...</Trans></div>
   }
 
   if (!session.data?.user) {

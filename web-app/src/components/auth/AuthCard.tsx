@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import { AuthView } from '@daveyplate/better-auth-ui'
 
 type AuthCardProps = {
@@ -20,14 +21,14 @@ export function AuthCard({ pathname }: AuthCardProps) {
             continueWith: 'text-gray-500 text-sm',
             separator: 'border-gray-200'
           }}
-          cardHeader={
+          cardHeader={pathname === 'sign-in' ? (
             <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold">Welcome</h1>
+              <h1 className="text-2xl font-bold"><Trans>Welcome</Trans></h1>
               <p className="text-gray-500 text-sm">
-                Sign in to your account to continue
+                <Trans>Sign in to your account to continue</Trans>
               </p>
             </div>
-          }
+          ) : undefined}
         />
       </div>
     </div>

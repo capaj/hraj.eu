@@ -1,3 +1,7 @@
+import { useLingui } from '@lingui/react'
+import { getSkillLevelName, getSportName } from '~/lib/localizedNames'
+import { i18n } from '~/lib/i18n'
+import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { Bell, BellOff, Check, Star, X } from 'lucide-react'
 import { clsx } from 'clsx'
@@ -34,6 +38,8 @@ interface NotificationSettingsCardProps {
 }
 
 function StepNumber({ children }: { children: number }) {
+  useLingui()
+
   return (
     <span className="mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary-100 text-sm font-bold text-primary-700">
       {children}
@@ -42,6 +48,8 @@ function StepNumber({ children }: { children: number }) {
 }
 
 function UpdatedLabel() {
+  useLingui()
+
   return (
     <span className="mt-1 flex items-center text-xs font-medium text-green-600">
       <Check size={13} className="mr-1" />
@@ -59,6 +67,8 @@ export function SkillLevelSettingsCard({
   className,
   stepNumber
 }: SkillLevelSettingsCardProps) {
+  useLingui()
+
   return (
     <Card className={className}>
       <CardHeader>
@@ -86,19 +96,19 @@ export function SkillLevelSettingsCard({
           </h3>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <SkillLegendItem
-              letter="B"
+              letter={getSkillLevelName('beginner').charAt(0).toUpperCase()}
               color="bg-green-500"
               title={<Trans>Beginner</Trans>}
               description={<Trans>New or casual player</Trans>}
             />
             <SkillLegendItem
-              letter="I"
+              letter={getSkillLevelName('intermediate').charAt(0).toUpperCase()}
               color="bg-yellow-500"
               title={<Trans>Intermediate</Trans>}
               description={<Trans>Regular, experienced player</Trans>}
             />
             <SkillLegendItem
-              letter="A"
+              letter={getSkillLevelName('advanced').charAt(0).toUpperCase()}
               color="bg-red-500"
               title={<Trans>Advanced</Trans>}
               description={<Trans>Competitive player</Trans>}
@@ -134,7 +144,7 @@ export function SkillLevelSettingsCard({
                   />
                   <div className="min-w-0">
                     <div className="truncate font-medium text-gray-900">
-                      {sport.name}
+                      {getSportName(sport.id)}
                     </div>
                     {isPending ? <UpdatedLabel /> : null}
                   </div>
@@ -150,9 +160,9 @@ export function SkillLevelSettingsCard({
                       <button
                         key={level.id}
                         type="button"
-                        aria-label={`${sport.name}: ${level.name}`}
+                        aria-label={`${getSportName(sport.id)}: ${getSkillLevelName(level.id)}`}
                         aria-pressed={isSelected}
-                        title={level.name}
+                        title={getSkillLevelName(level.id)}
                         disabled={isPending}
                         onClick={() =>
                           onChange(sport.id, isSelected ? null : level.id)
@@ -169,7 +179,7 @@ export function SkillLevelSettingsCard({
                         {isChanging ? (
                           <span className="h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent" />
                         ) : (
-                          level.name.charAt(0).toUpperCase()
+                          getSkillLevelName(level.id).charAt(0).toUpperCase()
                         )}
                       </button>
                     )
@@ -180,8 +190,8 @@ export function SkillLevelSettingsCard({
                       type="button"
                       onClick={() => onChange(sport.id, null)}
                       className="ml-1 rounded p-1 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-primary-500"
-                      title="Remove skill level"
-                      aria-label={`Remove ${sport.name} skill level`}
+                      title={i18n._(msg`Remove skill level`)}
+                      aria-label={i18n._(msg`Remove ${getSportName(sport.id)} skill level`)}
                     >
                       <X size={14} />
                     </button>
@@ -230,6 +240,8 @@ export function NotificationSettingsCard({
   className,
   stepNumber
 }: NotificationSettingsCardProps) {
+  useLingui()
+
   const NotificationIcon = emailNotificationsEnabled ? Bell : BellOff
 
   return (
@@ -268,7 +280,7 @@ export function NotificationSettingsCard({
             checked={emailNotificationsEnabled}
             onChange={onEmailChange}
             disabled={isSavingEmailPreference}
-            ariaLabel="Event activity emails"
+            ariaLabel={i18n._(msg`Event activity emails`)}
           />
         </div>
 
@@ -310,7 +322,7 @@ export function NotificationSettingsCard({
                       />
                       <div className="min-w-0">
                         <div className="truncate font-medium text-gray-900">
-                          {sport.name}
+                          {getSportName(sport.id)}
                         </div>
                         {isPending ? <UpdatedLabel /> : null}
                       </div>
@@ -322,7 +334,7 @@ export function NotificationSettingsCard({
                       }
                       disabled={isPending}
                       size="sm"
-                      ariaLabel={`${sport.name} new game alerts`}
+                      ariaLabel={i18n._(msg`${getSportName(sport.id)} new game alerts`)}
                     />
                   </div>
                 )
@@ -356,6 +368,8 @@ function SkillLegendItem({
   title: React.ReactNode
   description: React.ReactNode
 }) {
+  useLingui()
+
   return (
     <div className="flex items-center gap-3">
       <div

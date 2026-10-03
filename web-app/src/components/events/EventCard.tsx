@@ -1,3 +1,6 @@
+import { useLingui } from '@lingui/react'
+import { getSportName } from '~/lib/localizedNames'
+import { Trans } from '@lingui/react/macro'
 import React from 'react';
 import { Link } from '@tanstack/react-router';
 import { Card, CardContent } from '../ui/Card';
@@ -25,6 +28,8 @@ interface EventCardProps {
 }
 
 export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onView, isJoining = false, currentUserId }) => {
+  useLingui()
+
   const isPastEvent = isPast(getEventDateTime(event));
   const isCancelled = event.status === 'cancelled';
   const dateLocale = i18n.locale === 'cs' ? cs : enUS;
@@ -45,19 +50,24 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
     if (!isMinimumReached) {
       return {
         variant: 'error' as const,
-        text: `Need ${event.minParticipants - confirmedHeadcount} more to confirm`,
+        text: plural(event.minParticipants - confirmedHeadcount, {
+          one: 'Need # more to confirm',
+          other: 'Need # more to confirm'
+        }),
         icon: '⚠️'
       };
-    } else if (isIdealReached) {
+    } else if (!event.idealParticipants || isIdealReached) {
       return {
         variant: 'success' as const,
-        text: isSpotAvailable ? `${spotsLeft} spots left` : 'Waitlist',
+        text: isSpotAvailable
+          ? plural(spotsLeft, { one: '# spot left', other: '# spots left' })
+          : t`Waitlist`,
         icon: '✅'
       };
     } else {
       return {
         variant: 'warning' as const,
-        text: `${event.idealParticipants! - confirmedHeadcount} to ideal`,
+        text: t`${event.idealParticipants! - confirmedHeadcount} to ideal`,
         icon: '🎯'
       };
     }
@@ -66,12 +76,12 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
   const participantStatus = getParticipantStatus();
 
   const getJoinButtonText = () => {
-    if (isParticipant && isBelowMinimum) return 'You would like to participate';
-    if (isParticipant) return 'You are playing';
-    if (isWaitlisted) return 'On Waitlist';
-    if (isJoining) return 'Joining...';
-    if (isSpotAvailable) return 'Join Game';
-    return 'Join Waitlist';
+    if (isParticipant && isBelowMinimum) return t`You would like to participate`;
+    if (isParticipant) return t`You are playing`;
+    if (isWaitlisted) return t`On Waitlist`;
+    if (isJoining) return t`Joining...`;
+    if (isSpotAvailable) return t`Join Game`;
+    return t`Join Waitlist`;
   };
 
   return (
@@ -82,7 +92,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
             <SportIcon
               sport={sport?.id ?? event.sport}
               size={24}
-              title={sport?.name ?? event.sport}
+              title={(sport ? getSportName(sport.id) : undefined) ?? event.sport}
               className="flex-shrink-0 text-primary-600"
             />
             <div className="min-w-0 flex-1">
@@ -128,24 +138,32 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
           </div>
           <div className="flex items-center text-sm text-gray-600">
             <MapPin size={16} className="mr-2" />
-            {venue?.address || 'Location TBD'}
+            {venue?.address || t`Location TBD`}
           </div>
-          <div className="flex items-center text-sm text-gray-600">
-            <Users size={16} className="mr-2" />
-            <span>
-              {confirmedHeadcount}/{event.maxParticipants} players
-              {(event.reservedParticipants ?? 0) > 0 && (
-                <span className="text-gray-500 ml-1">(+{event.reservedParticipants} reserved)</span>
+          <div className="flex items-start text-sm text-gray-600">
+            <Users size={16} className="mr-2 mt-0.5 shrink-0" />
+            <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+              <span className="inline-flex max-w-full shrink-0 flex-wrap gap-x-1">
+                <span className="whitespace-nowrap">
+                  <Trans>{confirmedHeadcount}/{event.maxParticipants} players</Trans>
+                </span>
+                {(event.reservedParticipants ?? 0) > 0 && (
+                  <span className="whitespace-nowrap text-gray-500">
+                    <Trans>(+{event.reservedParticipants} reserved)</Trans>
+                  </span>
+                )}
+                {event.idealParticipants && (
+                  <span className="whitespace-nowrap text-gray-500">
+                    <Trans>(ideal: {event.idealParticipants})</Trans>
+                  </span>
+                )}
+              </span>
+              {!isPastEvent && (
+                <Badge variant={participantStatus.variant} className="whitespace-nowrap">
+                  {participantStatus.icon} {participantStatus.text}
+                </Badge>
               )}
-              {event.idealParticipants && (
-                <span className="text-gray-500 ml-1">(ideal: {event.idealParticipants})</span>
-              )}
-            </span>
-            {!isPastEvent && (
-              <Badge variant={participantStatus.variant} className="whitespace-nowrap ml-2">
-                {participantStatus.icon} {participantStatus.text}
-              </Badge>
-            )}
+            </div>
           </div>
           {event.price && (
             <div className="flex items-center text-sm text-gray-600">
@@ -164,7 +182,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
                 e.stopPropagation();
                 onJoin?.(event.id);
               }}
-              className="flex-1"
+              className="flex-1 min-w-0 whitespace-normal"
               disabled={isJoining || isParticipant}
             >
               {getJoinButtonText()}
@@ -179,9 +197,9 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
             <Button
               variant="outline"
               size="sm"
-              className="w-full"
+              className="w-full whitespace-normal"
             >
-              View Details
+              <Trans>View Details</Trans>
             </Button>
           </Link>
         </div>

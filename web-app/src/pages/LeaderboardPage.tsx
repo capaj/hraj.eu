@@ -1,3 +1,5 @@
+import { useLingui } from '@lingui/react'
+import { getSportName } from '~/lib/localizedNames'
 import React, { useState, useEffect, useMemo } from 'react'
 import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
@@ -33,6 +35,8 @@ type LeaderboardType =
 const MAX_LEADERBOARD_USERS = 25
 
 export const Leaderboard: React.FC = () => {
+  useLingui()
+
   const [selectedType, setSelectedType] = useState<LeaderboardType>('karma')
   const [selectedSport, setSelectedSport] = useState<string | undefined>(
     undefined
@@ -122,7 +126,7 @@ export const Leaderboard: React.FC = () => {
             subtitle: sport
               ? i18n._(msg`{count} {sportName} events organized`.id, {
                 count: user.score,
-                sportName: SPORTS.find((s) => s.id === sport)?.name ?? sport
+                sportName: getSportName(sport) ?? sport
               })
               : i18n._(msg`{count} events organized`.id, { count: user.score })
           }))
@@ -141,7 +145,7 @@ export const Leaderboard: React.FC = () => {
             subtitle: sport
               ? i18n._(msg`{count} {sportName} events joined`.id, {
                 count: user.score,
-                sportName: SPORTS.find((s) => s.id === sport)?.name ?? sport
+                sportName: getSportName(sport) ?? sport
               })
               : i18n._(msg`{count} events joined`.id, { count: user.score })
           }))
@@ -160,7 +164,7 @@ export const Leaderboard: React.FC = () => {
             subtitle: sport
               ? i18n._(msg`{count} points in {sportName} this month`.id, {
                 count: user.score,
-                sportName: SPORTS.find((s) => s.id === sport)?.name ?? sport
+                sportName: getSportName(sport) ?? sport
               })
               : i18n._(msg`{count} points this month`.id, { count: user.score })
           }))
@@ -247,7 +251,7 @@ export const Leaderboard: React.FC = () => {
 
   const getTypeDescription = (type: LeaderboardType) => {
     const sportName = selectedSport
-      ? SPORTS.find((s) => s.id === selectedSport)?.name
+      ? getSportName(selectedSport)
       : ''
 
     switch (type) {
@@ -377,7 +381,7 @@ export const Leaderboard: React.FC = () => {
                           className="mr-2 text-primary-600"
                         />
                         <span className="truncate">
-                          {selectedSportInfo.name}
+                          {getSportName(selectedSportInfo.id)}
                         </span>
                       </>
                     ) : (
@@ -428,7 +432,7 @@ export const Leaderboard: React.FC = () => {
                           size={16}
                           className="mr-2 text-primary-600"
                         />
-                        <span className="truncate">{sport.name}</span>
+                        <span className="truncate">{getSportName(sport.id)}</span>
                       </button>
                     ))}
                   </div>
@@ -471,7 +475,7 @@ export const Leaderboard: React.FC = () => {
                       className="text-primary-600"
                     />
                     <span className="ml-1">
-                      {SPORTS.find((s) => s.id === selectedSport)?.name}
+                      {getSportName(selectedSport)}
                     </span>
                   </Badge>
                 )}
@@ -538,9 +542,7 @@ export const Leaderboard: React.FC = () => {
                                     <span
                                       className="text-sm"
                                       title={
-                                        SPORTS.find(
-                                          (s) => s.id === selectedSport
-                                        )?.name
+                                        getSportName(selectedSport)
                                       }
                                     >
                                       <SportIcon
@@ -562,7 +564,7 @@ export const Leaderboard: React.FC = () => {
                                         <span
                                           key={sport}
                                           className="text-xs"
-                                          title={sportInfo?.name}
+                                          title={(sportInfo ? getSportName(sportInfo.id) : undefined)}
                                         >
                                           {sportInfo ? (
                                             <SportIcon
@@ -583,7 +585,7 @@ export const Leaderboard: React.FC = () => {
                         {/* Score and Change */}
                         <div className="text-right">
                           <div className="text-2xl font-bold text-gray-900">
-                            {user.score.toLocaleString()}
+                            {user.score.toLocaleString(i18n.locale)}
                           </div>
                           {user.change !== 0 && (
                             <div
@@ -618,7 +620,7 @@ export const Leaderboard: React.FC = () => {
                 <p className="text-gray-600 mb-4">
                   <Trans>
                     No players have skill levels recorded for{' '}
-                    {SPORTS.find((s) => s.id === selectedSport)?.name ?? ''}.
+                    {(selectedSport ? getSportName(selectedSport) : '')}.
                   </Trans>
                 </p>
                 <Button
@@ -647,7 +649,7 @@ export const Leaderboard: React.FC = () => {
                   {selectedSport
                     ? i18n._(msg`{sportName} Champion`.id, {
                       sportName:
-                        SPORTS.find((s) => s.id === selectedSport)?.name ??
+                        getSportName(selectedSport) ??
                         ''
                     })
                     : i18n._(msg`Current Champion`)}
@@ -667,7 +669,7 @@ export const Leaderboard: React.FC = () => {
                   {selectedSport
                     ? i18n._(msg`{sportName} Players`.id, {
                       sportName:
-                        SPORTS.find((s) => s.id === selectedSport)?.name ??
+                        getSportName(selectedSport) ??
                         ''
                     })
                     : i18n._(msg`Active Players`)}
@@ -763,7 +765,7 @@ export const Leaderboard: React.FC = () => {
                   <p className="text-sm text-blue-800">
                     <Trans>
                       When filtering by{' '}
-                      {SPORTS.find((s) => s.id === selectedSport)?.name ?? ''},
+                      {(selectedSport ? getSportName(selectedSport) : '')},
                       rankings show karma points and activities specifically
                       related to this sport. Only players with recorded skill
                       levels in this sport are included in the rankings.

@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react'
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Search, X, Loader2 } from 'lucide-react'
 import { Trans } from '@lingui/react/macro'
@@ -38,6 +39,8 @@ export const GiphyPicker: React.FC<GiphyPickerProps> = ({
   onSelect,
   onClose
 }) => {
+  useLingui()
+
   const [searchQuery, setSearchQuery] = useState('')
   const [gifs, setGifs] = useState<GiphyImage[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -226,10 +229,10 @@ export const GiphyPicker: React.FC<GiphyPickerProps> = ({
         >
           <img
             src="https://giphy.com/static/img/giphy-logo-square-social.png"
-            alt="Powered by GIPHY"
+            alt={i18n._(msg`Powered by GIPHY`)}
             className="h-4"
           />
-          <span className="ml-1 text-xs text-gray-500">Powered by GIPHY</span>
+          <span className="ml-1 text-xs text-gray-500"><Trans>Powered by GIPHY</Trans></span>
         </a>
       </div>
     </div>

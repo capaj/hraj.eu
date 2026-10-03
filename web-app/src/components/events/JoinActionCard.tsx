@@ -1,3 +1,5 @@
+import { getLocalizedErrorMessage } from '~/lib/errorMessages'
+import { useLingui } from '@lingui/react'
 import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { useNavigate, useRouter } from '@tanstack/react-router'
@@ -63,6 +65,8 @@ export const JoinActionCard = ({
   event,
   onParticipantsChange
 }: JoinActionCardProps) => {
+  useLingui()
+
   const navigate = useNavigate()
   const router = useRouter()
   const session = useAuthSession()
@@ -187,9 +191,7 @@ export const JoinActionCard = ({
       }
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : i18n._(msg`Failed to join the event. Please try again.`)
+        getLocalizedErrorMessage(error, i18n._(msg`Failed to join the event. Please try again.`))
       toast.error(message)
     } finally {
       setIsJoining(false)
@@ -218,9 +220,7 @@ export const JoinActionCard = ({
       }
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : i18n._(msg`Failed to update guests. Please try again.`)
+        getLocalizedErrorMessage(error, i18n._(msg`Failed to update guests. Please try again.`))
       toast.error(message)
     } finally {
       setIsUpdatingGuests(false)

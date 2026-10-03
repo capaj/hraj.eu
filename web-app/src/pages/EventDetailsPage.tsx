@@ -1,3 +1,6 @@
+import { getLocalizedErrorMessage } from '~/lib/errorMessages'
+import { useLingui } from '@lingui/react'
+import { getCancellationReason, getFacilityName, getSportName } from '~/lib/localizedNames'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
@@ -313,6 +316,8 @@ const TwitterIcon = ({ className = '' }: { className?: string }) => (
 
 
 export const EventDetailsPage: React.FC = () => {
+  useLingui()
+
   const {
     event: initialEvent,
     venue,
@@ -665,9 +670,7 @@ export const EventDetailsPage: React.FC = () => {
       toast.success(i18n._(msg`Event cancelled`))
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : i18n._(msg`Failed to cancel the event. Please try again.`)
+        getLocalizedErrorMessage(error, i18n._(msg`Failed to cancel the event. Please try again.`))
       toast.error(message)
     } finally {
       setIsCancellingEvent(false)
@@ -686,7 +689,7 @@ export const EventDetailsPage: React.FC = () => {
       description: [
         event.description,
         '',
-        i18n._(msg`Sport: {sportName}`.id, { sportName: sport?.name ?? '' }),
+        i18n._(msg`Sport: {sportName}`.id, { sportName: (sport ? getSportName(sport.id) : undefined) ?? '' }),
         i18n._(msg`Participants: {current}/{max}`.id, {
           current: reservedAwareHeadcount,
           max: event.maxParticipants
@@ -767,9 +770,7 @@ export const EventDetailsPage: React.FC = () => {
       }
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : i18n._(msg`Failed to leave the event. Please try again.`)
+        getLocalizedErrorMessage(error, i18n._(msg`Failed to leave the event. Please try again.`))
       toast.error(message)
     } finally {
       setIsJoining(false)
@@ -811,9 +812,7 @@ export const EventDetailsPage: React.FC = () => {
       setNotifyAttendees(true)
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : i18n._(msg`Failed to add comment. Please try again.`)
+        getLocalizedErrorMessage(error, i18n._(msg`Failed to add comment. Please try again.`))
       toast.error(message)
     } finally {
       setIsSubmittingComment(false)
@@ -842,9 +841,7 @@ export const EventDetailsPage: React.FC = () => {
       toast.success(i18n._(msg`Comment updated.`))
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : i18n._(msg`Failed to update comment. Please try again.`)
+        getLocalizedErrorMessage(error, i18n._(msg`Failed to update comment. Please try again.`))
       toast.error(message)
     } finally {
       setIsEditingComment(false)
@@ -861,9 +858,7 @@ export const EventDetailsPage: React.FC = () => {
       toast.success(i18n._(msg`Comment deleted.`))
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : i18n._(msg`Failed to delete comment. Please try again.`)
+        getLocalizedErrorMessage(error, i18n._(msg`Failed to delete comment. Please try again.`))
       toast.error(message)
     } finally {
       setIsDeletingComment(null)
@@ -903,9 +898,7 @@ export const EventDetailsPage: React.FC = () => {
       setSelectedQrImage(null)
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : i18n._(msg`Failed to update payment status. Please try again.`)
+        getLocalizedErrorMessage(error, i18n._(msg`Failed to update payment status. Please try again.`))
       toast.error(message)
     } finally {
       setIsMarkingPaid(false)
@@ -943,9 +936,7 @@ export const EventDetailsPage: React.FC = () => {
       setSelectedQrImage(null)
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : i18n._(msg`Failed to update payment status. Please try again.`)
+        getLocalizedErrorMessage(error, i18n._(msg`Failed to update payment status. Please try again.`))
       toast.error(message)
     } finally {
       setIsMarkingPaid(false)
@@ -1357,7 +1348,7 @@ export const EventDetailsPage: React.FC = () => {
               <SportIcon
                 sport={sport?.id ?? event.sport}
                 size={40}
-                title={sport?.name ?? event.sport}
+                title={(sport ? getSportName(sport.id) : undefined) ?? event.sport}
                 className="shrink-0 text-white"
               />
               <div className="min-w-0">
@@ -1528,7 +1519,7 @@ export const EventDetailsPage: React.FC = () => {
                     <div className="relative aspect-[1200/630] w-full overflow-hidden rounded-md border bg-muted">
                       <img
                         src={`/api/og/event/${event.id}?v=${new Date(event.updatedAt).getTime()}`}
-                        alt="OG Preview"
+                        alt={i18n._(msg`OG Preview`)}
                         className="h-full w-full object-cover"
                       />
                     </div>
@@ -1635,7 +1626,7 @@ export const EventDetailsPage: React.FC = () => {
                             <span className="font-medium">
                               <Trans>Reason:</Trans>
                             </span>{' '}
-                            {event.cancellationReason}
+                            {getCancellationReason(event.cancellationReason)}
                           </p>
                         )}
                       </div>
@@ -2305,7 +2296,7 @@ export const EventDetailsPage: React.FC = () => {
                               {facility?.icon && (
                                 <span className="mr-1.5">{facility.icon}</span>
                               )}
-                              {facility?.name || facilityId}
+                              {getFacilityName(facilityId)}
                             </span>
                           )
                         })}

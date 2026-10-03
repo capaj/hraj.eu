@@ -1,4 +1,6 @@
 'use client'
+
+import { useLingui } from '@lingui/react'
 import {
   ChevronsUpDown,
   LogInIcon,
@@ -58,6 +60,8 @@ interface UserViewProps {
 }
 
 const UserView = ({ user, isPending }: UserViewProps) => {
+  useLingui()
+
   if (isPending) {
     return (
       <div className="flex items-center space-x-2">
@@ -96,6 +100,8 @@ export function UserButton({
   disableDefaultLinks,
   size = 'md'
 }: UserButtonProps) {
+  useLingui()
+
   const { data: sessionData, isPending: sessionPending } = useAuthSession()
   const queryClient = useQueryClient()
   const user = sessionData?.user

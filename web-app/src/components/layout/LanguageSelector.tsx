@@ -1,3 +1,6 @@
+import { useLingui } from '@lingui/react'
+import { i18n } from '~/lib/i18n'
+import { msg } from '@lingui/core/macro'
 import React from 'react'
 import { ChevronDown } from 'lucide-react'
 import {
@@ -31,6 +34,8 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   triggerId,
   fullWidth = false
 }) => {
+  useLingui()
+
   const selectedLanguage = LANGUAGES[currentLocale] ?? LANGUAGES.cs
 
   return (
@@ -42,7 +47,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
           className={`inline-flex h-10 items-center justify-between gap-2 rounded-lg border border-gray-200 bg-white px-3 text-sm font-medium text-gray-800 shadow-sm transition-colors hover:border-primary-300 hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
             fullWidth ? 'w-full' : 'min-w-[5.75rem]'
           }`}
-          aria-label="Language"
+          aria-label={i18n._(msg`Language`)}
         >
           <span className="flex items-center gap-2">
             <span aria-hidden="true" className="text-lg leading-none">

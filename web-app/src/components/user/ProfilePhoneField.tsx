@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react'
 import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { i18n } from '~/lib/i18n'
@@ -15,6 +16,8 @@ export function ProfilePhoneField({
   editedPhone,
   onChange
 }: ProfilePhoneFieldProps) {
+  useLingui()
+
   return (
     <div>
       <label

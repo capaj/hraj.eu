@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react'
 import React, { useState } from 'react'
 import { msg } from '@lingui/core/macro'
 import { i18n } from '~/lib/i18n'
@@ -34,6 +35,8 @@ export const TagInput: React.FC<TagInputProps> = ({
   className,
   renderOptionIcon
 }) => {
+  useLingui()
+
   const defaultPlaceholder = i18n._(msg`Add...`)
   const finalPlaceholder = placeholder || defaultPlaceholder
   const [open, setOpen] = useState(false)

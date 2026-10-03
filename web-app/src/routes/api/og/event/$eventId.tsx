@@ -3,7 +3,11 @@ import { ImageResponse, loadGoogleFont } from 'workers-og'
 import { getEventById } from '~/server-functions/getEventById'
 import { getVenues } from '~/server-functions/getVenues'
 import { getUsersByIds } from '~/server-functions/getUsersByIds'
-import { SPORTS } from '~/lib/constants'
+import { setupI18n } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
+import { getSportName } from '~/lib/localizedNames'
+import { messages as csMessages } from '../../../../../app/locales/cs.mjs'
+import { messages as enMessages } from '../../../../../app/locales/en.mjs'
 import { env } from 'cloudflare:workers'
 
 const CACHE_CONTROL = 'public, max-age=3600, s-maxage=86400'
@@ -60,14 +64,18 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
         try {
           const bucket = env.hraj_eu_uploads
 
-          const origin = new URL(request.url).origin
+          const requestUrl = new URL(request.url)
+          const origin = requestUrl.origin
+          const locale = requestUrl.searchParams.get('locale') === 'en' ? 'en' : 'cs'
+          const i18n = setupI18n()
+          i18n.loadAndActivate({ locale, messages: locale === 'cs' ? csMessages : enMessages })
           const event = await getEventById({ data: params.eventId })
           const venues = await getVenues()
           const venue = venues.find((v: any) => v.id === event.venueId)
 
           const participantsCount = event.participants?.length ?? 0
           const maxParticipants = event.maxParticipants ?? 0
-          const cachePrefix = `og-images/${params.eventId}-`
+          const cachePrefix = `og-images/${params.eventId}-localized-${locale}-`
           const cacheKey = `${cachePrefix}${event.updatedAt.getTime()}-${participantsCount}.png`
 
           if (bucket) {
@@ -88,8 +96,7 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
             ? await getUsersByIds({ data: participantIds })
             : []
 
-          const sportObj = SPORTS.find((s) => s.id === event.sport)
-          const sportName = sportObj?.name ?? event.sport
+          const sportName = getSportName(event.sport, i18n)
 
           const start = (() => {
             const date = new Date(event.date)
@@ -102,7 +109,7 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
 
           const when = (() => {
             try {
-              return new Intl.DateTimeFormat('en-GB', {
+              return new Intl.DateTimeFormat(locale, {
                 dateStyle: 'medium',
                 timeStyle: 'short'
               }).format(start)
@@ -115,7 +122,7 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
 
           const where = venue?.name
             ? `${venue.name}${venue.city ? `, ${venue.city}` : ''}`
-            : 'TBA'
+            : i18n._(msg`Location TBD`)
 
           const photoUrl = venue?.photos?.[0]
             ? new URL(venue.photos[0], origin).toString()
@@ -141,7 +148,7 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
           const fontData400 = await getInter400()
           const fontData700 = await getInter700()
 
-          const title = (event.title || 'Event').trim()
+          const title = (event.title || i18n._(msg`Event`)).trim()
 
           const imageResponse = new ImageResponse(
             <div
@@ -285,7 +292,7 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
                           boxShadow: '0 4px 12px rgba(59, 130, 246, 0.4)',
                         }}
                       >
-                        {`${participantsCount}/${maxParticipants} Players`}
+                        {i18n._(msg`${participantsCount}/${maxParticipants} players`)}
                       </div>
                     </div>
                   </div>

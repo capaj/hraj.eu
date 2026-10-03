@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react'
 import { useEffect } from 'react'
 import { useLoaderData, useRouter, useSearch } from '@tanstack/react-router'
 import { msg } from '@lingui/core/macro'
@@ -12,6 +13,8 @@ import { i18n } from '~/lib/i18n'
 import { saveOnboardingPreferences } from '~/server-functions/saveOnboardingPreferences'
 
 export function OnboardingPage() {
+  useLingui()
+
   const { user } = useLoaderData({ from: '/onboarding' })
   const { redirect } = useSearch({ from: '/onboarding' })
   const session = useAuthSession()

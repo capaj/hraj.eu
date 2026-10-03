@@ -1,3 +1,4 @@
+import { getEmailCopy, formatEmailDate, type EmailLocale } from './localization'
 import type { Resend } from 'resend'
 
 type CityEvent = {
@@ -8,6 +9,7 @@ type CityEvent = {
 }
 
 export async function sendCitySubscriptionEmail({
+  locale = 'cs',
   resend,
   from,
   to,
@@ -16,6 +18,7 @@ export async function sendCitySubscriptionEmail({
   events,
   baseUrl
 }: {
+  locale?: EmailLocale
   resend: Resend
   from: string
   to: string
@@ -24,11 +27,12 @@ export async function sendCitySubscriptionEmail({
   events: CityEvent[]
   baseUrl: string
 }) {
-  const subject = `New upcoming events in ${cityName}`
+  const copy = getEmailCopy(locale)
+  const subject = copy.citySubject(cityName)
   const list = events
     .map(
       (event) =>
-        `<li><a href="${baseUrl}/events/${event.id}">${event.title}</a> – ${event.date} ${event.startTime}</li>`
+        `<li><a href="${baseUrl}/events/${event.id}">${event.title}</a> – ${formatEmailDate(event.date, locale)} ${event.startTime}</li>`
     )
     .join('')
 
@@ -36,6 +40,6 @@ export async function sendCitySubscriptionEmail({
     from,
     to,
     subject,
-    html: `<div><p>New events were added in ${cityName}:</p><ul>${list}</ul><p>See all events: <a href="${baseUrl}/cities/${citySlug}">${baseUrl}/cities/${citySlug}</a></p></div>`
+    html: `<div><p>${copy.cityIntro(cityName)}</p><ul>${list}</ul><p>${copy.seeAllEvents}: <a href="${baseUrl}/cities/${citySlug}">${baseUrl}/cities/${citySlug}</a></p></div>`
   })
 }

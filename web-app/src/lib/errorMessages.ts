@@ -1,0 +1,73 @@
+import { msg } from '@lingui/core/macro'
+import { i18n } from './i18n'
+
+// Server errors stay independent of the browser locale; translate them when shown.
+const errorMessages = {
+  'Administrator access is required': msg`Administrator access is required`,
+  'Attendee not found': msg`Attendee not found`,
+  'Comment not found': msg`Comment not found`,
+  'Core group not found': msg`Core group not found`,
+  'Event not found': msg`Event not found`,
+  'Failed to create core group': msg`Failed to create core group`,
+  'Invalid images payload': msg`Invalid images payload`,
+  'Invalid leave payload': msg`Invalid leave payload`,
+  'Invalid payload': msg`Invalid payload`,
+  'No file provided': msg`No file provided`,
+  'No files provided': msg`No files provided`,
+  'Not enough spots for you and your guests right now.': msg`Not enough spots for you and your guests right now.`,
+  'One of the selected players is already in this event.': msg`One of the selected players is already in this event.`,
+  'One of the selected players no longer exists.': msg`One of the selected players no longer exists.`,
+  'Only active events can be cancelled': msg`Only active events can be cancelled`,
+  'Only the organizer can remove other attendees': msg`Only the organizer can remove other attendees`,
+  'R2 bucket not available': msg`R2 bucket not available`,
+  'Selected core group does not exist': msg`Selected core group does not exist`,
+  'The same player cannot be added as a guest more than once.': msg`The same player cannot be added as a guest more than once.`,
+  'User not found': msg`User not found`,
+  'Venue not found': msg`Venue not found`,
+  'Venue not found or you do not have permission to update it': msg`Venue not found or you do not have permission to update it`,
+  'You can only cancel events you organized': msg`You can only cancel events you organized`,
+  'You can only delete your own comments': msg`You can only delete your own comments`,
+  'You can only edit your own comments': msg`You can only edit your own comments`,
+  'You can only update events you organized': msg`You can only update events you organized`,
+  'You can only update venues you created': msg`You can only update venues you created`,
+  'You must be logged in to cancel an event': msg`You must be logged in to cancel an event`,
+  'You must be logged in to create a core group': msg`You must be logged in to create a core group`,
+  'You must be logged in to create a venue': msg`You must be logged in to create a venue`,
+  'You must be logged in to create an event': msg`You must be logged in to create an event`,
+  'You must be logged in to delete a core group': msg`You must be logged in to delete a core group`,
+  'You must be logged in to manage venues': msg`You must be logged in to manage venues`,
+  'You must be logged in to update a core group': msg`You must be logged in to update a core group`,
+  'You must be logged in to update a venue': msg`You must be logged in to update a venue`,
+  'You must be logged in to update an event': msg`You must be logged in to update an event`,
+  'You must be signed in to access this page': msg`You must be signed in to access this page`,
+  'You must be signed in to comment on an event': msg`You must be signed in to comment on an event`,
+  'You must be signed in to delete a comment': msg`You must be signed in to delete a comment`,
+  'You must be signed in to delete your account': msg`You must be signed in to delete your account`,
+  'You must be signed in to edit a comment': msg`You must be signed in to edit a comment`,
+  'You must be signed in to finish onboarding': msg`You must be signed in to finish onboarding`,
+  'You must be signed in to join an event': msg`You must be signed in to join an event`,
+  'You must be signed in to leave an event': msg`You must be signed in to leave an event`,
+  'You must be signed in to manage venue subscriptions': msg`You must be signed in to manage venue subscriptions`,
+  'You must be signed in to mark payment': msg`You must be signed in to mark payment`,
+  'You must be signed in to record payment intent': msg`You must be signed in to record payment intent`,
+  'You must be signed in to subscribe': msg`You must be signed in to subscribe`,
+  'You must be signed in to update guests': msg`You must be signed in to update guests`,
+  'You must be signed in to update payment status': msg`You must be signed in to update payment status`,
+  'You must be signed in to update skills': msg`You must be signed in to update skills`,
+  'You must be signed in to update your profile': msg`You must be signed in to update your profile`,
+  'You must be signed in to update your timezone': msg`You must be signed in to update your timezone`,
+  'You must be signed in to view your onboarding status': msg`You must be signed in to view your onboarding status`,
+  'You must be signed in to view your preferences': msg`You must be signed in to view your preferences`,
+  'You must join this event to mark payment': msg`You must join this event to mark payment`,
+  'You must join this event to record payment intent': msg`You must join this event to record payment intent`,
+  'You must join this event to update payment status': msg`You must join this event to update payment status`,
+  'You need to join this event before adding guests': msg`You need to join this event before adding guests`,
+  'Your account is temporarily restricted from joining new games.': msg`Your account is temporarily restricted from joining new games.`,
+}
+
+export function getLocalizedErrorMessage(error: unknown, fallback: string) {
+  if (!(error instanceof Error)) return fallback
+  if (!Object.hasOwn(errorMessages, error.message)) return fallback
+  const message = errorMessages[error.message as keyof typeof errorMessages]
+  return message ? i18n._(message) : fallback
+}

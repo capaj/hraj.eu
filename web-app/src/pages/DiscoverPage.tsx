@@ -1,3 +1,5 @@
+import { getLocalizedErrorMessage } from '~/lib/errorMessages'
+import { useLingui } from '@lingui/react'
 import React, { useState, useMemo, useRef } from 'react'
 import { isPast, isFuture } from 'date-fns'
 import { getEventDateTime } from '../utils/eventDateTime'
@@ -20,6 +22,8 @@ type SortOption = 'date' | 'distance' | 'spots'
 const MAX_PAST_EVENTS = 12
 
 export const DiscoverPage: React.FC = () => {
+  useLingui()
+
   const { events: initialEvents, venues, user } = useLoaderData({ from: '/' })
   const navigate = useNavigate()
   const session = useAuthSession()
@@ -185,9 +189,7 @@ export const DiscoverPage: React.FC = () => {
     } catch (error) {
       console.error('Failed to join event:', error)
       toast.error(
-        error instanceof Error
-          ? error.message
-          : i18n._(msg`Failed to join the event. Please try again.`)
+        getLocalizedErrorMessage(error, i18n._(msg`Failed to join the event. Please try again.`))
       )
     } finally {
       setJoiningEventId(null)

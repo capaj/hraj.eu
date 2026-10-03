@@ -1,3 +1,7 @@
+import { useLingui } from '@lingui/react'
+import { i18n } from '~/lib/i18n'
+import { getSkillLevelName, getSportName } from '~/lib/localizedNames'
+import { Trans } from '@lingui/react/macro'
 import React from 'react'
 import { Card, CardHeader, CardContent } from '../ui/Card'
 import { Badge } from '../ui/Badge'
@@ -12,6 +16,8 @@ interface UserProfileProps {
 }
 
 export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
+  useLingui()
+
   return (
     <Card className="animate-fade-in">
       <CardHeader>
@@ -24,7 +30,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
               <div className="flex items-center mt-2">
                 <Trophy size={16} className="text-yellow-500 mr-1" />
                 <span className="text-sm font-medium text-gray-700">
-                  {user.karmaPoints} karma
+                  <Trans>{user.karmaPoints} karma</Trans>
                 </span>
               </div>
             )}
@@ -34,13 +40,13 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
       <CardContent>
         {user.bio && (
           <div className="mb-6">
-            <h3 className="font-semibold text-gray-900 mb-2">About</h3>
+            <h3 className="font-semibold text-gray-900 mb-2"><Trans>About me</Trans></h3>
             <p className="text-gray-700">{user.bio}</p>
           </div>
         )}
 
         <div className="mb-6">
-          <h3 className="font-semibold text-gray-900 mb-3">Skill Levels</h3>
+          <h3 className="font-semibold text-gray-900 mb-3"><Trans>Skill Levels</Trans></h3>
           <div className="space-y-2">
             {Object.entries(user.skillLevels || {}).map(([sport, level]) => {
               const sportInfo = SPORTS.find((s) => s.id === sport)
@@ -56,10 +62,10 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
                 <div key={sport} className="flex items-center justify-between">
                   <span className="flex items-center text-sm text-gray-700">
                     <SportIcon sport={sport} size={16} className="mr-1.5" />
-                    {sportInfo?.name ?? sport}
+                    {(sportInfo ? getSportName(sportInfo.id) : undefined) ?? sport}
                   </span>
                   <Badge variant={badgeVariant}>
-                    {levelInfo?.name}
+                    {(levelInfo ? getSkillLevelName(levelInfo.id) : undefined)}
                   </Badge>
                 </div>
               )
@@ -70,8 +76,8 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
 
         <div className="flex items-center text-sm text-gray-600">
           <Calendar size={16} className="mr-2" />
-          Member since{' '}
-          {user.createdAt.toLocaleDateString('en-US', {
+          <Trans>Member since</Trans>{' '}
+          {user.createdAt.toLocaleDateString(i18n.locale, {
             month: 'long',
             year: 'numeric'
           })}

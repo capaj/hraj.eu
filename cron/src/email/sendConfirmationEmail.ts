@@ -1,8 +1,10 @@
+import { getEmailCopy, formatEmailDate, type EmailLocale } from './localization'
 import type { Resend } from 'resend'
 import type { EventRow } from '../types'
 import { encodeBase64, escapeHtml } from './utils'
 
 export async function sendConfirmationEmail({
+	locale = 'cs',
 	resend,
 	from,
 	to,
@@ -13,6 +15,7 @@ export async function sendConfirmationEmail({
 	icalContent,
 	icsFilename
 }: {
+	locale?: EmailLocale
 	resend: Resend
 	from: string
 	to: string
@@ -23,34 +26,35 @@ export async function sendConfirmationEmail({
 	icalContent: string
 	icsFilename: string
 }) {
-	const greeting = name ? `Hi ${name},` : 'Hi,'
-	const when = `${event.date} ${event.startTime} (${event.duration} min)`
+	const copy = getEmailCopy(locale)
+	const greeting = copy.greeting(name)
+	const when = `${formatEmailDate(event.date, locale)} ${event.startTime} (${event.duration} min)`
 	const description = event.description?.trim()
 	const plainText = [
 		greeting,
 		'',
-		`Your event is confirmed: ${event.title}`,
-		`When: ${when}`,
-		`Where: ${location}`,
+		copy.confirmedIntro(event.title),
+		`${copy.when}: ${when}`,
+		`${copy.where}: ${location}`,
 		description ? '' : null,
 		description || null,
 		'',
-		'We attached a calendar file so you can add it to Google Calendar.',
-		`View event: ${eventUrl}`
+		copy.calendar,
+		`${copy.viewEvent}: ${eventUrl}`
 	]
 		.filter((line): line is string => Boolean(line))
 		.join('\n')
 
 	const html = `
     <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto;">
-      <h2>Event confirmed</h2>
+      <h2>${copy.confirmed}</h2>
       <p>${escapeHtml(greeting)}</p>
-      <p><strong>${escapeHtml(event.title)}</strong> is confirmed.</p>
-      <p><strong>When:</strong> ${escapeHtml(when)}</p>
-      <p><strong>Where:</strong> ${escapeHtml(location)}</p>
+      <p><strong>${escapeHtml(event.title)}</strong> ${copy.confirmedSuffix}</p>
+      <p><strong>${copy.when}:</strong> ${escapeHtml(when)}</p>
+      <p><strong>${copy.where}:</strong> ${escapeHtml(location)}</p>
       ${description ? `<p>${escapeHtml(description)}</p>` : ''}
-      <p>We attached a calendar file so you can add it to Google Calendar.</p>
-      <p><a href="${eventUrl}">View event</a></p>
+      <p>${copy.calendar}</p>
+      <p><a href="${eventUrl}">${copy.viewEvent}</a></p>
     </div>
   `
 
@@ -58,7 +62,7 @@ export async function sendConfirmationEmail({
 	const response = await resend.emails.send({
 		from,
 		to,
-		subject: `Event confirmed: ${event.title}`,
+		subject: copy.confirmedSubject(event.title),
 		html,
 		text: plainText,
 		attachments: [

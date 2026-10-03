@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react'
 import type { ReactNode } from 'react'
 import { Trans } from '@lingui/react/macro'
 import './AboutStats.css'
@@ -96,6 +97,7 @@ function CountriesIllustration() {
 }
 
 export function AboutStats({ stats }: AboutStatsProps) {
+  const { i18n } = useLingui()
   return (
     <section className="about-stats bg-black/20 py-10 sm:py-12">
       <div className="mx-auto grid max-w-6xl grid-cols-3 gap-2 px-4 text-center text-white sm:gap-8 sm:px-6 lg:px-8">
@@ -103,14 +105,14 @@ export function AboutStats({ stats }: AboutStatsProps) {
           <EventsIllustration />
           <dl className="flex w-full flex-col items-center">
             <dt className="about-stats__label"><Trans>Events Created</Trans></dt>
-            <dd className="about-stats__number">{stats.eventsCreated.toLocaleString()}</dd>
+            <dd className="about-stats__number">{stats.eventsCreated.toLocaleString(i18n.locale)}</dd>
           </dl>
         </div>
         <div className="about-stats__item">
           <PlayersIllustration />
           <dl className="flex w-full flex-col items-center">
             <dt className="about-stats__label"><Trans>Active Players</Trans></dt>
-            <dd className="about-stats__number">{stats.activeUsers.toLocaleString()}</dd>
+            <dd className="about-stats__number">{stats.activeUsers.toLocaleString(i18n.locale)}</dd>
           </dl>
         </div>
         <div className="about-stats__item">

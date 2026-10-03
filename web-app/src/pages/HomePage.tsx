@@ -1,3 +1,5 @@
+import { getLocalizedErrorMessage } from '~/lib/errorMessages'
+import { useLingui } from '@lingui/react'
 import React, { useState, useEffect } from 'react'
 import { Link, useLoaderData, useNavigate } from '@tanstack/react-router'
 import { Card, CardContent } from '../components/ui/Card'
@@ -14,6 +16,8 @@ import { AboutStats } from '../components/about/AboutStats'
 import { AboutPresskit } from '../components/about/AboutPresskit'
 
 export const AboutPage: React.FC = () => {
+  useLingui()
+
   const { upcomingEvents: initialUpcomingEvents, stats } = useLoaderData({ from: '/about' })
   const navigate = useNavigate()
   const session = useAuthSession()
@@ -94,9 +98,7 @@ export const AboutPage: React.FC = () => {
     } catch (error) {
       console.error('Failed to join event:', error)
       toast.error(
-        error instanceof Error
-          ? error.message
-          : i18n._(msg`Failed to join the event. Please try again.`)
+        getLocalizedErrorMessage(error, i18n._(msg`Failed to join the event. Please try again.`))
       )
     } finally {
       setJoiningEventId(null)

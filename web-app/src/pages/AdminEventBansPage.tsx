@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react'
 import React, { useEffect, useMemo, useState } from 'react'
 import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
@@ -31,6 +32,8 @@ const formatBanExpiry = (bannedUntil: Date) =>
   }).format(new Date(bannedUntil))
 
 export const AdminEventBansPage: React.FC = () => {
+  useLingui()
+
   const [users, setUsers] = useState<AdminEventBanUser[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isAdmin, setIsAdmin] = useState(true)

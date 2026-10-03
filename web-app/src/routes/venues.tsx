@@ -1,3 +1,5 @@
+import { msg } from '@lingui/core/macro'
+import { i18n } from '~/lib/i18n'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { VenuesPage } from '../pages/VenuesPage'
 import { getVenues } from '~/server-functions/getVenues'
@@ -7,9 +9,8 @@ import {
 } from '~/server-functions/venueEventSubscriptions'
 import { buildSeoMeta, canonicalLink, SITE_NAME, SITE_URL } from '~/lib/seo'
 
-const title = `Sports venues and places to play | ${SITE_NAME}`
-const description =
-  'Browse sports venues on a map and subscribe to email alerts when new amateur team sports events are created at your favorite places.'
+const titleMessage = msg`Sports venues and places to play | ${SITE_NAME}`
+const descriptionMessage = msg`Browse sports venues on a map and subscribe to email alerts when new amateur team sports events are created at your favorite places.`
 
 export const Route = createFileRoute('/venues')({
   loader: async () => {
@@ -20,14 +21,18 @@ export const Route = createFileRoute('/venues')({
 
     return { venues, subscriptions }
   },
-  head: () => ({
-    meta: buildSeoMeta({
-      title,
-      description,
-      url: `${SITE_URL}/venues`
-    }),
-    links: [canonicalLink('/venues')]
-  }),
+  head: () => {
+    const title = i18n._(titleMessage)
+    const description = i18n._(descriptionMessage)
+    return {
+      meta: buildSeoMeta({
+        title,
+        description,
+        url: `${SITE_URL}/venues`
+      }),
+      links: [canonicalLink('/venues')]
+    }
+  },
   component: VenuesRoute
 })
 

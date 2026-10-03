@@ -1,6 +1,12 @@
 {
-  "plugins": ["unicorn", "typescript", "oxc"],
-  "jsPlugins": null,
+  "plugins": [
+    "unicorn",
+    "typescript",
+    "oxc"
+  ],
+  "jsPlugins": [
+    "eslint-plugin-lingui"
+  ],
   "categories": {},
   "rules": {
     "for-direction": "warn",
@@ -145,5 +151,169 @@
     "**/coverage/**",
     "**/.turbo/**",
     "apps/web/public/**"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "web-app/src/components/**/*.tsx",
+        "web-app/src/pages/**/*.tsx",
+        "web-app/src/lib/auth-client.tsx",
+        "web-app/src/lib/providers.tsx",
+        "web-app/src/lib/localizedNames.ts",
+        "web-app/src/lib/authLocalization.ts",
+        "web-app/src/lib/errorMessages.ts",
+        "web-app/src/routes/**/*.tsx",
+        "web-app/src/lib/seo.ts"
+      ],
+      "rules": {
+        "lingui/no-unlocalized-strings": [
+          "error",
+          {
+            "ignore": [
+              "^[A-Z0-9_-]+$",
+              "^[^a-zA-Z]*$",
+              "^(https?://|/|#[a-fA-F0-9]{3,8}$)",
+              "^[\\w.+-]+@[\\w.-]+$",
+              "^(hraj\\.eu|Facebook|Twitter|WhatsApp|Telegram|Google|GIPHY)$",
+              "^(CZK \\(K\u010d\\)|EUR \\(\u20ac\\)|USD \\(\\$\\))$",
+              "^(English|\u010cesky|Czech Republic|2-digit|min\\)|\u00b0C|use client)$",
+              "^[0-9]+[mh]$",
+              "^\\s*</?(div|span|svg|button)\\b",
+              "^(padding-|scale\\(|&[a-z_]+=)",
+              "^(bg-|w-|h-)[a-z0-9:-]+(?: [a-z0-9:/._-]+)+$",
+              "^[a-zA-Z0-9_\\${}.\\s]*\\.ics$",
+              "^(session|weekly|places|address|address_components|formatted_address|geometry|place_changed|beginner|intermediate|advanced|clear|cloudy|fog|snowy|thunder|rainy|poor|fair|good|excellent|cs|hour|minute|karma|events-organized|events-joined|monthly|weeks|newest|oldest|completed|soccer|cancelled|none|no-show|bad-behavior|gi|error|success|warning)$",
+              "^[a-z]+(?:-[a-z0-9]+)+$",
+              "^\\$.*(?:px|km|m)$",
+              "^(bg|translate)-[a-z0-9-]+$",
+              "^(px|m|km|google|facebook|click|dragend|date|numeric)$",
+              "^(summary_large_image|noindex|open|confirmed|website|image/png|index, follow|width=device-width, initial-scale=1|name=sport)$"
+            ],
+            "ignoreNames": [
+              {
+                "regex": {
+                  "pattern": "className$",
+                  "flags": "i"
+                }
+              },
+              "classNames",
+              "style",
+              "src",
+              "srcSet",
+              "href",
+              "to",
+              "type",
+              "id",
+              "size",
+              "color",
+              "variant",
+              "displayName",
+              "rel",
+              "target",
+              "key",
+              "name",
+              "autoComplete",
+              "method",
+              "role",
+              "viewBox",
+              "d",
+              "fontFamily",
+              "fontWeight",
+              "position",
+              "queryKey",
+              "track",
+              "thumb",
+              "fill",
+              "attribution",
+              "GIPHY_API_KEY",
+              "hour",
+              "minute",
+              "view",
+              "country",
+              "code",
+              "icon",
+              "encoding",
+              "stroke",
+              "link",
+              "styleName",
+              "pathname",
+              "value",
+              "align",
+              "side",
+              "socialLayout",
+              "data-slot",
+              "aria-hidden",
+              "weekday",
+              "month",
+              "year",
+              "dateStyle",
+              "timeStyle",
+              "behavior",
+              "block",
+              "file",
+              "fields",
+              "libraries",
+              "v",
+              "property",
+              "@type",
+              "@context",
+              "sizes"
+            ],
+            "ignoreFunctions": [
+              "console.*",
+              "Error",
+              "cn",
+              "clsx",
+              "cva",
+              "format",
+              "*.includes",
+              "*.startsWith",
+              "*.endsWith",
+              "*.querySelector",
+              "*.querySelectorAll",
+              "*.getElementById",
+              "*.addEventListener",
+              "*.removeEventListener",
+              "*.closest",
+              "*.setAttribute",
+              "*.getAttribute",
+              "*.removeAttribute",
+              "*.createElement",
+              "*.insertRule",
+              "*.match",
+              "*.replace",
+              "*.replaceAll",
+              "*.split",
+              "*.join",
+              "*.getItem",
+              "*.setItem",
+              "*.removeItem",
+              "*.findIndex",
+              "*.indexOf",
+              "window.matchMedia",
+              "window.open",
+              "fetch",
+              "handleChange",
+              "*.set",
+              "*.get",
+              "*.has",
+              "*.append",
+              "getComputedStyle",
+              "*.createObjectURL",
+              "*.createTextNode"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "web-app/src/routes/scenarios.*.tsx",
+        "web-app/src/routes/api/**/*.tsx"
+      ],
+      "rules": {
+        "lingui/no-unlocalized-strings": "off"
+      }
+    }
   ]
 }

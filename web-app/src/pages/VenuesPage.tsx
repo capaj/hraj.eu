@@ -1,3 +1,5 @@
+import { useLingui } from '@lingui/react'
+import { getSportName } from '~/lib/localizedNames'
 import { useMemo, useRef, useState } from 'react'
 import { Trans } from '@lingui/react/macro'
 import { msg } from '@lingui/core/macro'
@@ -53,6 +55,8 @@ export function VenuesPage({
   onSignIn,
   onSubscriptionChange
 }: VenuesPageProps) {
+  useLingui()
+
   const [search, setSearch] = useState('')
   const [city, setCity] = useState('')
   const [sport, setSport] = useState('')
@@ -241,7 +245,7 @@ export function VenuesPage({
                   <option value="">{i18n._(msg`All sports`)}</option>
                   {sports.map((candidate) => (
                     <option key={candidate.id} value={candidate.id}>
-                      {candidate.name}
+                      {getSportName(candidate.id)}
                     </option>
                   ))}
                 </select>
@@ -345,7 +349,7 @@ export function VenuesPage({
                             )
                             return venueSport ? (
                               <Badge key={sportId} variant="info">
-                                {venueSport.name}
+                                {getSportName(venueSport.id)}
                               </Badge>
                             ) : null
                           })}

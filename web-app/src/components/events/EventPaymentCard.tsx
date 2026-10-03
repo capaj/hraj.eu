@@ -1,3 +1,6 @@
+import { useLingui } from '@lingui/react'
+import { i18n } from '~/lib/i18n'
+import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { CoinsIcon } from 'lucide-react'
 import { QRCodeSVG } from 'qrcode.react'
@@ -11,6 +14,8 @@ export function EventPaymentCard({ event, bankAccount, className }: {
   bankAccount?: string
   className?: string
 }) {
+  useLingui()
+
   const people = Math.max(1, event.minParticipants, getTotalReservedAwareHeadcount(event))
   // Round once so the visible amount and the encoded payment always agree.
   const amount = event.price && event.price > 0
@@ -43,7 +48,7 @@ export function EventPaymentCard({ event, bankAccount, className }: {
             <div className="flex flex-wrap items-center justify-between gap-2">
               <span className="text-gray-700"><Trans>Price per person ({people} people):</Trans></span>
               <span className="text-2xl font-bold text-primary-600">
-                {amount.toLocaleString(undefined, { maximumFractionDigits: 2 })} {currency}
+                {amount.toLocaleString(i18n.locale, { maximumFractionDigits: 2 })} {currency}
               </span>
             </div>
           </div>
@@ -63,7 +68,7 @@ export function EventPaymentCard({ event, bankAccount, className }: {
               level="M"
               marginSize={4}
               role="img"
-              title="QR Platba"
+              title={i18n._(msg`QR payment`)}
               className="h-auto max-w-full rounded-lg border border-gray-200"
             />
             <p className="max-w-full break-all font-mono text-sm text-gray-700">{bankAccount}</p>

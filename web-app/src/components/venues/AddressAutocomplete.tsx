@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { msg } from '@lingui/core/macro'
 import { i18n } from '~/lib/i18n'
@@ -32,6 +33,8 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
   required = false,
   apiKey
 }) => {
+  useLingui()
+
   const defaultPlaceholder = i18n._(msg`Enter address`)
   const finalPlaceholder = placeholder || defaultPlaceholder
   const inputRef = useRef<HTMLInputElement>(null)

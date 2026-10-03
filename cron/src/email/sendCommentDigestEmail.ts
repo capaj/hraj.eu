@@ -1,3 +1,4 @@
+import { getEmailCopy, type EmailLocale } from './localization'
 import type { Resend } from 'resend'
 import { escapeHtml } from './utils'
 
@@ -10,6 +11,7 @@ export interface CommentDigestItem {
 const MAX_COMMENT_PREVIEWS = 10
 
 export async function sendCommentDigestEmail({
+	locale = 'cs',
 	resend,
 	from,
 	to,
@@ -19,6 +21,7 @@ export async function sendCommentDigestEmail({
 	comments,
 	idempotencyKey
 }: {
+	locale?: EmailLocale
 	resend: Resend
 	from: string
 	to: string
@@ -28,36 +31,34 @@ export async function sendCommentDigestEmail({
 	comments: CommentDigestItem[]
 	idempotencyKey: string
 }): Promise<void> {
-	const greeting = name?.trim() ? `Hi ${name.trim()},` : 'Hi,'
+	const copy = getEmailCopy(locale)
+	const greeting = copy.greeting(name)
 	const previewComments = comments.slice(0, MAX_COMMENT_PREVIEWS)
 	const additionalCommentCount = comments.length - previewComments.length
-	const commentLabel = comments.length === 1 ? 'comment' : 'comments'
 	const escapedEventUrl = escapeHtml(eventUrl)
 
 	const plainText = [
 		greeting,
 		'',
-		`${comments.length} new ${commentLabel} on ${eventTitle}:`,
+		`${copy.commentsSubject(comments.length, eventTitle)}:`,
 		'',
 		...previewComments.map(
 			(comment) =>
 				`${comment.authorName} (${comment.createdAt.toISOString()}):\n${comment.content}`
 		),
 		additionalCommentCount > 0
-			? `...and ${additionalCommentCount} more ${
-					additionalCommentCount === 1 ? 'comment' : 'comments'
-				}.`
+			? copy.moreComments(additionalCommentCount)
 			: null,
 		'',
-		`Open the event discussion: ${eventUrl}`,
-		'You can turn off all event emails in your profile settings.'
+		`${copy.openDiscussion}: ${eventUrl}`,
+		copy.unsubscribe
 	]
 		.filter((line): line is string => Boolean(line))
 		.join('\n\n')
 
 	const commentsHtml = previewComments
 		.map((comment) => {
-			const createdAt = comment.createdAt.toLocaleString('en-GB', {
+			const createdAt = comment.createdAt.toLocaleString(locale === 'cs' ? 'cs-CZ' : 'en-GB', {
 				dateStyle: 'medium',
 				timeStyle: 'short',
 				timeZone: 'Europe/Prague'
@@ -76,19 +77,17 @@ export async function sendCommentDigestEmail({
 
 	const html = `
 		<div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto;">
-			<h2>New comments on ${escapeHtml(eventTitle)}</h2>
+			<h2>${escapeHtml(copy.commentsHeading(eventTitle))}</h2>
 			<p>${escapeHtml(greeting)}</p>
-			<p>There ${comments.length === 1 ? 'is' : 'are'} <strong>${comments.length}</strong> new ${commentLabel} in the event discussion.</p>
+			<p>${copy.commentsIntro(comments.length)}</p>
 			${commentsHtml}
 			${
 				additionalCommentCount > 0
-					? `<p style="color: #666;">...and ${additionalCommentCount} more ${
-							additionalCommentCount === 1 ? 'comment' : 'comments'
-						}.</p>`
+					? `<p style="color: #666;">${copy.moreComments(additionalCommentCount)}</p>`
 					: ''
 			}
-			<p><a href="${escapedEventUrl}">Open the event discussion</a></p>
-			<p style="color: #666; font-size: 12px;">You can turn off all event emails in your profile settings.</p>
+			<p><a href="${escapedEventUrl}">${copy.openDiscussion}</a></p>
+			<p style="color: #666; font-size: 12px;">${copy.unsubscribe}</p>
 		</div>
 	`
 
@@ -96,7 +95,7 @@ export async function sendCommentDigestEmail({
 		{
 			from,
 			to,
-			subject: `${comments.length} new ${commentLabel} on ${eventTitle}`,
+			subject: copy.commentsSubject(comments.length, eventTitle),
 			html,
 			text: plainText
 		},

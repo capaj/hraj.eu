@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react'
 import React, { useState } from 'react'
 import { CreateEventForm } from '../components/events/CreateEventForm'
 import type { CreateEventFormData } from '../components/events/CreateEventForm'
@@ -27,6 +28,8 @@ const getUpcomingDateForWeekday = (targetDate: string | Date): string => {
 
 
 export const CreateEvent: React.FC = () => {
+  useLingui()
+
   useAuthenticate() // This is needed to make the auth work
   const search: any = useSearch({ from: '/create' })
   const [isSubmitting, setIsSubmitting] = useState(false)

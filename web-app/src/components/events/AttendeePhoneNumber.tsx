@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react'
 import { msg } from '@lingui/core/macro'
 import { Phone } from 'lucide-react'
 import { i18n } from '~/lib/i18n'
@@ -11,6 +12,8 @@ export function AttendeePhoneNumber({
   name,
   phone
 }: AttendeePhoneNumberProps) {
+  useLingui()
+
   if (!phone) return null
 
   return (

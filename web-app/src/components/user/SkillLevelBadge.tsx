@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react'
 import { msg } from '@lingui/core/macro'
 import { i18n } from '~/lib/i18n'
 import { cn } from '~/lib/utils'
@@ -18,19 +19,16 @@ function getLevelCopy(level: SkillLevel) {
   switch (level) {
     case 'beginner':
       return {
-        abbreviation: 'B',
         label: i18n._(msg`Beginner`),
         description: i18n._(msg`New to the sport or casual players`)
       }
     case 'intermediate':
       return {
-        abbreviation: 'I',
         label: i18n._(msg`Intermediate`),
         description: i18n._(msg`Regular players with some experience`)
       }
     case 'advanced':
       return {
-        abbreviation: 'A',
         label: i18n._(msg`Advanced`),
         description: i18n._(msg`Experienced competitive players`)
       }
@@ -43,7 +41,9 @@ interface SkillLevelBadgeProps {
 }
 
 export function SkillLevelBadge({ level, className }: SkillLevelBadgeProps) {
-  const { abbreviation, label, description } = getLevelCopy(level)
+  useLingui()
+
+  const { label, description } = getLevelCopy(level)
 
   return (
     <Tooltip>
@@ -57,7 +57,7 @@ export function SkillLevelBadge({ level, className }: SkillLevelBadgeProps) {
           )}
           aria-label={`${label}: ${description}`}
         >
-          {abbreviation}
+          {label.charAt(0).toUpperCase()}
         </button>
       </TooltipTrigger>
       <TooltipContent side="top" sideOffset={6} className="max-w-56">

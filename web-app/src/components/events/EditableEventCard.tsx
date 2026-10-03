@@ -1,3 +1,10 @@
+import { useLingui } from '@lingui/react'
+import { t } from '@lingui/core/macro'
+import { enUS, cs } from 'date-fns/locale'
+import { getEventStatusName } from '~/lib/localizedNames'
+import { i18n } from '~/lib/i18n'
+import { msg } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 import React, { useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { Button } from '../ui/Button'
@@ -40,6 +47,8 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
   showUnsaveButton = false,
   onUnsave
 }) => {
+  useLingui()
+
   const navigate = useNavigate()
   const router = useRouter()
   const [isEditOpen, setIsEditOpen] = useState(false)
@@ -88,7 +97,7 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
       router.invalidate() // Refresh data
     } catch (error) {
       console.error('Failed to update event:', error)
-      alert('Failed to update event')
+      alert(t`Failed to update event`)
     } finally {
       setIsUpdating(false)
     }
@@ -107,7 +116,7 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
       router.invalidate()
     } catch (error) {
       console.error('Failed to cancel event:', error)
-      alert('Failed to cancel event')
+      alert(t`Failed to cancel event`)
       throw error
     } finally {
       setIsUpdating(false)
@@ -162,16 +171,16 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
             <div>
               <h3 className="font-semibold text-gray-900">{event.title}</h3>
               <p className="text-sm text-gray-600">
-                by {organizer?.name || 'Unknown'}
+                <Trans>by {organizer?.name || t`Unknown`}</Trans>
               </p>
             </div>
           </div>
           <div className="flex items-center space-x-2">
             <Badge variant={event.status === 'open' ? 'success' : 'info'}>
-              {event.status}
+              {getEventStatusName(event.status)}
             </Badge>
             {currentUserId === event.organizerId && (
-              <Badge variant="warning">Organizer</Badge>
+              <Badge variant="warning"><Trans>Organizer</Trans></Badge>
             )}
             {showUnsaveButton && (
               <Button
@@ -189,7 +198,7 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-600 mb-4">
           <div className="flex items-center">
             <Calendar size={14} className="mr-2" />
-            {format(new Date(event.date), 'EEEE, MMM d, yyyy')}
+            {format(new Date(event.date), 'PPPP', { locale: i18n.locale === 'cs' ? cs : enUS })}
           </div>
           <div className="flex items-center">
             <Clock size={14} className="mr-2" />
@@ -197,39 +206,39 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
           </div>
           <div className="flex items-center">
             <MapPin size={14} className="mr-2" />
-            {venue?.address?.split(',')[0] || 'Location TBD'}
+            {venue?.address?.split(',')[0] || t`Location TBD`}
           </div>
           <div className="flex items-center">
             <Users size={14} className="mr-2" />
             {confirmedHeadcount}/{event.maxParticipants}
             {(event.reservedParticipants ?? 0) > 0 && (
-              <span className="text-gray-500 ml-1">(+{event.reservedParticipants} reserved)</span>
+              <span className="text-gray-500 ml-1"><Trans>(+{event.reservedParticipants} reserved)</Trans></span>
             )}
             {event.idealParticipants && (
               <span className="text-gray-500 ml-1">
-                (ideal: {event.idealParticipants})
+                <Trans>(ideal: {event.idealParticipants})</Trans>
               </span>
             )}
           </div>
           {event.price && (
             <div className="flex items-center md:col-span-2">
-              <span className="mr-2">€</span>€{event.price} per person
+              <span className="mr-2">€</span>€{event.price} <Trans>per person</Trans>
             </div>
           )}
         </div>
 
         <div className="flex justify-end space-x-2">
           <Button variant="outline" size="sm" onClick={() => navigate({ to: `/events/${event.id}` })}>
-            View Details
+            <Trans>View Details</Trans>
           </Button>
           {showSaveButton && (
             <Button variant="primary" size="sm">
-              Join Game
+              <Trans>Join Game</Trans>
             </Button>
           )}
           {currentUserId === event.organizerId && !isPast(new Date(event.date)) && (
             <Button variant="ghost" size="sm" onClick={() => setIsEditOpen(true)}>
-              Edit
+              <Trans>Edit</Trans>
             </Button>
           )}
         </div>
@@ -241,7 +250,7 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
             <button
               onClick={() => setIsEditOpen(false)}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10 bg-white rounded-full p-1 shadow-sm"
-              title="Close"
+              title={i18n._(msg`Close`)}
             >
               <X size={24} />
             </button>

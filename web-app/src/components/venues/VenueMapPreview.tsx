@@ -1,3 +1,5 @@
+import { useLingui } from '@lingui/react'
+import { t } from '@lingui/core/macro'
 import React, { useEffect, useRef, useState } from 'react'
 
 interface VenueMapPreviewProps {
@@ -13,6 +15,8 @@ export const VenueMapPreview: React.FC<VenueMapPreviewProps> = ({
   className = '',
   onLocationChange
 }) => {
+  useLingui()
+
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<any>(null)
   const markerRef = useRef<any>(null)
@@ -116,7 +120,7 @@ export const VenueMapPreview: React.FC<VenueMapPreviewProps> = ({
         }, 100)
       } catch (err) {
         console.error('Error initializing map:', err)
-        if (isMounted) setError('Failed to load map')
+        if (isMounted) setError(t`Failed to load map`)
         setIsLoading(false)
       }
     }

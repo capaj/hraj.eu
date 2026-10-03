@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react'
 import { msg } from '@lingui/core/macro'
 import { Trans } from '@lingui/react/macro'
 import { useQuery } from '@tanstack/react-query'
@@ -29,6 +30,8 @@ export function GuestUserInput({
   onSelect,
   onRemove
 }: GuestUserInputProps) {
+  useLingui()
+
   const [isFocused, setIsFocused] = useState(false)
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const [selectedIndex, setSelectedIndex] = useState(0)

@@ -1,6 +1,9 @@
+import { getLocalizedErrorMessage } from '~/lib/errorMessages'
+import { useLingui } from '@lingui/react'
+import { getSkillLevelName, getSportName } from '~/lib/localizedNames'
 import React, { useState, useEffect } from 'react'
 import { Trans } from '@lingui/react/macro'
-import { t, msg } from '@lingui/core/macro'
+import { t, msg, plural } from '@lingui/core/macro'
 import { i18n } from '~/lib/i18n'
 import { Card, CardHeader, CardContent } from '../ui/Card'
 import { Button } from '../ui/Button'
@@ -107,6 +110,8 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   onCancelEvent,
   isEdit = !!initialData
 }) => {
+  useLingui()
+
   // Calculate default date (one week from now) and format it for input
   const getDefaultDate = () => {
     const date = new Date()
@@ -264,7 +269,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     const currentUniqueCount = mergeQrCodeImageUrls([], formData.qrCodeImages, MAX_QR_IMAGES).length
     const remainingSlots = MAX_QR_IMAGES - currentUniqueCount
     if (remainingSlots <= 0) {
-      alert(i18n._(t`You can upload a maximum of ${MAX_QR_IMAGES} QR code images.`))
+      alert(t`You can upload a maximum of ${MAX_QR_IMAGES} QR code images.`)
       event.target.value = ''
       return
     }
@@ -273,7 +278,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     const filesToUpload = selectedFiles.slice(0, remainingSlots)
 
     if (filesToUpload.length < selectedFiles.length) {
-      alert(i18n._(t`Only ${remainingSlots} more QR code images can be uploaded for this event.`))
+      alert(t`Only ${remainingSlots} more QR code images can be uploaded for this event.`)
     }
 
     setIsUploadingQrCodes(true)
@@ -290,9 +295,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     } catch (error) {
       console.error('QR upload failed:', error)
       const errorMessage =
-        error instanceof Error
-          ? error.message
-          : i18n._(msg`Failed to upload images. Please try again.`)
+        getLocalizedErrorMessage(error, i18n._(msg`Failed to upload images. Please try again.`))
       alert(errorMessage)
     } finally {
       setIsUploadingQrCodes(false)
@@ -387,21 +390,21 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     const totalMinutes =
       formData.cancellationHours * 60 + formData.cancellationMinutes
     if (totalMinutes < 60) {
-      return { primary: t(i18n)`{totalMinutes} minutes`, secondary: '' }
+      return { primary: plural(totalMinutes, { one: "# minute", other: "# minutes" }), secondary: '' }
     } else if (totalMinutes === 60) {
       return { primary: t(i18n)`1 hour`, secondary: '' }
     } else if (totalMinutes % 60 === 0) {
       const hours = Math.floor(totalMinutes / 60)
       return {
-        primary: t(i18n)`{hours} hours`,
+        primary: plural(hours, { one: "# hour", other: "# hours" }),
         secondary: ''
       }
     } else {
       const hours = Math.floor(totalMinutes / 60)
       const minutes = totalMinutes % 60
       return {
-        primary: t(i18n)`{hours} hour(s)`,
-        secondary: t(i18n)`{minutes} minutes`
+        primary: plural(hours, { one: "# hour", other: "# hours" }),
+        secondary: plural(minutes, { one: "# minute", other: "# minutes" })
       }
     }
   }
@@ -423,7 +426,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     const minutes = deadlineTime.getMinutes().toString().padStart(2, '0')
     const timeLabel = `${hours}:${minutes}`
     if (deadlineTime.toDateString() !== startDateTime.toDateString()) {
-      return t(i18n)`{timeLabel} (day before)`
+      return t(i18n)`${timeLabel} (day before)`
     }
     return timeLabel
   }
@@ -450,7 +453,8 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
       .toString()
       .padStart(2, '0')}`
     if (dayOffset > 0) {
-      return t(i18n)`{timeLabel} (+{dayOffset} day(s))`
+      const days = plural(dayOffset, { one: "# day", other: "# days" })
+      return t(i18n)`${timeLabel} (+${days})`
     }
     return timeLabel
   }
@@ -491,13 +495,12 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     if (levels.length === 3) {
       return i18n._(msg`All skill levels welcome`)
     } else if (levels.length === 2) {
-      const levelNames = levels
-        .map((level) => SKILL_LEVELS.find((l) => l.id === level)?.name)
-        .join(' and ')
-      return t(i18n)`{levelNames} players only`
+      const levelNames = new Intl.ListFormat(i18n.locale, { type: 'conjunction' })
+        .format(levels.map(getSkillLevelName))
+      return t(i18n)`${levelNames} players only`
     } else {
-      const levelName = SKILL_LEVELS.find((l) => l.id === levels[0])?.name
-      return t(i18n)`{levelName} players only`
+      const levelName = getSkillLevelName(levels[0])
+      return t(i18n)`${levelName} players only`
     }
   }
 
@@ -553,7 +556,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                           size={18}
                           className="text-primary-600"
                         />
-                        {selectedSport.name}
+                        {getSportName(selectedSport.id)}
                       </span>
                     ) : (
                       <span className="text-gray-500">
@@ -582,7 +585,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                           size={18}
                           className="size-[18px] text-primary-600"
                         />
-                        {sport.name}
+                        {getSportName(sport.id)}
                       </DropdownMenuRadioItem>
                     ))}
                   </DropdownMenuRadioGroup>
@@ -602,7 +605,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                     <span className="text-sm text-blue-800">
                       <Trans>Showing venues that support</Trans>{' '}
                       <strong>
-                        {SPORTS.find((s) => s.id === formData.sport)?.name}
+                        {getSportName(formData.sport)}
                       </strong>
                     </span>
                   </div>
@@ -622,7 +625,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                         <strong><Trans>Warning:</Trans></strong> <Trans>The selected venue</Trans>{' '}
                         <strong>{_selectedVenue.name}</strong> <Trans>does not support</Trans>{' '}
                         <strong>
-                          {SPORTS.find((s) => s.id === formData.sport)?.name}
+                          {getSportName(formData.sport)}
                         </strong>
                         . <Trans>Please select a different sport or choose a different venue.</Trans>
                       </div>
@@ -946,7 +949,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                     <Trans>
                       Select which skill levels are allowed to join this event.
                       Only players with these skill levels in {formData.sport
-                        ? SPORTS.find((s) => s.id === formData.sport)?.name
+                        ? getSportName(formData.sport)
                         : 'the selected sport'} will be able to join.
                     </Trans>
                   </p>
@@ -977,13 +980,13 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                           <div className="ml-3 flex-1">
                             <div className="flex items-center justify-between">
                               <span className="font-medium text-gray-900">
-                                {level.name}
+                                {getSkillLevelName(level.id)}
                               </span>
                               <Badge
                                 variant={getSkillLevelBadgeVariant(level.id)}
                                 size="sm"
                               >
-                                {level.name}
+                                {getSkillLevelName(level.id)}
                               </Badge>
                             </div>
                             <div className="text-sm text-gray-500 mt-1">
@@ -1018,9 +1021,8 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                           <p className="mt-2 text-blue-700">
                             <Trans>
                               Players without the required skill level in {formData.sport
-                                ? SPORTS.find((s) => s.id === formData.sport)
-                                  ?.name
-                                : 'this sport'} will not be able to join this event.
+                                ? getSportName(formData.sport)
+                                : i18n._(msg`this sport`)} will not be able to join this event.
                             </Trans>
                           </p>
                         )}
