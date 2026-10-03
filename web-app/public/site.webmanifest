@@ -4,12 +4,12 @@
   "start_url": "/",
   "icons": [
     {
-      "src": "/android-chrome-192x192.png?v=soccer",
+      "src": "/android-chrome-192x192.png?v=soccer-play",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/android-chrome-512x512.png?v=soccer",
+      "src": "/android-chrome-512x512.png?v=soccer-play",
       "sizes": "512x512",
       "type": "image/png"
     }

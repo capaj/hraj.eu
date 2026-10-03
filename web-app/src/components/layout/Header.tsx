@@ -95,13 +95,6 @@ export const Header: React.FC = () => {
             >
               <Trans>About</Trans>
             </Link>
-            <Link
-              to="/presskit"
-              className="transition-colors text-gray-700 hover:text-primary-600"
-              activeProps={{ className: 'text-primary-600 font-medium' }}
-            >
-              <Trans>Presskit</Trans>
-            </Link>
           </nav>
 
           {/* Actions */}
@@ -188,14 +181,6 @@ export const Header: React.FC = () => {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <Trans>About</Trans>
-              </Link>
-              <Link
-                to="/presskit"
-                className="block transition-colors text-gray-700 hover:text-primary-600 py-2"
-                activeProps={{ className: 'text-primary-600 font-medium' }}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <Trans>Presskit</Trans>
               </Link>
               <Link
                 to="/create"

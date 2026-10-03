@@ -238,11 +238,15 @@ msgid "A shared love of sport. A look to match."
 msgstr ""
 
 #: src/pages/PresskitPage.tsx:107
-msgid "A soccer ball. A shared love of the game."
+msgid "A soccer ball. A play button. An invitation to join in."
 msgstr ""
 
+#: src/pages/PresskitPage.tsx:107
+#~ msgid "A soccer ball. A shared love of the game."
+#~ msgstr ""
+
 #: src/components/layout/Header.tsx:96
-#: src/components/layout/Header.tsx:190
+#: src/components/layout/Header.tsx:183
 msgid "About"
 msgstr ""
 
@@ -526,7 +530,7 @@ msgstr ""
 msgid "Browse Events"
 msgstr ""
 
-#: src/pages/HomePage.tsx:173
+#: src/pages/HomePage.tsx:174
 msgid "Build Community"
 msgstr ""
 
@@ -711,7 +715,7 @@ msgstr ""
 msgid "Confirmations, cancellations, event changes, and hourly comment digests."
 msgstr ""
 
-#: src/pages/HomePage.tsx:176
+#: src/pages/HomePage.tsx:177
 msgid "Connect with like-minded players, earn karma points, and climb the leaderboards."
 msgstr ""
 
@@ -814,14 +818,14 @@ msgid "Create and edit reusable groups for early event access."
 msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:1241
-#: src/components/layout/Header.tsx:123
-#: src/components/layout/Header.tsx:207
+#: src/components/layout/Header.tsx:116
+#: src/components/layout/Header.tsx:192
 #: src/pages/DiscoverPage.tsx:409
-#: src/pages/HomePage.tsx:129
+#: src/pages/HomePage.tsx:130
 msgid "Create Event"
 msgstr ""
 
-#: src/pages/HomePage.tsx:193
+#: src/pages/HomePage.tsx:194
 msgid "Create events with payment integration, team balancing, and automated notifications."
 msgstr ""
 
@@ -928,7 +932,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: src/components/layout/Header.tsx:384
+#: src/components/layout/Header.tsx:369
 msgid "Delete notification"
 msgstr ""
 
@@ -957,11 +961,11 @@ msgstr ""
 msgid "Discover Events"
 msgstr ""
 
-#: src/pages/HomePage.tsx:139
+#: src/pages/HomePage.tsx:140
 msgid "Discover Games"
 msgstr ""
 
-#: src/pages/HomePage.tsx:159
+#: src/pages/HomePage.tsx:160
 msgid "Discover sports events near you with advanced filtering by sport, skill level, and location."
 msgstr ""
 
@@ -1019,7 +1023,7 @@ msgstr ""
 msgid "Earn Points For:"
 msgstr ""
 
-#: src/pages/HomePage.tsx:190
+#: src/pages/HomePage.tsx:191
 msgid "Easy Organization"
 msgstr ""
 
@@ -1107,7 +1111,7 @@ msgstr ""
 msgid "Euro"
 msgstr ""
 
-#: src/components/layout/Header.tsx:359
+#: src/components/layout/Header.tsx:344
 msgid "Event"
 msgstr ""
 
@@ -1285,7 +1289,7 @@ msgstr ""
 
 #: src/components/events/JoinActionCard.tsx:192
 #: src/pages/DiscoverPage.tsx:190
-#: src/pages/HomePage.tsx:98
+#: src/pages/HomePage.tsx:99
 #: src/pages/SeoLandingPage.tsx:56
 msgid "Failed to join the event. Please try again."
 msgstr ""
@@ -1417,7 +1421,7 @@ msgstr ""
 #~ msgid "Find and join sports events in your area"
 #~ msgstr ""
 
-#: src/pages/HomePage.tsx:156
+#: src/pages/HomePage.tsx:157
 msgid "Find Local Games"
 msgstr ""
 
@@ -1453,7 +1457,7 @@ msgstr ""
 msgid "Fresh air, green courts, and a spark of energy."
 msgstr ""
 
-#: src/components/layout/Header.tsx:364
+#: src/components/layout/Header.tsx:349
 msgid "from User"
 msgstr ""
 
@@ -1699,7 +1703,7 @@ msgstr ""
 #~ msgid "Join the largest community of sports enthusiasts across Europe. Organize games, discover events, and make new friends through sport."
 #~ msgstr ""
 
-#: src/pages/HomePage.tsx:119
+#: src/pages/HomePage.tsx:120
 msgid "Join the vibrant community of sports enthusiasts across Europe. Organize games, discover events, and make new friends through team sports."
 msgstr ""
 
@@ -1745,8 +1749,8 @@ msgstr ""
 msgid "Keep Event"
 msgstr ""
 
-#: src/components/layout/Header.tsx:111
-#: src/components/layout/Header.tsx:140
+#: src/components/layout/Header.tsx:104
+#: src/components/layout/Header.tsx:133
 msgid "Language"
 msgstr ""
 
@@ -1755,7 +1759,7 @@ msgid "Latvia"
 msgstr ""
 
 #: src/components/layout/Header.tsx:89
-#: src/components/layout/Header.tsx:182
+#: src/components/layout/Header.tsx:175
 msgid "Leaderboard"
 msgstr ""
 
@@ -1788,7 +1792,7 @@ msgstr ""
 msgid "Let's get you game-ready."
 msgstr ""
 
-#: src/pages/HomePage.tsx:116
+#: src/pages/HomePage.tsx:117
 msgid "Let's Play Together"
 msgstr ""
 
@@ -1878,11 +1882,11 @@ msgstr ""
 msgid "Manage your password and account security settings"
 msgstr ""
 
-#: src/components/layout/Header.tsx:312
+#: src/components/layout/Header.tsx:297
 msgid "Mark all read"
 msgstr ""
 
-#: src/components/layout/Header.tsx:374
+#: src/components/layout/Header.tsx:359
 msgid "Mark as read"
 msgstr ""
 
@@ -1906,6 +1910,7 @@ msgstr ""
 msgid "Maximum Players *"
 msgstr ""
 
+#: src/components/about/AboutPresskit.tsx:11
 #: src/pages/PresskitPage.tsx:78
 msgid "Media & brand resources"
 msgstr ""
@@ -1969,7 +1974,7 @@ msgid "Most active participants"
 msgstr ""
 
 #: src/components/layout/Header.tsx:82
-#: src/components/layout/Header.tsx:174
+#: src/components/layout/Header.tsx:167
 msgid "My Events"
 msgstr ""
 
@@ -2066,7 +2071,7 @@ msgstr ""
 msgid "No I have not paid"
 msgstr ""
 
-#: src/components/layout/Header.tsx:398
+#: src/components/layout/Header.tsx:383
 msgid "No notifications yet"
 msgstr ""
 
@@ -2170,7 +2175,7 @@ msgstr ""
 msgid "Not subscribed"
 msgstr ""
 
-#: src/components/layout/Header.tsx:304
+#: src/components/layout/Header.tsx:289
 #: src/components/user/OnboardingPreferencesScreen.tsx:130
 #: src/components/user/SportsPreferencesCards.tsx:245
 msgid "Notifications"
@@ -2531,8 +2536,7 @@ msgstr ""
 msgid "Prague"
 msgstr ""
 
-#: src/components/layout/Header.tsx:103
-#: src/components/layout/Header.tsx:198
+#: src/components/about/AboutPresskit.tsx:17
 #: src/pages/PresskitPage.tsx:79
 msgid "Presskit"
 msgstr ""
@@ -3231,7 +3235,7 @@ msgstr ""
 #~ msgstr ""
 
 #: src/components/layout/Header.tsx:66
-#: src/components/layout/Header.tsx:156
+#: src/components/layout/Header.tsx:149
 msgid "Upcoming"
 msgstr ""
 
@@ -3308,8 +3312,12 @@ msgid "Use account/bank code, prefix-account/bank code, or IBAN. A payment QR co
 msgstr ""
 
 #: src/pages/PresskitPage.tsx:169
-msgid "Use the supplied colors and proportions. Keep the logo free of effects."
+msgid "Use the supplied colors and proportions. Do not add extra effects."
 msgstr ""
+
+#: src/pages/PresskitPage.tsx:169
+#~ msgid "Use the supplied colors and proportions. Keep the logo free of effects."
+#~ msgstr ""
 
 #: src/components/user/PaymentInformationCard.tsx:246
 msgid "username"
@@ -3356,7 +3364,7 @@ msgid "Venue Type *"
 msgstr ""
 
 #: src/components/layout/Header.tsx:74
-#: src/components/layout/Header.tsx:165
+#: src/components/layout/Header.tsx:158
 msgid "Venues"
 msgstr ""
 
@@ -3377,7 +3385,7 @@ msgstr ""
 #~ msgid "View All Events"
 #~ msgstr ""
 
-#: src/components/layout/Header.tsx:418
+#: src/components/layout/Header.tsx:403
 msgid "View all notifications"
 msgstr ""
 
@@ -3585,14 +3593,14 @@ msgstr ""
 msgid "You will receive emails about new events at this venue."
 msgstr ""
 
-#: src/components/layout/Header.tsx:401
+#: src/components/layout/Header.tsx:386
 msgid "You'll see updates about your events here"
 msgstr ""
 
-#: src/pages/HomePage.tsx:31
-#: src/pages/HomePage.tsx:47
-#: src/pages/HomePage.tsx:52
-#: src/pages/HomePage.tsx:59
+#: src/pages/HomePage.tsx:32
+#: src/pages/HomePage.tsx:48
+#: src/pages/HomePage.tsx:53
+#: src/pages/HomePage.tsx:60
 msgid "your area"
 msgstr ""
 

@@ -7,7 +7,7 @@ export const Route = createFileRoute('/scenarios/presskit')({
   },
   head: () => ({
     meta: [
-      { title: 'Soccer ball logo · Presskit preview' },
+      { title: 'Soccer ball & play logo · Presskit preview' },
       { name: 'robots', content: 'noindex, nofollow' }
     ]
   }),

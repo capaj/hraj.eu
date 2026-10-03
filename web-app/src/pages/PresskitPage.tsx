@@ -104,7 +104,7 @@ function PresskitContent() {
         <section id="logos" className="presskit-section" aria-labelledby="presskit-logos-title">
           <div className="presskit-section-heading">
             <h2 id="presskit-logos-title"><span className="presskit-section-number" aria-hidden="true">01</span><Trans>The logo</Trans></h2>
-            <p><Trans>A soccer ball. A shared love of the game.</Trans></p>
+            <p><Trans>A soccer ball. A play button. An invitation to join in.</Trans></p>
           </div>
           <div className="presskit-assets">
             {brandAssets.map((asset) => {
@@ -166,7 +166,7 @@ function PresskitContent() {
             </div>
             <ul className="presskit-guidelines">
               <li><Check size={17} aria-hidden="true" /><Trans>Leave clear space around the logo, at least half the height of the mark.</Trans></li>
-              <li><Check size={17} aria-hidden="true" /><Trans>Use the supplied colors and proportions. Keep the logo free of effects.</Trans></li>
+              <li><Check size={17} aria-hidden="true" /><Trans>Use the supplied colors and proportions. Do not add extra effects.</Trans></li>
               <li><Check size={17} aria-hidden="true" /><Trans>Choose a background with good contrast. Use the mark below 120 px wide.</Trans></li>
               <li><Check size={17} aria-hidden="true" /><Trans>Write our name as hraj.eu, in lowercase. Link to https://hraj.eu when you can.</Trans></li>
             </ul>

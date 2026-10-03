@@ -99,7 +99,7 @@ The cron worker imports the web app's database client and schema directly, so sc
 
 For every new user-visible UI feature, add or update a route scenario that renders the feature, render it locally, and include a newly captured screenshot with your contribution. Existing development-only examples are:
 
-- [About statistics](http://localhost:5173/scenarios/about-stats): `web-app/src/routes/scenarios.about-stats.tsx`
+- [About statistics and presskit link](http://localhost:5173/scenarios/about-stats): `web-app/src/routes/scenarios.about-stats.tsx`
 - [Presskit and logo](http://localhost:5173/scenarios/presskit): `web-app/src/routes/scenarios.presskit.tsx`
 - [Venues](http://localhost:5173/scenarios/venues): `web-app/src/routes/scenarios.venues.tsx`
 - [Onboarding](http://localhost:5173/scenarios/onboarding): `web-app/src/routes/scenarios.onboarding.tsx`

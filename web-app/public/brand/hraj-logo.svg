@@ -2,6 +2,9 @@
   <title>hraj.eu</title>
   <g transform="translate(0 8)"><rect width="64" height="64" rx="17" fill="#16a34a"/>
   <defs>
+    <filter id="play-shadow" x="-50%" y="-40%" width="200%" height="200%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="1.6" stdDeviation="1.3" flood-color="#052e16" flood-opacity=".4"/>
+    </filter>
     <clipPath id="ball-boundary"><circle cx="32" cy="32" r="23"/></clipPath>
   </defs>
   <circle cx="32" cy="32" r="23" fill="#fff"/>
@@ -15,6 +18,10 @@
     <use href="#ball-panel" transform="rotate(144 32 32)"/>
     <use href="#ball-panel" transform="rotate(216 32 32)"/>
     <use href="#ball-panel" transform="rotate(288 32 32)"/>
+  </g>
+  <g id="play-button">
+    <circle cx="32" cy="32" r="10.5" fill="#bef264" filter="url(#play-shadow)"/>
+    <path d="M29 27.7a1.2 1.2 0 0 1 1.8-1.04l7.5 4.33a1.2 1.2 0 0 1 0 2.08l-7.5 4.33A1.2 1.2 0 0 1 29 36.36Z" fill="#14532d"/>
   </g></g>
   <path fill="#14532d" d="M95.67 26.4Q96.69 25.48 97.79 24.73Q98.9 23.98 100.14 23.43Q101.39 22.89 102.81 22.59Q104.23 22.29 105.87 22.29Q108.82 22.29 111.1 23.31Q113.38 24.33 114.94 26.15Q116.5 27.97 117.29 30.5Q118.07 33.02 118.07 36.04V59H108.43V36.04Q108.43 33.02 107.03 31.36Q105.63 29.69 102.89 29.69Q100.86 29.69 99.07 30.57Q97.29 31.44 95.67 33.02V59H86V6.73H95.67Z"/>
   <path fill="#14532d" d="M133.78 28.81Q135.5 25.73 137.74 23.94Q139.99 22.15 143 22.15Q145.46 22.15 147 23.31L146.37 30.46Q146.19 31.16 145.82 31.43Q145.46 31.69 144.82 31.69Q144.26 31.69 143.21 31.53Q142.16 31.37 141.25 31.37Q139.92 31.37 138.88 31.76Q137.85 32.15 137.04 32.85Q136.23 33.55 135.59 34.56Q134.94 35.58 134.38 36.88V59H124.7V22.86H130.42Q131.89 22.86 132.45 23.38Q133.01 23.91 133.26 25.2Z"/>

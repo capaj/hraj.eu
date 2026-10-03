@@ -11,6 +11,7 @@ import { useAuthSession } from '../lib/auth-client'
 import { i18n } from '~/lib/i18n'
 import { toast } from 'sonner'
 import { AboutStats } from '../components/about/AboutStats'
+import { AboutPresskit } from '../components/about/AboutPresskit'
 
 export const AboutPage: React.FC = () => {
   const { upcomingEvents: initialUpcomingEvents, stats } = useLoaderData({ from: '/about' })
@@ -200,6 +201,7 @@ export const AboutPage: React.FC = () => {
           </div>
         </div>
       </section>
+      <AboutPresskit />
     </div>
   )
 }

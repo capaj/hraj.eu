@@ -41,32 +41,32 @@ export const Route = createRootRoute({
       {
         rel: 'icon',
         type: 'image/svg+xml',
-        href: '/favicon.svg?v=soccer'
+        href: '/favicon.svg?v=soccer-play'
       },
       {
         rel: 'icon',
         type: 'image/png',
         sizes: '32x32',
-        href: '/favicon-32x32.png?v=soccer'
+        href: '/favicon-32x32.png?v=soccer-play'
       },
       {
         rel: 'icon',
         type: 'image/png',
         sizes: '16x16',
-        href: '/favicon-16x16.png?v=soccer'
+        href: '/favicon-16x16.png?v=soccer-play'
       },
       {
         rel: 'shortcut icon',
-        href: '/favicon.ico?v=soccer'
+        href: '/favicon.ico?v=soccer-play'
       },
       {
         rel: 'apple-touch-icon',
         sizes: '180x180',
-        href: '/apple-touch-icon.png?v=soccer'
+        href: '/apple-touch-icon.png?v=soccer-play'
       },
       {
         rel: 'manifest',
-        href: '/site.webmanifest?v=soccer'
+        href: '/site.webmanifest?v=soccer-play'
       }
     ]
   }),
