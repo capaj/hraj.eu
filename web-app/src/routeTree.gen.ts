@@ -17,6 +17,7 @@ import { Route as LeaderboardRouteImport } from './routes/leaderboard'
 import { Route as ManageCoreGroupsRouteImport } from './routes/manage-core-groups'
 import { Route as ManageVenuesRouteImport } from './routes/manage-venues'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as PresskitRouteImport } from './routes/presskit'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
@@ -34,6 +35,7 @@ import { Route as ScenariosEventMapRouteImport } from './routes/scenarios.event-
 import { Route as ScenariosOnboardingRouteImport } from './routes/scenarios.onboarding'
 import { Route as ScenariosParticipantCapacityRouteImport } from './routes/scenarios.participant-capacity'
 import { Route as ScenariosPhoneNumbersRouteImport } from './routes/scenarios.phone-numbers'
+import { Route as ScenariosPresskitRouteImport } from './routes/scenarios.presskit'
 import { Route as ScenariosProfilePaymentInfoRouteImport } from './routes/scenarios.profile-payment-info'
 import { Route as ScenariosProfileSportsPreferencesRouteImport } from './routes/scenarios.profile-sports-preferences'
 import { Route as ScenariosQrPaymentRouteImport } from './routes/scenarios.qr-payment'
@@ -79,6 +81,11 @@ const ManageVenuesRoute = ManageVenuesRouteImport.update({
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PresskitRoute = PresskitRouteImport.update({
+  id: '/presskit',
+  path: '/presskit',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -167,6 +174,11 @@ const ScenariosPhoneNumbersRoute = ScenariosPhoneNumbersRouteImport.update({
   path: '/scenarios/phone-numbers',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScenariosPresskitRoute = ScenariosPresskitRouteImport.update({
+  id: '/scenarios/presskit',
+  path: '/scenarios/presskit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ScenariosProfilePaymentInfoRoute =
   ScenariosProfilePaymentInfoRouteImport.update({
     id: '/scenarios/profile-payment-info',
@@ -209,6 +221,7 @@ export interface FileRoutesByFullPath {
   '/manage-core-groups': typeof ManageCoreGroupsRoute
   '/manage-venues': typeof ManageVenuesRoute
   '/onboarding': typeof OnboardingRoute
+  '/presskit': typeof PresskitRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -226,6 +239,7 @@ export interface FileRoutesByFullPath {
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
   '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
+  '/scenarios/presskit': typeof ScenariosPresskitRoute
   '/scenarios/profile-payment-info': typeof ScenariosProfilePaymentInfoRoute
   '/scenarios/profile-sports-preferences': typeof ScenariosProfileSportsPreferencesRoute
   '/scenarios/qr-payment': typeof ScenariosQrPaymentRoute
@@ -242,6 +256,7 @@ export interface FileRoutesByTo {
   '/manage-core-groups': typeof ManageCoreGroupsRoute
   '/manage-venues': typeof ManageVenuesRoute
   '/onboarding': typeof OnboardingRoute
+  '/presskit': typeof PresskitRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -259,6 +274,7 @@ export interface FileRoutesByTo {
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
   '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
+  '/scenarios/presskit': typeof ScenariosPresskitRoute
   '/scenarios/profile-payment-info': typeof ScenariosProfilePaymentInfoRoute
   '/scenarios/profile-sports-preferences': typeof ScenariosProfileSportsPreferencesRoute
   '/scenarios/qr-payment': typeof ScenariosQrPaymentRoute
@@ -276,6 +292,7 @@ export interface FileRoutesById {
   '/manage-core-groups': typeof ManageCoreGroupsRoute
   '/manage-venues': typeof ManageVenuesRoute
   '/onboarding': typeof OnboardingRoute
+  '/presskit': typeof PresskitRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -293,6 +310,7 @@ export interface FileRoutesById {
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
   '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
+  '/scenarios/presskit': typeof ScenariosPresskitRoute
   '/scenarios/profile-payment-info': typeof ScenariosProfilePaymentInfoRoute
   '/scenarios/profile-sports-preferences': typeof ScenariosProfileSportsPreferencesRoute
   '/scenarios/qr-payment': typeof ScenariosQrPaymentRoute
@@ -311,6 +329,7 @@ export interface FileRouteTypes {
     | '/manage-core-groups'
     | '/manage-venues'
     | '/onboarding'
+    | '/presskit'
     | '/privacy'
     | '/profile'
     | '/sitemap.xml'
@@ -328,6 +347,7 @@ export interface FileRouteTypes {
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
     | '/scenarios/phone-numbers'
+    | '/scenarios/presskit'
     | '/scenarios/profile-payment-info'
     | '/scenarios/profile-sports-preferences'
     | '/scenarios/qr-payment'
@@ -344,6 +364,7 @@ export interface FileRouteTypes {
     | '/manage-core-groups'
     | '/manage-venues'
     | '/onboarding'
+    | '/presskit'
     | '/privacy'
     | '/profile'
     | '/sitemap.xml'
@@ -361,6 +382,7 @@ export interface FileRouteTypes {
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
     | '/scenarios/phone-numbers'
+    | '/scenarios/presskit'
     | '/scenarios/profile-payment-info'
     | '/scenarios/profile-sports-preferences'
     | '/scenarios/qr-payment'
@@ -377,6 +399,7 @@ export interface FileRouteTypes {
     | '/manage-core-groups'
     | '/manage-venues'
     | '/onboarding'
+    | '/presskit'
     | '/privacy'
     | '/profile'
     | '/sitemap.xml'
@@ -394,6 +417,7 @@ export interface FileRouteTypes {
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
     | '/scenarios/phone-numbers'
+    | '/scenarios/presskit'
     | '/scenarios/profile-payment-info'
     | '/scenarios/profile-sports-preferences'
     | '/scenarios/qr-payment'
@@ -411,6 +435,7 @@ export interface RootRouteChildren {
   ManageCoreGroupsRoute: typeof ManageCoreGroupsRoute
   ManageVenuesRoute: typeof ManageVenuesRoute
   OnboardingRoute: typeof OnboardingRoute
+  PresskitRoute: typeof PresskitRoute
   PrivacyRoute: typeof PrivacyRoute
   ProfileRoute: typeof ProfileRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -428,6 +453,7 @@ export interface RootRouteChildren {
   ScenariosOnboardingRoute: typeof ScenariosOnboardingRoute
   ScenariosParticipantCapacityRoute: typeof ScenariosParticipantCapacityRoute
   ScenariosPhoneNumbersRoute: typeof ScenariosPhoneNumbersRoute
+  ScenariosPresskitRoute: typeof ScenariosPresskitRoute
   ScenariosProfilePaymentInfoRoute: typeof ScenariosProfilePaymentInfoRoute
   ScenariosProfileSportsPreferencesRoute: typeof ScenariosProfileSportsPreferencesRoute
   ScenariosQrPaymentRoute: typeof ScenariosQrPaymentRoute
@@ -492,6 +518,13 @@ declare module '@tanstack/react-router' {
       path: '/onboarding'
       fullPath: '/onboarding'
       preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/presskit': {
+      id: '/presskit'
+      path: '/presskit'
+      fullPath: '/presskit'
+      preLoaderRoute: typeof PresskitRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -613,6 +646,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScenariosPhoneNumbersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scenarios/presskit': {
+      id: '/scenarios/presskit'
+      path: '/scenarios/presskit'
+      fullPath: '/scenarios/presskit'
+      preLoaderRoute: typeof ScenariosPresskitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scenarios/profile-payment-info': {
       id: '/scenarios/profile-payment-info'
       path: '/scenarios/profile-payment-info'
@@ -667,6 +707,7 @@ const rootRouteChildren: RootRouteChildren = {
   ManageCoreGroupsRoute: ManageCoreGroupsRoute,
   ManageVenuesRoute: ManageVenuesRoute,
   OnboardingRoute: OnboardingRoute,
+  PresskitRoute: PresskitRoute,
   PrivacyRoute: PrivacyRoute,
   ProfileRoute: ProfileRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
@@ -684,6 +725,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScenariosOnboardingRoute: ScenariosOnboardingRoute,
   ScenariosParticipantCapacityRoute: ScenariosParticipantCapacityRoute,
   ScenariosPhoneNumbersRoute: ScenariosPhoneNumbersRoute,
+  ScenariosPresskitRoute: ScenariosPresskitRoute,
   ScenariosProfilePaymentInfoRoute: ScenariosProfilePaymentInfoRoute,
   ScenariosProfileSportsPreferencesRoute:
     ScenariosProfileSportsPreferencesRoute,

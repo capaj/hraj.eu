@@ -116,6 +116,11 @@ export const Route = createFileRoute('/sitemap.xml')({
             priority: 0.5
           },
           {
+            loc: buildUrl(origin, '/presskit'),
+            changefreq: 'monthly',
+            priority: 0.4
+          },
+          {
             loc: buildUrl(origin, '/leaderboard'),
             changefreq: 'weekly',
             priority: 0.4

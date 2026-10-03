@@ -233,10 +233,22 @@ msgstr "30m"
 msgid "60m"
 msgstr "60m"
 
-#: src/components/layout/Header.tsx:98
-#: src/components/layout/Header.tsx:185
+#: src/pages/PresskitPage.tsx:80
+msgid "A shared love of sport. A look to match."
+msgstr "Spojuje nás sport. A teď i nový vzhled."
+
+#: src/pages/PresskitPage.tsx:107
+msgid "A soccer ball. A shared love of the game."
+msgstr "Fotbalový míč. Společná vášeň pro hru."
+
+#: src/components/layout/Header.tsx:96
+#: src/components/layout/Header.tsx:190
 msgid "About"
 msgstr "O nás"
+
+#: src/pages/PresskitPage.tsx:158
+msgid "About hraj.eu"
+msgstr "O hraj.eu"
 
 #: src/pages/EventDetailsPage.tsx:1649
 #: src/routes/scenarios.phone-numbers.tsx:263
@@ -274,7 +286,7 @@ msgstr "Přesně nastavené úrovně vám pomohou najít hry s hráči podobné 
 msgid "Actions"
 msgstr "Akce"
 
-#: src/pages/HomePage.tsx:125
+#: src/components/about/AboutStats.tsx:112
 #: src/pages/LeaderboardPage.tsx:673
 msgid "Active Players"
 msgstr "Aktivní hráči"
@@ -493,6 +505,10 @@ msgstr "Chybí hráči do ideálu"
 msgid "Bio"
 msgstr "O mně"
 
+#: src/pages/PresskitPage.tsx:38
+msgid "Brand mark"
+msgstr "Symbol značky"
+
 #: src/components/venues/AddVenueModal.tsx:819
 msgid "Brief description of the venue..."
 msgstr "Stručný popis místa..."
@@ -510,7 +526,7 @@ msgstr "Procházet všechny hry"
 msgid "Browse Events"
 msgstr "Procházet události"
 
-#: src/pages/HomePage.tsx:210
+#: src/pages/HomePage.tsx:173
 msgid "Build Community"
 msgstr "Budujte komunitu"
 
@@ -586,6 +602,10 @@ msgstr "Probíhá rušení..."
 msgid "Celebrate our most active community members and see how you rank among fellow sports enthusiasts"
 msgstr "Oslavte naše nejaktivnější členy komunity a podívejte se, jak si vedete mezi dalšími sportovními nadšenci"
 
+#: src/pages/PresskitPage.tsx:17
+msgid "Chalk"
+msgstr "Křídová"
+
 #: src/components/weather/WeatherWidget.tsx:261
 msgid "Challenging conditions"
 msgstr "Náročné podmínky"
@@ -594,6 +614,10 @@ msgstr "Náročné podmínky"
 #: src/components/venues/VenueSelector.tsx:101
 msgid "Changing Rooms"
 msgstr "Šatny"
+
+#: src/pages/PresskitPage.tsx:170
+msgid "Choose a background with good contrast. Use the mark below 120 px wide."
+msgstr "Zvolte kontrastní pozadí. Pro šířku pod 120 px použijte samostatný symbol."
 
 #: src/components/ui/GiphyPicker.tsx:190
 msgid "Choose a GIF"
@@ -634,6 +658,10 @@ msgstr "Město, země"
 #: src/pages/EventDetailsPage.tsx:1819
 msgid "Click a QR code to view it larger."
 msgstr "Kliknutím na QR kód jej zvětšíte."
+
+#: src/pages/PresskitPage.tsx:149
+msgid "Click a swatch to copy its hex code."
+msgstr "Kliknutím na barvu zkopírujete její hex kód."
 
 #: src/pages/DiscoverPage.tsx:231
 #~ msgid "Click markers to highlight events below"
@@ -683,7 +711,7 @@ msgstr "Soutěžní hráč"
 msgid "Confirmations, cancellations, event changes, and hourly comment digests."
 msgstr "Potvrzení, zrušení, změny událostí a hodinové souhrny komentářů."
 
-#: src/pages/HomePage.tsx:213
+#: src/pages/HomePage.tsx:176
 msgid "Connect with like-minded players, earn karma points, and climb the leaderboards."
 msgstr "Spojte se s podobně naladěnými hráči, sbírejte body karmy a stoupejte v žebříčcích."
 
@@ -716,6 +744,19 @@ msgstr "Chladně a deštivo"
 msgid "Cool but sunny"
 msgstr "Chladně ale slunečno"
 
+#: src/pages/PresskitPage.tsx:67
+msgid "Copied to clipboard"
+msgstr "Zkopírováno do schránky"
+
+#. placeholder {0}: color.hex
+#: src/pages/PresskitPage.tsx:143
+msgid "Copy color {0}"
+msgstr "Zkopírovat barvu {0}"
+
+#: src/pages/PresskitPage.tsx:160
+msgid "Copy description"
+msgstr "Zkopírovat popis"
+
 #: src/components/events/CreateEventForm.tsx:1178
 msgid "Core group"
 msgstr "Základní skupina"
@@ -727,6 +768,10 @@ msgstr "Časný přístup pro základní skupinu"
 #: src/components/events/CreateEventForm.tsx:242
 msgid "Core group window must be between 2 hours and 14 days."
 msgstr "Okno pro základní skupinu musí být mezi 2 hodinami a 14 dny."
+
+#: src/pages/PresskitPage.tsx:69
+msgid "Could not copy. Please select and copy the text."
+msgstr "Kopírování se nezdařilo. Označte a zkopírujte text ručně."
 
 #: src/components/weather/WeatherWidget.tsx:139
 msgid "Could not find location for weather forecast"
@@ -748,13 +793,17 @@ msgstr "Zákaz účasti se nepodařilo aktualizovat."
 msgid "Could not update the venue subscription."
 msgstr "Odběr událostí na sportovišti se nepodařilo aktualizovat."
 
-#: src/pages/HomePage.tsx:133
+#: src/components/about/AboutStats.tsx:119
 msgid "Countries"
 msgstr "Země"
 
 #: src/components/venues/AddVenueModal.tsx:575
 msgid "Country *"
 msgstr "Země *"
+
+#: src/pages/PresskitPage.tsx:14
+msgid "Court green"
+msgstr "Zelená hřiště"
 
 #: src/pages/SeoLandingPage.tsx:106
 msgid "Create a game"
@@ -765,14 +814,14 @@ msgid "Create and edit reusable groups for early event access."
 msgstr "Vytvářejte a upravujte opakovaně používané skupiny pro časný přístup k událostem."
 
 #: src/components/events/CreateEventForm.tsx:1241
-#: src/components/layout/Header.tsx:118
-#: src/components/layout/Header.tsx:194
+#: src/components/layout/Header.tsx:123
+#: src/components/layout/Header.tsx:207
 #: src/pages/DiscoverPage.tsx:409
-#: src/pages/HomePage.tsx:166
+#: src/pages/HomePage.tsx:129
 msgid "Create Event"
 msgstr "Vytvořit událost"
 
-#: src/pages/HomePage.tsx:230
+#: src/pages/HomePage.tsx:193
 msgid "Create events with payment integration, team balancing, and automated notifications."
 msgstr "Vytvářejte události s integrací plateb, vyvažováním týmů a automatickými oznámeními."
 
@@ -879,7 +928,7 @@ msgstr "Uzávěrka:"
 msgid "Delete"
 msgstr "Smazat"
 
-#: src/components/layout/Header.tsx:371
+#: src/components/layout/Header.tsx:384
 msgid "Delete notification"
 msgstr "Smazat oznámení"
 
@@ -908,11 +957,11 @@ msgstr "Podrobnosti (povinné)"
 msgid "Discover Events"
 msgstr "Objevujte události"
 
-#: src/pages/HomePage.tsx:176
+#: src/pages/HomePage.tsx:139
 msgid "Discover Games"
 msgstr "Objevujte hry"
 
-#: src/pages/HomePage.tsx:196
+#: src/pages/HomePage.tsx:159
 msgid "Discover sports events near you with advanced filtering by sport, skill level, and location."
 msgstr "Objevujte sportovní události ve svém okolí díky pokročilému filtrování podle sportu, úrovně a polohy."
 
@@ -924,6 +973,14 @@ msgstr "Vzdálenost"
 #: src/components/events/CreateEventForm.tsx:623
 msgid "does not support"
 msgstr "nepodporuje"
+
+#: src/pages/PresskitPage.tsx:122
+msgid "Download {name} as {format}"
+msgstr "Stáhnout {name} ve formátu {format}"
+
+#: src/pages/PresskitPage.tsx:84
+msgid "Download presskit"
+msgstr "Stáhnout presskit"
 
 #: src/components/venues/AddVenueModal.tsx:531
 #~ msgid "Drag the pin to mark the exact entrance to the pitch."
@@ -962,7 +1019,7 @@ msgstr "Doba trvání časného přístupu od teď (hodiny)"
 msgid "Earn Points For:"
 msgstr "Získejte body za:"
 
-#: src/pages/HomePage.tsx:227
+#: src/pages/HomePage.tsx:190
 msgid "Easy Organization"
 msgstr "Snadná organizace"
 
@@ -1050,7 +1107,7 @@ msgstr "Estonsko"
 msgid "Euro"
 msgstr "Euro"
 
-#: src/components/layout/Header.tsx:346
+#: src/components/layout/Header.tsx:359
 msgid "Event"
 msgstr "Událost"
 
@@ -1149,7 +1206,7 @@ msgstr "Místo události se změnilo"
 msgid "Event venue changed: {title}"
 msgstr "Místo se změnilo: {title}"
 
-#: src/pages/HomePage.tsx:117
+#: src/components/about/AboutStats.tsx:105
 msgid "Events Created"
 msgstr "Vytvořené události"
 
@@ -1168,6 +1225,10 @@ msgstr "Události, které organizujete nebo kterých se účastníte"
 #: src/pages/PublicProfilePage.tsx:144
 msgid "Events you've saved for later"
 msgstr "Události uložené na později"
+
+#: src/pages/PresskitPage.tsx:91
+msgid "Everyone has a place on the team"
+msgstr "V týmu je místo pro každého"
 
 #: src/components/venues/AddVenueModal.tsx:601
 msgid "Exact Venue Location *"
@@ -1224,7 +1285,7 @@ msgstr "Nepodařilo se smazat komentář. Zkuste to prosím znovu."
 
 #: src/components/events/JoinActionCard.tsx:192
 #: src/pages/DiscoverPage.tsx:190
-#: src/pages/HomePage.tsx:97
+#: src/pages/HomePage.tsx:98
 #: src/pages/SeoLandingPage.tsx:56
 msgid "Failed to join the event. Please try again."
 msgstr "Nepodařilo se připojit k události. Zkuste to prosím znovu."
@@ -1356,7 +1417,7 @@ msgstr "Najděte amatérské sportovní hry v {0}"
 #~ msgid "Find and join sports events in your area"
 #~ msgstr "Najděte a připojte se ke sportovním událostem ve vašem okolí"
 
-#: src/pages/HomePage.tsx:193
+#: src/pages/HomePage.tsx:156
 msgid "Find Local Games"
 msgstr "Najděte místní hry"
 
@@ -1380,11 +1441,19 @@ msgstr "Finsko"
 msgid "Foggy conditions"
 msgstr "Mlhavé podmínky"
 
+#: src/pages/PresskitPage.tsx:15
+msgid "Forest"
+msgstr "Lesní zelená"
+
 #: src/components/user/PaymentInformationCard.tsx:40
 msgid "France"
 msgstr "Francie"
 
-#: src/components/layout/Header.tsx:351
+#: src/pages/PresskitPage.tsx:139
+msgid "Fresh air, green courts, and a spark of energy."
+msgstr "Čerstvý vzduch, zelená hřiště a jiskra energie."
+
+#: src/components/layout/Header.tsx:364
 msgid "from User"
 msgstr "od uživatele"
 
@@ -1420,6 +1489,10 @@ msgstr "Německo"
 msgid "Get notified when a new game is added for a sport."
 msgstr "Nechte se upozornit, když přibude nová hra pro daný sport."
 
+#: src/pages/PresskitPage.tsx:165
+msgid "Give it room to play"
+msgstr "Dejte logu prostor"
+
 #: src/pages/EventDetailsPage.tsx:2604
 msgid "Give karma rating"
 msgstr "Udělit hodnocení karmy"
@@ -1439,6 +1512,10 @@ msgstr "Udělit pozitivní karmu"
 #: src/components/weather/WeatherWidget.tsx:252
 msgid "Good conditions"
 msgstr "Dobré podmínky"
+
+#: src/pages/PresskitPage.tsx:93
+msgid "Good games start with good company. We bring people together through amateur team sports, one local game at a time."
+msgstr "Dobrá hra začíná dobrou partou. Spojujeme lidi prostřednictvím amatérských týmových sportů, jednu hru po druhé."
 
 #: src/pages/EventDetailsPage.tsx:2665
 msgid "Good sportsmanship"
@@ -1520,6 +1597,10 @@ msgstr "Jak dlouho před událostí máme zkontrolovat, zda je dostatek hráčů
 msgid "How to find and access the playing area..."
 msgstr "Jak najít a vstoupit na herní plochu..."
 
+#: src/pages/PresskitPage.tsx:62
+msgid "hraj.eu helps amateur players find people to play team sports with. Discover local games, join a team, or organize your own event. Less planning, more playing — and new friends along the way."
+msgstr "hraj.eu pomáhá amatérským hráčům najít parťáky na týmové sporty. Objevte hry ve svém okolí, přidejte se k týmu nebo uspořádejte vlastní akci. Méně plánování, více hraní — a noví přátelé k tomu."
+
 #: src/components/weather/WeatherWidget.tsx:416
 msgid "Humidity:"
 msgstr "Vlhkost:"
@@ -1570,6 +1651,10 @@ msgstr "Důležité"
 #~ msgid "in 1 day"
 #~ msgstr "za 1 den"
 
+#: src/pages/PresskitPage.tsx:155
+msgid "In a few words"
+msgstr "Pár slov o nás"
+
 #: src/components/venues/AddVenueModal.tsx:539
 #: src/pages/VenuesPage.tsx:35
 msgid "Indoor"
@@ -1614,7 +1699,7 @@ msgstr "Přidejte se k místním amatérským hráčům, objevujte týmové spor
 #~ msgid "Join the largest community of sports enthusiasts across Europe. Organize games, discover events, and make new friends through sport."
 #~ msgstr "Připojte se k největší komunitě sportovních nadšenců v Evropě. Organizujte hry, objevujte události a seznamujte se díky sportu."
 
-#: src/pages/HomePage.tsx:156
+#: src/pages/HomePage.tsx:119
 msgid "Join the vibrant community of sports enthusiasts across Europe. Organize games, discover events, and make new friends through team sports."
 msgstr "Připojte se k živé komunitě sportovních nadšenců v celé Evropě. Organizujte hry, objevujte události a navazujte nová přátelství prostřednictvím týmových sportů."
 
@@ -1660,8 +1745,8 @@ msgstr "Karma: {karmaPoints}"
 msgid "Keep Event"
 msgstr "Ponechat událost"
 
-#: src/components/layout/Header.tsx:106
-#: src/components/layout/Header.tsx:135
+#: src/components/layout/Header.tsx:111
+#: src/components/layout/Header.tsx:140
 msgid "Language"
 msgstr "Jazyk"
 
@@ -1669,8 +1754,8 @@ msgstr "Jazyk"
 msgid "Latvia"
 msgstr "Lotyšsko"
 
-#: src/components/layout/Header.tsx:91
-#: src/components/layout/Header.tsx:177
+#: src/components/layout/Header.tsx:89
+#: src/components/layout/Header.tsx:182
 msgid "Leaderboard"
 msgstr "Žebříček"
 
@@ -1687,6 +1772,14 @@ msgstr "Odejít"
 msgid "Leave a comment"
 msgstr "Zanechte komentář"
 
+#: src/pages/PresskitPage.tsx:168
+msgid "Leave clear space around the logo, at least half the height of the mark."
+msgstr "Kolem loga ponechte volný prostor alespoň o polovině výšky symbolu."
+
+#: src/pages/PresskitPage.tsx:92
+msgid "Less planning.<0/>More playing."
+msgstr "Méně plánování.<0/>Více hraní."
+
 #: src/pages/EventDetailsPage.tsx:2456
 msgid "Let attendees know why the event was cancelled"
 msgstr "Sdělte účastníkům, proč byla událost zrušena"
@@ -1695,7 +1788,7 @@ msgstr "Sdělte účastníkům, proč byla událost zrušena"
 msgid "Let's get you game-ready."
 msgstr "Připravme vás na hru."
 
-#: src/pages/HomePage.tsx:153
+#: src/pages/HomePage.tsx:116
 msgid "Let's Play Together"
 msgstr "Pojďme si zahrát společně"
 
@@ -1751,6 +1844,10 @@ msgstr "Ztratíte body za:"
 msgid "Luxembourg"
 msgstr "Lucembursko"
 
+#: src/pages/PresskitPage.tsx:98
+msgid "Made to play together"
+msgstr "Stvořeno pro společnou hru"
+
 #: src/components/user/OnboardingPreferencesScreen.tsx:107
 msgid "Make every game a better match"
 msgstr "Ať vám každá hra lépe sedne"
@@ -1781,11 +1878,11 @@ msgstr "Spravovat místa"
 msgid "Manage your password and account security settings"
 msgstr "Spravujte své heslo a nastavení zabezpečení účtu"
 
-#: src/components/layout/Header.tsx:299
+#: src/components/layout/Header.tsx:312
 msgid "Mark all read"
 msgstr "Označit vše jako přečtené"
 
-#: src/components/layout/Header.tsx:361
+#: src/components/layout/Header.tsx:374
 msgid "Mark as read"
 msgstr "Označit jako přečtené"
 
@@ -1809,10 +1906,18 @@ msgstr "Maximální kapacita"
 msgid "Maximum Players *"
 msgstr "Maximální počet hráčů *"
 
+#: src/pages/PresskitPage.tsx:78
+msgid "Media & brand resources"
+msgstr "Podklady pro média a značku"
+
 #. placeholder {0}: data.city
 #: src/pages/SeoLandingPage.tsx:80
 msgid "Meet local amateur {lowerSportName} players, join upcoming games, and find places to play in {0}."
 msgstr "Seznamte se s místními amatérskými hráči sportu {lowerSportName}, přidejte se k nadcházejícím hrám a najděte místa, kde si zahrát v {0}."
+
+#: src/pages/PresskitPage.tsx:94
+msgid "Meet our new look"
+msgstr "Poznejte náš nový vzhled"
 
 #: src/pages/UserProfilePage.tsx:519
 #: src/routes/scenarios.phone-numbers.tsx:135
@@ -1851,6 +1956,10 @@ msgstr "Mobilní telefonní číslo"
 msgid "months"
 msgstr "měsíce"
 
+#: src/pages/PresskitPage.tsx:179
+msgid "More about hraj.eu"
+msgstr "Více o hraj.eu"
+
 #: src/pages/LeaderboardPage.tsx:275
 msgid "Most active event organizers"
 msgstr "Nejaktivnější organizátoři"
@@ -1859,8 +1968,8 @@ msgstr "Nejaktivnější organizátoři"
 msgid "Most active participants"
 msgstr "Nejaktivnější účastníci"
 
-#: src/components/layout/Header.tsx:84
-#: src/components/layout/Header.tsx:169
+#: src/components/layout/Header.tsx:82
+#: src/components/layout/Header.tsx:174
 msgid "My Events"
 msgstr "Moje události"
 
@@ -1957,7 +2066,7 @@ msgstr "Zatím žádné skupiny. Vytvořte si svou první!"
 msgid "No I have not paid"
 msgstr "Ne, nezaplatil(a) jsem"
 
-#: src/components/layout/Header.tsx:385
+#: src/components/layout/Header.tsx:398
 msgid "No notifications yet"
 msgstr "Zatím žádná oznámení"
 
@@ -2061,7 +2170,7 @@ msgstr "Neuvedeno"
 msgid "Not subscribed"
 msgstr "Neodebíráte"
 
-#: src/components/layout/Header.tsx:291
+#: src/components/layout/Header.tsx:304
 #: src/components/user/OnboardingPreferencesScreen.tsx:130
 #: src/components/user/SportsPreferencesCards.tsx:245
 msgid "Notifications"
@@ -2113,6 +2222,14 @@ msgstr "Orientační plán (nepovinný)"
 #: src/pages/SeoLandingPage.tsx:241
 msgid "Other active cities"
 msgstr "Další aktivní města"
+
+#: src/pages/PresskitPage.tsx:138
+msgid "Our colors"
+msgstr "Naše barvy"
+
+#: src/pages/PresskitPage.tsx:23
+msgid "Our everyday logo. Best on light backgrounds."
+msgstr "Naše hlavní logo. Nejlépe vynikne na světlém pozadí."
 
 #: src/components/venues/AddVenueModal.tsx:538
 #: src/pages/VenuesPage.tsx:39
@@ -2256,6 +2373,10 @@ msgstr "Místa ke hraní v {0}"
 #: src/pages/SeoLandingPage.tsx:73
 msgid "Play {sportName} in {0}"
 msgstr "Zahrajte si {sportName} v {0}"
+
+#: src/pages/PresskitPage.tsx:16
+msgid "Play lime"
+msgstr "Limetková"
 
 #: src/components/weather/WeatherWidget.tsx:256
 msgid "Playable conditions"
@@ -2410,6 +2531,12 @@ msgstr "Odesílám..."
 msgid "Prague"
 msgstr "Praha"
 
+#: src/components/layout/Header.tsx:103
+#: src/components/layout/Header.tsx:198
+#: src/pages/PresskitPage.tsx:79
+msgid "Presskit"
+msgstr "Presskit"
+
 #: src/pages/EventDetailsPage.tsx:1526
 msgid "Preview"
 msgstr "Náhled"
@@ -2462,6 +2589,10 @@ msgstr "Cena: €{price} za osobu"
 #: src/components/venues/AddVenueModal.tsx:891
 msgid "Pricing (Optional)"
 msgstr "Ceník (nepovinný)"
+
+#: src/pages/PresskitPage.tsx:22
+msgid "Primary logo"
+msgstr "Základní logo"
 
 #: src/components/events/CreateEventForm.tsx:1150
 msgid "Private (invite-only)"
@@ -2522,6 +2653,10 @@ msgstr "Ohodnoťte spoluhráče"
 #: src/pages/EventDetailsPage.tsx:2642
 msgid "Rating"
 msgstr "Hodnocení"
+
+#: src/pages/PresskitPage.tsx:133
+msgid "Ready for web and print. SVGs stay sharp at any size; PNGs are exported at high resolution."
+msgstr "Připraveno pro web i tisk. SVG zůstává ostré v každé velikosti; PNG je ve vysokém rozlišení."
 
 #: src/lib/email/sendCancellationEmail.ts:50
 msgid "Reason"
@@ -2618,6 +2753,10 @@ msgstr "Omezeno do {0}"
 msgid "Restriction expired {0}"
 msgstr "Omezení vypršelo {0}"
 
+#: src/pages/PresskitPage.tsx:30
+msgid "Reversed logo"
+msgstr "Světlá varianta"
+
 #: src/components/user/PaymentInformationCard.tsx:204
 msgid "Revolut Tag"
 msgstr "Revolut tag"
@@ -2708,6 +2847,10 @@ msgstr "Hledat místa podle názvu nebo polohy..."
 #: src/components/events/GuestUserInput.tsx:135
 msgid "Searching players..."
 msgstr "Vyhledávání hráčů..."
+
+#: src/pages/PresskitPage.tsx:178
+msgid "See you on the court."
+msgstr "Uvidíme se na hřišti."
 
 #: src/components/events/CreateEventForm.tsx:1192
 msgid "Select a core group"
@@ -2852,6 +2995,10 @@ msgstr "Slovensko"
 msgid "Slovenia"
 msgstr "Slovinsko"
 
+#: src/pages/PresskitPage.tsx:39
+msgid "Small space? Use the mark for icons and avatars."
+msgstr "Málo místa? Symbol se hodí pro ikony a avatary."
+
 #: src/pages/DiscoverPage.tsx:278
 msgid "Sort by:"
 msgstr "Seřadit podle:"
@@ -2953,6 +3100,14 @@ msgstr "Řekněte nám, co hrajete a o čem chcete dostávat oznámení. Zabere 
 msgid "Temporarily prevent a user from joining new games. They can still browse hraj.eu and keep their existing attendances."
 msgstr "Dočasně zabraňte uživateli připojit se k novým hrám. Stále může procházet hraj.eu a ponechá si stávající účasti."
 
+#: src/pages/PresskitPage.tsx:31
+msgid "The light version. Give it a dark background."
+msgstr "Světlá verze loga pro tmavé pozadí."
+
+#: src/pages/PresskitPage.tsx:106
+msgid "The logo"
+msgstr "Logo"
+
 #: src/pages/EventDetailsPage.tsx:1631
 msgid "The organizer has cancelled this event."
 msgstr "Organizátor tuto událost zrušil."
@@ -3039,6 +3194,10 @@ msgstr "Nejlepší hráči podle celkové karmy"
 msgid "Total Price"
 msgstr "Celková cena"
 
+#: src/pages/PresskitPage.tsx:126
+msgid "Transparent background"
+msgstr "Průhledné pozadí"
+
 #: src/pages/DiscoverPage.tsx:406
 msgid "Try adjusting your filters or create a new event."
 msgstr "Zkuste upravit filtry nebo vytvořte novou událost."
@@ -3071,8 +3230,8 @@ msgstr "Až {count} jmen"
 #~ msgid "Up to 2 names"
 #~ msgstr "Až 2 jména"
 
-#: src/components/layout/Header.tsx:68
-#: src/components/layout/Header.tsx:151
+#: src/components/layout/Header.tsx:66
+#: src/components/layout/Header.tsx:156
 msgid "Upcoming"
 msgstr "Nadcházející"
 
@@ -3148,6 +3307,10 @@ msgstr "Nahrávám..."
 msgid "Use account/bank code, prefix-account/bank code, or IBAN. A payment QR code will appear on all events you organize."
 msgstr "Zadejte účet/kód banky, předčíslí-účet/kód banky nebo IBAN. Platební QR kód se zobrazí u všech událostí, které pořádáte."
 
+#: src/pages/PresskitPage.tsx:169
+msgid "Use the supplied colors and proportions. Keep the logo free of effects."
+msgstr "Zachovejte dodané barvy a proporce. K logu nepřidávejte efekty."
+
 #: src/components/user/PaymentInformationCard.tsx:246
 msgid "username"
 msgstr "uživatelské jméno"
@@ -3192,8 +3355,8 @@ msgstr "Výběr místa"
 msgid "Venue Type *"
 msgstr "Typ místa *"
 
-#: src/components/layout/Header.tsx:76
-#: src/components/layout/Header.tsx:160
+#: src/components/layout/Header.tsx:74
+#: src/components/layout/Header.tsx:165
 msgid "Venues"
 msgstr "Sportoviště"
 
@@ -3214,7 +3377,7 @@ msgstr "Ověřené sportoviště"
 #~ msgid "View All Events"
 #~ msgstr "Zobrazit všechny události"
 
-#: src/components/layout/Header.tsx:405
+#: src/components/layout/Header.tsx:418
 msgid "View all notifications"
 msgstr "Zobrazit všechna oznámení"
 
@@ -3360,6 +3523,10 @@ msgstr "Vítr může ovlivnit trajektorii míče/ptáka"
 msgid "Wind:"
 msgstr "Vítr:"
 
+#: src/pages/PresskitPage.tsx:171
+msgid "Write our name as hraj.eu, in lowercase. Link to https://hraj.eu when you can."
+msgstr "Název pište malými písmeny jako hraj.eu. Pokud možno odkazujte na https://hraj.eu."
+
 #: src/pages/EventDetailsPage.tsx:2557
 msgid "Yes I have paid"
 msgstr "Ano, zaplatil(a) jsem"
@@ -3418,14 +3585,14 @@ msgstr "Musíte se připojit k této události pro potvrzení platby."
 msgid "You will receive emails about new events at this venue."
 msgstr "Budete dostávat e-maily o nových událostech na tomto sportovišti."
 
-#: src/components/layout/Header.tsx:388
+#: src/components/layout/Header.tsx:401
 msgid "You'll see updates about your events here"
 msgstr "Zde uvidíte aktualizace o vašich událostech"
 
-#: src/pages/HomePage.tsx:30
-#: src/pages/HomePage.tsx:46
-#: src/pages/HomePage.tsx:51
-#: src/pages/HomePage.tsx:58
+#: src/pages/HomePage.tsx:31
+#: src/pages/HomePage.tsx:47
+#: src/pages/HomePage.tsx:52
+#: src/pages/HomePage.tsx:59
 msgid "your area"
 msgstr "vaše okolí"
 
@@ -3444,6 +3611,10 @@ msgstr "Tvoje událost byla zrušena: {title}"
 #: src/pages/ManageCoreGroupsPage.tsx:214
 msgid "Your Groups"
 msgstr "Vaše skupiny"
+
+#: src/pages/PresskitPage.tsx:100
+msgid "Your next game starts here."
+msgstr "Vaše příští hra začíná tady."
 
 #: src/pages/OnboardingPage.tsx:48
 msgid "Your preferences are ready!"

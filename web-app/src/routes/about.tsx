@@ -34,6 +34,7 @@ export const Route = createFileRoute('/about')({
           '@type': 'Organization',
           name: SITE_NAME,
           url: SITE_URL,
+          logo: `${SITE_URL}/android-chrome-512x512.png`,
           description
         }
       } as any

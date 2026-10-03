@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="hraj.eu">
+  <title>hraj.eu</title>
+  <rect width="64" height="64" rx="17" fill="#16a34a"/>
+  <defs>
+    <clipPath id="ball-boundary"><circle cx="32" cy="32" r="23"/></clipPath>
+  </defs>
+  <circle cx="32" cy="32" r="23" fill="#fff"/>
+  <g clip-path="url(#ball-boundary)" fill="#14532d">
+    <path d="M32 22.5 41.04 29.06 37.59 39.69H26.41L22.96 29.06Z"/>
+    <g id="ball-panel">
+      <path d="M25.5 8h13L40 16.5 32 21.2 24 16.5Z"/>
+      <path d="M32 20.5v3" fill="none" stroke="#14532d" stroke-width="1.25"/>
+    </g>
+    <use href="#ball-panel" transform="rotate(72 32 32)"/>
+    <use href="#ball-panel" transform="rotate(144 32 32)"/>
+    <use href="#ball-panel" transform="rotate(216 32 32)"/>
+    <use href="#ball-panel" transform="rotate(288 32 32)"/>
+  </g>
+</svg>

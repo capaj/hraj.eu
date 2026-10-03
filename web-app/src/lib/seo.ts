@@ -3,7 +3,7 @@ export const SITE_NAME = 'hraj.eu'
 export const DEFAULT_TITLE = 'hraj.eu - Find people to play team sports with'
 export const DEFAULT_DESCRIPTION =
   'Find amateur team sports games near you. Join local football, volleyball, basketball, futsal, and other games with people who want to play.'
-export const DEFAULT_OG_IMAGE = `${SITE_URL}/android-chrome-512x512.png`
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/brand/hraj-social.png`
 
 type SeoMetaOptions = {
   title?: string

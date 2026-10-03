@@ -52,9 +52,7 @@ export const Header: React.FC = () => {
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 cursor-pointer">
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
-                hraj.eu
-              </h1>
+              <img src="/brand/hraj-logo.svg" alt="hraj.eu" width="296" height="80" className="h-8 w-auto" />
             </Link>
           </div>
 
@@ -96,6 +94,13 @@ export const Header: React.FC = () => {
               activeProps={{ className: 'text-primary-600 font-medium' }}
             >
               <Trans>About</Trans>
+            </Link>
+            <Link
+              to="/presskit"
+              className="transition-colors text-gray-700 hover:text-primary-600"
+              activeProps={{ className: 'text-primary-600 font-medium' }}
+            >
+              <Trans>Presskit</Trans>
             </Link>
           </nav>
 
@@ -183,6 +188,14 @@ export const Header: React.FC = () => {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <Trans>About</Trans>
+              </Link>
+              <Link
+                to="/presskit"
+                className="block transition-colors text-gray-700 hover:text-primary-600 py-2"
+                activeProps={{ className: 'text-primary-600 font-medium' }}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Trans>Presskit</Trans>
               </Link>
               <Link
                 to="/create"
