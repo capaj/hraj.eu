@@ -38,6 +38,8 @@ Only incoming credits with a matching variable symbol, expected currency and a b
 
 The development-only `/scenarios/fio-payments` route shows event payment settings, a player's QR payment, and the organizer's payment table. Its controls simulate receipt and cancellation in browser state. Profile setup has its own `/scenarios/fio-profile` route, including replacing or disconnecting a saved token. No event page or event preview renders the token input.
 
+Run `pnpm --dir web-app screenshots` from the repository root to capture these states at desktop and mobile sizes. The [portable Playwright runner](screenshots/README.md) uses isolated fixture configuration and requires no bank, database, or agent browser connection. It checks that event screens never show a token input and that the profile reveals the input only for setup or explicit replacement.
+
 Run the relevant suite from `web-app`:
 
 ```sh

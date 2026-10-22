@@ -8,7 +8,9 @@ import viteReact from '@vitejs/plugin-react'
 import { cloudflare } from '@cloudflare/vite-plugin'
 import path from 'node:path'
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
+  envDir: mode === 'screenshots' ? './screenshots' : undefined,
+  envPrefix: mode === 'screenshots' ? [] : undefined,
   server: {
     port: 5173,
     watch: {
@@ -28,10 +30,14 @@ export default defineConfig({
       name: 'hraj:route-tree-hmr-workaround',
       apply: 'serve',
       configureServer(server) {
-        const routesDir = path.resolve(server.config.root, 'src/routes') + path.sep
+        const routesDir =
+          path.resolve(server.config.root, 'src/routes') + path.sep
         const shouldReloadForRouteChange = (file: string) =>
           file.startsWith(routesDir) &&
-          (file.endsWith('.ts') || file.endsWith('.tsx') || file.endsWith('.js') || file.endsWith('.jsx'))
+          (file.endsWith('.ts') ||
+            file.endsWith('.tsx') ||
+            file.endsWith('.js') ||
+            file.endsWith('.jsx'))
 
         const reload = () => server.ws.send({ type: 'full-reload' })
 
@@ -50,7 +56,15 @@ export default defineConfig({
     tsConfigPaths({
       projects: ['./tsconfig.json']
     }),
-    cloudflare({ viteEnvironment: { name: 'ssr' } }),
+    cloudflare({
+      viteEnvironment: { name: 'ssr' },
+      ...(mode === 'screenshots' && {
+        configPath: './screenshots/wrangler.jsonc',
+        remoteBindings: false,
+        persistState: false,
+        inspectorPort: false
+      })
+    }),
 
     tanstackStart(),
     viteReact(),
@@ -58,4 +72,4 @@ export default defineConfig({
     babel({ presets: [linguiTransformerBabelPreset()] }),
     tailwindcss()
   ]
-})
+}))
