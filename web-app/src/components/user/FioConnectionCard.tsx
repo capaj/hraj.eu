@@ -68,6 +68,7 @@ export function FioConnectionCard({
 }) {
   const [token, setToken] = useState('')
   const [readOnly, setReadOnly] = useState(false)
+  const [editingToken, setEditingToken] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   let buttonLabel = <Trans>Connect Fio account</Trans>
@@ -85,8 +86,8 @@ export function FioConnectionCard({
       <CardContent className="space-y-4 p-6">
         <p className="text-sm text-gray-600">
           <Trans>
-            Match incoming payments to players automatically. Connect your own
-            account with a read-only API token.
+            Connect Fio once in your profile with a read-only API token. Every
+            event you organize can use this saved connection.
           </Trans>
         </p>
         {connection?.connected && (
@@ -108,95 +109,118 @@ export function FioConnectionCard({
             <FioStatusMessage code={(error || connection?.syncError)!} />
           </p>
         )}
-        <form
-          className="space-y-4"
-          onSubmit={async (event) => {
-            event.preventDefault()
-            setBusy(true)
-            setError(null)
-            try {
-              const result = await onSave(token.trim())
-              setError(result.error)
-              if (!result.error) {
-                setToken('')
-                setReadOnly(false)
+        {(!connection?.connected || editingToken) && (
+          <form
+            className="space-y-4"
+            onSubmit={async (event) => {
+              event.preventDefault()
+              setBusy(true)
+              setError(null)
+              try {
+                const result = await onSave(token.trim())
+                setError(result.error)
+                if (!result.error) {
+                  setToken('')
+                  setReadOnly(false)
+                  setEditingToken(false)
+                }
+              } catch {
+                setError(connectionFailed)
+              } finally {
+                setBusy(false)
               }
-            } catch {
-              setError(connectionFailed)
-            } finally {
-              setBusy(false)
-            }
-          }}
-        >
-          <div>
-            <label
-              htmlFor="fio-token"
-              className="mb-1 block text-sm font-medium"
-            >
-              <Trans>Read-only API token</Trans>
+            }}
+          >
+            <div>
+              <label
+                htmlFor="fio-token"
+                className="mb-1 block text-sm font-medium"
+              >
+                <Trans>Read-only API token</Trans>
+              </label>
+              <input
+                id="fio-token"
+                type="password"
+                autoComplete="off"
+                spellCheck={false}
+                value={token}
+                onChange={(event) => setToken(event.target.value)}
+                required
+                minLength={64}
+                maxLength={64}
+                pattern="[a-zA-Z0-9]{64}"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 font-mono"
+              />
+              <p className="mt-2 text-xs leading-relaxed text-gray-500">
+                <Trans>
+                  In Fio Internetbanking, open Settings → API and create a token
+                  with “Sledování účtu” permission. Wait five minutes after
+                  creating it.
+                </Trans>
+              </p>
+            </div>
+            <label className="flex items-start gap-2 text-sm text-gray-700">
+              <input
+                type="checkbox"
+                required
+                checked={readOnly}
+                onChange={(event) => setReadOnly(event.target.checked)}
+                className="mt-1"
+              />
+              <Trans>I created this token with read-only access.</Trans>
             </label>
-            <input
-              id="fio-token"
-              type="password"
-              autoComplete="off"
-              spellCheck={false}
-              value={token}
-              onChange={(event) => setToken(event.target.value)}
-              required
-              minLength={64}
-              maxLength={64}
-              pattern="[a-zA-Z0-9]{64}"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 font-mono"
-            />
-            <p className="mt-2 text-xs leading-relaxed text-gray-500">
-              <Trans>
-                In Fio Internetbanking, open Settings → API and create a token
-                with “Sledování účtu” permission. Wait five minutes after
-                creating it.
-              </Trans>
-            </p>
-          </div>
-          <label className="flex items-start gap-2 text-sm text-gray-700">
-            <input
-              type="checkbox"
-              required
-              checked={readOnly}
-              onChange={(event) => setReadOnly(event.target.checked)}
-              className="mt-1"
-            />
-            <Trans>I created this token with read-only access.</Trans>
-          </label>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                type="submit"
+                disabled={
+                  busy || loading || !readOnly || token.trim().length !== 64
+                }
+              >
+                {buttonLabel}
+              </Button>
+            </div>
+          </form>
+        )}
+        {connection?.connected && (
           <div className="flex flex-wrap gap-2">
             <Button
-              type="submit"
-              disabled={
-                busy || loading || !readOnly || token.trim().length !== 64
-              }
+              type="button"
+              variant="outline"
+              disabled={busy}
+              onClick={() => {
+                setEditingToken(!editingToken)
+                setToken('')
+                setReadOnly(false)
+                setError(null)
+              }}
             >
-              {buttonLabel}
+              {editingToken ? (
+                <Trans>Cancel</Trans>
+              ) : (
+                <Trans>Replace token</Trans>
+              )}
             </Button>
-            {connection?.connected && (
-              <Button
-                type="button"
-                variant="outline"
-                disabled={busy}
-                onClick={async () => {
-                  setBusy(true)
-                  try {
-                    await onDisconnect()
-                  } catch {
-                    setError(connectionFailed)
-                  } finally {
-                    setBusy(false)
-                  }
-                }}
-              >
-                <Unplug size={16} className="mr-2" />
-                <Trans>Disconnect</Trans>
-              </Button>
-            )}
+            <Button
+              type="button"
+              variant="outline"
+              disabled={busy}
+              onClick={async () => {
+                setBusy(true)
+                try {
+                  await onDisconnect()
+                  setEditingToken(false)
+                } catch {
+                  setError(connectionFailed)
+                } finally {
+                  setBusy(false)
+                }
+              }}
+            >
+              <Unplug size={16} className="mr-2" />
+              <Trans>Disconnect</Trans>
+            </Button>
           </div>
-        </form>
+        )}
         <p className="text-xs text-gray-500">
           <Trans>
             Your token is stored encrypted. hraj.eu reads payments and cannot

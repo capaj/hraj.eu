@@ -1,6 +1,8 @@
 # Fio banka payments
 
-Users connect a Czech Fio account in CZK from their profile. In Fio Internetbanking → Nastavení → API, create a token with **Sledování účtu** (read-only) permission. Newly authorized tokens take five minutes to activate. The export API does not report a token's permissions, so the UI requires users to acknowledge that they selected read-only access. The integration only calls the GET transaction export endpoint and never submits transfers.
+Users connect a Czech Fio account in CZK **once in their profile**. The encrypted token belongs to the user, and every event they organize can reuse that connection. Event forms only select manual or Fio tracking; they never ask for an API token. A connected profile hides the token form until the user explicitly chooses to replace it.
+
+In Fio Internetbanking → Nastavení → API, create a token with **Sledování účtu** (read-only) permission. Newly authorized tokens take five minutes to activate. The export API does not report a token's permissions, so the UI requires users to acknowledge that they selected read-only access. The integration only calls the GET transaction export endpoint and never submits transfers.
 
 ## Deployment
 
@@ -34,7 +36,7 @@ Only incoming credits with a matching variable symbol, expected currency and a b
 
 ## Preview and checks
 
-The development-only `/scenarios/fio-payments` route shows profile setup, event payment settings, a player's QR payment, and the organizer's payment table. Its controls simulate receipt and cancellation in browser state. Screenshots are in `artifacts/screenshots/fio-payments-*.png`.
+The development-only `/scenarios/fio-payments` route shows event payment settings, a player's QR payment, and the organizer's payment table. Its controls simulate receipt and cancellation in browser state. Profile setup has its own `/scenarios/fio-profile` route, including replacing or disconnecting a saved token. No event page or event preview renders the token input.
 
 Run the relevant suite from `web-app`:
 

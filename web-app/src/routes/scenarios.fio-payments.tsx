@@ -4,10 +4,7 @@ import { createFileRoute, notFound } from '@tanstack/react-router'
 import { authSessionQueryKey } from '~/lib/auth-client'
 import { JoinActionCard } from '~/components/events/JoinActionCard'
 import { PendingPaymentParticipants } from '~/components/events/PendingPaymentParticipants'
-import {
-  FioConnectionCard,
-  type FioConnection
-} from '~/components/user/FioConnectionCard'
+import type { FioConnection } from '~/components/user/FioConnectionCard'
 import { EventPaymentSettings } from '~/components/events/EventPaymentSettings'
 import {
   EventPaymentsView,
@@ -107,7 +104,7 @@ function FioPaymentsScenario() {
     client.setQueryData(authSessionQueryKey, { user: { id: 'anna' } })
     return client
   })
-  const [connection, setConnection] = useState<FioConnection>(initialConnection)
+  const connection = initialConnection
   const [mode, setMode] = useState<'manual' | 'fio'>('fio')
   const [requirePayment, setRequirePayment] = useState(true)
   const [requests, setRequests] = useState(initialRequests)
@@ -163,20 +160,6 @@ function FioPaymentsScenario() {
         </div>
         <div className="grid items-start gap-6 lg:grid-cols-2">
           <div className="space-y-6">
-            <FioConnectionCard
-              connection={connection}
-              onSave={async () => {
-                setConnection(initialConnection)
-                return { error: null }
-              }}
-              onDisconnect={async () =>
-                setConnection({
-                  ...initialConnection,
-                  connected: false,
-                  syncError: 'disconnected'
-                })
-              }
-            />
             <Card>
               <CardHeader>
                 <h2 className="text-xl font-semibold">Nastavení události</h2>

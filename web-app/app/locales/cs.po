@@ -357,7 +357,7 @@ msgstr "30m"
 msgid "60m"
 msgstr "60m"
 
-#: src/components/events/EventPaymentSettings.tsx:87
+#: src/components/events/EventPaymentSettings.tsx:98
 msgid "A place is held while payment is pending. Only paid players count toward the event minimum."
 msgstr "Místo je rezervované do přijetí platby. Do minimálního počtu hráčů se započítají jen ti, kteří zaplatili."
 
@@ -414,7 +414,7 @@ msgstr "Pokyny k přístupu"
 msgid "Account"
 msgstr "Účet"
 
-#: src/components/user/FioConnectionCard.tsx:96
+#: src/components/user/FioConnectionCard.tsx:97
 msgid "Account connected"
 msgstr "Účet propojen"
 
@@ -693,7 +693,7 @@ msgstr "Jednotka délky zákazu"
 msgid "Bank account updated!"
 msgstr "Bankovní účet aktualizován!"
 
-#: src/components/events/EventPaymentSettings.tsx:102
+#: src/components/events/EventPaymentSettings.tsx:113
 msgid "Based on total price and ideal player count (or maximum). Payment settings are locked after the first registration."
 msgstr "Vychází z celkové ceny a ideálního počtu hráčů (případně maxima). Po první registraci už nelze platební podmínky změnit."
 
@@ -799,6 +799,7 @@ msgstr "Kavárna / restaurace"
 msgid "Call {name} at {phone}"
 msgstr "Zavolat uživateli {name} na číslo {phone}"
 
+#: src/components/user/FioConnectionCard.tsx:198
 #: src/components/user/PaymentInformationCard.tsx:225
 #: src/components/user/PaymentInformationCard.tsx:285
 #: src/components/venues/AddVenueModal.tsx:921
@@ -1081,13 +1082,17 @@ msgstr "Potvrzeno"
 msgid "Connect a Czech Fio account in CZK."
 msgstr "Propojte český účet Fio vedený v CZK."
 
-#: src/components/user/FioConnectionCard.tsx:73
+#: src/components/user/FioConnectionCard.tsx:74
 msgid "Connect Fio account"
 msgstr "Propojit účet Fio"
 
-#: src/components/events/EventPaymentSettings.tsx:70
+#: src/components/events/EventPaymentSettings.tsx:81
 msgid "Connect Fio in your profile"
 msgstr "Propojit Fio v profilu"
+
+#: src/components/user/FioConnectionCard.tsx:88
+msgid "Connect Fio once in your profile with a read-only API token. Every event you organize can use this saved connection."
+msgstr "Propojte Fio jednou ve svém profilu pomocí API tokenu pouze pro čtení. Uložené propojení můžete použít pro každou událost, kterou pořádáte."
 
 #: src/pages/HomePage.tsx:179
 msgid "Connect with like-minded players, earn karma points, and climb the leaderboards."
@@ -1097,7 +1102,7 @@ msgstr "Spojte se s podobně naladěnými hráči, sbírejte body karmy a stoupe
 msgid "Connect your Fio account in your profile first"
 msgstr "Nejprve v profilu propojte svůj účet Fio"
 
-#: src/components/user/FioConnectionCard.tsx:75
+#: src/components/user/FioConnectionCard.tsx:76
 msgid "Connecting…"
 msgstr "Propojuji…"
 
@@ -1195,7 +1200,7 @@ msgstr "Stav plateb se nepodařilo načíst. Zkuste to znovu."
 msgid "Could not load users."
 msgstr "Uživatele se nepodařilo načíst."
 
-#: src/components/user/FioConnectionCard.tsx:227
+#: src/components/user/FioConnectionCard.tsx:251
 msgid "Could not load your Fio connection."
 msgstr "Propojení s Fio se nepodařilo načíst."
 
@@ -1403,7 +1408,7 @@ msgstr "Podrobnosti (povinné)"
 msgid "Device information and browser type"
 msgstr "Informace o zařízení a typu prohlížeče"
 
-#: src/components/user/FioConnectionCard.tsx:195
+#: src/components/user/FioConnectionCard.tsx:220
 msgid "Disconnect"
 msgstr "Odpojit"
 
@@ -2043,7 +2048,7 @@ msgstr "Hledám vaši polohu pro střed mapy místa..."
 msgid "Finland"
 msgstr "Finsko"
 
-#: src/components/user/FioConnectionCard.tsx:212
+#: src/components/user/FioConnectionCard.tsx:236
 msgid "Fio API setup guide"
 msgstr "Návod k nastavení Fio API"
 
@@ -2051,7 +2056,7 @@ msgstr "Návod k nastavení Fio API"
 msgid "Fio banka"
 msgstr "Fio banka"
 
-#: src/components/user/FioConnectionCard.tsx:82
+#: src/components/user/FioConnectionCard.tsx:83
 msgid "Fio banka integration"
 msgstr "Propojení s Fio bankou"
 
@@ -2072,7 +2077,7 @@ msgid "Fio payments require CZK"
 msgstr "Platby přes Fio vyžadují měnu CZK"
 
 #: src/components/events/EventPaymentCard.tsx:49
-#: src/components/events/EventPaymentSettings.tsx:96
+#: src/components/events/EventPaymentSettings.tsx:107
 msgid "Fixed price per player:"
 msgstr "Pevná cena za hráče:"
 
@@ -2372,7 +2377,7 @@ msgstr "Maďarský forint"
 msgid "Hungary"
 msgstr "Maďarsko"
 
-#: src/components/user/FioConnectionCard.tsx:167
+#: src/components/user/FioConnectionCard.tsx:170
 msgid "I created this token with read-only access."
 msgstr "Token má oprávnění pouze ke čtení."
 
@@ -2426,7 +2431,7 @@ msgstr "Důležité"
 msgid "In a few words"
 msgstr "Pár slov o nás"
 
-#: src/components/user/FioConnectionCard.tsx:152
+#: src/components/user/FioConnectionCard.tsx:155
 msgid "In Fio Internetbanking, open Settings → API and create a token with “Sledování účtu” permission. Wait five minutes after creating it."
 msgstr "Ve Fio Internetbankingu otevřete Nastavení → API a vytvořte token s oprávněním „Sledování účtu“. Po vytvoření počkejte pět minut."
 
@@ -2790,6 +2795,10 @@ msgstr "Správa zákazů účasti"
 msgid "Manage Core Groups"
 msgstr "Spravovat základní skupiny"
 
+#: src/components/events/EventPaymentSettings.tsx:74
+msgid "Manage Fio connection"
+msgstr "Spravovat propojení s Fio"
+
 #: src/components/events/CreateEventForm.tsx:1222
 msgid "Manage groups"
 msgstr "Spravovat skupiny"
@@ -2826,10 +2835,6 @@ msgstr "Označeno jako zaplacené"
 #: src/pages/EventDetailsPage.tsx:603
 msgid "Marked as paid {timeAgo}"
 msgstr "Označeno jako zaplacené {timeAgo}"
-
-#: src/components/user/FioConnectionCard.tsx:87
-msgid "Match incoming payments to players automatically. Connect your own account with a read-only API token."
-msgstr "Příchozí platby se automaticky přiřadí hráčům. Propojte vlastní účet pomocí API tokenu pouze pro čtení."
 
 #: src/pages/EventDetailsPage.tsx:1765
 msgid "Maximum"
@@ -3910,7 +3915,7 @@ msgstr "Ohodnoťte spoluhráče"
 msgid "Rating"
 msgstr "Hodnocení"
 
-#: src/components/user/FioConnectionCard.tsx:136
+#: src/components/user/FioConnectionCard.tsx:139
 msgid "Read-only API token"
 msgstr "API token pouze pro čtení"
 
@@ -4020,7 +4025,8 @@ msgstr "Odebrat úroveň"
 msgid "Repeated no-shows or bad behavior"
 msgstr "Opakované neúčasti nebo nevhodné chování"
 
-#: src/components/user/FioConnectionCard.tsx:74
+#: src/components/user/FioConnectionCard.tsx:75
+#: src/components/user/FioConnectionCard.tsx:200
 msgid "Replace token"
 msgstr "Nahradit token"
 
@@ -4060,7 +4066,7 @@ msgstr "Žádost o výmaz vašich údajů"
 msgid "Request failed"
 msgstr "Požadavek se nezdařil"
 
-#: src/components/events/EventPaymentSettings.tsx:84
+#: src/components/events/EventPaymentSettings.tsx:95
 msgid "Require payment before confirming attendance"
 msgstr "Vyžadovat platbu před potvrzením účasti"
 
@@ -4945,6 +4951,10 @@ msgstr "Uživatelé odpovídají za případné daňové povinnosti"
 msgid "Users participate in sports activities at their own risk and are responsible for:"
 msgstr "Uživatelé se účastní sportovních aktivit na vlastní riziko a odpovídají za:"
 
+#: src/components/events/EventPaymentSettings.tsx:69
+msgid "Uses the Fio account saved in your profile. You do not need to enter the token again."
+msgstr "Použije se Fio účet uložený ve vašem profilu. Token nemusíte zadávat znovu."
+
 #: src/components/events/EventPaymentsPanel.tsx:188
 msgid "Variable symbol:"
 msgstr "Variabilní symbol:"
@@ -5607,6 +5617,6 @@ msgstr "Vaše sportovní historie a úspěchy"
 msgid "Your sports will appear here for alert setup."
 msgstr "Vaše sporty se zde zobrazí pro nastavení upozornění."
 
-#: src/components/user/FioConnectionCard.tsx:201
+#: src/components/user/FioConnectionCard.tsx:225
 msgid "Your token is stored encrypted. hraj.eu reads payments and cannot send transfers. Disconnecting pauses payment checks for your events."
 msgstr "Token ukládáme zašifrovaný. hraj.eu čte platby a nemůže odesílat převody. Odpojením pozastavíte kontrolu plateb svých událostí."

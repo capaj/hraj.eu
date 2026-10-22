@@ -33,6 +33,7 @@ import { Route as EventsEventIdRouteImport } from './routes/events/$eventId'
 import { Route as ScenariosAboutStatsRouteImport } from './routes/scenarios.about-stats'
 import { Route as ScenariosEventMapRouteImport } from './routes/scenarios.event-map'
 import { Route as ScenariosFioPaymentsRouteImport } from './routes/scenarios.fio-payments'
+import { Route as ScenariosFioProfileRouteImport } from './routes/scenarios.fio-profile'
 import { Route as ScenariosLocalizationRouteImport } from './routes/scenarios.localization'
 import { Route as ScenariosOnboardingRouteImport } from './routes/scenarios.onboarding'
 import { Route as ScenariosParticipantCapacityRouteImport } from './routes/scenarios.participant-capacity'
@@ -165,6 +166,11 @@ const ScenariosFioPaymentsRoute = ScenariosFioPaymentsRouteImport.update({
   path: '/scenarios/fio-payments',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScenariosFioProfileRoute = ScenariosFioProfileRouteImport.update({
+  id: '/scenarios/fio-profile',
+  path: '/scenarios/fio-profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ScenariosLocalizationRoute = ScenariosLocalizationRouteImport.update({
   id: '/scenarios/localization',
   path: '/scenarios/localization',
@@ -249,6 +255,7 @@ export interface FileRoutesByFullPath {
   '/scenarios/about-stats': typeof ScenariosAboutStatsRoute
   '/scenarios/event-map': typeof ScenariosEventMapRoute
   '/scenarios/fio-payments': typeof ScenariosFioPaymentsRoute
+  '/scenarios/fio-profile': typeof ScenariosFioProfileRoute
   '/scenarios/localization': typeof ScenariosLocalizationRoute
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
@@ -286,6 +293,7 @@ export interface FileRoutesByTo {
   '/scenarios/about-stats': typeof ScenariosAboutStatsRoute
   '/scenarios/event-map': typeof ScenariosEventMapRoute
   '/scenarios/fio-payments': typeof ScenariosFioPaymentsRoute
+  '/scenarios/fio-profile': typeof ScenariosFioProfileRoute
   '/scenarios/localization': typeof ScenariosLocalizationRoute
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
@@ -324,6 +332,7 @@ export interface FileRoutesById {
   '/scenarios/about-stats': typeof ScenariosAboutStatsRoute
   '/scenarios/event-map': typeof ScenariosEventMapRoute
   '/scenarios/fio-payments': typeof ScenariosFioPaymentsRoute
+  '/scenarios/fio-profile': typeof ScenariosFioProfileRoute
   '/scenarios/localization': typeof ScenariosLocalizationRoute
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
@@ -363,6 +372,7 @@ export interface FileRouteTypes {
     | '/scenarios/about-stats'
     | '/scenarios/event-map'
     | '/scenarios/fio-payments'
+    | '/scenarios/fio-profile'
     | '/scenarios/localization'
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
@@ -400,6 +410,7 @@ export interface FileRouteTypes {
     | '/scenarios/about-stats'
     | '/scenarios/event-map'
     | '/scenarios/fio-payments'
+    | '/scenarios/fio-profile'
     | '/scenarios/localization'
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
@@ -437,6 +448,7 @@ export interface FileRouteTypes {
     | '/scenarios/about-stats'
     | '/scenarios/event-map'
     | '/scenarios/fio-payments'
+    | '/scenarios/fio-profile'
     | '/scenarios/localization'
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
@@ -475,6 +487,7 @@ export interface RootRouteChildren {
   ScenariosAboutStatsRoute: typeof ScenariosAboutStatsRoute
   ScenariosEventMapRoute: typeof ScenariosEventMapRoute
   ScenariosFioPaymentsRoute: typeof ScenariosFioPaymentsRoute
+  ScenariosFioProfileRoute: typeof ScenariosFioProfileRoute
   ScenariosLocalizationRoute: typeof ScenariosLocalizationRoute
   ScenariosOnboardingRoute: typeof ScenariosOnboardingRoute
   ScenariosParticipantCapacityRoute: typeof ScenariosParticipantCapacityRoute
@@ -658,6 +671,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScenariosFioPaymentsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scenarios/fio-profile': {
+      id: '/scenarios/fio-profile'
+      path: '/scenarios/fio-profile'
+      fullPath: '/scenarios/fio-profile'
+      preLoaderRoute: typeof ScenariosFioProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scenarios/localization': {
       id: '/scenarios/localization'
       path: '/scenarios/localization'
@@ -763,6 +783,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScenariosAboutStatsRoute: ScenariosAboutStatsRoute,
   ScenariosEventMapRoute: ScenariosEventMapRoute,
   ScenariosFioPaymentsRoute: ScenariosFioPaymentsRoute,
+  ScenariosFioProfileRoute: ScenariosFioProfileRoute,
   ScenariosLocalizationRoute: ScenariosLocalizationRoute,
   ScenariosOnboardingRoute: ScenariosOnboardingRoute,
   ScenariosParticipantCapacityRoute: ScenariosParticipantCapacityRoute,

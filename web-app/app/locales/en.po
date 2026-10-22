@@ -357,7 +357,7 @@ msgstr ""
 msgid "60m"
 msgstr ""
 
-#: src/components/events/EventPaymentSettings.tsx:87
+#: src/components/events/EventPaymentSettings.tsx:98
 msgid "A place is held while payment is pending. Only paid players count toward the event minimum."
 msgstr "A place is held while payment is pending. Only paid players count toward the event minimum."
 
@@ -414,7 +414,7 @@ msgstr ""
 msgid "Account"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:96
+#: src/components/user/FioConnectionCard.tsx:97
 msgid "Account connected"
 msgstr "Account connected"
 
@@ -693,7 +693,7 @@ msgstr ""
 msgid "Bank account updated!"
 msgstr ""
 
-#: src/components/events/EventPaymentSettings.tsx:102
+#: src/components/events/EventPaymentSettings.tsx:113
 msgid "Based on total price and ideal player count (or maximum). Payment settings are locked after the first registration."
 msgstr "Based on total price and ideal player count (or maximum). Payment settings are locked after the first registration."
 
@@ -799,6 +799,7 @@ msgstr ""
 msgid "Call {name} at {phone}"
 msgstr ""
 
+#: src/components/user/FioConnectionCard.tsx:198
 #: src/components/user/PaymentInformationCard.tsx:225
 #: src/components/user/PaymentInformationCard.tsx:285
 #: src/components/venues/AddVenueModal.tsx:921
@@ -1081,13 +1082,17 @@ msgstr ""
 msgid "Connect a Czech Fio account in CZK."
 msgstr "Connect a Czech Fio account in CZK."
 
-#: src/components/user/FioConnectionCard.tsx:73
+#: src/components/user/FioConnectionCard.tsx:74
 msgid "Connect Fio account"
 msgstr "Connect Fio account"
 
-#: src/components/events/EventPaymentSettings.tsx:70
+#: src/components/events/EventPaymentSettings.tsx:81
 msgid "Connect Fio in your profile"
 msgstr "Connect Fio in your profile"
+
+#: src/components/user/FioConnectionCard.tsx:88
+msgid "Connect Fio once in your profile with a read-only API token. Every event you organize can use this saved connection."
+msgstr "Connect Fio once in your profile with a read-only API token. Every event you organize can use this saved connection."
 
 #: src/pages/HomePage.tsx:179
 msgid "Connect with like-minded players, earn karma points, and climb the leaderboards."
@@ -1097,7 +1102,7 @@ msgstr ""
 msgid "Connect your Fio account in your profile first"
 msgstr "Connect your Fio account in your profile first"
 
-#: src/components/user/FioConnectionCard.tsx:75
+#: src/components/user/FioConnectionCard.tsx:76
 msgid "Connecting…"
 msgstr "Connecting…"
 
@@ -1195,7 +1200,7 @@ msgstr "Could not load payment status. Please try again."
 msgid "Could not load users."
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:227
+#: src/components/user/FioConnectionCard.tsx:251
 msgid "Could not load your Fio connection."
 msgstr "Could not load your Fio connection."
 
@@ -1403,7 +1408,7 @@ msgstr ""
 msgid "Device information and browser type"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:195
+#: src/components/user/FioConnectionCard.tsx:220
 msgid "Disconnect"
 msgstr "Disconnect"
 
@@ -2043,7 +2048,7 @@ msgstr ""
 msgid "Finland"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:212
+#: src/components/user/FioConnectionCard.tsx:236
 msgid "Fio API setup guide"
 msgstr "Fio API setup guide"
 
@@ -2051,7 +2056,7 @@ msgstr "Fio API setup guide"
 msgid "Fio banka"
 msgstr "Fio banka"
 
-#: src/components/user/FioConnectionCard.tsx:82
+#: src/components/user/FioConnectionCard.tsx:83
 msgid "Fio banka integration"
 msgstr "Fio banka integration"
 
@@ -2072,7 +2077,7 @@ msgid "Fio payments require CZK"
 msgstr "Fio payments require CZK"
 
 #: src/components/events/EventPaymentCard.tsx:49
-#: src/components/events/EventPaymentSettings.tsx:96
+#: src/components/events/EventPaymentSettings.tsx:107
 msgid "Fixed price per player:"
 msgstr "Fixed price per player:"
 
@@ -2372,7 +2377,7 @@ msgstr ""
 msgid "Hungary"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:167
+#: src/components/user/FioConnectionCard.tsx:170
 msgid "I created this token with read-only access."
 msgstr "I created this token with read-only access."
 
@@ -2426,7 +2431,7 @@ msgstr ""
 msgid "In a few words"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:152
+#: src/components/user/FioConnectionCard.tsx:155
 msgid "In Fio Internetbanking, open Settings → API and create a token with “Sledování účtu” permission. Wait five minutes after creating it."
 msgstr "In Fio Internetbanking, open Settings → API and create a token with “Sledování účtu” permission. Wait five minutes after creating it."
 
@@ -2790,6 +2795,10 @@ msgstr ""
 msgid "Manage Core Groups"
 msgstr ""
 
+#: src/components/events/EventPaymentSettings.tsx:74
+msgid "Manage Fio connection"
+msgstr "Manage Fio connection"
+
 #: src/components/events/CreateEventForm.tsx:1222
 msgid "Manage groups"
 msgstr ""
@@ -2826,10 +2835,6 @@ msgstr ""
 #: src/pages/EventDetailsPage.tsx:603
 msgid "Marked as paid {timeAgo}"
 msgstr ""
-
-#: src/components/user/FioConnectionCard.tsx:87
-msgid "Match incoming payments to players automatically. Connect your own account with a read-only API token."
-msgstr "Match incoming payments to players automatically. Connect your own account with a read-only API token."
 
 #: src/pages/EventDetailsPage.tsx:1765
 msgid "Maximum"
@@ -3910,7 +3915,7 @@ msgstr ""
 msgid "Rating"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:136
+#: src/components/user/FioConnectionCard.tsx:139
 msgid "Read-only API token"
 msgstr "Read-only API token"
 
@@ -4020,7 +4025,8 @@ msgstr ""
 msgid "Repeated no-shows or bad behavior"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:74
+#: src/components/user/FioConnectionCard.tsx:75
+#: src/components/user/FioConnectionCard.tsx:200
 msgid "Replace token"
 msgstr "Replace token"
 
@@ -4060,7 +4066,7 @@ msgstr ""
 msgid "Request failed"
 msgstr ""
 
-#: src/components/events/EventPaymentSettings.tsx:84
+#: src/components/events/EventPaymentSettings.tsx:95
 msgid "Require payment before confirming attendance"
 msgstr "Require payment before confirming attendance"
 
@@ -4945,6 +4951,10 @@ msgstr ""
 msgid "Users participate in sports activities at their own risk and are responsible for:"
 msgstr ""
 
+#: src/components/events/EventPaymentSettings.tsx:69
+msgid "Uses the Fio account saved in your profile. You do not need to enter the token again."
+msgstr "Uses the Fio account saved in your profile. You do not need to enter the token again."
+
 #: src/components/events/EventPaymentsPanel.tsx:188
 msgid "Variable symbol:"
 msgstr "Variable symbol:"
@@ -5607,6 +5617,6 @@ msgstr ""
 msgid "Your sports will appear here for alert setup."
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:201
+#: src/components/user/FioConnectionCard.tsx:225
 msgid "Your token is stored encrypted. hraj.eu reads payments and cannot send transfers. Disconnecting pauses payment checks for your events."
 msgstr "Your token is stored encrypted. hraj.eu reads payments and cannot send transfers. Disconnecting pauses payment checks for your events."

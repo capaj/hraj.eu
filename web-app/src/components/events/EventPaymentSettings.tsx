@@ -64,6 +64,17 @@ export function EventPaymentSettings({
           </label>
         </div>
       </fieldset>
+      {fioConnected && mode === 'fio' && (
+        <p className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">
+          <Trans>
+            Uses the Fio account saved in your profile. You do not need to enter
+            the token again.
+          </Trans>{' '}
+          <Link to="/user-profile" className="font-medium underline">
+            <Trans>Manage Fio connection</Trans>
+          </Link>
+        </p>
+      )}
       {!fioConnected && (
         <p className="text-sm text-gray-600">
           <Link to="/user-profile" className="text-primary-700 underline">
