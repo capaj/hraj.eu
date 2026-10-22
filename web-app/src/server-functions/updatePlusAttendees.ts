@@ -3,13 +3,11 @@ import { getRequest } from '@tanstack/react-start/server'
 import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 import { db } from '../../drizzle/db'
-import { eventT, participantT } from '../../drizzle/schema'
+import { participantT } from '../../drizzle/schema'
 import { auth } from '~/lib/auth'
 import { deleteOgImageFromR2 } from './utils'
 import { getEventGuestNames, normalizeEventGuests } from '~/lib/eventGuests'
-import { validateEventGuests } from './validateEventGuests'
-
-const MAX_GUESTS_PER_USER = 2
+import { joinEventHandler } from './joinEventHandler'
 
 const EventGuestSchema = z.union([
   z.string().min(1, 'Guest name is required').trim(),
@@ -43,63 +41,10 @@ export const updatePlusAttendees = createServerFn({ method: 'POST' })
       throw new Error('You must be signed in to update guests')
     }
 
-    const [event] = await db
-      .select()
-      .from(eventT)
-      .where(eq(eventT.id, data.eventId))
-      .limit(1)
-
-    if (!event) {
-      throw new Error('Event not found')
-    }
-
-    const participants = await db
-      .select()
-      .from(participantT)
-      .where(eq(participantT.eventId, data.eventId))
-
-    const participant = participants.find(
-      (p) => p.userId === session.user.id && p.status !== 'cancelled'
-    )
-
-    if (!participant) {
-      throw new Error('You need to join this event before adding guests')
-    }
-
-    const sanitizedPlusAttendees = await validateEventGuests(
-      db,
-      normalizeEventGuests(data.plusAttendees).slice(0, MAX_GUESTS_PER_USER),
-      participants,
-      session.user.id
-    )
-
-    const confirmedHeadcount = participants
-      .filter((p) => p.status === 'confirmed')
-      .reduce((total, current) => {
-        const extras = current.plusAttendees?.length ?? 0
-        return total + 1 + extras
-      }, 0)
-
-    const currentHeadcount =
-      participant.status === 'confirmed'
-        ? 1 + (participant.plusAttendees?.length ?? 0)
-        : 0
-
-    const availableSpots =
-      event.maxParticipants -
-      (event.reservedParticipants ?? 0) -
-      (confirmedHeadcount - currentHeadcount)
-    const requestedHeadcount =
-      participant.status === 'confirmed' ? 1 + sanitizedPlusAttendees.length : 0
-
-    if (participant.status === 'confirmed' && requestedHeadcount > availableSpots) {
-      throw new Error('Not enough spots for you and your guests right now.')
-    }
-
-    await db
-      .update(participantT)
-      .set({ plusAttendees: sanitizedPlusAttendees })
-      .where(eq(participantT.id, participant.id))
+    const status = await joinEventHandler(db, {
+      eventId: data.eventId, userId: session.user.id,
+      plusAttendees: data.plusAttendees, updatingGuests: true
+    })
 
     const updatedParticipants = await getParticipants(data.eventId)
 
@@ -108,7 +53,7 @@ export const updatePlusAttendees = createServerFn({ method: 'POST' })
     })
 
     return {
-      status: participant.status,
+      status,
       participants: updatedParticipants
     }
   })
@@ -141,6 +86,7 @@ async function getParticipants(eventId: string) {
   )
 
   return {
+    pendingPayment: participants.filter((p) => p.status === 'pending_payment').map((p) => p.userId),
     confirmed: participants
       .filter((p) => p.status === 'confirmed')
       .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())

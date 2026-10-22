@@ -151,3 +151,7 @@ Deployment targets Cloudflare Workers, configured separately in [web-app/wrangle
 - `pnpm --dir cron deploy` deploys the scheduled worker separately.
 
 Deployment migration tooling needs `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` in its process environment (or `.dev.vars`); deployed Worker secrets alone do not configure the local Drizzle CLI. Treat migration/deployment scripts as maintainer operations, not local setup or routine verification commands.
+
+### Fio banka integration
+
+See [Fio payment setup and behavior](web-app/FIO_PAYMENTS.md) for secrets, the generated migration, payment matching, and the development scenario.

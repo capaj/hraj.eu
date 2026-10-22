@@ -88,6 +88,7 @@ async function getParticipants(eventId: string) {
   )
 
   return {
+    pendingPayment: participants.filter((p) => p.status === 'pending_payment').map((p) => p.userId),
     confirmed: participants
       .filter((p) => p.status === 'confirmed')
       .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())

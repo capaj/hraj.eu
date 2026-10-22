@@ -1,5 +1,5 @@
 import { Resend } from 'resend'
-import { and, eq, gt, gte, isNull, lte, or, sql } from 'drizzle-orm'
+import { and, eq, inArray, gt, gte, isNull, lte, or, sql } from 'drizzle-orm'
 import {
 	cityEventSubscriptionT,
 	eventT,
@@ -352,7 +352,7 @@ export async function runScheduledJob({
 			continue
 		}
 
-		const participants = await getConfirmedParticipants(database, eventRow.id)
+		const participants = await getConfirmedParticipants(database, eventRow.id, true)
 		const location = formatLocation(eventRow.venueName, eventRow.venueAddress)
 		const eventUrl = `${baseUrl}/events/${eventRow.id}`
 
@@ -395,7 +395,8 @@ export async function runScheduledJob({
 
 async function getConfirmedParticipants(
 	database: CronDb,
-	eventId: string
+	eventId: string,
+	includePending = false
 ): Promise<ParticipantRow[]> {
 	return database
 		.select({ email: user.email, name: user.name, timezone: user.timezone })
@@ -404,7 +405,7 @@ async function getConfirmedParticipants(
 		.where(
 			and(
 				eq(participantT.eventId, eventId),
-				eq(participantT.status, 'confirmed'),
+				inArray(participantT.status, includePending ? ['confirmed', 'pending_payment'] : ['confirmed']),
 				eq(user.emailNotificationsDisabled, false)
 			)
 		)

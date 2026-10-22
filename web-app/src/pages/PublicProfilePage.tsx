@@ -35,14 +35,14 @@ export const PublicProfilePage: React.FC = () => {
   // Filter events by category
   const upcomingEvents = events.filter(
     (event) =>
-      (event.organizerId === user.id || event.participants.includes(user.id)) &&
+      (event.organizerId === user.id || event.participants.includes(user.id) || event.pendingPayment?.includes(user.id)) &&
       isFuture(getEventDateTime(event)) &&
       event.status !== 'cancelled'
   )
 
   const pastEvents = events.filter(
     (event) =>
-      (event.organizerId === user.id || event.participants.includes(user.id)) &&
+      (event.organizerId === user.id || event.participants.includes(user.id) || event.pendingPayment?.includes(user.id)) &&
       (isPast(getEventDateTime(event)) || event.status === 'cancelled')
   )
 

@@ -1,3 +1,6 @@
+import { useQuery } from '@tanstack/react-query'
+import { getFioConnection } from '~/server-functions/fio'
+import { EventPaymentSettings } from './EventPaymentSettings'
 import { getLocalizedErrorMessage } from '~/lib/errorMessages'
 import { useLingui } from '@lingui/react'
 import { getSkillLevelName, getSportName } from '~/lib/localizedNames'
@@ -101,6 +104,7 @@ interface CreateEventFormProps {
   initialData?: Partial<CreateEventFormData>
   onCancelEvent?: (reason?: string) => Promise<void> | void
   isEdit?: boolean
+  paymentSettingsLocked?: boolean
 }
 
 export const CreateEventForm: React.FC<CreateEventFormProps> = ({
@@ -108,9 +112,14 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   onCancel,
   initialData,
   onCancelEvent,
+  paymentSettingsLocked = false,
   isEdit = !!initialData
 }) => {
   useLingui()
+  const fio = useQuery({
+    queryKey: ['fio-connection'],
+    queryFn: () => getFioConnection()
+  })
 
   // Calculate default date (one week from now) and format it for input
   const getDefaultDate = () => {
@@ -139,6 +148,8 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     price: initialData?.price || '',
     currency: initialData?.currency || 'CZK',
     paymentDetails: initialData?.paymentDetails || '',
+    paymentMode: initialData?.paymentMode ?? 'manual',
+    requirePayment: initialData?.requirePayment ?? false,
     gameRules: initialData?.gameRules || '',
     isPublic: initialData?.isPublic ?? true,
     allowedSkillLevels: initialData?.allowedSkillLevels || ['beginner', 'intermediate', 'advanced'],
@@ -150,6 +161,13 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
       ? Math.min(24 * 14, Math.max(2, Math.round((new Date(initialData.coreGroupExclusiveUntil).getTime() - Date.now()) / (60 * 60 * 1000))))
       : 48
   })
+
+  const calculatedPaymentAmountCents = formData.price
+    ? Math.round(Number(formData.price) * 100 / (formData.idealParticipants || formData.maxParticipants))
+    : undefined
+  const paymentAmountCents = paymentSettingsLocked
+    ? initialData?.pricePerPersonCents ?? undefined
+    : calculatedPaymentAmountCents
 
   const [showAddVenueModal, setShowAddVenueModal] = useState(false)
   const [showCancelConfirm, setShowCancelConfirm] = useState(false)
@@ -189,6 +207,8 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
           price: initialData.price ?? prev.price,
           currency: initialData.currency || prev.currency,
           paymentDetails: initialData.paymentDetails || prev.paymentDetails,
+          paymentMode: initialData.paymentMode ?? prev.paymentMode,
+          requirePayment: initialData.requirePayment ?? prev.requirePayment,
           gameRules: initialData.gameRules || prev.gameRules,
           isPublic: initialData.isPublic ?? prev.isPublic,
           allowedSkillLevels: initialData.allowedSkillLevels || prev.allowedSkillLevels,
@@ -1054,6 +1074,20 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
               )}
             </div>
 
+            <EventPaymentSettings
+              mode={formData.paymentMode ?? 'manual'}
+              requirePayment={formData.requirePayment ?? false}
+              disabled={paymentSettingsLocked}
+              currency={formData.currency}
+              fioConnected={!!fio.data?.connected}
+              amountCents={paymentAmountCents}
+              onChange={(paymentMode, requirePayment) => setFormData((previous) => ({
+                ...previous,
+                paymentMode,
+                requirePayment,
+                ...(paymentMode === 'fio' ? { currency: 'CZK' } : {})
+              }))}
+            />
             {/* Payment */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-900 flex items-center">
@@ -1067,6 +1101,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                   </label>
                   <input
                     type="number"
+                    disabled={paymentSettingsLocked}
                     value={formData.price}
                     onChange={(e) =>
                       handleChange(
@@ -1096,6 +1131,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
                     <Trans>Currency</Trans>
                   </label>
                   <select
+                    disabled={paymentSettingsLocked || formData.paymentMode === 'fio'}
                     value={formData.currency}
                     onChange={(e) => handleChange('currency', e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"

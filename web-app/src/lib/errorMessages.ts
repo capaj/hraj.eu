@@ -3,6 +3,17 @@ import { i18n } from './i18n'
 
 // Server errors stay independent of the browser locale; translate them when shown.
 const errorMessages = {
+  "You are already registered as another player's guest": msg`You are already registered as another player's guest`,
+  'This event is no longer accepting players': msg`This event is no longer accepting players`,
+  'For events with fixed payments, guests must join separately after booking': msg`For events with fixed payments, guests must join separately after booking`,
+  'Connect your Fio account in your profile first': msg`Connect your Fio account in your profile first`,
+  'Fio payments require CZK': msg`Fio payments require CZK`,
+  'Payment requires a positive price': msg`Payment requires a positive price`,
+  'Payment settings are locked after the first registration': msg`Payment settings are locked after the first registration`,
+  'Capacity cannot be lower than existing bookings': msg`Capacity cannot be lower than existing bookings`,
+  'Fio payments can only be confirmed by the bank': msg`Fio payments can only be confirmed by the bank`,
+  'Only the organizer can verify advance payments': msg`Only the organizer can verify advance payments`,
+
   'Administrator access is required': msg`Administrator access is required`,
   'Attendee not found': msg`Attendee not found`,
   'Comment not found': msg`Comment not found`,

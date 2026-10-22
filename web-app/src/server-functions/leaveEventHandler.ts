@@ -1,9 +1,14 @@
-import { asc, eq, inArray } from 'drizzle-orm'
-import { eventT, participantT } from '../../drizzle/schema'
+import { and, asc, eq, inArray, isNull } from 'drizzle-orm'
+import { eventT, participantT, paymentRequestT } from '../../drizzle/schema'
+import { promotePaymentWaitlist } from '../lib/fio/payments'
 import { normalizeEventGuests } from '../lib/eventGuests'
 import { getWaitlistParticipantIdsToPromote } from './waitlistPromotion'
 
-const ACTIVE_PARTICIPANT_STATUSES = new Set(['confirmed', 'waitlisted'])
+const ACTIVE_PARTICIPANT_STATUSES = new Set([
+  'confirmed',
+  'pending_payment',
+  'waitlisted'
+])
 
 export async function leaveEventHandler(
   database: any,
@@ -12,6 +17,13 @@ export async function leaveEventHandler(
   return database.transaction(async (tx: any) => {
     const [event] = await tx
       .select({
+        id: eventT.id,
+        status: eventT.status,
+        paymentMode: eventT.paymentMode,
+        requirePayment: eventT.requirePayment,
+        fioConnectionId: eventT.fioConnectionId,
+        pricePerPersonCents: eventT.pricePerPersonCents,
+        currency: eventT.currency,
         maxParticipants: eventT.maxParticipants,
         reservedParticipants: eventT.reservedParticipants
       })
@@ -46,7 +58,9 @@ export async function leaveEventHandler(
     }
 
     const referencedGuestUserIds =
-      departingParticipant.status === 'confirmed'
+      departingParticipant.status === 'confirmed' &&
+      event.paymentMode !== 'fio' &&
+      !event.requirePayment
         ? Array.from(
             new Set(
               normalizeEventGuests(departingParticipant.plusAttendees).flatMap(
@@ -62,6 +76,22 @@ export async function leaveEventHandler(
       .update(participantT)
       .set({ status: 'cancelled', plusAttendees: [] })
       .where(eq(participantT.id, departingParticipant.id))
+
+    if (event.paymentMode === 'fio') {
+      await tx
+        .update(paymentRequestT)
+        .set({ cancelledAt: new Date() })
+        .where(
+          and(
+            eq(paymentRequestT.participantId, departingParticipant.id),
+            isNull(paymentRequestT.cancelledAt)
+          )
+        )
+    }
+    if (event.paymentMode === 'fio' || event.requirePayment) {
+      await promotePaymentWaitlist(tx, event)
+      return { convertedGuestUserIds: [] }
+    }
 
     let nextConfirmedOrdinal =
       participantsBeforeLeave.reduce(

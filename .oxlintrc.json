@@ -182,7 +182,7 @@
               "^(padding-|scale\\(|&[a-z_]+=)",
               "^(bg-|w-|h-)[a-z0-9:-]+(?: [a-z0-9:/._-]+)+$",
               "^[a-zA-Z0-9_\\${}.\\s]*\\.ics$",
-              "^(session|weekly|places|address|address_components|formatted_address|geometry|place_changed|beginner|intermediate|advanced|clear|cloudy|fog|snowy|thunder|rainy|poor|fair|good|excellent|cs|hour|minute|karma|events-organized|events-joined|monthly|weeks|newest|oldest|completed|soccer|cancelled|none|no-show|bad-behavior|gi|error|success|warning)$",
+              "^(manual|fio|connection_failed|session|weekly|places|address|address_components|formatted_address|geometry|place_changed|beginner|intermediate|advanced|clear|cloudy|fog|snowy|thunder|rainy|poor|fair|good|excellent|cs|hour|minute|karma|events-organized|events-joined|monthly|weeks|newest|oldest|completed|soccer|cancelled|none|no-show|bad-behavior|gi|error|success|warning)$",
               "^[a-z]+(?:-[a-z0-9]+)+$",
               "^\\$.*(?:px|km|m)$",
               "^(bg|translate)-[a-z0-9-]+$",

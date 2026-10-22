@@ -1,111 +1,57 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { mkdtemp, rm } from 'node:fs/promises'
-import { join } from 'node:path'
-import { tmpdir } from 'node:os'
-import { createClient } from '@libsql/client'
-import { drizzle } from 'drizzle-orm/libsql'
+import { eq } from 'drizzle-orm'
+import { eventT, participantT } from '../drizzle/schema.ts'
 import { leaveEventHandler } from '../src/server-functions/leaveEventHandler.ts'
+import { createPaymentTestDatabase } from './fioPglite.mjs'
 
-async function createLeaveEventDatabase(t) {
-  const directory = await mkdtemp(join(tmpdir(), 'hraj-leave-event-'))
-  const client = createClient({ url: `file:${join(directory, 'test.db')}` })
-  t.after(async () => {
-    client.close()
-    await rm(directory, { recursive: true, force: true })
-  })
-  await client.batch(
-    [
-      `CREATE TABLE event (
-        id TEXT PRIMARY KEY,
-        max_participants INTEGER NOT NULL,
-        reserved_participants INTEGER NOT NULL DEFAULT 0
-      )`,
-      `CREATE TABLE participant (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        event_id TEXT NOT NULL,
-        user_id TEXT NOT NULL,
-        plus_attendees TEXT NOT NULL DEFAULT '[]',
-        status TEXT NOT NULL,
-        confirmed_participant_ordinal INTEGER NOT NULL,
-        payment_intent_recorded_at INTEGER,
-        marked_as_paid_at INTEGER,
-        created_at INTEGER NOT NULL DEFAULT (unixepoch()),
-        UNIQUE (event_id, user_id)
-      )`
-    ],
-    'write'
-  )
-  return client
+async function setup(t) {
+  const fixture = await createPaymentTestDatabase(t)
+  await fixture.database
+    .update(eventT)
+    .set({ paymentMode: 'manual', requirePayment: false, maxParticipants: 4 })
+    .where(eq(eventT.id, 'event'))
+  return fixture
 }
 
 test('converts referenced guests before considering the waitlist', async (t) => {
-  const client = await createLeaveEventDatabase(t)
-
-  await client.execute({
-    sql: `INSERT INTO event (id, max_participants, reserved_participants)
-      VALUES (?, ?, ?)`,
-    args: ['event-1', 4, 0]
-  })
-  await client.batch(
-    [
-      {
-        sql: `INSERT INTO participant
-          (event_id, user_id, plus_attendees, status, confirmed_participant_ordinal, created_at)
-          VALUES (?, ?, ?, ?, ?, ?)`,
-        args: [
-          'event-1',
-          'departing',
-          JSON.stringify([
-            { name: 'Guest A', userId: 'guest-a' },
-            { name: 'Guest B', userId: 'guest-b' }
-          ]),
-          'confirmed',
-          1,
-          1
-        ]
-      },
-      {
-        sql: `INSERT INTO participant
-          (event_id, user_id, plus_attendees, status, confirmed_participant_ordinal, created_at)
-          VALUES (?, ?, ?, ?, ?, ?)`,
-        args: ['event-1', 'other-player', '[]', 'confirmed', 2, 2]
-      },
-      {
-        sql: `INSERT INTO participant
-          (event_id, user_id, plus_attendees, status, confirmed_participant_ordinal, created_at)
-          VALUES (?, ?, ?, ?, ?, ?)`,
-        args: [
-          'event-1',
-          'waitlisted-group',
-          JSON.stringify(['Waitlisted guest']),
-          'waitlisted',
-          3,
-          3
-        ]
-      }
-    ],
-    'write'
-  )
-
-  const result = await leaveEventHandler(drizzle(client), {
-    eventId: 'event-1',
+  const { database } = await setup(t)
+  await database.insert(participantT).values([
+    {
+      eventId: 'event',
+      userId: 'departing',
+      plusAttendees: [
+        { name: 'Guest A', userId: 'guest-a' },
+        { name: 'Guest B', userId: 'guest-b' }
+      ],
+      status: 'confirmed',
+      confirmedParticipantOrdinal: 1
+    },
+    {
+      eventId: 'event',
+      userId: 'other-player',
+      status: 'confirmed',
+      confirmedParticipantOrdinal: 2
+    },
+    {
+      eventId: 'event',
+      userId: 'waitlisted-group',
+      plusAttendees: ['Waitlisted guest'],
+      status: 'waitlisted',
+      confirmedParticipantOrdinal: 3
+    }
+  ])
+  const result = await leaveEventHandler(database, {
+    eventId: 'event',
     userId: 'departing'
   })
-
-  const rows = await client.execute(
-    `SELECT user_id, status, plus_attendees
-      FROM participant
-      WHERE event_id = 'event-1'
-      ORDER BY user_id`
-  )
+  const rows = await database.select().from(participantT)
   const participants = new Map(
-    rows.rows.map((row) => [
-      row.user_id,
-      { status: row.status, plusAttendees: JSON.parse(row.plus_attendees) }
+    rows.map((row) => [
+      row.userId,
+      { status: row.status, plusAttendees: row.plusAttendees }
     ])
   )
-
   assert.deepEqual(result.convertedGuestUserIds, ['guest-a', 'guest-b'])
   assert.deepEqual(participants.get('departing'), {
     status: 'cancelled',
@@ -117,46 +63,26 @@ test('converts referenced guests before considering the waitlist', async (t) => 
 })
 
 test('rolls back the departure if a referenced guest cannot be converted', async (t) => {
-  const client = await createLeaveEventDatabase(t)
-
-  await client.batch(
-    [
-      `INSERT INTO event (id, max_participants, reserved_participants)
-        VALUES ('event-1', 4, 0)`,
-      `INSERT INTO participant
-        (event_id, user_id, plus_attendees, status, confirmed_participant_ordinal)
-        VALUES (
-          'event-1',
-          'departing',
-          '[{"name":"Guest A","userId":"guest-a"},{"name":"Guest B","userId":"guest-b"}]',
-          'confirmed',
-          1
-        )`,
-      `CREATE TRIGGER reject_guest_b
-        BEFORE INSERT ON participant
-        WHEN NEW.user_id = 'guest-b'
-        BEGIN
-          SELECT RAISE(ABORT, 'guest conversion failed');
-        END`
+  const { database, pg } = await setup(t)
+  await database.insert(participantT).values({
+    eventId: 'event',
+    userId: 'departing',
+    plusAttendees: [
+      { name: 'Guest A', userId: 'guest-a' },
+      { name: 'Guest B', userId: 'guest-b' }
     ],
-    'write'
+    status: 'confirmed',
+    confirmedParticipantOrdinal: 1
+  })
+  await pg.exec(
+    "ALTER TABLE participant ADD CONSTRAINT reject_guest_b CHECK (user_id <> 'guest-b')"
   )
-
   await assert.rejects(
-    leaveEventHandler(drizzle(client), {
-      eventId: 'event-1',
-      userId: 'departing'
-    })
+    leaveEventHandler(database, { eventId: 'event', userId: 'departing' })
   )
-
-  const rows = await client.execute(
-    `SELECT user_id, status, plus_attendees
-      FROM participant
-      WHERE event_id = 'event-1'`
-  )
-
-  assert.equal(rows.rows.length, 1)
-  assert.equal(rows.rows[0].user_id, 'departing')
-  assert.equal(rows.rows[0].status, 'confirmed')
-  assert.equal(JSON.parse(rows.rows[0].plus_attendees).length, 2)
+  const rows = await database.select().from(participantT)
+  assert.equal(rows.length, 1)
+  assert.equal(rows[0].userId, 'departing')
+  assert.equal(rows[0].status, 'confirmed')
+  assert.equal(rows[0].plusAttendees.length, 2)
 })

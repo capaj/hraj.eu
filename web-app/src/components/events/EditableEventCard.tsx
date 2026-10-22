@@ -81,6 +81,8 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
           price: data.price,
           currency: data.currency,
           paymentDetails: data.paymentDetails,
+          paymentMode: data.paymentMode,
+          requirePayment: data.requirePayment,
           gameRules: data.gameRules,
           isPublic: Boolean(data.isPublic),
           allowedSkillLevels: data.allowedSkillLevels,
@@ -142,7 +144,11 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
     // CreateEventForm uses cancellationHours and Minutes.
     // We should probably convert if needed.
     price: event.price || '',
+    currency: event.currency,
     paymentDetails: event.paymentDetails || '',
+    pricePerPersonCents: event.pricePerPersonCents,
+    paymentMode: event.paymentMode,
+    requirePayment: event.requirePayment,
     gameRules: event.gameRules || '',
     isPublic: event.isPublic,
     allowedSkillLevels: (event.allowedSkillLevels as any) || ['beginner', 'intermediate', 'advanced'],
@@ -256,6 +262,10 @@ export const EditableEventCard: React.FC<EditableEventCardProps> = ({
             </button>
             <div className="overflow-y-auto p-1 flex-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
               <CreateEventForm
+                paymentSettingsLocked={
+                  (event.paymentMode === 'fio' || !!event.requirePayment) &&
+                  (event.participants.length + event.waitlist.length + (event.pendingPayment?.length ?? 0) + (event.formerParticipants?.length ?? 0) > 0)
+                }
                 onSubmit={handleEditSubmit}
                 onCancel={() => setIsEditOpen(false)}
                 initialData={initialFormData}

@@ -96,6 +96,10 @@ export const getEventsByFilters = createServerFn({ method: 'GET' })
             ? Math.floor(event.cancellationDeadlineMinutes / 60)
             : undefined,
           price: event.price || undefined,
+          paymentMode: event.paymentMode,
+          requirePayment: event.requirePayment,
+          pricePerPersonCents: event.pricePerPersonCents ?? undefined,
+          pendingPayment: participants.filter((p) => p.status === 'pending_payment').map((p) => p.userId),
           paymentDetails: event.paymentDetails || undefined,
           gameRules: event.gameRules || undefined,
           cutoffTime: new Date(

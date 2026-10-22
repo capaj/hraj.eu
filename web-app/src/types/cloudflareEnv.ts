@@ -3,6 +3,7 @@ export {}
 declare global {
   namespace Cloudflare {
     interface Env {
+      FIO_TOKEN_ENCRYPTION_KEY: string
       TURSO_AUTH_TOKEN: string
       RESEND_API_KEY: string
       GOOGLE_CLIENT_SECRET: string

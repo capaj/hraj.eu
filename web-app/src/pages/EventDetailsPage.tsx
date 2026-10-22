@@ -1,3 +1,5 @@
+import { EventPaymentsPanel } from '../components/events/EventPaymentsPanel'
+import { PendingPaymentParticipants } from '../components/events/PendingPaymentParticipants'
 import { getLocalizedErrorMessage } from '~/lib/errorMessages'
 import { useLingui } from '@lingui/react'
 import { getCancellationReason, getFacilityName, getSportName } from '~/lib/localizedNames'
@@ -2153,7 +2155,21 @@ export const EventDetailsPage: React.FC = () => {
             {renderCommentsCard()}
           </div>
 
-          {(event.price || organizer?.bankAccount) && (
+          {(event.paymentMode === 'fio' || event.requirePayment || currentUserId === event.organizerId) && (
+            <div><EventPaymentsPanel event={event} currentUserId={currentUserId} /></div>
+          )}
+          {(event.pendingPayment?.length ?? 0) > 0 && (
+            <div>
+              <PendingPaymentParticipants
+                players={(event.pendingPayment ?? []).map((id) => ({ id, name: participantsMap.get(id)?.name ?? id }))}
+                currentUserId={currentUserId}
+                organizerId={event.organizerId}
+                busy={isJoining}
+                onCancel={handleLeaveEvent}
+              />
+            </div>
+          )}
+          {event.paymentMode !== 'fio' && (event.price || organizer?.bankAccount) && (
             <div>
               <EventPaymentCard event={event} bankAccount={organizer?.bankAccount} />
             </div>
@@ -2503,7 +2519,7 @@ export const EventDetailsPage: React.FC = () => {
                 alt={i18n._(msg`QR code enlarged`)}
                 className="w-full max-h-[55vh] sm:max-h-[70vh] object-contain rounded-lg bg-gray-50"
               />
-              {isParticipant && (
+              {isParticipant && event.paymentMode !== 'fio' && !event.requirePayment && (
                 <div className="mt-6 border-t border-gray-200 pt-4">
                   {!isCurrentUserPaid && (
                     <p className="text-center text-lg sm:text-xl font-semibold text-gray-900">

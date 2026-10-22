@@ -79,18 +79,30 @@ export const JoinActionCard = ({
   const isParticipant = currentUserId
     ? event.participants.includes(currentUserId)
     : false
+  const isPendingPayment =
+    !!currentUserId && !!event.pendingPayment?.includes(currentUserId)
+  const pendingMessage = (
+    <div
+      role="status"
+      className="rounded-lg bg-amber-50 p-4 text-center text-amber-900"
+    >
+      <Trans>Waiting for payment — your place is held</Trans>
+    </div>
+  )
+  const hasFixedBooking =
+    (isParticipant || isPendingPayment) &&
+    (event.paymentMode === 'fio' || !!event.requirePayment)
   const reservedAwareHeadcount = getTotalReservedAwareHeadcount(event)
   const reservedParticipants = event.reservedParticipants ?? 0
   const availablePublicSpots = getAvailablePublicSpots(event)
   const isSpotAvailable = availablePublicSpots > 0
   const isMinimumReached = reservedAwareHeadcount >= event.minParticipants
-  const savedGuests: EventGuest[] =
-    currentUserId
-      ? (event.participantGuests?.[currentUserId] ??
-        (event.participantPlusOnes?.[currentUserId] ?? []).map((name) => ({
-          name
-        })))
-      : []
+  const savedGuests: EventGuest[] = currentUserId
+    ? (event.participantGuests?.[currentUserId] ??
+      (event.participantPlusOnes?.[currentUserId] ?? []).map((name) => ({
+        name
+      })))
+    : []
   const isGuestsFormDirty = !areGuestsEqual(
     draftsToGuests(guestDrafts),
     savedGuests
@@ -98,7 +110,9 @@ export const JoinActionCard = ({
 
   let joinButtonText = i18n._(msg`Join Waitlist`)
   if (isSpotAvailable) {
-    joinButtonText = i18n._(msg`Join Game`)
+    joinButtonText = event.requirePayment
+      ? i18n._(msg`Join and pay`)
+      : i18n._(msg`Join Game`)
   }
 
   useEffect(() => {
@@ -109,7 +123,9 @@ export const JoinActionCard = ({
 
     const guests =
       event.participantGuests?.[currentUserId] ??
-      (event.participantPlusOnes?.[currentUserId] ?? []).map((name) => ({ name }))
+      (event.participantPlusOnes?.[currentUserId] ?? []).map((name) => ({
+        name
+      }))
     setGuestDrafts(guestsToDrafts(guests))
   }, [
     currentUserId,
@@ -184,14 +200,18 @@ export const JoinActionCard = ({
             msg`This event is full right now, so you were added to the waitlist.`
           )
         )
+      } else if (response?.status === 'pending_payment') {
+        toast.info(i18n._(msg`Your place is held. Pay to confirm attendance.`))
       } else if (response?.status === 'confirmed') {
         toast.success(i18n._(msg`You have successfully joined this game.`))
       } else {
         toast.info(i18n._(msg`Your request was received.`))
       }
     } catch (error) {
-      const message =
-        getLocalizedErrorMessage(error, i18n._(msg`Failed to join the event. Please try again.`))
+      const message = getLocalizedErrorMessage(
+        error,
+        i18n._(msg`Failed to join the event. Please try again.`)
+      )
       toast.error(message)
     } finally {
       setIsJoining(false)
@@ -219,8 +239,10 @@ export const JoinActionCard = ({
         toast.success(i18n._(msg`Guest list updated.`))
       }
     } catch (error) {
-      const message =
-        getLocalizedErrorMessage(error, i18n._(msg`Failed to update guests. Please try again.`))
+      const message = getLocalizedErrorMessage(
+        error,
+        i18n._(msg`Failed to update guests. Please try again.`)
+      )
       toast.error(message)
     } finally {
       setIsUpdatingGuests(false)
@@ -233,10 +255,9 @@ export const JoinActionCard = ({
         <div className="text-center mb-6">
           <div className="flex items-baseline justify-center space-x-1 mb-3">
             <span
-              className={`text-4xl font-extrabold ${isMinimumReached
-                ? 'text-primary-600'
-                : 'text-orange-500'
-                }`}
+              className={`text-4xl font-extrabold ${
+                isMinimumReached ? 'text-primary-600' : 'text-orange-500'
+              }`}
             >
               {reservedAwareHeadcount}
             </span>
@@ -250,8 +271,9 @@ export const JoinActionCard = ({
 
           <div className="w-full bg-gray-100 rounded-full h-3 mb-3 overflow-hidden">
             <div
-              className={`h-full rounded-full transition-all duration-500 ease-out ${isMinimumReached ? 'bg-primary-600' : 'bg-orange-500'
-                }`}
+              className={`h-full rounded-full transition-all duration-500 ease-out ${
+                isMinimumReached ? 'bg-primary-600' : 'bg-orange-500'
+              }`}
               style={{
                 width: `${Math.min(
                   100,
@@ -260,7 +282,6 @@ export const JoinActionCard = ({
               }}
             />
           </div>
-
 
           {reservedParticipants > 0 && (
             <div className="text-xs text-gray-500 mt-1">
@@ -278,113 +299,126 @@ export const JoinActionCard = ({
           )}
         </div>
 
-        <div className="mb-4">
-          <button
-            type="button"
-            className="w-full flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-left hover:bg-gray-100 transition-colors"
-            aria-expanded={isGuestsExpanded}
-            aria-controls="event-guests-collapse"
-            onClick={() => setIsGuestsExpanded((expanded) => !expanded)}
-          >
-            <div className="text-sm font-medium text-gray-700 flex items-center">
-              <Users size={16} className="mr-2 text-primary-600" />
-              <Trans>Bringing guests?</Trans>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-500">
-                {i18n._(msg`Up to {count} names`.id, {
-                  count: MAX_GUESTS_PER_USER
-                })}
-              </span>
-              <ChevronDown
-                size={18}
-                className={`text-gray-500 transition-transform duration-200 ${isGuestsExpanded ? 'rotate-180' : ''
+        {!hasFixedBooking && (
+          <div className="mb-4">
+            <button
+              type="button"
+              className="w-full flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-left hover:bg-gray-100 transition-colors"
+              aria-expanded={isGuestsExpanded}
+              aria-controls="event-guests-collapse"
+              onClick={() => setIsGuestsExpanded((expanded) => !expanded)}
+            >
+              <div className="text-sm font-medium text-gray-700 flex items-center">
+                <Users size={16} className="mr-2 text-primary-600" />
+                <Trans>Bringing guests?</Trans>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-500">
+                  {i18n._(msg`Up to {count} names`.id, {
+                    count: MAX_GUESTS_PER_USER
+                  })}
+                </span>
+                <ChevronDown
+                  size={18}
+                  className={`text-gray-500 transition-transform duration-200 ${
+                    isGuestsExpanded ? 'rotate-180' : ''
                   }`}
-              />
-            </div>
-          </button>
-
-          {isGuestsExpanded && (
-            <div id="event-guests-collapse" className="space-y-2 mt-3">
-              {Array.from(
-                { length: MAX_GUESTS_PER_USER },
-                (_, index) => index
-              ).map((index) => (
-                <GuestUserInput
-                  key={index}
-                  eventId={event.id}
-                  value={guestDrafts[index]?.value ?? ''}
-                  selectedUserId={guestDrafts[index]?.userId}
-                  placeholder={i18n._(
-                    msg`Guest {index, number} name (optional)`.id,
-                    { index: index + 1 }
-                  )}
-                  canRemove={index < guestDrafts.length}
-                  onChange={(value) => handlePlusAttendeeChange(index, value)}
-                  onSelect={(user) => {
-                    setGuestDrafts((current) => {
-                      const updated = current.slice()
-                      while (updated.length < index) {
-                        updated.push({ value: '' })
-                      }
-                      updated[index] = {
-                        value: `@${user.name}`,
-                        userId: user.id,
-                        selectedUserName: user.name
-                      }
-                      return updated
-                    })
-                  }}
-                  onRemove={() => handleRemovePlusAttendee(index)}
                 />
-              ))}
+              </div>
+            </button>
 
-              <p className="text-xs text-gray-500">
-                <Trans>
-                  Enter any guest name, or start with @ to link a player.
-                </Trans>
-              </p>
-
-              {isParticipant && isGuestsFormDirty && (
-                <div className="flex justify-end">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    disabled={isUpdatingGuests || isJoining}
-                    onClick={handleSavePlusAttendees}
-                  >
-                    {isUpdatingGuests ? (
-                      <Trans>Saving...</Trans>
-                    ) : (
-                      <Trans>Save guests</Trans>
+            {isGuestsExpanded && (
+              <div id="event-guests-collapse" className="space-y-2 mt-3">
+                {Array.from(
+                  { length: MAX_GUESTS_PER_USER },
+                  (_, index) => index
+                ).map((index) => (
+                  <GuestUserInput
+                    key={index}
+                    eventId={event.id}
+                    value={guestDrafts[index]?.value ?? ''}
+                    selectedUserId={guestDrafts[index]?.userId}
+                    placeholder={i18n._(
+                      msg`Guest {index, number} name (optional)`.id,
+                      { index: index + 1 }
                     )}
-                  </Button>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
+                    canRemove={index < guestDrafts.length}
+                    onChange={(value) => handlePlusAttendeeChange(index, value)}
+                    onSelect={(user) => {
+                      setGuestDrafts((current) => {
+                        const updated = current.slice()
+                        while (updated.length < index) {
+                          updated.push({ value: '' })
+                        }
+                        updated[index] = {
+                          value: `@${user.name}`,
+                          userId: user.id,
+                          selectedUserName: user.name
+                        }
+                        return updated
+                      })
+                    }}
+                    onRemove={() => handleRemovePlusAttendee(index)}
+                  />
+                ))}
 
-        {isParticipant ? (
-          <div
-            role="status"
-            className="mb-3 flex items-center justify-center rounded-lg border border-primary-200 bg-primary-50 px-6 py-3 text-base font-medium text-primary-700"
-          >
-            <CheckCircle size={20} className="mr-2" aria-hidden="true" />
-            <Trans>You are playing</Trans>
+                <p className="text-xs text-gray-500">
+                  <Trans>
+                    Enter any guest name, or start with @ to link a player.
+                  </Trans>
+                </p>
+
+                {isParticipant && isGuestsFormDirty && (
+                  <div className="flex justify-end">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={isUpdatingGuests || isJoining}
+                      onClick={handleSavePlusAttendees}
+                    >
+                      {isUpdatingGuests ? (
+                        <Trans>Saving...</Trans>
+                      ) : (
+                        <Trans>Save guests</Trans>
+                      )}
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
-        ) : (
-          <Button
-            variant="primary"
-            size="lg"
-            className="w-full mb-3"
-            disabled={isJoining}
-            onClick={handleJoinEvent}
-          >
-            {joinButtonText}
-          </Button>
         )}
 
+        {event.requirePayment && !isParticipant && !isPendingPayment && (
+          <p className="mb-3 text-sm text-amber-800">
+            <Trans>Payment is required to confirm your attendance.</Trans>{' '}
+            {event.pricePerPersonCents
+              ? `${(event.pricePerPersonCents / 100).toFixed(2)} ${event.currency} / `
+              : ''}
+            <Trans>player</Trans>
+          </p>
+        )}
+        {isPendingPayment && pendingMessage}
+        {!isPendingPayment &&
+          (isParticipant ? (
+            <div
+              role="status"
+              className="mb-3 flex items-center justify-center rounded-lg border border-primary-200 bg-primary-50 px-6 py-3 text-base font-medium text-primary-700"
+            >
+              <CheckCircle size={20} className="mr-2" aria-hidden="true" />
+              <Trans>You are playing</Trans>
+            </div>
+          ) : (
+            <Button
+              variant="primary"
+              size="lg"
+              className="w-full mb-3"
+              disabled={isJoining}
+              onClick={handleJoinEvent}
+            >
+              {joinButtonText}
+            </Button>
+          ))}
       </CardContent>
     </Card>
   )

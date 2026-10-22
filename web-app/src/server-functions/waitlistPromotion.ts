@@ -10,7 +10,7 @@ export function getWaitlistParticipantIdsToPromote(
   reservedParticipants: number
 ): number[] {
   let confirmedHeadcount = participants
-    .filter((participant) => participant.status === 'confirmed')
+    .filter((participant) => participant.status === 'confirmed' || participant.status === 'pending_payment')
     .reduce(
       (total, participant) =>
         total + 1 + (participant.plusAttendees?.length ?? 0),

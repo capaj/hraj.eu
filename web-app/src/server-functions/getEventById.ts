@@ -135,6 +135,10 @@ export const getEventById = createServerFn({ method: 'GET' })
         : undefined,
       price: event.price || undefined,
       currency: event.currency || 'CZK',
+      paymentMode: event.paymentMode,
+      requirePayment: event.requirePayment,
+      pricePerPersonCents: event.pricePerPersonCents ?? undefined,
+      pendingPayment: participants.filter((p) => p.status === 'pending_payment').map((p) => p.userId),
       paymentDetails: event.paymentDetails || undefined,
       gameRules: event.gameRules || undefined,
       cutoffTime: new Date(

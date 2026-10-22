@@ -168,7 +168,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
           {event.price && (
             <div className="flex items-center text-sm text-gray-600">
               <BadgeDollarSign size={16} className="mr-2" />
-              {Math.ceil(event.price / (event.idealParticipants || event.maxParticipants))} {event.currency || 'CZK'} {t`per person`}
+              {event.pricePerPersonCents ? event.pricePerPersonCents / 100 : Math.ceil(event.price / (event.idealParticipants || event.maxParticipants))} {event.currency || 'CZK'} {t`per person`}
             </div>
           )}
         </div>
