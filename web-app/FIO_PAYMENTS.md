@@ -26,10 +26,13 @@ Do not change the encryption key without first re-encrypting saved tokens with t
 - Guest lists are fixed after booking for these events. Additional players can join separately. Leaving cancels the whole booking and its active requests; a rejoin issues new references. Old references remain available to detect late payments for organizer review.
 - Partial payments accumulate. Repeated bank exports cannot double-count a transaction. Overpayments and payments for cancelled bookings/events are visible for refund review. Refunds are handled by the organizer directly in their bank; hraj.eu does not issue refunds.
 - Pending places remain held until the participant or organizer cancels them. There is no automatic reservation timeout.
+- Pending trust-mode players can view the organizer's uploaded payment QR images before declaring payment. Event lists update pending bookings and held capacity immediately after joining; cards and map popups show a payment link instead of another join action.
 
 ## Reconciliation and data handling
 
 Fio tokens use AES-256-GCM with a random nonce and user ID authenticated as additional data. They live in a separate server-only table, outside public profiles and auth session payloads. The application returns only safe status codes and never logs Fio URLs or responses.
+
+Browser connection queries are scoped to the signed-in user. Signing out or switching accounts cannot display another user's cached bank details or enable Fio based on another account's connection.
 
 The worker uses repeatable `/periods` exports rather than `/last`, which would advance Fio's cursor before our database transaction commits. A database lease prevents overlapping polls and enforces at least two minutes between requests from this app. Another app using the same token can still trigger Fio's rate limit; use a dedicated token.
 

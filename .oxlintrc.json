@@ -178,7 +178,7 @@
               "^(CZK \\(K\u010d\\)|EUR \\(\u20ac\\)|USD \\(\\$\\))$",
               "^(English|\u010cesky|Czech Republic|2-digit|min\\)|\u00b0C|use client)$",
               "^[0-9]+[mh]$",
-              "^\\s*</?(div|span|svg|button)\\b",
+              "^\\s*</?(a|div|span|svg|button)\\b",
               "^(padding-|scale\\(|&[a-z_]+=)",
               "^(bg-|w-|h-)[a-z0-9:-]+(?: [a-z0-9:/._-]+)+$",
               "^[a-zA-Z0-9_\\${}.\\s]*\\.ics$",

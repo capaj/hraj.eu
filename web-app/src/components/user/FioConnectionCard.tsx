@@ -3,6 +3,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Trans } from '@lingui/react/macro'
 import { msg } from '@lingui/core/macro'
 import { i18n } from '~/lib/i18n'
+import { useAuthSession } from '~/lib/auth-client'
+import { fioConnectionQueryKey } from '~/lib/fio/queryKeys'
 import { Landmark, ShieldCheck, Unplug } from 'lucide-react'
 import { Card, CardContent, CardHeader } from '../ui/Card'
 import { Button } from '../ui/Button'
@@ -241,29 +243,38 @@ export function FioConnectionCard({
 }
 
 export function ConnectedFioCard() {
+  const session = useAuthSession()
+  const userId = session.data?.user?.id
   const queryClient = useQueryClient()
   const query = useQuery({
-    queryKey: ['fio-connection'],
-    queryFn: () => getFioConnection()
+    queryKey: fioConnectionQueryKey(userId),
+    queryFn: () => getFioConnection(),
+    enabled: !!userId
   })
+  if (!userId) return null
   if (query.isError)
     return (
       <p role="alert">{i18n._(msg`Could not load your Fio connection.`)}</p>
     )
   return (
     <FioConnectionCard
+      key={userId}
       connection={query.data ?? null}
       loading={query.isPending}
       onSave={async (token) => {
         const result = await saveFioConnection({
           data: { token, readOnlyAcknowledged: true }
         })
-        await queryClient.invalidateQueries({ queryKey: ['fio-connection'] })
+        await queryClient.invalidateQueries({
+          queryKey: fioConnectionQueryKey(userId)
+        })
         return result
       }}
       onDisconnect={async () => {
         await disconnectFio()
-        await queryClient.invalidateQueries({ queryKey: ['fio-connection'] })
+        await queryClient.invalidateQueries({
+          queryKey: fioConnectionQueryKey(userId)
+        })
       }}
     />
   )

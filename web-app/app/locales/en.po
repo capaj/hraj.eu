@@ -15,13 +15,13 @@ msgstr ""
 
 #. placeholder {0}: event.reservedParticipants
 #: src/components/events/EditableEventCard.tsx:221
-#: src/components/events/EventCard.tsx:152
+#: src/components/events/EventCard.tsx:153
 msgid "(+{0} reserved)"
 msgstr ""
 
 #. placeholder {0}: event.idealParticipants
 #: src/components/events/EditableEventCard.tsx:225
-#: src/components/events/EventCard.tsx:157
+#: src/components/events/EventCard.tsx:158
 msgid "(ideal: {0})"
 msgstr ""
 
@@ -29,12 +29,12 @@ msgstr ""
 msgid "(Optional)"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:311
+#: src/pages/DiscoverPage.tsx:306
 msgid "(sorted by {label})"
 msgstr ""
 
 #. placeholder {0}: event.minParticipants - confirmedHeadcount
-#: src/components/events/EventCard.tsx:53
+#: src/components/events/EventCard.tsx:54
 msgid "{0, plural, one {Need # more to confirm} other {Need # more to confirm}}"
 msgstr ""
 
@@ -71,7 +71,7 @@ msgid "{0} km/h"
 msgstr ""
 
 #. placeholder {0}: formData.duration
-#: src/components/events/CreateEventForm.tsx:819
+#: src/components/events/CreateEventForm.tsx:824
 msgid "{0} min"
 msgstr ""
 
@@ -86,7 +86,7 @@ msgid "{0} sports selected — you're ready to go."
 msgstr ""
 
 #. placeholder {0}: event.idealParticipants! - confirmedHeadcount
-#: src/components/events/EventCard.tsx:70
+#: src/components/events/EventCard.tsx:71
 msgid "{0} to ideal"
 msgstr ""
 
@@ -99,12 +99,12 @@ msgstr ""
 msgid "{activeBanCount} active bans"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:945
+#: src/components/events/CreateEventForm.tsx:950
 msgid "{cancellationTimeInline} before the event starts"
 msgstr ""
 
 #. placeholder {0}: event.maxParticipants
-#: src/components/events/EventCard.tsx:148
+#: src/components/events/EventCard.tsx:149
 msgid "{confirmedHeadcount}/{0} players"
 msgstr ""
 
@@ -116,7 +116,7 @@ msgstr ""
 msgid "{count} {sportName} events organized"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:274
+#: src/pages/DiscoverPage.tsx:269
 msgid "{count} event{count, plural, one {} other {s}} found"
 msgstr ""
 
@@ -136,20 +136,20 @@ msgstr ""
 msgid "{count} points this month"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:325
+#: src/pages/DiscoverPage.tsx:320
 msgid "{count} spots"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:485
+#: src/components/events/CreateEventForm.tsx:490
 msgid "{dayOffset, plural, one {# day} other {# days}}"
 msgstr "{dayOffset, plural, one {# day} other {# days}}"
 
-#: src/components/events/EventCard.tsx:118
+#: src/components/events/EventCard.tsx:119
 msgid "{daysLeft, plural, one {in # day} few {in # days} many {in # days} other {in # days}}"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:428
-#: src/components/events/CreateEventForm.tsx:435
+#: src/components/events/CreateEventForm.tsx:433
+#: src/components/events/CreateEventForm.tsx:440
 msgid "{hours, plural, one {# hour} other {# hours}}"
 msgstr "{hours, plural, one {# hour} other {# hours}}"
 
@@ -157,27 +157,27 @@ msgstr "{hours, plural, one {# hour} other {# hours}}"
 msgid "{karmaPoints} karma points"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:532
+#: src/components/events/CreateEventForm.tsx:537
 msgid "{levelName} players only"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:529
+#: src/components/events/CreateEventForm.tsx:534
 msgid "{levelNames} players only"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:436
+#: src/components/events/CreateEventForm.tsx:441
 msgid "{minutes, plural, one {# minute} other {# minutes}}"
 msgstr "{minutes, plural, one {# minute} other {# minutes}}"
 
-#: src/pages/EventDetailsPage.tsx:544
+#: src/pages/EventDetailsPage.tsx:545
 msgid "{name} has been removed from the event."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1749
+#: src/pages/EventDetailsPage.tsx:1714
 msgid "{name} Orientation Plan"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1780
+#: src/pages/EventDetailsPage.tsx:1745
 msgid "{name} photo {index}"
 msgstr ""
 
@@ -217,23 +217,23 @@ msgstr "{sportName} game"
 msgid "{sportName} Players"
 msgstr ""
 
-#: src/components/events/EventCard.tsx:63
+#: src/components/events/EventCard.tsx:64
 msgid "{spotsLeft, plural, one {# spot left} other {# spots left}}"
 msgstr ""
 
-#: src/components/map/EventMap.tsx:328
+#: src/components/map/EventMap.tsx:337
 msgid "{spotsLeft} spots left"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1088
+#: src/pages/EventDetailsPage.tsx:1089
 msgid "{time} ({duration} minutes)"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:486
+#: src/components/events/CreateEventForm.tsx:491
 msgid "{timeLabel} (+{days})"
 msgstr "{timeLabel} (+{days})"
 
-#: src/components/events/CreateEventForm.tsx:458
+#: src/components/events/CreateEventForm.tsx:463
 msgid "{timeLabel} (day before)"
 msgstr ""
 
@@ -241,7 +241,7 @@ msgstr ""
 msgid "{title} Leaderboard"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:422
+#: src/components/events/CreateEventForm.tsx:427
 msgid "{totalMinutes, plural, one {# minute} other {# minutes}}"
 msgstr "{totalMinutes, plural, one {# minute} other {# minutes}}"
 
@@ -270,7 +270,7 @@ msgstr ""
 msgid "+{count} participants reserved"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:871
+#: src/components/events/CreateEventForm.tsx:876
 msgid "+X participants reserved"
 msgstr ""
 
@@ -333,27 +333,27 @@ msgstr ""
 
 #. placeholder {0}: perPlayerCost.toFixed(2)
 #. placeholder {1}: formData.currency
-#: src/components/events/CreateEventForm.tsx:1131
+#: src/components/events/CreateEventForm.tsx:1136
 msgid "~{0} {1} per player (based on ideal players)"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:424
+#: src/components/events/CreateEventForm.tsx:429
 msgid "1 hour"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:837
+#: src/components/events/CreateEventForm.tsx:842
 msgid "120m"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:838
+#: src/components/events/CreateEventForm.tsx:843
 msgid "180m"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:835
+#: src/components/events/CreateEventForm.tsx:840
 msgid "30m"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:836
+#: src/components/events/CreateEventForm.tsx:841
 msgid "60m"
 msgstr ""
 
@@ -382,7 +382,7 @@ msgstr ""
 msgid "About me"
 msgstr "About me"
 
-#: src/pages/EventDetailsPage.tsx:1038
+#: src/pages/EventDetailsPage.tsx:1039
 #: src/routes/scenarios.phone-numbers.tsx:263
 msgid "About this event"
 msgstr ""
@@ -400,7 +400,7 @@ msgid "Access controls and authentication measures"
 msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:808
-#: src/pages/EventDetailsPage.tsx:1641
+#: src/pages/EventDetailsPage.tsx:1606
 msgid "Access Instructions"
 msgstr ""
 
@@ -410,7 +410,7 @@ msgstr ""
 msgid "Account"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:97
+#: src/components/user/FioConnectionCard.tsx:99
 msgid "Account connected"
 msgstr "Account connected"
 
@@ -438,7 +438,7 @@ msgstr ""
 msgid "Accurate levels help you find games with players of similar ability."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:771
+#: src/pages/EventDetailsPage.tsx:772
 msgid "Actions"
 msgstr ""
 
@@ -477,7 +477,7 @@ msgstr ""
 msgid "Add the First Venue"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1102
+#: src/pages/EventDetailsPage.tsx:1103
 #: src/routes/scenarios.phone-numbers.tsx:289
 msgid "Add to Calendar"
 msgstr ""
@@ -544,7 +544,7 @@ msgstr ""
 msgid "All selected"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:525
+#: src/components/events/CreateEventForm.tsx:530
 msgid "All skill levels welcome"
 msgstr ""
 
@@ -581,7 +581,7 @@ msgstr ""
 msgid "Any organized events will be transferred or cancelled"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1691
+#: src/pages/EventDetailsPage.tsx:1656
 msgid "Approx. {price} {currency} / hour"
 msgstr ""
 
@@ -589,7 +589,7 @@ msgstr ""
 msgid "Arbitration or court proceedings in Prague, Czech Republic"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1311
+#: src/components/events/CreateEventForm.tsx:1316
 msgid "Are you sure you want to cancel this event? This action cannot be undone."
 msgstr ""
 
@@ -602,7 +602,7 @@ msgid "at {where}"
 msgstr "at {where}"
 
 #: src/components/map/EventMap.tsx:210
-#: src/components/map/EventMap.tsx:416
+#: src/components/map/EventMap.tsx:425
 msgid "At capacity"
 msgstr ""
 
@@ -639,7 +639,7 @@ msgstr "Attendance is confirmed when the player joins. Payment can be arranged l
 msgid "Attendee not found"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:547
+#: src/pages/EventDetailsPage.tsx:548
 msgid "Attendee removed from the event."
 msgstr ""
 
@@ -651,7 +651,7 @@ msgstr ""
 msgid "Austria"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:40
+#: src/components/user/FioConnectionCard.tsx:42
 msgid "Automatic payment checks are paused. Reconnect the account to resume."
 msgstr "Automatic payment checks are paused. Reconnect the account to resume."
 
@@ -659,8 +659,8 @@ msgstr "Automatic payment checks are paused. Reconnect the account to resume."
 msgid "Available Facilities"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:210
-#: src/pages/DiscoverPage.tsx:294
+#: src/pages/DiscoverPage.tsx:205
+#: src/pages/DiscoverPage.tsx:289
 msgid "Available Spots"
 msgstr ""
 
@@ -668,7 +668,7 @@ msgstr ""
 msgid "Avatar"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2073
+#: src/pages/EventDetailsPage.tsx:2038
 msgid "Average player"
 msgstr ""
 
@@ -680,7 +680,7 @@ msgstr ""
 msgid "Avoid outdoor play during thunderstorms"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1814
+#: src/pages/EventDetailsPage.tsx:1779
 #: src/routes/scenarios.phone-numbers.tsx:230
 msgid "Back to Events"
 msgstr ""
@@ -736,7 +736,7 @@ msgstr ""
 msgid "Beginner"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2115
+#: src/pages/EventDetailsPage.tsx:2080
 msgid "Behavior reports are taken seriously and may result in account restrictions."
 msgstr ""
 
@@ -744,12 +744,12 @@ msgstr ""
 msgid "Belgium"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2072
+#: src/pages/EventDetailsPage.tsx:2037
 msgid "Below average"
 msgstr ""
 
 #: src/components/map/EventMap.tsx:212
-#: src/components/map/EventMap.tsx:408
+#: src/components/map/EventMap.tsx:417
 msgid "Below ideal"
 msgstr ""
 
@@ -782,7 +782,7 @@ msgstr ""
 msgid "Browse sports venues on a map and subscribe to email alerts when new amateur team sports events are created at your favorite places."
 msgstr "Browse sports venues on a map and subscribe to email alerts when new amateur team sports events are created at your favorite places."
 
-#: src/pages/HomePage.tsx:176
+#: src/pages/HomePage.tsx:173
 msgid "Build Community"
 msgstr ""
 
@@ -818,12 +818,12 @@ msgstr ""
 
 #: src/components/events/EventComments.tsx:219
 #: src/components/events/EventPaymentSettings.tsx:222
-#: src/components/user/FioConnectionCard.tsx:198
+#: src/components/user/FioConnectionCard.tsx:200
 #: src/components/user/PaymentInformationCard.tsx:225
 #: src/components/user/PaymentInformationCard.tsx:285
 #: src/components/venues/AddVenueModal.tsx:921
 #: src/lib/authLocalization.ts:11
-#: src/pages/EventDetailsPage.tsx:2131
+#: src/pages/EventDetailsPage.tsx:2096
 #: src/pages/ManageCoreGroupsPage.tsx:208
 #: src/pages/UserProfilePage.tsx:573
 #: src/pages/UserProfilePage.tsx:717
@@ -832,14 +832,14 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1279
-#: src/pages/EventDetailsPage.tsx:802
-#: src/pages/EventDetailsPage.tsx:893
-#: src/pages/EventDetailsPage.tsx:1889
+#: src/components/events/CreateEventForm.tsx:1284
+#: src/pages/EventDetailsPage.tsx:803
+#: src/pages/EventDetailsPage.tsx:894
+#: src/pages/EventDetailsPage.tsx:1854
 msgid "Cancel Event"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1310
+#: src/components/events/CreateEventForm.tsx:1315
 msgid "Cancel Event?"
 msgstr ""
 
@@ -847,7 +847,7 @@ msgstr ""
 msgid "Cancel place"
 msgstr "Cancel place"
 
-#: src/pages/EventDetailsPage.tsx:1838
+#: src/pages/EventDetailsPage.tsx:1803
 msgid "Cancel this event?"
 msgstr ""
 
@@ -855,7 +855,7 @@ msgstr ""
 msgid "Canceling events last minute (-3 points)"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:892
+#: src/components/events/CreateEventForm.tsx:897
 msgid "Cancellation Deadline *"
 msgstr ""
 
@@ -863,11 +863,11 @@ msgstr ""
 msgid "Cancellation policies must be clearly communicated to participants"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1056
+#: src/pages/EventDetailsPage.tsx:1057
 msgid "Cancellation Policy"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1317
+#: src/components/events/CreateEventForm.tsx:1322
 msgid "Cancellation Reason (Optional)"
 msgstr ""
 
@@ -876,8 +876,8 @@ msgstr ""
 msgid "Cancelled"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1356
-#: src/pages/EventDetailsPage.tsx:1884
+#: src/components/events/CreateEventForm.tsx:1361
+#: src/pages/EventDetailsPage.tsx:1849
 msgid "Cancelling..."
 msgstr ""
 
@@ -928,7 +928,7 @@ msgstr ""
 msgid "Check payments"
 msgstr "Check payments"
 
-#: src/components/user/FioConnectionCard.tsx:22
+#: src/components/user/FioConnectionCard.tsx:24
 msgid "Check the token and its expiry date. New Fio tokens take five minutes to activate."
 msgstr "Check the token and its expiry date. New Fio tokens take five minutes to activate."
 
@@ -1021,7 +1021,7 @@ msgstr ""
 msgid "Clear payment"
 msgstr "Clear payment"
 
-#: src/pages/EventDetailsPage.tsx:1208
+#: src/components/events/UploadedPaymentQrCodes.tsx:40
 msgid "Click a QR code to view it larger."
 msgstr ""
 
@@ -1029,7 +1029,7 @@ msgstr ""
 msgid "Click a swatch to copy its hex code."
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1285
+#: src/components/events/CreateEventForm.tsx:1290
 #: src/components/events/EditableEventCard.tsx:259
 #: src/components/events/EventPaymentSettings.tsx:97
 msgid "Close"
@@ -1039,7 +1039,7 @@ msgstr ""
 msgid "Cold with snow"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2084
+#: src/pages/EventDetailsPage.tsx:2049
 msgid "Comment (optional)"
 msgstr ""
 
@@ -1126,11 +1126,11 @@ msgstr ""
 msgid "Confirmed"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:35
+#: src/components/user/FioConnectionCard.tsx:37
 msgid "Connect a Czech Fio account in CZK."
 msgstr "Connect a Czech Fio account in CZK."
 
-#: src/components/user/FioConnectionCard.tsx:74
+#: src/components/user/FioConnectionCard.tsx:76
 msgid "Connect Fio account"
 msgstr "Connect Fio account"
 
@@ -1138,11 +1138,11 @@ msgstr "Connect Fio account"
 msgid "Connect Fio in your profile"
 msgstr "Connect Fio in your profile"
 
-#: src/components/user/FioConnectionCard.tsx:88
+#: src/components/user/FioConnectionCard.tsx:90
 msgid "Connect Fio once in your profile with a read-only API token. Every event you organize can use this saved connection."
 msgstr "Connect Fio once in your profile with a read-only API token. Every event you organize can use this saved connection."
 
-#: src/pages/HomePage.tsx:179
+#: src/pages/HomePage.tsx:176
 msgid "Connect with like-minded players, earn karma points, and climb the leaderboards."
 msgstr ""
 
@@ -1150,7 +1150,7 @@ msgstr ""
 msgid "Connect your Fio account in your profile first"
 msgstr "Connect your Fio account in your profile first"
 
-#: src/components/user/FioConnectionCard.tsx:76
+#: src/components/user/FioConnectionCard.tsx:78
 msgid "Connecting…"
 msgstr "Connecting…"
 
@@ -1212,11 +1212,11 @@ msgstr ""
 msgid "Copy description"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1225
+#: src/components/events/CreateEventForm.tsx:1230
 msgid "Core group"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1207
+#: src/components/events/CreateEventForm.tsx:1212
 msgid "Core Group Early Access"
 msgstr ""
 
@@ -1224,7 +1224,7 @@ msgstr ""
 msgid "Core group not found"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:276
+#: src/components/events/CreateEventForm.tsx:281
 msgid "Core group window must be between 2 hours and 14 days."
 msgstr ""
 
@@ -1248,7 +1248,7 @@ msgstr "Could not load payment status. Please try again."
 msgid "Could not load users."
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:251
+#: src/components/user/FioConnectionCard.tsx:257
 msgid "Could not load your Fio connection."
 msgstr "Could not load your Fio connection."
 
@@ -1288,15 +1288,15 @@ msgstr ""
 msgid "Create and edit reusable groups for early event access."
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1288
+#: src/components/events/CreateEventForm.tsx:1293
 #: src/components/layout/Header.tsx:117
 #: src/components/layout/Header.tsx:193
-#: src/pages/DiscoverPage.tsx:411
-#: src/pages/HomePage.tsx:132
+#: src/pages/DiscoverPage.tsx:406
+#: src/pages/HomePage.tsx:129
 msgid "Create Event"
 msgstr ""
 
-#: src/pages/HomePage.tsx:196
+#: src/pages/HomePage.tsx:193
 msgid "Create events with payment integration, team balancing, and automated notifications."
 msgstr ""
 
@@ -1304,7 +1304,7 @@ msgstr ""
 msgid "Create Group"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:558
+#: src/components/events/CreateEventForm.tsx:563
 msgid "Create New Event"
 msgstr ""
 
@@ -1340,7 +1340,7 @@ msgstr ""
 msgid "Croatian Kuna"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1140
+#: src/components/events/CreateEventForm.tsx:1145
 #: src/components/venues/AddVenueModal.tsx:898
 msgid "Currency"
 msgstr ""
@@ -1361,7 +1361,7 @@ msgstr ""
 msgid "Current Password"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1043
+#: src/components/events/CreateEventForm.tsx:1048
 msgid "Current Restriction"
 msgstr ""
 
@@ -1393,15 +1393,15 @@ msgstr ""
 msgid "Data Security"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:787
+#: src/components/events/CreateEventForm.tsx:792
 msgid "Date *"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:781
-#: src/pages/DiscoverPage.tsx:206
-#: src/pages/DiscoverPage.tsx:212
-#: src/pages/DiscoverPage.tsx:288
-#: src/pages/EventDetailsPage.tsx:1074
+#: src/components/events/CreateEventForm.tsx:786
+#: src/pages/DiscoverPage.tsx:201
+#: src/pages/DiscoverPage.tsx:207
+#: src/pages/DiscoverPage.tsx:283
+#: src/pages/EventDetailsPage.tsx:1075
 #: src/routes/scenarios.phone-numbers.tsx:275
 msgid "Date & Time"
 msgstr ""
@@ -1410,11 +1410,11 @@ msgstr ""
 msgid "days"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:902
+#: src/components/events/CreateEventForm.tsx:907
 msgid "Deadline"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:943
+#: src/components/events/CreateEventForm.tsx:948
 msgid "Deadline:"
 msgstr ""
 
@@ -1448,7 +1448,7 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2085
+#: src/pages/EventDetailsPage.tsx:2050
 msgid "Details (required)"
 msgstr ""
 
@@ -1456,7 +1456,7 @@ msgstr ""
 msgid "Device information and browser type"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:220
+#: src/components/user/FioConnectionCard.tsx:222
 msgid "Disconnect"
 msgstr "Disconnect"
 
@@ -1464,11 +1464,11 @@ msgstr "Disconnect"
 msgid "Discover Events"
 msgstr ""
 
-#: src/pages/HomePage.tsx:142
+#: src/pages/HomePage.tsx:139
 msgid "Discover Games"
 msgstr ""
 
-#: src/pages/HomePage.tsx:162
+#: src/pages/HomePage.tsx:159
 msgid "Discover sports events near you with advanced filtering by sport, skill level, and location."
 msgstr ""
 
@@ -1480,12 +1480,12 @@ msgstr "Dismiss notification"
 msgid "Disputes between users or event-related conflicts"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:208
-#: src/pages/DiscoverPage.tsx:291
+#: src/pages/DiscoverPage.tsx:203
+#: src/pages/DiscoverPage.tsx:286
 msgid "Distance"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:655
+#: src/components/events/CreateEventForm.tsx:660
 msgid "does not support"
 msgstr ""
 
@@ -1513,12 +1513,12 @@ msgstr ""
 msgid "Dress warmly and allow extra warm-up time"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:785
-#: src/pages/EventDetailsPage.tsx:873
+#: src/pages/EventDetailsPage.tsx:786
+#: src/pages/EventDetailsPage.tsx:874
 msgid "Duplicate Event"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:816
+#: src/components/events/CreateEventForm.tsx:821
 msgid "Duration (minutes)"
 msgstr ""
 
@@ -1530,7 +1530,7 @@ msgstr ""
 msgid "e.g., Central Park Football Field"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1325
+#: src/components/events/CreateEventForm.tsx:1330
 msgid "e.g., Weather conditions, Insufficient players..."
 msgstr ""
 
@@ -1542,7 +1542,7 @@ msgstr "Each picture must be nonempty and no larger than 10 MB."
 msgid "Each player gets a personal QR code. Attendance is confirmed only after the bank verifies payment."
 msgstr "Each player gets a personal QR code. Attendance is confirmed only after the bank verifies payment."
 
-#: src/components/events/CreateEventForm.tsx:1250
+#: src/components/events/CreateEventForm.tsx:1255
 msgid "Early access duration from now (hours)"
 msgstr ""
 
@@ -1550,7 +1550,7 @@ msgstr ""
 msgid "Earn Points For:"
 msgstr ""
 
-#: src/pages/HomePage.tsx:193
+#: src/pages/HomePage.tsx:190
 msgid "Easy Organization"
 msgstr ""
 
@@ -1567,9 +1567,9 @@ msgstr ""
 msgid "Edit comment"
 msgstr "Edit comment"
 
-#: src/components/events/CreateEventForm.tsx:558
-#: src/pages/EventDetailsPage.tsx:793
-#: src/pages/EventDetailsPage.tsx:884
+#: src/components/events/CreateEventForm.tsx:563
+#: src/pages/EventDetailsPage.tsx:794
+#: src/pages/EventDetailsPage.tsx:885
 msgid "Edit Event"
 msgstr ""
 
@@ -1627,7 +1627,7 @@ msgstr ""
 msgid "Email verification successful."
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1216
+#: src/components/events/CreateEventForm.tsx:1221
 msgid "Enable private preview for selected users before public visibility"
 msgstr ""
 
@@ -1635,11 +1635,11 @@ msgstr ""
 msgid "Encryption of data in transit and at rest"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:842
+#: src/components/events/CreateEventForm.tsx:847
 msgid "Ends at {endTimeLabel}"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:971
+#: src/components/events/CreateEventForm.tsx:976
 msgid "Enforce skill level restrictions"
 msgstr ""
 
@@ -1725,11 +1725,11 @@ msgstr ""
 
 #: src/lib/email/sendCancellationEmail.ts:46
 #: src/pages/EditEventPage.tsx:115
-#: src/pages/EventDetailsPage.tsx:454
+#: src/pages/EventDetailsPage.tsx:455
 msgid "Event cancelled"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:993
+#: src/pages/EventDetailsPage.tsx:994
 msgid "Event Cancelled"
 msgstr ""
 
@@ -1737,15 +1737,15 @@ msgstr ""
 msgid "Event cancelled: {title}"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:757
+#: src/pages/EventDetailsPage.tsx:758
 msgid "Event Completed"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:368
+#: src/pages/EventDetailsPage.tsx:369
 msgid "Event confirmed - {count} more for ideal"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:362
+#: src/pages/EventDetailsPage.tsx:363
 msgid "Event confirmed - ideal number reached!"
 msgstr ""
 
@@ -1753,7 +1753,7 @@ msgstr ""
 msgid "Event created successfully!"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:506
+#: src/pages/EventDetailsPage.tsx:507
 msgid "Event created via hraj.eu"
 msgstr ""
 
@@ -1761,7 +1761,7 @@ msgstr ""
 msgid "Event creation and management tools for sports activities"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:985
+#: src/pages/EventDetailsPage.tsx:986
 #: src/routes/scenarios.phone-numbers.tsx:257
 msgid "Event Details"
 msgstr ""
@@ -1775,7 +1775,7 @@ msgid "Event emails enabled"
 msgstr ""
 
 #: src/lib/errorMessages.ts:21
-#: src/pages/EventDetailsPage.tsx:318
+#: src/pages/EventDetailsPage.tsx:319
 msgid "Event not found"
 msgstr ""
 
@@ -1787,7 +1787,7 @@ msgstr "Event not found | hraj.eu"
 msgid "Event Organization"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1183
+#: src/pages/EventDetailsPage.tsx:1184
 msgid "Event Organizer"
 msgstr ""
 
@@ -1807,7 +1807,7 @@ msgstr ""
 msgid "Event time changed: {title}"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:681
+#: src/components/events/CreateEventForm.tsx:686
 msgid "Event Title *"
 msgstr ""
 
@@ -1859,11 +1859,11 @@ msgstr ""
 msgid "Exact Venue Location *"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2075
+#: src/pages/EventDetailsPage.tsx:2040
 msgid "Excellent player!"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1027
+#: src/components/events/CreateEventForm.tsx:1032
 #: src/components/user/SkillLevelBadge.tsx:33
 msgid "Experienced competitive players"
 msgstr ""
@@ -1876,7 +1876,7 @@ msgstr ""
 msgid "Export your data in a readable format"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1702
+#: src/pages/EventDetailsPage.tsx:1667
 msgid "Facilities"
 msgstr ""
 
@@ -1893,7 +1893,7 @@ msgstr ""
 msgid "Failed to cancel event"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:457
+#: src/pages/EventDetailsPage.tsx:458
 msgid "Failed to cancel the event. Please try again."
 msgstr ""
 
@@ -1934,13 +1934,13 @@ msgid "Failed to get user info"
 msgstr ""
 
 #: src/components/events/JoinActionCard.tsx:213
-#: src/pages/DiscoverPage.tsx:192
-#: src/pages/HomePage.tsx:101
+#: src/pages/DiscoverPage.tsx:187
+#: src/pages/HomePage.tsx:98
 #: src/pages/SeoLandingPage.tsx:59
 msgid "Failed to join the event. Please try again."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:557
+#: src/pages/EventDetailsPage.tsx:558
 msgid "Failed to leave the event. Please try again."
 msgstr ""
 
@@ -1993,8 +1993,8 @@ msgstr ""
 msgid "Failed to update notification"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:605
-#: src/pages/EventDetailsPage.tsx:643
+#: src/pages/EventDetailsPage.tsx:606
+#: src/pages/EventDetailsPage.tsx:644
 msgid "Failed to update payment status. Please try again."
 msgstr ""
 
@@ -2018,7 +2018,7 @@ msgstr ""
 msgid "Failed to upload image. Please try again."
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:327
+#: src/components/events/CreateEventForm.tsx:332
 #: src/components/venues/AddVenueModal.tsx:277
 msgid "Failed to upload images. Please try again."
 msgstr ""
@@ -2035,11 +2035,11 @@ msgstr ""
 msgid "Feedback should be honest and constructive"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:691
+#: src/pages/EventDetailsPage.tsx:692
 msgid "Feedback submitted successfully"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2000
+#: src/pages/EventDetailsPage.tsx:1965
 msgid "Feedback Type"
 msgstr ""
 
@@ -2051,7 +2051,7 @@ msgstr ""
 msgid "Field/court may be slippery"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:563
+#: src/components/events/CreateEventForm.tsx:568
 msgid "Fill in the details to organize your next game"
 msgstr ""
 
@@ -2092,7 +2092,7 @@ msgstr "Find amateur team sports games near you | {SITE_NAME}"
 msgid "Find amateur team sports games near you. Join local football, volleyball, basketball, futsal, and other games with people who want to play."
 msgstr "Find amateur team sports games near you. Join local football, volleyball, basketball, futsal, and other games with people who want to play."
 
-#: src/pages/HomePage.tsx:159
+#: src/pages/HomePage.tsx:156
 msgid "Find Local Games"
 msgstr ""
 
@@ -2108,15 +2108,15 @@ msgstr ""
 msgid "Finland"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:236
+#: src/components/user/FioConnectionCard.tsx:238
 msgid "Fio API setup guide"
 msgstr "Fio API setup guide"
 
-#: src/components/user/FioConnectionCard.tsx:83
+#: src/components/user/FioConnectionCard.tsx:85
 msgid "Fio banka integration"
 msgstr "Fio banka integration"
 
-#: src/components/user/FioConnectionCard.tsx:19
+#: src/components/user/FioConnectionCard.tsx:21
 msgid "Fio is busy. Wait two minutes before trying again."
 msgstr "Fio is busy. Wait two minutes before trying again."
 
@@ -2193,7 +2193,7 @@ msgstr ""
 msgid "from User"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1164
+#: src/pages/EventDetailsPage.tsx:1165
 msgid "Full capacity"
 msgstr ""
 
@@ -2209,15 +2209,15 @@ msgstr ""
 msgid "Futsal - Thursday - 18:30"
 msgstr "Futsal - Thursday - 18:30"
 
-#: src/components/events/CreateEventForm.tsx:697
+#: src/components/events/CreateEventForm.tsx:702
 msgid "Game Rules (Optional)"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:715
+#: src/pages/EventDetailsPage.tsx:716
 msgid "Game Rules & Guidelines"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:503
+#: src/pages/EventDetailsPage.tsx:504
 msgid "Game Rules:"
 msgstr ""
 
@@ -2225,7 +2225,7 @@ msgstr ""
 msgid "Games map"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1336
+#: src/pages/EventDetailsPage.tsx:1301
 msgid "Games organized: {count}"
 msgstr ""
 
@@ -2241,19 +2241,19 @@ msgstr ""
 msgid "Give it room to play"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2013
+#: src/pages/EventDetailsPage.tsx:1978
 msgid "Give karma rating"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:699
+#: src/pages/EventDetailsPage.tsx:700
 msgid "Give Negative Karma"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:698
+#: src/pages/EventDetailsPage.tsx:699
 msgid "Give Neutral Karma"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:697
+#: src/pages/EventDetailsPage.tsx:698
 msgid "Give Positive Karma"
 msgstr ""
 
@@ -2281,7 +2281,7 @@ msgstr ""
 msgid "Good games start with good company. We bring people together through amateur team sports, one local game at a time."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2074
+#: src/pages/EventDetailsPage.tsx:2039
 msgid "Good sportsmanship"
 msgstr ""
 
@@ -2309,7 +2309,7 @@ msgstr ""
 msgid "Guest list updated."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1350
+#: src/pages/EventDetailsPage.tsx:1315
 msgid "Guests:"
 msgstr ""
 
@@ -2333,7 +2333,7 @@ msgstr ""
 msgid "has a new venue."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1928
+#: src/pages/EventDetailsPage.tsx:1893
 msgid "Have you paid?"
 msgstr ""
 
@@ -2341,7 +2341,7 @@ msgstr ""
 msgid "Having appropriate insurance coverage"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1440
+#: src/pages/EventDetailsPage.tsx:1405
 msgid "Help build our community by giving karma to players who showed good sportsmanship, or report issues if needed."
 msgstr ""
 
@@ -2385,7 +2385,7 @@ msgstr ""
 msgid "How Karma Points Work"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:895
+#: src/components/events/CreateEventForm.tsx:900
 msgid "How long before the event should we check if there are enough players?"
 msgstr ""
 
@@ -2433,7 +2433,7 @@ msgstr ""
 msgid "Hungary"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:170
+#: src/components/user/FioConnectionCard.tsx:172
 msgid "I created this token with read-only access."
 msgstr "I created this token with read-only access."
 
@@ -2457,7 +2457,7 @@ msgstr ""
 msgid "id_token not supported"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1149
+#: src/pages/EventDetailsPage.tsx:1150
 msgid "Ideal"
 msgstr ""
 
@@ -2466,12 +2466,12 @@ msgid "Ideal Players *"
 msgstr ""
 
 #: src/components/map/EventMap.tsx:211
-#: src/components/map/EventMap.tsx:412
+#: src/components/map/EventMap.tsx:421
 msgid "Ideal reached"
 msgstr ""
 
 #: src/components/events/JoinActionCard.tsx:295
-#: src/pages/EventDetailsPage.tsx:483
+#: src/pages/EventDetailsPage.tsx:484
 msgid "Ideal: {count} players"
 msgstr ""
 
@@ -2491,7 +2491,7 @@ msgstr ""
 msgid "Image must be smaller than 5MB"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2107
+#: src/pages/EventDetailsPage.tsx:2072
 msgid "Important"
 msgstr ""
 
@@ -2499,7 +2499,7 @@ msgstr ""
 msgid "In a few words"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:155
+#: src/components/user/FioConnectionCard.tsx:157
 msgid "In Fio Internetbanking, open Settings → API and create a token with “Sledování účtu” permission. Wait five minutes after creating it."
 msgstr "In Fio Internetbanking, open Settings → API and create a token with “Sledování účtu” permission. Wait five minutes after creating it."
 
@@ -2513,11 +2513,11 @@ msgstr ""
 msgid "Indoor & outdoor"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:399
+#: src/pages/EventDetailsPage.tsx:400
 msgid "Indoor & outdoor venue"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:397
+#: src/pages/EventDetailsPage.tsx:398
 msgid "Indoor venue"
 msgstr ""
 
@@ -2596,9 +2596,9 @@ msgid "Join and pay"
 msgstr "Join and pay"
 
 #: src/components/events/EditableEventCard.tsx:242
-#: src/components/events/EventCard.tsx:83
+#: src/components/events/EventCard.tsx:84
 #: src/components/events/JoinActionCard.tsx:115
-#: src/components/map/EventMap.tsx:276
+#: src/components/map/EventMap.tsx:285
 msgid "Join Game"
 msgstr ""
 
@@ -2611,13 +2611,13 @@ msgstr "Join local amateur players for football, futsal, volleyball, basketball,
 msgid "Join local amateur players, discover team sports events, and find places to play in {0}."
 msgstr ""
 
-#: src/pages/HomePage.tsx:122
+#: src/pages/HomePage.tsx:119
 msgid "Join the vibrant community of sports enthusiasts across Europe. Organize games, discover events, and make new friends through team sports."
 msgstr ""
 
-#: src/components/events/EventCard.tsx:84
+#: src/components/events/EventCard.tsx:85
 #: src/components/events/JoinActionCard.tsx:111
-#: src/components/map/EventMap.tsx:276
+#: src/components/map/EventMap.tsx:285
 msgid "Join Waitlist"
 msgstr ""
 
@@ -2625,16 +2625,16 @@ msgstr ""
 msgid "Join Your First Event"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1326
+#: src/pages/EventDetailsPage.tsx:1291
 msgid "Joined"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1317
-#: src/pages/EventDetailsPage.tsx:1494
+#: src/pages/EventDetailsPage.tsx:1282
+#: src/pages/EventDetailsPage.tsx:1459
 msgid "Joined {timeAgo}"
 msgstr ""
 
-#: src/components/events/EventCard.tsx:82
+#: src/components/events/EventCard.tsx:83
 msgid "Joining..."
 msgstr ""
 
@@ -2642,7 +2642,7 @@ msgstr ""
 msgid "JPG, PNG or GIF up to 5MB"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:742
+#: src/components/events/CreateEventForm.tsx:747
 #: src/components/venues/AddVenueModal.tsx:677
 msgid "JPG, PNG up to 10MB each"
 msgstr ""
@@ -2661,7 +2661,7 @@ msgid "Karma points reflect your reputation within the community"
 msgstr ""
 
 #. placeholder {0}: organizer?.karmaPoints
-#: src/pages/EventDetailsPage.tsx:1186
+#: src/pages/EventDetailsPage.tsx:1187
 msgid "Karma points: {0}"
 msgstr ""
 
@@ -2669,12 +2669,12 @@ msgstr ""
 msgid "Karma System and Community Standards"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1331
+#: src/pages/EventDetailsPage.tsx:1296
 msgid "Karma: {karmaPoints}"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1335
-#: src/pages/EventDetailsPage.tsx:1874
+#: src/components/events/CreateEventForm.tsx:1340
+#: src/pages/EventDetailsPage.tsx:1839
 msgid "Keep Event"
 msgstr ""
 
@@ -2717,8 +2717,8 @@ msgstr ""
 msgid "Leaderboard Categories"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1368
-#: src/pages/EventDetailsPage.tsx:1514
+#: src/pages/EventDetailsPage.tsx:1333
+#: src/pages/EventDetailsPage.tsx:1479
 msgid "Leave"
 msgstr ""
 
@@ -2738,7 +2738,7 @@ msgstr ""
 msgid "Less planning.<0/>More playing."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1865
+#: src/pages/EventDetailsPage.tsx:1830
 msgid "Let attendees know why the event was cancelled"
 msgstr ""
 
@@ -2746,7 +2746,7 @@ msgstr ""
 msgid "Let's get you game-ready."
 msgstr ""
 
-#: src/pages/HomePage.tsx:119
+#: src/pages/HomePage.tsx:116
 msgid "Let's Play Together"
 msgstr ""
 
@@ -2770,7 +2770,7 @@ msgstr ""
 msgid "Loading event details..."
 msgstr ""
 
-#: src/components/map/EventMap.tsx:382
+#: src/components/map/EventMap.tsx:391
 msgid "Loading map..."
 msgstr ""
 
@@ -2782,7 +2782,7 @@ msgstr ""
 msgid "Loading payments…"
 msgstr "Loading payments…"
 
-#: src/components/events/CreateEventForm.tsx:666
+#: src/components/events/CreateEventForm.tsx:671
 #: src/pages/ManageVenuesPage.tsx:202
 msgid "Loading venues..."
 msgstr ""
@@ -2796,7 +2796,7 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1109
+#: src/pages/EventDetailsPage.tsx:1110
 #: src/pages/UserProfilePage.tsx:627
 #: src/routes/scenarios.phone-numbers.tsx:295
 msgid "Location"
@@ -2807,9 +2807,9 @@ msgid "Location data when you use location-based features"
 msgstr ""
 
 #: src/components/events/EditableEventCard.tsx:215
-#: src/components/events/EventCard.tsx:141
-#: src/pages/EventDetailsPage.tsx:508
-#: src/pages/EventDetailsPage.tsx:1118
+#: src/components/events/EventCard.tsx:142
+#: src/pages/EventDetailsPage.tsx:509
+#: src/pages/EventDetailsPage.tsx:1119
 #: src/routes/api/og/event/$eventId.tsx:125
 msgid "Location TBD"
 msgstr ""
@@ -2867,7 +2867,7 @@ msgstr ""
 msgid "Manage Fio connection"
 msgstr "Manage Fio connection"
 
-#: src/components/events/CreateEventForm.tsx:1231
+#: src/components/events/CreateEventForm.tsx:1236
 msgid "Manage groups"
 msgstr ""
 
@@ -2893,15 +2893,15 @@ msgid "Mark as read"
 msgstr ""
 
 #: src/components/events/EventPaymentsPanel.tsx:97
-#: src/pages/EventDetailsPage.tsx:393
+#: src/pages/EventDetailsPage.tsx:394
 msgid "Marked as paid"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:385
+#: src/pages/EventDetailsPage.tsx:386
 msgid "Marked as paid {timeAgo}"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1161
+#: src/pages/EventDetailsPage.tsx:1162
 msgid "Maximum"
 msgstr ""
 
@@ -2949,7 +2949,7 @@ msgstr ""
 msgid "Messages and communications within the platform"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1137
+#: src/pages/EventDetailsPage.tsx:1138
 msgid "Minimum"
 msgstr ""
 
@@ -3020,7 +3020,7 @@ msgstr ""
 msgid "Name and email address when you create an account"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:354
+#: src/pages/EventDetailsPage.tsx:355
 msgid "Need {count} more players to confirm"
 msgstr ""
 
@@ -3078,7 +3078,7 @@ msgstr ""
 msgid "New time: {newWhen}"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1023
+#: src/components/events/CreateEventForm.tsx:1028
 #: src/components/user/SkillLevelBadge.tsx:23
 msgid "New to the sport or casual players"
 msgstr ""
@@ -3107,7 +3107,7 @@ msgstr ""
 msgid "No email will be sent. The comment will still be visible in the event discussion."
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:405
+#: src/pages/DiscoverPage.tsx:400
 msgid "No events found"
 msgstr ""
 
@@ -3127,7 +3127,7 @@ msgstr ""
 msgid "No groups yet. Create your first one."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1942
+#: src/pages/EventDetailsPage.tsx:1907
 msgid "No I have not paid"
 msgstr ""
 
@@ -3139,11 +3139,11 @@ msgstr ""
 msgid "No past events"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1663
+#: src/pages/EventDetailsPage.tsx:1628
 msgid "No phone number"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1659
+#: src/pages/EventDetailsPage.tsx:1624
 msgid "No phone number available"
 msgstr ""
 
@@ -3156,7 +3156,7 @@ msgstr ""
 msgid "No players have skill levels recorded for {0}."
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:771
+#: src/components/events/CreateEventForm.tsx:776
 msgid "No QR codes uploaded yet."
 msgstr ""
 
@@ -3168,7 +3168,7 @@ msgstr ""
 msgid "No skill levels set yet"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:704
+#: src/components/events/CreateEventForm.tsx:709
 msgid "No slide tackles, bring light/dark shirt, call your own fouls..."
 msgstr ""
 
@@ -3176,7 +3176,7 @@ msgstr ""
 msgid "No upcoming events"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:360
+#: src/pages/DiscoverPage.tsx:355
 msgid "No upcoming events found."
 msgstr ""
 
@@ -3216,7 +3216,7 @@ msgstr ""
 msgid "No venues yet"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2112
+#: src/pages/EventDetailsPage.tsx:2077
 msgid "No-show reports will deduct karma points and may affect future event participation."
 msgstr ""
 
@@ -3266,11 +3266,11 @@ msgstr ""
 msgid "Objection"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:920
+#: src/pages/EventDetailsPage.tsx:921
 msgid "OG Preview"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:46
+#: src/components/user/FioConnectionCard.tsx:48
 msgid "Older bank history was unavailable. Review payments older than 90 days manually."
 msgstr "Older bank history was unavailable. Review payments older than 90 days manually."
 
@@ -3282,7 +3282,7 @@ msgstr ""
 msgid "on {when}"
 msgstr "on {when}"
 
-#: src/components/events/EventCard.tsx:81
+#: src/components/events/EventCard.tsx:82
 msgid "On Waitlist"
 msgstr ""
 
@@ -3302,7 +3302,7 @@ msgstr ""
 msgid "One-Time Password"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:310
+#: src/components/events/CreateEventForm.tsx:315
 msgid "Only {remainingSlots} more QR code images can be uploaded for this event."
 msgstr ""
 
@@ -3318,11 +3318,11 @@ msgstr ""
 msgid "Open"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1420
+#: src/pages/EventDetailsPage.tsx:1385
 msgid "Open spot"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1071
+#: src/components/events/CreateEventForm.tsx:1076
 msgid "Open to All Skill Levels"
 msgstr ""
 
@@ -3331,8 +3331,8 @@ msgid "Or continue with"
 msgstr ""
 
 #: src/components/events/EditableEventCard.tsx:189
-#: src/pages/EventDetailsPage.tsx:1174
-#: src/pages/EventDetailsPage.tsx:1297
+#: src/pages/EventDetailsPage.tsx:1175
+#: src/pages/EventDetailsPage.tsx:1262
 #: src/routes/scenarios.phone-numbers.tsx:321
 #: src/routes/scenarios.phone-numbers.tsx:393
 msgid "Organizer"
@@ -3354,7 +3354,7 @@ msgstr ""
 msgid "Orientation plan"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1739
+#: src/pages/EventDetailsPage.tsx:1704
 msgid "Orientation Plan"
 msgstr ""
 
@@ -3384,7 +3384,7 @@ msgstr ""
 msgid "Outdoor"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:395
+#: src/pages/EventDetailsPage.tsx:396
 msgid "Outdoor venue"
 msgstr ""
 
@@ -3400,9 +3400,9 @@ msgstr ""
 msgid "Page Not Found"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1303
-#: src/pages/EventDetailsPage.tsx:1304
-#: src/pages/EventDetailsPage.tsx:1308
+#: src/pages/EventDetailsPage.tsx:1268
+#: src/pages/EventDetailsPage.tsx:1269
+#: src/pages/EventDetailsPage.tsx:1273
 msgid "Paid"
 msgstr ""
 
@@ -3411,7 +3411,7 @@ msgstr ""
 msgid "Parking"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:881
+#: src/components/events/CreateEventForm.tsx:886
 #: src/routes/scenarios.participant-capacity.tsx:35
 msgid "Participants"
 msgstr ""
@@ -3420,7 +3420,7 @@ msgstr ""
 msgid "Participants join events at their own risk"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:477
+#: src/pages/EventDetailsPage.tsx:478
 msgid "Participants: {current}/{max}"
 msgstr ""
 
@@ -3454,21 +3454,26 @@ msgstr ""
 msgid "Passwords do not match"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:372
+#: src/pages/DiscoverPage.tsx:367
 #: src/pages/PublicProfilePage.tsx:183
 msgid "Past Events"
 msgstr ""
+
+#: src/components/events/EventCard.tsx:190
+#: src/components/map/EventMap.tsx:282
+msgid "Pay to confirm attendance"
+msgstr "Pay to confirm attendance"
 
 #: src/components/events/EventPaymentCard.tsx:38
 #: src/components/events/EventPaymentsPanel.tsx:260
 msgid "Payment"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1104
+#: src/components/events/CreateEventForm.tsx:1109
 msgid "Payment (Optional)"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:52
+#: src/components/user/FioConnectionCard.tsx:54
 msgid "Payment checks could not complete. Check your token or try again later."
 msgstr "Payment checks could not complete. Check your token or try again later."
 
@@ -3480,7 +3485,7 @@ msgstr "Payment confirmation"
 msgid "Payment details"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1155
+#: src/components/events/CreateEventForm.tsx:1160
 msgid "Payment Details"
 msgstr ""
 
@@ -3508,7 +3513,7 @@ msgstr ""
 msgid "Payment is required to confirm your attendance."
 msgstr "Payment is required to confirm your attendance."
 
-#: src/pages/EventDetailsPage.tsx:601
+#: src/pages/EventDetailsPage.tsx:602
 msgid "Payment marked as complete."
 msgstr ""
 
@@ -3533,11 +3538,11 @@ msgstr ""
 msgid "Payment settings are locked after the first registration"
 msgstr "Payment settings are locked after the first registration"
 
-#: src/pages/EventDetailsPage.tsx:639
+#: src/pages/EventDetailsPage.tsx:640
 msgid "Payment status cleared."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:497
+#: src/pages/EventDetailsPage.tsx:498
 msgid "Payment: {paymentDetails}"
 msgstr ""
 
@@ -3558,8 +3563,8 @@ msgid "per hour"
 msgstr ""
 
 #: src/components/events/EditableEventCard.tsx:231
-#: src/components/events/EventCard.tsx:171
-#: src/components/map/EventMap.tsx:318
+#: src/components/events/EventCard.tsx:172
+#: src/components/map/EventMap.tsx:327
 msgid "per person"
 msgstr ""
 
@@ -3567,7 +3572,7 @@ msgstr ""
 msgid "Perfect for sports!"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1152
+#: src/pages/EventDetailsPage.tsx:1153
 msgid "Perfect game size"
 msgstr ""
 
@@ -3593,11 +3598,11 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1764
+#: src/pages/EventDetailsPage.tsx:1729
 msgid "Photos"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1731
+#: src/pages/EventDetailsPage.tsx:1696
 msgid "Photos & Orientation"
 msgstr ""
 
@@ -3649,22 +3654,22 @@ msgid "player"
 msgstr "player"
 
 #: src/components/events/EventPaymentsPanel.tsx:257
-#: src/pages/EventDetailsPage.tsx:1490
+#: src/pages/EventDetailsPage.tsx:1455
 msgid "Player"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1129
+#: src/pages/EventDetailsPage.tsx:1130
 #: src/routes/scenarios.phone-numbers.tsx:309
 msgid "Player Requirements"
 msgstr ""
 
 #: src/components/map/EventMap.tsx:214
-#: src/components/map/EventMap.tsx:312
+#: src/components/map/EventMap.tsx:321
 msgid "players"
 msgstr ""
 
-#: src/components/map/EventMap.tsx:396
-#: src/components/map/EventMap.tsx:404
+#: src/components/map/EventMap.tsx:405
+#: src/components/map/EventMap.tsx:413
 msgid "Players / capacity"
 msgstr ""
 
@@ -3673,12 +3678,12 @@ msgstr ""
 msgid "Players confirmed"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1540
+#: src/pages/EventDetailsPage.tsx:1505
 msgid "Players on the waitlist will automatically be added when spots become available."
 msgstr ""
 
 #. placeholder {0}: formData.sport ? getSportName(formData.sport) : i18n._(msg`this sport`)
-#: src/components/events/CreateEventForm.tsx:1051
+#: src/components/events/CreateEventForm.tsx:1056
 msgid "Players without the required skill level in {0} will not be able to join this event."
 msgstr ""
 
@@ -3694,11 +3699,11 @@ msgstr ""
 msgid "Please check your email for the verification code."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:408
+#: src/pages/EventDetailsPage.tsx:409
 msgid "Please describe the behavior issue..."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:406
+#: src/pages/EventDetailsPage.tsx:407
 msgid "Please describe what happened..."
 msgstr ""
 
@@ -3734,19 +3739,19 @@ msgstr ""
 msgid "Please read these terms carefully before using hraj.eu. By using our platform, you agree to these terms."
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:272
+#: src/components/events/CreateEventForm.tsx:277
 msgid "Please select a core group."
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:659
+#: src/components/events/CreateEventForm.tsx:664
 msgid "Please select a different sport or choose a different venue."
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:260
+#: src/components/events/CreateEventForm.tsx:265
 msgid "Please select a sport for your event."
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:266
+#: src/components/events/CreateEventForm.tsx:271
 msgid "Please select a venue for your event."
 msgstr ""
 
@@ -3766,7 +3771,7 @@ msgstr ""
 msgid "Please sign in to comment on this event."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:576
+#: src/pages/EventDetailsPage.tsx:577
 msgid "Please sign in to confirm payment."
 msgstr ""
 
@@ -3802,7 +3807,7 @@ msgstr ""
 msgid "Polish Złoty"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2071
+#: src/pages/EventDetailsPage.tsx:2036
 msgid "Poor sportsmanship"
 msgstr ""
 
@@ -3844,7 +3849,7 @@ msgstr ""
 msgid "Presskit & brand assets | {SITE_NAME}"
 msgstr "Presskit & brand assets | {SITE_NAME}"
 
-#: src/pages/EventDetailsPage.tsx:915
+#: src/pages/EventDetailsPage.tsx:916
 #: src/routes/scenarios.localization.tsx:108
 msgid "Preview"
 msgstr ""
@@ -3877,7 +3882,7 @@ msgstr ""
 msgid "Price total:"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:490
+#: src/pages/EventDetailsPage.tsx:491
 msgid "Price: €{price} per person"
 msgstr ""
 
@@ -3894,7 +3899,7 @@ msgstr ""
 msgid "Privacy Policy"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1197
+#: src/components/events/CreateEventForm.tsx:1202
 msgid "Private (invite-only)"
 msgstr ""
 
@@ -3922,27 +3927,27 @@ msgstr ""
 msgid "Provider not found"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1185
+#: src/components/events/CreateEventForm.tsx:1190
 msgid "Public (discoverable by everyone)"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1916
-#: src/pages/EventDetailsPage.tsx:1921
+#: src/pages/EventDetailsPage.tsx:1881
+#: src/pages/EventDetailsPage.tsx:1886
 msgid "QR code enlarged"
 msgstr ""
 
 #. placeholder {0}: index + 1
-#: src/components/events/CreateEventForm.tsx:755
-#: src/pages/EventDetailsPage.tsx:1220
+#: src/components/events/CreateEventForm.tsx:760
+#: src/components/events/UploadedPaymentQrCodes.tsx:52
 msgid "QR code image {0}"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:712
-#: src/pages/EventDetailsPage.tsx:1201
+#: src/components/events/CreateEventForm.tsx:717
+#: src/components/events/UploadedPaymentQrCodes.tsx:33
 msgid "QR Codes"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1229
+#: src/components/events/UploadedPaymentQrCodes.tsx:61
 msgid "QR codes are displayed only to participants."
 msgstr ""
 
@@ -3960,27 +3965,27 @@ msgstr ""
 msgid "Rain chance:"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1402
+#: src/pages/EventDetailsPage.tsx:1367
 msgid "Rate"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1987
+#: src/pages/EventDetailsPage.tsx:1952
 msgid "Rate Participant"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1264
+#: src/pages/EventDetailsPage.tsx:1229
 msgid "Rate Players"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1437
+#: src/pages/EventDetailsPage.tsx:1402
 msgid "Rate Your Fellow Players"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2051
+#: src/pages/EventDetailsPage.tsx:2016
 msgid "Rating"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:139
+#: src/components/user/FioConnectionCard.tsx:141
 msgid "Read-only API token"
 msgstr "Read-only API token"
 
@@ -3992,11 +3997,11 @@ msgstr ""
 msgid "Reason"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1852
+#: src/pages/EventDetailsPage.tsx:1817
 msgid "Reason (optional)"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1025
+#: src/pages/EventDetailsPage.tsx:1026
 msgid "Reason:"
 msgstr ""
 
@@ -4041,7 +4046,7 @@ msgstr ""
 msgid "Regular backups and disaster recovery procedures"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1025
+#: src/components/events/CreateEventForm.tsx:1030
 #: src/components/user/SkillLevelBadge.tsx:28
 msgid "Regular players with some experience"
 msgstr ""
@@ -4062,10 +4067,10 @@ msgstr "Remaining:"
 msgid "Remember me"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:762
+#: src/components/events/CreateEventForm.tsx:767
 #: src/components/events/GuestUserInput.tsx:125
 #: src/components/venues/AddVenueModal.tsx:781
-#: src/pages/EventDetailsPage.tsx:1531
+#: src/pages/EventDetailsPage.tsx:1496
 msgid "Remove"
 msgstr ""
 
@@ -4074,11 +4079,11 @@ msgstr ""
 msgid "Remove {0} skill level"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1383
+#: src/pages/EventDetailsPage.tsx:1348
 msgid "Remove attendee"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1528
+#: src/pages/EventDetailsPage.tsx:1493
 msgid "Remove from waitlist"
 msgstr ""
 
@@ -4095,8 +4100,8 @@ msgstr ""
 msgid "Repeated no-shows or bad behavior"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:75
-#: src/components/user/FioConnectionCard.tsx:200
+#: src/components/user/FioConnectionCard.tsx:77
+#: src/components/user/FioConnectionCard.tsx:202
 msgid "Replace token"
 msgstr "Replace token"
 
@@ -4108,19 +4113,19 @@ msgstr ""
 msgid "Report any safety concerns or inappropriate behavior"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2041
+#: src/pages/EventDetailsPage.tsx:2006
 msgid "Report bad behavior"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:696
+#: src/pages/EventDetailsPage.tsx:697
 msgid "Report Bad Behavior"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2027
+#: src/pages/EventDetailsPage.tsx:1992
 msgid "Report no-show"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:695
+#: src/pages/EventDetailsPage.tsx:696
 msgid "Report No-Show"
 msgstr ""
 
@@ -4136,7 +4141,7 @@ msgstr ""
 msgid "Request failed"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1140
+#: src/pages/EventDetailsPage.tsx:1141
 msgid "Required to confirm"
 msgstr ""
 
@@ -4156,7 +4161,7 @@ msgstr ""
 msgid "Resend Verification Email"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:849
+#: src/components/events/CreateEventForm.tsx:854
 msgid "Reserved spots"
 msgstr ""
 
@@ -4202,7 +4207,7 @@ msgstr ""
 msgid "Revolut tag updated!"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1164
+#: src/components/events/CreateEventForm.tsx:1169
 msgid "Revolut: @username or cash on spot"
 msgstr ""
 
@@ -4226,8 +4231,8 @@ msgstr ""
 #: src/components/events/EventPaymentSettings.tsx:235
 #: src/components/user/PaymentInformationCard.tsx:233
 #: src/components/user/PaymentInformationCard.tsx:293
-#: src/pages/EventDetailsPage.tsx:854
-#: src/pages/EventDetailsPage.tsx:958
+#: src/pages/EventDetailsPage.tsx:855
+#: src/pages/EventDetailsPage.tsx:959
 #: src/pages/ManageCoreGroupsPage.tsx:205
 msgid "Save"
 msgstr ""
@@ -4266,7 +4271,7 @@ msgid "Saving preferences..."
 msgstr ""
 
 #: src/components/events/JoinActionCard.tsx:380
-#: src/pages/EventDetailsPage.tsx:1961
+#: src/pages/EventDetailsPage.tsx:1926
 msgid "Saving..."
 msgstr ""
 
@@ -4322,7 +4327,7 @@ msgstr "See active amateur players and organizers on hraj.eu. Find people who pl
 msgid "See you on the court."
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1239
+#: src/components/events/CreateEventForm.tsx:1244
 msgid "Select a core group"
 msgstr ""
 
@@ -4330,7 +4335,7 @@ msgstr ""
 msgid "Select a marker to find the venue in the list."
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:592
+#: src/components/events/CreateEventForm.tsx:597
 msgid "Select a sport"
 msgstr ""
 
@@ -4346,13 +4351,13 @@ msgstr ""
 msgid "Select Image"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:738
+#: src/components/events/CreateEventForm.tsx:743
 #: src/components/venues/AddVenueModal.tsx:702
 msgid "Select Images"
 msgstr ""
 
 #. placeholder {0}: formData.sport ? getSportName(formData.sport) : 'the selected sport'
-#: src/components/events/CreateEventForm.tsx:978
+#: src/components/events/CreateEventForm.tsx:983
 msgid "Select which skill levels are allowed to join this event. Only players with these skill levels in {0} will be able to join."
 msgstr ""
 
@@ -4388,7 +4393,7 @@ msgstr ""
 msgid "Session expired. Re-authenticate to perform this action."
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1263
+#: src/components/events/CreateEventForm.tsx:1268
 msgid "Set from 2 hours up to 14 days (336 hours), counted from now."
 msgstr ""
 
@@ -4396,8 +4401,8 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:809
-#: src/pages/EventDetailsPage.tsx:909
+#: src/pages/EventDetailsPage.tsx:810
+#: src/pages/EventDetailsPage.tsx:910
 #: src/routes/scenarios.phone-numbers.tsx:249
 msgid "Share"
 msgstr ""
@@ -4406,7 +4411,7 @@ msgstr ""
 msgid "Share updates, ask questions, or tag players with @Name."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:403
+#: src/pages/EventDetailsPage.tsx:404
 msgid "Share your experience playing with this person..."
 msgstr ""
 
@@ -4437,7 +4442,7 @@ msgstr ""
 msgid "Showing {0} of {1} venues"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:635
+#: src/components/events/CreateEventForm.tsx:640
 msgid "Showing venues that support"
 msgstr ""
 
@@ -4490,7 +4495,7 @@ msgstr ""
 msgid "Skill level guide"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:963
+#: src/components/events/CreateEventForm.tsx:968
 msgid "Skill Level Requirements"
 msgstr ""
 
@@ -4535,7 +4540,7 @@ msgstr ""
 msgid "Something went wrong"
 msgstr "Something went wrong"
 
-#: src/pages/DiscoverPage.tsx:280
+#: src/pages/DiscoverPage.tsx:275
 msgid "Sort by:"
 msgstr ""
 
@@ -4551,7 +4556,7 @@ msgstr ""
 msgid "Sport"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:571
+#: src/components/events/CreateEventForm.tsx:576
 msgid "Sport *"
 msgstr ""
 
@@ -4559,7 +4564,7 @@ msgstr ""
 msgid "Sport-Specific Rankings"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:476
+#: src/pages/EventDetailsPage.tsx:477
 msgid "Sport: {sportName}"
 msgstr ""
 
@@ -4584,7 +4589,7 @@ msgstr "Sports venues and places to play | {SITE_NAME}"
 msgid "Sports:"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:800
+#: src/components/events/CreateEventForm.tsx:805
 msgid "Start Time *"
 msgstr ""
 
@@ -4596,7 +4601,7 @@ msgstr ""
 msgid "Stay hydrated - bring extra water"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:2145
+#: src/pages/EventDetailsPage.tsx:2110
 msgid "Submitting..."
 msgstr ""
 
@@ -4617,7 +4622,7 @@ msgstr ""
 msgid "Subscribed for new city events"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:689
+#: src/components/events/CreateEventForm.tsx:694
 msgid "Sunday Football at the Park"
 msgstr ""
 
@@ -4678,7 +4683,7 @@ msgstr ""
 msgid "The logo"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1020
+#: src/pages/EventDetailsPage.tsx:1021
 msgid "The organizer has cancelled this event."
 msgstr ""
 
@@ -4698,7 +4703,7 @@ msgstr ""
 msgid "The same player cannot be added as a guest more than once."
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:654
+#: src/components/events/CreateEventForm.tsx:659
 msgid "The selected venue"
 msgstr ""
 
@@ -4722,15 +4727,15 @@ msgstr ""
 msgid "These terms are governed by the laws of the Czech Republic. Any disputes will be resolved through:"
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:29
+#: src/components/user/FioConnectionCard.tsx:31
 msgid "This account is linked to existing events. Use a token for the same bank account."
 msgstr "This account is linked to existing events. Use a token for the same bank account."
 
-#: src/pages/EventDetailsPage.tsx:1841
+#: src/pages/EventDetailsPage.tsx:1806
 msgid "This cannot be undone. Everyone attending will receive a cancellation email."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1017
+#: src/pages/EventDetailsPage.tsx:1018
 msgid "This event has been cancelled"
 msgstr ""
 
@@ -4748,7 +4753,7 @@ msgstr "This event is no longer accepting players"
 
 #. placeholder {0}: event.minParticipants
 #. placeholder {1}: cancellationDeadline.formatted
-#: src/pages/EventDetailsPage.tsx:1059
+#: src/pages/EventDetailsPage.tsx:1060
 msgid "This event will be automatically cancelled if we don't reach the minimum of {0} players by <0>{1}</0>."
 msgstr ""
 
@@ -4760,11 +4765,11 @@ msgstr ""
 msgid "This page is only available to hraj.eu administrators."
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1054
+#: src/components/events/CreateEventForm.tsx:1059
 msgid "this sport"
 msgstr "this sport"
 
-#: src/components/user/FioConnectionCard.tsx:37
+#: src/components/user/FioConnectionCard.tsx:39
 msgid "This token is already connected to another user."
 msgstr "This token is already connected to another user."
 
@@ -4780,7 +4785,7 @@ msgstr ""
 msgid "Tips for {sport}"
 msgstr ""
 
-#: src/components/events/EventCard.tsx:129
+#: src/components/events/EventCard.tsx:130
 msgid "today"
 msgstr ""
 
@@ -4800,7 +4805,7 @@ msgstr ""
 msgid "Top players by total karma points earned"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1109
+#: src/components/events/CreateEventForm.tsx:1114
 msgid "Total Price"
 msgstr ""
 
@@ -4816,7 +4821,7 @@ msgstr ""
 msgid "Trust this device"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:408
+#: src/pages/DiscoverPage.tsx:403
 msgid "Try adjusting your filters or create a new event."
 msgstr ""
 
@@ -4869,7 +4874,7 @@ msgstr ""
 msgid "Upcoming"
 msgstr ""
 
-#: src/pages/DiscoverPage.tsx:309
+#: src/pages/DiscoverPage.tsx:304
 #: src/pages/PublicProfilePage.tsx:90
 #: src/routes/scenarios.localization.tsx:113
 #: src/routes/scenarios.localization.tsx:126
@@ -4885,11 +4890,11 @@ msgstr ""
 msgid "Update ban"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1288
+#: src/components/events/CreateEventForm.tsx:1293
 msgid "Update Event"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:562
+#: src/components/events/CreateEventForm.tsx:567
 msgid "Update the details of your event"
 msgstr ""
 
@@ -4937,7 +4942,7 @@ msgstr ""
 msgid "Upload Profile Picture"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:715
+#: src/components/events/CreateEventForm.tsx:720
 msgid "Upload QR code images for check-in, payment, or event info."
 msgstr ""
 
@@ -4950,7 +4955,7 @@ msgstr ""
 msgid "Uploading pictures..."
 msgstr "Uploading pictures..."
 
-#: src/components/events/CreateEventForm.tsx:736
+#: src/components/events/CreateEventForm.tsx:741
 #: src/components/venues/AddVenueModal.tsx:697
 #: src/components/venues/AddVenueModal.tsx:759
 #: src/pages/UserProfilePage.tsx:1041
@@ -5039,7 +5044,7 @@ msgstr "Uses the Fio account saved in your profile. You do not need to enter the
 msgid "Variable symbol:"
 msgstr "Variable symbol:"
 
-#: src/pages/EventDetailsPage.tsx:1610
+#: src/pages/EventDetailsPage.tsx:1575
 msgid "Venue"
 msgstr ""
 
@@ -5052,7 +5057,7 @@ msgstr ""
 msgid "Venue conditions or third-party services"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:414
+#: src/components/events/CreateEventForm.tsx:419
 msgid "Venue created successfully! It will be reviewed by our team before being made available to all users."
 msgstr ""
 
@@ -5088,7 +5093,7 @@ msgstr ""
 msgid "Venue not found or you do not have permission to update it"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:630
+#: src/components/events/CreateEventForm.tsx:635
 msgid "Venue Selection"
 msgstr ""
 
@@ -5132,7 +5137,7 @@ msgid "View and edit venues you can manage"
 msgstr ""
 
 #: src/components/events/EditableEventCard.tsx:238
-#: src/components/events/EventCard.tsx:202
+#: src/components/events/EventCard.tsx:218
 msgid "View Details"
 msgstr ""
 
@@ -5152,11 +5157,11 @@ msgstr ""
 msgid "Violation of community guidelines"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1173
+#: src/components/events/CreateEventForm.tsx:1178
 msgid "Visibility"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1685
+#: src/pages/EventDetailsPage.tsx:1650
 msgid "Visit website"
 msgstr ""
 
@@ -5171,13 +5176,14 @@ msgstr ""
 msgid "Waiting for payment"
 msgstr "Waiting for payment"
 
+#: src/components/events/EventCard.tsx:179
 #: src/components/events/JoinActionCard.tsx:89
 msgid "Waiting for payment — your place is held"
 msgstr "Waiting for payment — your place is held"
 
-#: src/components/events/EventCard.tsx:64
-#: src/components/map/EventMap.tsx:328
-#: src/pages/EventDetailsPage.tsx:1462
+#: src/components/events/EventCard.tsx:65
+#: src/components/map/EventMap.tsx:337
+#: src/pages/EventDetailsPage.tsx:1427
 msgid "Waitlist"
 msgstr ""
 
@@ -5185,7 +5191,7 @@ msgstr ""
 msgid "Warm with rain showers"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:654
+#: src/components/events/CreateEventForm.tsx:659
 msgid "Warning:"
 msgstr ""
 
@@ -5237,7 +5243,7 @@ msgstr ""
 msgid "We share information with trusted third parties who help us operate the platform, such as payment processors, hosting providers, and analytics services."
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:948
+#: src/components/events/CreateEventForm.tsx:953
 msgid "We'll check for minimum players and decide whether to proceed or cancel the event."
 msgstr ""
 
@@ -5291,7 +5297,7 @@ msgstr ""
 msgid "When filtering by {0}, rankings show karma points and activities specifically related to this sport. Only players with recorded skill levels in this sport are included in the rankings."
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1074
+#: src/components/events/CreateEventForm.tsx:1079
 msgid "When skill level restrictions are disabled, players of any skill level can join your event. This is great for casual games and welcoming new players to the sport."
 msgstr ""
 
@@ -5312,7 +5318,7 @@ msgstr ""
 msgid "While we strive to protect your information, no method of transmission over the internet is 100% secure. Please use strong passwords and keep your account credentials confidential."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1255
+#: src/pages/EventDetailsPage.tsx:1220
 #: src/routes/scenarios.phone-numbers.tsx:374
 msgid "Who's Playing"
 msgstr ""
@@ -5322,7 +5328,7 @@ msgstr ""
 msgid "WiFi"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1127
+#: src/components/events/CreateEventForm.tsx:1132
 msgid "Will be divided by participant count"
 msgstr ""
 
@@ -5346,15 +5352,15 @@ msgstr ""
 msgid "Write our name as hraj.eu, in lowercase. Link to https://hraj.eu when you can."
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1966
+#: src/pages/EventDetailsPage.tsx:1931
 msgid "Yes I have paid"
 msgstr ""
 
-#: src/components/events/CreateEventForm.tsx:1358
+#: src/components/events/CreateEventForm.tsx:1363
 msgid "Yes, Cancel Event"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:1490
+#: src/pages/EventDetailsPage.tsx:1455
 msgid "You"
 msgstr ""
 
@@ -5362,9 +5368,9 @@ msgstr ""
 msgid "You are already registered as another player's guest"
 msgstr "You are already registered as another player's guest"
 
-#: src/components/events/EventCard.tsx:80
+#: src/components/events/EventCard.tsx:81
 #: src/components/events/JoinActionCard.tsx:409
-#: src/components/map/EventMap.tsx:273
+#: src/components/map/EventMap.tsx:275
 #: src/routes/scenarios.phone-numbers.tsx:365
 msgid "You are playing"
 msgstr ""
@@ -5409,7 +5415,7 @@ msgstr ""
 msgid "You can only update your own payment status"
 msgstr "You can only update your own payment status"
 
-#: src/components/events/CreateEventForm.tsx:301
+#: src/components/events/CreateEventForm.tsx:306
 msgid "You can upload a maximum of {MAX_QR_IMAGES} QR code images."
 msgstr ""
 
@@ -5421,7 +5427,7 @@ msgstr ""
 msgid "You do not have any venues to manage yet. Start by adding your first venue!"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:550
+#: src/pages/EventDetailsPage.tsx:551
 msgid "You have left the event."
 msgstr ""
 
@@ -5565,7 +5571,7 @@ msgstr ""
 msgid "You must honor your commitment to attend events you've joined"
 msgstr ""
 
-#: src/pages/EventDetailsPage.tsx:582
+#: src/pages/EventDetailsPage.tsx:583
 msgid "You must join this event to confirm payment."
 msgstr ""
 
@@ -5601,7 +5607,7 @@ msgstr ""
 msgid "You will receive emails about new events at this venue."
 msgstr ""
 
-#: src/components/events/EventCard.tsx:79
+#: src/components/events/EventCard.tsx:80
 msgid "You would like to participate"
 msgstr ""
 
@@ -5613,10 +5619,10 @@ msgstr ""
 msgid "Your account is temporarily restricted from joining new games."
 msgstr ""
 
-#: src/pages/HomePage.tsx:36
-#: src/pages/HomePage.tsx:52
-#: src/pages/HomePage.tsx:57
-#: src/pages/HomePage.tsx:64
+#: src/pages/HomePage.tsx:37
+#: src/pages/HomePage.tsx:53
+#: src/pages/HomePage.tsx:58
+#: src/pages/HomePage.tsx:65
 msgid "your area"
 msgstr ""
 
@@ -5701,6 +5707,6 @@ msgstr ""
 msgid "Your sports will appear here for alert setup."
 msgstr ""
 
-#: src/components/user/FioConnectionCard.tsx:225
+#: src/components/user/FioConnectionCard.tsx:227
 msgid "Your token is stored encrypted. hraj.eu reads payments and cannot send transfers. Disconnecting pauses payment checks for your events."
 msgstr "Your token is stored encrypted. hraj.eu reads payments and cannot send transfers. Disconnecting pauses payment checks for your events."

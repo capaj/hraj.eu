@@ -9,6 +9,7 @@ import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { EventPaymentCard } from '../components/events/EventPaymentCard'
+import { UploadedPaymentQrCodes } from '../components/events/UploadedPaymentQrCodes'
 import { JoinActionCard } from '../components/events/JoinActionCard'
 import { AttendeePhoneNumber } from '../components/events/AttendeePhoneNumber'
 import { MasonryGrid } from '../components/ui/MasonryGrid'
@@ -1192,47 +1193,11 @@ export const EventDetailsPage: React.FC = () => {
             </Card>
           </div>
 
-            {event.qrCodeImages && event.qrCodeImages.length > 0 && (
-              <div>
-                <Card>
-                <CardHeader>
-                  <h2 className="text-xl font-semibold text-gray-900 flex items-center">
-                    <ImageIcon size={18} className="mr-2 text-primary-600" />
-                    <Trans>QR Codes</Trans>
-                  </h2>
-                </CardHeader>
-                <CardContent className="p-6">
-                  {isParticipant ? (
-                    <>
-                      <p className="text-sm text-gray-600 mb-4">
-                        <Trans>Click a QR code to view it larger.</Trans>
-                      </p>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        {event.qrCodeImages.map((image, index) => (
-                          <button
-                            key={`${image}-${index}`}
-                            type="button"
-                            onClick={() => setSelectedQrImage(image)}
-                            className="relative rounded-lg overflow-hidden border border-gray-200 bg-gray-50 hover:shadow-md transition-shadow"
-                          >
-                            <img
-                              src={image}
-                              alt={i18n._(msg`QR code image ${index + 1}`)}
-                              className="w-full h-40 object-contain"
-                            />
-                          </button>
-                        ))}
-                      </div>
-                    </>
-                  ) : (
-                    <p className="text-sm text-gray-600">
-                      <Trans>QR codes are displayed only to participants.</Trans>
-                    </p>
-                  )}
-                </CardContent>
-                </Card>
-              </div>
-            )}
+          {event.qrCodeImages && event.qrCodeImages.length > 0 && (
+            <div>
+              <UploadedPaymentQrCodes event={event} currentUserId={currentUserId} onSelect={setSelectedQrImage} />
+            </div>
+          )}
 
           {!hasEventEnded && event.status !== 'cancelled' && (
             <div className="hidden lg:block">

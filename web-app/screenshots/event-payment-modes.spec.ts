@@ -90,3 +90,54 @@ test('Payment mode summary opens a modal; save applies the choice and cancel dis
   await expect(change).toBeDisabled()
   await expect(dialog).toHaveCount(0)
 })
+
+test('Fio connection cache stays private when accounts switch in the same tab', async ({
+  page,
+  capture
+}) => {
+  await page.clock.setFixedTime(new Date())
+  await page.goto('/scenarios/event-payment-modes')
+  await expect(page.locator('html')).toHaveAttribute('data-hydrated', 'true')
+  const view = page.getByLabel('Preview view', { exact: true })
+  const user = page.getByLabel('Signed-in user', { exact: true })
+  const account = page.getByText(/2400222222\/2010/)
+  const token = page.getByLabel('API token pouze pro čtení', { exact: true })
+  await view.selectOption('profile')
+  await expect(account).toBeVisible()
+  await page
+    .getByRole('button', { name: 'Nahradit token', exact: true })
+    .click()
+  await token.fill('T'.repeat(64))
+
+  await user.selectOption('other-organizer')
+  await expect(account).toHaveCount(0)
+  await expect(token).toHaveValue('')
+  await capture('fio-cache-other-user', page.getByTestId('profile-fio-preview'))
+  await view.selectOption('event')
+  const change = page
+    .getByTestId('event-payment-settings')
+    .getByRole('button', { name: 'Změnit', exact: true })
+  const fio = page.getByRole('radio', {
+    name: /^Platba předem ověřená Fio bankou/
+  })
+  await change.click()
+  await expect(fio).toBeDisabled()
+  await page.keyboard.press('Escape')
+
+  await view.selectOption('profile')
+  await user.selectOption('')
+  await expect(account).toHaveCount(0)
+  await expect(token).toHaveCount(0)
+  await view.selectOption('event')
+  await change.click()
+  await expect(fio).toBeDisabled()
+  await page.keyboard.press('Escape')
+
+  await user.selectOption('organizer')
+  await change.click()
+  await expect(fio).toBeEnabled()
+  await page.keyboard.press('Escape')
+  await view.selectOption('profile')
+  await expect(account).toBeVisible()
+  await expect(token).toHaveCount(0)
+})

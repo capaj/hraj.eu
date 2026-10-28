@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getFioConnection } from '~/server-functions/fio'
+import { useAuthSession } from '~/lib/auth-client'
+import { fioConnectionQueryKey } from '~/lib/fio/queryKeys'
 import { EventPaymentSettings } from './EventPaymentSettings'
 import { getLocalizedErrorMessage } from '~/lib/errorMessages'
 import { useLingui } from '@lingui/react'
@@ -128,9 +130,12 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   isEdit = !!initialData
 }) => {
   useLingui()
+  const session = useAuthSession()
+  const userId = session.data?.user?.id
   const fio = useQuery({
-    queryKey: ['fio-connection'],
-    queryFn: () => getFioConnection()
+    queryKey: fioConnectionQueryKey(userId),
+    queryFn: () => getFioConnection(),
+    enabled: !!userId
   })
 
   // Calculate default date (one week from now) and format it for input

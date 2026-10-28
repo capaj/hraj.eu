@@ -39,6 +39,7 @@ import { Route as ScenariosFioProfileRouteImport } from './routes/scenarios.fio-
 import { Route as ScenariosLocalizationRouteImport } from './routes/scenarios.localization'
 import { Route as ScenariosOnboardingRouteImport } from './routes/scenarios.onboarding'
 import { Route as ScenariosParticipantCapacityRouteImport } from './routes/scenarios.participant-capacity'
+import { Route as ScenariosPendingPaymentsRouteImport } from './routes/scenarios.pending-payments'
 import { Route as ScenariosPhoneNumbersRouteImport } from './routes/scenarios.phone-numbers'
 import { Route as ScenariosPresskitRouteImport } from './routes/scenarios.presskit'
 import { Route as ScenariosProfilePaymentInfoRouteImport } from './routes/scenarios.profile-payment-info'
@@ -201,6 +202,12 @@ const ScenariosParticipantCapacityRoute =
     path: '/scenarios/participant-capacity',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ScenariosPendingPaymentsRoute =
+  ScenariosPendingPaymentsRouteImport.update({
+    id: '/scenarios/pending-payments',
+    path: '/scenarios/pending-payments',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ScenariosPhoneNumbersRoute = ScenariosPhoneNumbersRouteImport.update({
   id: '/scenarios/phone-numbers',
   path: '/scenarios/phone-numbers',
@@ -275,6 +282,7 @@ export interface FileRoutesByFullPath {
   '/scenarios/localization': typeof ScenariosLocalizationRoute
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
+  '/scenarios/pending-payments': typeof ScenariosPendingPaymentsRoute
   '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
   '/scenarios/presskit': typeof ScenariosPresskitRoute
   '/scenarios/profile-payment-info': typeof ScenariosProfilePaymentInfoRoute
@@ -315,6 +323,7 @@ export interface FileRoutesByTo {
   '/scenarios/localization': typeof ScenariosLocalizationRoute
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
+  '/scenarios/pending-payments': typeof ScenariosPendingPaymentsRoute
   '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
   '/scenarios/presskit': typeof ScenariosPresskitRoute
   '/scenarios/profile-payment-info': typeof ScenariosProfilePaymentInfoRoute
@@ -356,6 +365,7 @@ export interface FileRoutesById {
   '/scenarios/localization': typeof ScenariosLocalizationRoute
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
+  '/scenarios/pending-payments': typeof ScenariosPendingPaymentsRoute
   '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
   '/scenarios/presskit': typeof ScenariosPresskitRoute
   '/scenarios/profile-payment-info': typeof ScenariosProfilePaymentInfoRoute
@@ -398,6 +408,7 @@ export interface FileRouteTypes {
     | '/scenarios/localization'
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
+    | '/scenarios/pending-payments'
     | '/scenarios/phone-numbers'
     | '/scenarios/presskit'
     | '/scenarios/profile-payment-info'
@@ -438,6 +449,7 @@ export interface FileRouteTypes {
     | '/scenarios/localization'
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
+    | '/scenarios/pending-payments'
     | '/scenarios/phone-numbers'
     | '/scenarios/presskit'
     | '/scenarios/profile-payment-info'
@@ -478,6 +490,7 @@ export interface FileRouteTypes {
     | '/scenarios/localization'
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
+    | '/scenarios/pending-payments'
     | '/scenarios/phone-numbers'
     | '/scenarios/presskit'
     | '/scenarios/profile-payment-info'
@@ -519,6 +532,7 @@ export interface RootRouteChildren {
   ScenariosLocalizationRoute: typeof ScenariosLocalizationRoute
   ScenariosOnboardingRoute: typeof ScenariosOnboardingRoute
   ScenariosParticipantCapacityRoute: typeof ScenariosParticipantCapacityRoute
+  ScenariosPendingPaymentsRoute: typeof ScenariosPendingPaymentsRoute
   ScenariosPhoneNumbersRoute: typeof ScenariosPhoneNumbersRoute
   ScenariosPresskitRoute: typeof ScenariosPresskitRoute
   ScenariosProfilePaymentInfoRoute: typeof ScenariosProfilePaymentInfoRoute
@@ -741,6 +755,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScenariosParticipantCapacityRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scenarios/pending-payments': {
+      id: '/scenarios/pending-payments'
+      path: '/scenarios/pending-payments'
+      fullPath: '/scenarios/pending-payments'
+      preLoaderRoute: typeof ScenariosPendingPaymentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scenarios/phone-numbers': {
       id: '/scenarios/phone-numbers'
       path: '/scenarios/phone-numbers'
@@ -831,6 +852,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScenariosLocalizationRoute: ScenariosLocalizationRoute,
   ScenariosOnboardingRoute: ScenariosOnboardingRoute,
   ScenariosParticipantCapacityRoute: ScenariosParticipantCapacityRoute,
+  ScenariosPendingPaymentsRoute: ScenariosPendingPaymentsRoute,
   ScenariosPhoneNumbersRoute: ScenariosPhoneNumbersRoute,
   ScenariosPresskitRoute: ScenariosPresskitRoute,
   ScenariosProfilePaymentInfoRoute: ScenariosProfilePaymentInfoRoute,

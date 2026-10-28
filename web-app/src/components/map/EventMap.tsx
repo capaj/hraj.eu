@@ -261,6 +261,8 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
             })
             const isJoined =
               currentUserId && event.participants.includes(currentUserId)
+            const isPendingPayment =
+              currentUserId && event.pendingPayment?.includes(currentUserId)
             const confirmedHeadcount = getTotalReservedAwareHeadcount(event)
             const spotsLeft = getAvailablePublicSpots(event)
             const eventIsClosed =
@@ -272,6 +274,13 @@ export const EventMap = forwardRef<EventMapRef, EventMapProps>(
                       >
                         ${t`You are playing`}
                       </button>`
+            } else if (!eventIsClosed && isPendingPayment) {
+              eventActionButton = `<a
+                        href="/events/${encodeURIComponent(event.id)}"
+                        style="padding: 6px 12px; background-color: #10b981; color: white; border-radius: 6px; font-size: 13px; font-weight: 500; text-align: center; text-decoration: none;"
+                      >
+                        ${t`Pay to confirm attendance`}
+                      </a>`
             } else if (!eventIsClosed) {
               const joinLabel = spotsLeft > 0 ? t`Join Game` : t`Join Waitlist`
               eventActionButton = `<button 
