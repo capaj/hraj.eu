@@ -31,6 +31,7 @@ import { Route as CitiesCitySlugRouteImport } from './routes/cities/$citySlug'
 import { Route as EditEventEventIdRouteImport } from './routes/edit-event.$eventId'
 import { Route as EventsEventIdRouteImport } from './routes/events/$eventId'
 import { Route as ScenariosAboutStatsRouteImport } from './routes/scenarios.about-stats'
+import { Route as ScenariosEventCommentImagesRouteImport } from './routes/scenarios.event-comment-images'
 import { Route as ScenariosEventMapRouteImport } from './routes/scenarios.event-map'
 import { Route as ScenariosFioPaymentsRouteImport } from './routes/scenarios.fio-payments'
 import { Route as ScenariosFioProfileRouteImport } from './routes/scenarios.fio-profile'
@@ -156,6 +157,12 @@ const ScenariosAboutStatsRoute = ScenariosAboutStatsRouteImport.update({
   path: '/scenarios/about-stats',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScenariosEventCommentImagesRoute =
+  ScenariosEventCommentImagesRouteImport.update({
+    id: '/scenarios/event-comment-images',
+    path: '/scenarios/event-comment-images',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ScenariosEventMapRoute = ScenariosEventMapRouteImport.update({
   id: '/scenarios/event-map',
   path: '/scenarios/event-map',
@@ -253,6 +260,7 @@ export interface FileRoutesByFullPath {
   '/edit-event/$eventId': typeof EditEventEventIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/scenarios/about-stats': typeof ScenariosAboutStatsRoute
+  '/scenarios/event-comment-images': typeof ScenariosEventCommentImagesRoute
   '/scenarios/event-map': typeof ScenariosEventMapRoute
   '/scenarios/fio-payments': typeof ScenariosFioPaymentsRoute
   '/scenarios/fio-profile': typeof ScenariosFioProfileRoute
@@ -291,6 +299,7 @@ export interface FileRoutesByTo {
   '/edit-event/$eventId': typeof EditEventEventIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/scenarios/about-stats': typeof ScenariosAboutStatsRoute
+  '/scenarios/event-comment-images': typeof ScenariosEventCommentImagesRoute
   '/scenarios/event-map': typeof ScenariosEventMapRoute
   '/scenarios/fio-payments': typeof ScenariosFioPaymentsRoute
   '/scenarios/fio-profile': typeof ScenariosFioProfileRoute
@@ -330,6 +339,7 @@ export interface FileRoutesById {
   '/edit-event/$eventId': typeof EditEventEventIdRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/scenarios/about-stats': typeof ScenariosAboutStatsRoute
+  '/scenarios/event-comment-images': typeof ScenariosEventCommentImagesRoute
   '/scenarios/event-map': typeof ScenariosEventMapRoute
   '/scenarios/fio-payments': typeof ScenariosFioPaymentsRoute
   '/scenarios/fio-profile': typeof ScenariosFioProfileRoute
@@ -370,6 +380,7 @@ export interface FileRouteTypes {
     | '/edit-event/$eventId'
     | '/events/$eventId'
     | '/scenarios/about-stats'
+    | '/scenarios/event-comment-images'
     | '/scenarios/event-map'
     | '/scenarios/fio-payments'
     | '/scenarios/fio-profile'
@@ -408,6 +419,7 @@ export interface FileRouteTypes {
     | '/edit-event/$eventId'
     | '/events/$eventId'
     | '/scenarios/about-stats'
+    | '/scenarios/event-comment-images'
     | '/scenarios/event-map'
     | '/scenarios/fio-payments'
     | '/scenarios/fio-profile'
@@ -446,6 +458,7 @@ export interface FileRouteTypes {
     | '/edit-event/$eventId'
     | '/events/$eventId'
     | '/scenarios/about-stats'
+    | '/scenarios/event-comment-images'
     | '/scenarios/event-map'
     | '/scenarios/fio-payments'
     | '/scenarios/fio-profile'
@@ -485,6 +498,7 @@ export interface RootRouteChildren {
   EditEventEventIdRoute: typeof EditEventEventIdRoute
   EventsEventIdRoute: typeof EventsEventIdRoute
   ScenariosAboutStatsRoute: typeof ScenariosAboutStatsRoute
+  ScenariosEventCommentImagesRoute: typeof ScenariosEventCommentImagesRoute
   ScenariosEventMapRoute: typeof ScenariosEventMapRoute
   ScenariosFioPaymentsRoute: typeof ScenariosFioPaymentsRoute
   ScenariosFioProfileRoute: typeof ScenariosFioProfileRoute
@@ -657,6 +671,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScenariosAboutStatsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scenarios/event-comment-images': {
+      id: '/scenarios/event-comment-images'
+      path: '/scenarios/event-comment-images'
+      fullPath: '/scenarios/event-comment-images'
+      preLoaderRoute: typeof ScenariosEventCommentImagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scenarios/event-map': {
       id: '/scenarios/event-map'
       path: '/scenarios/event-map'
@@ -781,6 +802,7 @@ const rootRouteChildren: RootRouteChildren = {
   EditEventEventIdRoute: EditEventEventIdRoute,
   EventsEventIdRoute: EventsEventIdRoute,
   ScenariosAboutStatsRoute: ScenariosAboutStatsRoute,
+  ScenariosEventCommentImagesRoute: ScenariosEventCommentImagesRoute,
   ScenariosEventMapRoute: ScenariosEventMapRoute,
   ScenariosFioPaymentsRoute: ScenariosFioPaymentsRoute,
   ScenariosFioProfileRoute: ScenariosFioProfileRoute,
