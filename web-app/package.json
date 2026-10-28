@@ -21,7 +21,9 @@
     "typecheck": "tsc --noEmit",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv",
     "lingui:extract": "lingui extract --clean",
-    "lingui:compile": "lingui compile --strict"
+    "lingui:compile": "lingui compile --strict",
+    "screenshots": "playwright test --config playwright.screenshots.config.ts",
+    "screenshot": "node screenshots/capture-page.mjs"
   },
   "dependencies": {
     "@daveyplate/better-auth-tanstack": "^1.3.6",
