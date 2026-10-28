@@ -33,6 +33,7 @@ import { Route as EventsEventIdRouteImport } from './routes/events/$eventId'
 import { Route as ScenariosAboutStatsRouteImport } from './routes/scenarios.about-stats'
 import { Route as ScenariosEventCommentImagesRouteImport } from './routes/scenarios.event-comment-images'
 import { Route as ScenariosEventMapRouteImport } from './routes/scenarios.event-map'
+import { Route as ScenariosEventPaymentModesRouteImport } from './routes/scenarios.event-payment-modes'
 import { Route as ScenariosFioPaymentsRouteImport } from './routes/scenarios.fio-payments'
 import { Route as ScenariosFioProfileRouteImport } from './routes/scenarios.fio-profile'
 import { Route as ScenariosLocalizationRouteImport } from './routes/scenarios.localization'
@@ -168,6 +169,12 @@ const ScenariosEventMapRoute = ScenariosEventMapRouteImport.update({
   path: '/scenarios/event-map',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScenariosEventPaymentModesRoute =
+  ScenariosEventPaymentModesRouteImport.update({
+    id: '/scenarios/event-payment-modes',
+    path: '/scenarios/event-payment-modes',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ScenariosFioPaymentsRoute = ScenariosFioPaymentsRouteImport.update({
   id: '/scenarios/fio-payments',
   path: '/scenarios/fio-payments',
@@ -262,6 +269,7 @@ export interface FileRoutesByFullPath {
   '/scenarios/about-stats': typeof ScenariosAboutStatsRoute
   '/scenarios/event-comment-images': typeof ScenariosEventCommentImagesRoute
   '/scenarios/event-map': typeof ScenariosEventMapRoute
+  '/scenarios/event-payment-modes': typeof ScenariosEventPaymentModesRoute
   '/scenarios/fio-payments': typeof ScenariosFioPaymentsRoute
   '/scenarios/fio-profile': typeof ScenariosFioProfileRoute
   '/scenarios/localization': typeof ScenariosLocalizationRoute
@@ -301,6 +309,7 @@ export interface FileRoutesByTo {
   '/scenarios/about-stats': typeof ScenariosAboutStatsRoute
   '/scenarios/event-comment-images': typeof ScenariosEventCommentImagesRoute
   '/scenarios/event-map': typeof ScenariosEventMapRoute
+  '/scenarios/event-payment-modes': typeof ScenariosEventPaymentModesRoute
   '/scenarios/fio-payments': typeof ScenariosFioPaymentsRoute
   '/scenarios/fio-profile': typeof ScenariosFioProfileRoute
   '/scenarios/localization': typeof ScenariosLocalizationRoute
@@ -341,6 +350,7 @@ export interface FileRoutesById {
   '/scenarios/about-stats': typeof ScenariosAboutStatsRoute
   '/scenarios/event-comment-images': typeof ScenariosEventCommentImagesRoute
   '/scenarios/event-map': typeof ScenariosEventMapRoute
+  '/scenarios/event-payment-modes': typeof ScenariosEventPaymentModesRoute
   '/scenarios/fio-payments': typeof ScenariosFioPaymentsRoute
   '/scenarios/fio-profile': typeof ScenariosFioProfileRoute
   '/scenarios/localization': typeof ScenariosLocalizationRoute
@@ -382,6 +392,7 @@ export interface FileRouteTypes {
     | '/scenarios/about-stats'
     | '/scenarios/event-comment-images'
     | '/scenarios/event-map'
+    | '/scenarios/event-payment-modes'
     | '/scenarios/fio-payments'
     | '/scenarios/fio-profile'
     | '/scenarios/localization'
@@ -421,6 +432,7 @@ export interface FileRouteTypes {
     | '/scenarios/about-stats'
     | '/scenarios/event-comment-images'
     | '/scenarios/event-map'
+    | '/scenarios/event-payment-modes'
     | '/scenarios/fio-payments'
     | '/scenarios/fio-profile'
     | '/scenarios/localization'
@@ -460,6 +472,7 @@ export interface FileRouteTypes {
     | '/scenarios/about-stats'
     | '/scenarios/event-comment-images'
     | '/scenarios/event-map'
+    | '/scenarios/event-payment-modes'
     | '/scenarios/fio-payments'
     | '/scenarios/fio-profile'
     | '/scenarios/localization'
@@ -500,6 +513,7 @@ export interface RootRouteChildren {
   ScenariosAboutStatsRoute: typeof ScenariosAboutStatsRoute
   ScenariosEventCommentImagesRoute: typeof ScenariosEventCommentImagesRoute
   ScenariosEventMapRoute: typeof ScenariosEventMapRoute
+  ScenariosEventPaymentModesRoute: typeof ScenariosEventPaymentModesRoute
   ScenariosFioPaymentsRoute: typeof ScenariosFioPaymentsRoute
   ScenariosFioProfileRoute: typeof ScenariosFioProfileRoute
   ScenariosLocalizationRoute: typeof ScenariosLocalizationRoute
@@ -685,6 +699,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScenariosEventMapRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scenarios/event-payment-modes': {
+      id: '/scenarios/event-payment-modes'
+      path: '/scenarios/event-payment-modes'
+      fullPath: '/scenarios/event-payment-modes'
+      preLoaderRoute: typeof ScenariosEventPaymentModesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scenarios/fio-payments': {
       id: '/scenarios/fio-payments'
       path: '/scenarios/fio-payments'
@@ -804,6 +825,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScenariosAboutStatsRoute: ScenariosAboutStatsRoute,
   ScenariosEventCommentImagesRoute: ScenariosEventCommentImagesRoute,
   ScenariosEventMapRoute: ScenariosEventMapRoute,
+  ScenariosEventPaymentModesRoute: ScenariosEventPaymentModesRoute,
   ScenariosFioPaymentsRoute: ScenariosFioPaymentsRoute,
   ScenariosFioProfileRoute: ScenariosFioProfileRoute,
   ScenariosLocalizationRoute: ScenariosLocalizationRoute,

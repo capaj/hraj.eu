@@ -33,7 +33,10 @@ export async function resolveEventPayment(
   }
 ) {
   const paymentMode = input.paymentMode ?? 'manual'
-  const requirePayment = input.requirePayment ?? false
+  // Fio verification always gates attendance; manual tracking can be optional
+  // or require the player's own payment declaration.
+  const requirePayment =
+    paymentMode === 'fio' || (input.requirePayment ?? false)
   const pricePerPersonCents =
     paymentMode === 'fio' || requirePayment
       ? fixedPriceCents(

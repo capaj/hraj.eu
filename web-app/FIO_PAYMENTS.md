@@ -15,10 +15,13 @@ Do not change the encryption key without first re-encrypting saved tokens with t
 
 ## Event behavior
 
-- Manual tracking remains the default. Organizers can confirm or clear players' payment status.
+- The event form offers exactly three payment modes:
+  1. **No advance payment** (default): joining confirms attendance immediately. Payment can be arranged later.
+  2. **Advance payment on trust**: joining reserves a pending place. The player checks **I have paid** after sending payment for themselves and their guests, which immediately confirms attendance. Clearing the checkbox returns their booking to pending without releasing capacity. Organizers can correct manual payment status; other players cannot change it.
+  3. **Advance payment verified by Fio banka**: attendance is confirmed only after bank verification. This option is greyed out until the organizer saves a read-only API token with their Fio bank account in their profile. The server also rejects creation without a saved token, and Fio mode always requires payment before confirmation.
 - Fio tracking assigns a distinct numeric variable symbol to every player and named guest. QR codes include the verified account, CZK, fixed amount and variable symbol. A player can view their own requests; the organizer can view every request for their event.
 - The fixed per-player amount is the total event price divided by the ideal player count (or maximum), rounded once to cents. Once anyone registers, price, currency, tracking mode and payment requirement are locked. Capacity can still change without changing amounts already issued.
-- With advance payment required, a booking holds capacity in `pending_payment` and does **not** count as confirmed attendance or toward the minimum for the cron confirmation decision. Full payment for the player and their guests confirms their booking. For manual tracking only the organizer can verify advance payments; players cannot self-confirm.
+- With advance payment required, a booking holds capacity in `pending_payment` and does **not** count as confirmed attendance or toward the minimum for the cron confirmation decision. In trust mode the player's declaration covers their booking, including guests. In Fio mode the bank must verify full payment for the player and their guests; neither players nor organizers can override that verification.
 - Waitlisted players are not asked to pay. When a place opens, their booking becomes pending (or confirmed if advance payment is not required), and Fio payment requests are created in the same transaction.
 - Guest lists are fixed after booking for these events. Additional players can join separately. Leaving cancels the whole booking and its active requests; a rejoin issues new references. Old references remain available to detect late payments for organizer review.
 - Partial payments accumulate. Repeated bank exports cannot double-count a transaction. Overpayments and payments for cancelled bookings/events are visible for refund review. Refunds are handled by the organizer directly in their bank; hraj.eu does not issue refunds.
@@ -37,6 +40,8 @@ Only incoming credits with a matching variable symbol, expected currency and a b
 ## Preview and checks
 
 The development-only `/scenarios/fio-payments` route shows event payment settings, a player's QR payment, and the organizer's payment table. Its controls simulate receipt and cancellation in browser state. Profile setup has its own `/scenarios/fio-profile` route, including replacing or disconnecting a saved token. No event page or event preview renders the token input.
+
+`/scenarios/event-payment-modes` renders the actual new-event form with fixture venues and an optional saved Fio connection. Its controls and submissions only change browser state. It covers all three choices, including the disabled Fio option when no token is saved.
 
 Run `pnpm --dir web-app screenshots` from the repository root to capture these states at desktop and mobile sizes. The [portable Playwright runner](screenshots/README.md) uses isolated fixture configuration and requires no bank, database, or agent browser connection. It checks that event screens never show a token input and that the profile reveals the input only for setup or explicit replacement.
 

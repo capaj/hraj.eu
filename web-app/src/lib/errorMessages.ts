@@ -12,7 +12,7 @@ const errorMessages = {
   'Payment settings are locked after the first registration': msg`Payment settings are locked after the first registration`,
   'Capacity cannot be lower than existing bookings': msg`Capacity cannot be lower than existing bookings`,
   'Fio payments can only be confirmed by the bank': msg`Fio payments can only be confirmed by the bank`,
-  'Only the organizer can verify advance payments': msg`Only the organizer can verify advance payments`,
+  'You can only update your own payment status': msg`You can only update your own payment status`,
 
   'Administrator access is required': msg`Administrator access is required`,
   'Attendee not found': msg`Attendee not found`,

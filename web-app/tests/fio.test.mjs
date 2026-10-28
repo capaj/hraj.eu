@@ -318,6 +318,17 @@ test('manual events retain immediate attendance; Fio setup checks account owners
     .where(eq(eventT.id, 'event'))
   assert.equal(await join(database, 'anna'), 'confirmed')
   assert.equal((await requests(database)).length, 0)
+  await setManualPaymentHandler(database, {
+    eventId: 'event',
+    actorId: 'anna',
+    paid: true
+  })
+  await setManualPaymentHandler(database, {
+    eventId: 'event',
+    actorId: 'anna',
+    paid: false
+  })
+  assert.equal((await participants(database))[0].status, 'confirmed')
   await assert.rejects(
     resolveEventPayment(database, 'anna', {
       paymentMode: 'fio',
@@ -338,7 +349,7 @@ test('manual events retain immediate attendance; Fio setup checks account owners
   )
 })
 
-test('players cannot self-confirm advance payment or overwrite bank-verified status', async (t) => {
+test('neither players nor organizers can overwrite bank-verified payment status', async (t) => {
   const { database } = await createPaymentTestDatabase(t)
   await join(database, 'anna')
   await assert.rejects(
@@ -358,18 +369,24 @@ test('players cannot self-confirm advance payment or overwrite bank-verified sta
     }),
     /only be confirmed by the bank/
   )
+  assert.equal((await participants(database))[0].status, 'pending_payment')
+})
+
+test('trusted advance payments confirm on the player declaration and keep unpaid places reserved', async (t) => {
+  const { database } = await createPaymentTestDatabase(t)
   await database
     .update(eventT)
-    .set({ paymentMode: 'manual' })
+    .set({ paymentMode: 'manual', fioConnectionId: null })
     .where(eq(eventT.id, 'event'))
-  await assert.rejects(
-    setManualPaymentHandler(database, {
-      eventId: 'event',
-      actorId: 'anna',
-      paid: true
-    }),
-    /Only the organizer/
-  )
+  assert.equal(await join(database, 'anna'), 'pending_payment')
+  assert.equal((await requests(database)).length, 0)
+  await setManualPaymentHandler(database, {
+    eventId: 'event',
+    actorId: 'anna',
+    paid: true
+  })
+  assert.equal((await participants(database))[0].status, 'confirmed')
+  assert.ok((await participants(database))[0].markedAsPaidAt)
   await assert.rejects(
     setManualPaymentHandler(database, {
       eventId: 'event',
@@ -377,22 +394,114 @@ test('players cannot self-confirm advance payment or overwrite bank-verified sta
       targetUserId: 'anna',
       paid: true
     }),
-    /Only the organizer/
+    /own payment status/
+  )
+  await assert.rejects(
+    setManualPaymentHandler(database, {
+      eventId: 'event',
+      actorId: 'petr',
+      targetUserId: 'anna',
+      paid: false
+    }),
+    /own payment status/
   )
   await setManualPaymentHandler(database, {
     eventId: 'event',
-    actorId: 'organizer',
-    targetUserId: 'anna',
-    paid: true
-  })
-  assert.equal((await participants(database))[0].status, 'confirmed')
-  await setManualPaymentHandler(database, {
-    eventId: 'event',
-    actorId: 'organizer',
-    targetUserId: 'anna',
+    actorId: 'anna',
     paid: false
   })
   assert.equal((await participants(database))[0].status, 'pending_payment')
+  assert.equal((await participants(database))[0].markedAsPaidAt, null)
+  assert.equal(await join(database, 'petr'), 'pending_payment')
+  assert.equal(await join(database, 'jan'), 'waitlisted')
+  await assert.rejects(
+    setManualPaymentHandler(database, {
+      eventId: 'event',
+      actorId: 'jan',
+      paid: true
+    }),
+    /must join this event/
+  )
+  await leaveEventHandler(database, { eventId: 'event', userId: 'anna' })
+  await assert.rejects(
+    setManualPaymentHandler(database, {
+      eventId: 'event',
+      actorId: 'anna',
+      paid: true
+    }),
+    /must join this event/
+  )
+  assert.equal(
+    (await participants(database)).find((row) => row.userId === 'jan').status,
+    'pending_payment'
+  )
+})
+
+test('all three payment modes resolve correctly and Fio always requires a saved token and advance payment', async (t) => {
+  const { database } = await createPaymentTestDatabase(t)
+  const price = { price: 300, currency: 'CZK', maxParticipants: 2 }
+  assert.deepEqual(
+    await resolveEventPayment(database, 'organizer', {
+      ...price,
+      paymentMode: 'manual',
+      requirePayment: false
+    }),
+    {
+      paymentMode: 'manual',
+      requirePayment: false,
+      pricePerPersonCents: null,
+      fioConnectionId: null
+    }
+  )
+  assert.deepEqual(
+    await resolveEventPayment(database, 'organizer', {
+      ...price,
+      paymentMode: 'manual',
+      requirePayment: true
+    }),
+    {
+      paymentMode: 'manual',
+      requirePayment: true,
+      pricePerPersonCents: 15000,
+      fioConnectionId: null
+    }
+  )
+  assert.deepEqual(
+    await resolveEventPayment(database, 'organizer', {
+      ...price,
+      paymentMode: 'fio',
+      requirePayment: false
+    }),
+    {
+      paymentMode: 'fio',
+      requirePayment: true,
+      pricePerPersonCents: 15000,
+      fioConnectionId: 'organizer'
+    }
+  )
+  await database
+    .update(fioConnectionT)
+    .set({ encryptedToken: null })
+    .where(eq(fioConnectionT.userId, 'organizer'))
+  await assert.rejects(
+    resolveEventPayment(database, 'organizer', {
+      ...price,
+      paymentMode: 'fio',
+      requirePayment: true
+    }),
+    /Connect your Fio account/
+  )
+  // A disconnected Fio token must not prevent either manual mode.
+  assert.equal(
+    (
+      await resolveEventPayment(database, 'organizer', {
+        ...price,
+        paymentMode: 'manual',
+        requirePayment: true
+      })
+    ).requirePayment,
+    true
+  )
 })
 
 test('capacity edits preserve issued amounts and payment terms cannot change after booking', async (t) => {

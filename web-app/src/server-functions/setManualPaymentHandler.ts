@@ -20,11 +20,8 @@ export async function setManualPaymentHandler(
     if (event.paymentMode === 'fio')
       throw new Error('Fio payments can only be confirmed by the bank')
     const targetUserId = input.targetUserId ?? input.actorId
-    if (
-      (event.requirePayment || targetUserId !== input.actorId) &&
-      event.organizerId !== input.actorId
-    ) {
-      throw new Error('Only the organizer can verify advance payments')
+    if (targetUserId !== input.actorId && event.organizerId !== input.actorId) {
+      throw new Error('You can only update your own payment status')
     }
     const [participant] = await tx
       .select()
@@ -52,6 +49,11 @@ export async function setManualPaymentHandler(
         status
       })
       .where(eq(participantT.id, participant.id))
+    if (status !== participant.status)
+      await tx
+        .update(eventT)
+        .set({ updatedAt: now })
+        .where(eq(eventT.id, event.id))
     return { success: true, markedAsPaidAt: input.paid ? now : null }
   })
 }

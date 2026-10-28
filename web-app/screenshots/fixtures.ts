@@ -1,11 +1,11 @@
 import { mkdir } from 'node:fs/promises'
 import path from 'node:path'
-import { test as base, expect } from '@playwright/test'
+import { test as base, expect, type Locator } from '@playwright/test'
 
 export { expect }
 
 export const test = base.extend<{
-  capture: (name: string) => Promise<void>
+  capture: (name: string, target?: Locator) => Promise<void>
 }>({
   page: async ({ page, baseURL }, use) => {
     const errors: string[] = []
@@ -44,7 +44,7 @@ export const test = base.extend<{
     ).toEqual([])
   },
   capture: async ({ page }, use, testInfo) => {
-    await use(async (name) => {
+    await use(async (name, target) => {
       await expect(page.locator('html')).toHaveAttribute(
         'data-hydrated',
         'true'
@@ -68,11 +68,18 @@ export const test = base.extend<{
       )
       await mkdir(directory, { recursive: true })
       const screenshotPath = path.join(directory, `${name}.png`)
-      await page.screenshot({
-        path: screenshotPath,
-        fullPage: true,
-        animations: 'disabled'
-      })
+      if (target) {
+        await target.screenshot({
+          path: screenshotPath,
+          animations: 'disabled'
+        })
+      } else {
+        await page.screenshot({
+          path: screenshotPath,
+          fullPage: true,
+          animations: 'disabled'
+        })
+      }
       await testInfo.attach(name, {
         path: screenshotPath,
         contentType: 'image/png'

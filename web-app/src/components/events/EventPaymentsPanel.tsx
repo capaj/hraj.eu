@@ -94,7 +94,7 @@ export function EventPaymentsView({
               className="flex items-center gap-2 font-medium text-emerald-700"
             >
               <CheckCircle size={20} />
-              <Trans>Payment received</Trans>
+              <Trans>Marked as paid</Trans>
             </p>
           )}
         {pending && !cancelled && (
@@ -114,13 +114,48 @@ export function EventPaymentsView({
                 </Trans>
               ) : (
                 <Trans>
-                  Your place is held. The organizer will confirm attendance
-                  after receiving your payment.
+                  Your place is held. Check “I have paid” after sending payment
+                  to confirm your attendance.
                 </Trans>
               )}
             </p>
           </div>
         )}
+        {event.paymentMode !== 'fio' &&
+          ownParticipant &&
+          ['confirmed', 'pending_payment'].includes(ownParticipant.status) && (
+            <label className="flex items-start gap-3 rounded-lg border border-primary-200 bg-primary-50 p-4">
+              <input
+                type="checkbox"
+                className="mt-1 h-4 w-4"
+                checked={!!ownParticipant.paidAt}
+                disabled={busy || cancelled || !onVerify}
+                onChange={(change) =>
+                  onVerify?.(ownParticipant.userId, change.target.checked)
+                }
+              />
+              <span>
+                <strong className="block text-primary-900">
+                  <Trans>I have paid</Trans>
+                </strong>
+                <span className="mt-1 block text-sm text-primary-800">
+                  {ownParticipant.guests.length > 0 ? (
+                    <Trans>I have sent payment for myself and my guests.</Trans>
+                  ) : (
+                    <Trans>I have sent my payment to the organizer.</Trans>
+                  )}
+                  {event.requirePayment && (
+                    <>
+                      {' '}
+                      <Trans>
+                        Checking this confirms your attendance immediately.
+                      </Trans>
+                    </>
+                  )}
+                </span>
+              </span>
+            </label>
+          )}
         {cancelled && (
           <p
             role="status"

@@ -173,6 +173,16 @@ function FioPaymentsScenario() {
                   onChange={(nextMode, nextRequired) => {
                     setMode(nextMode)
                     setRequirePayment(nextRequired)
+                    setRequests((previous) =>
+                      previous.map((request) => {
+                        let participantStatus: EventPayments['requests'][number]['participantStatus'] =
+                          'confirmed'
+                        if (request.cancelledAt) participantStatus = 'cancelled'
+                        else if (nextRequired && !request.paidAt)
+                          participantStatus = 'pending_payment'
+                        return { ...request, participantStatus }
+                      })
+                    )
                   }}
                 />
               </CardContent>
@@ -220,6 +230,7 @@ function FioPaymentsScenario() {
                 )
               }}
               currentUserId="anna"
+              onVerify={confirm}
             />
             <EventPaymentsView
               event={previewEvent}

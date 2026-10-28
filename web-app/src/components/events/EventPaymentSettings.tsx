@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/react/macro'
 import { Link } from '@tanstack/react-router'
-import { Landmark, HandCoins } from 'lucide-react'
+import { Coins, Landmark, HandCoins } from 'lucide-react'
 
 export function EventPaymentSettings({
   mode,
@@ -20,46 +20,79 @@ export function EventPaymentSettings({
   onChange: (mode: 'manual' | 'fio', requirePayment: boolean) => void
 }) {
   return (
-    <div className="space-y-4 rounded-xl border border-gray-200 bg-gray-50 p-4">
+    <div
+      data-testid="event-payment-settings"
+      className="space-y-4 rounded-xl border border-gray-200 bg-gray-50 p-4"
+    >
       <fieldset>
         <legend className="mb-3 text-sm font-semibold text-gray-900">
-          <Trans>Payment tracking</Trans>
+          <Trans>Payment mode</Trans>
         </legend>
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="space-y-3">
           <label
-            className={`cursor-pointer rounded-lg border bg-white p-3 ${mode === 'manual' ? 'border-primary-500 ring-1 ring-primary-500' : 'border-gray-200'}`}
+            className={`block cursor-pointer rounded-lg border bg-white p-4 ${mode === 'manual' && !requirePayment ? 'border-primary-500 ring-1 ring-primary-500' : 'border-gray-200'}`}
           >
             <span className="flex items-center gap-2 font-medium">
               <input
                 type="radio"
                 name="payment-mode"
+                value="none"
                 disabled={disabled}
-                checked={mode === 'manual'}
-                onChange={() => onChange('manual', requirePayment)}
+                checked={mode === 'manual' && !requirePayment}
+                onChange={() => onChange('manual', false)}
               />
-              <HandCoins size={17} />
-              <Trans>Manual</Trans>
+              <Coins size={17} />
+              <Trans>No advance payment</Trans>
             </span>
-            <p className="mt-2 text-xs text-gray-500">
-              <Trans>You check and confirm payments.</Trans>
+            <p className="ml-6 mt-2 text-sm text-gray-600">
+              <Trans>
+                Attendance is confirmed when the player joins. Payment can be
+                arranged later.
+              </Trans>
             </p>
           </label>
           <label
-            className={`rounded-lg border bg-white p-3 ${fioConnected ? 'cursor-pointer' : 'opacity-60'} ${mode === 'fio' ? 'border-primary-500 ring-1 ring-primary-500' : 'border-gray-200'}`}
+            className={`block cursor-pointer rounded-lg border bg-white p-4 ${mode === 'manual' && requirePayment ? 'border-primary-500 ring-1 ring-primary-500' : 'border-gray-200'}`}
           >
             <span className="flex items-center gap-2 font-medium">
               <input
                 type="radio"
                 name="payment-mode"
+                value="honor"
+                disabled={disabled}
+                checked={mode === 'manual' && requirePayment}
+                onChange={() => onChange('manual', true)}
+              />
+              <HandCoins size={17} />
+              <Trans>Advance payment on trust</Trans>
+            </span>
+            <p className="ml-6 mt-2 text-sm text-gray-600">
+              <Trans>
+                The player checks “I have paid” after sending payment. This
+                immediately confirms their attendance.
+              </Trans>
+            </p>
+          </label>
+          <label
+            className={`block rounded-lg border bg-white p-4 ${fioConnected ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'} ${mode === 'fio' ? 'border-primary-500 ring-1 ring-primary-500' : 'border-gray-200'}`}
+          >
+            <span className="flex items-center gap-2 font-medium">
+              <input
+                type="radio"
+                name="payment-mode"
+                value="fio"
                 checked={mode === 'fio'}
                 disabled={!fioConnected || disabled}
-                onChange={() => onChange('fio', requirePayment)}
+                onChange={() => onChange('fio', true)}
               />
               <Landmark size={17} />
-              <Trans>Fio banka</Trans>
+              <Trans>Advance payment verified by Fio banka</Trans>
             </span>
-            <p className="mt-2 text-xs text-gray-500">
-              <Trans>Personal QR codes and automatic bank checks.</Trans>
+            <p className="ml-6 mt-2 text-sm text-gray-600">
+              <Trans>
+                Each player gets a personal QR code. Attendance is confirmed
+                only after the bank verifies payment.
+              </Trans>
             </p>
           </label>
         </div>
@@ -77,31 +110,15 @@ export function EventPaymentSettings({
       )}
       {!fioConnected && (
         <p className="text-sm text-gray-600">
+          <Trans>
+            Save a read-only Fio API token with your bank account in your
+            profile to enable bank verification.
+          </Trans>{' '}
           <Link to="/user-profile" className="text-primary-700 underline">
             <Trans>Connect Fio in your profile</Trans>
           </Link>
         </p>
       )}
-      <label className="flex items-start gap-3 text-sm">
-        <input
-          type="checkbox"
-          className="mt-1"
-          disabled={disabled}
-          checked={requirePayment}
-          onChange={(event) => onChange(mode, event.target.checked)}
-        />
-        <span>
-          <strong className="block text-gray-900">
-            <Trans>Require payment before confirming attendance</Trans>
-          </strong>
-          <span className="mt-1 block text-gray-500">
-            <Trans>
-              A place is held while payment is pending. Only paid players count
-              toward the event minimum.
-            </Trans>
-          </span>
-        </span>
-      </label>
       {(mode === 'fio' || requirePayment) && (
         <p className="rounded-lg bg-primary-50 p-3 text-sm text-primary-900">
           <Trans>Fixed price per player:</Trans>{' '}

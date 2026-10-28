@@ -105,6 +105,17 @@ interface CreateEventFormProps {
   onCancelEvent?: (reason?: string) => Promise<void> | void
   isEdit?: boolean
   paymentSettingsLocked?: boolean
+  loadOptions?: () => Promise<EventFormOptions>
+}
+
+type EventFormOptions = {
+  venues: Venue[]
+  coreGroups: Array<{ id: string; name: string; userIds: string[] }>
+}
+
+async function loadEventFormOptions(): Promise<EventFormOptions> {
+  const [venues, coreGroups] = await Promise.all([getVenues(), getCoreGroups()])
+  return { venues, coreGroups }
 }
 
 export const CreateEventForm: React.FC<CreateEventFormProps> = ({
@@ -113,6 +124,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   initialData,
   onCancelEvent,
   paymentSettingsLocked = false,
+  loadOptions = loadEventFormOptions,
   isEdit = !!initialData
 }) => {
   useLingui()
@@ -229,12 +241,9 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     const fetchVenues = async () => {
       try {
         setIsLoadingVenues(true)
-        const [venuesData, coreGroupsData] = await Promise.all([
-          getVenues(),
-          getCoreGroups()
-        ])
-        setVenues(venuesData)
-        setCoreGroups(coreGroupsData)
+        const options = await loadOptions()
+        setVenues(options.venues)
+        setCoreGroups(options.coreGroups)
       } catch (error) {
         console.error('Failed to load venues:', error)
       } finally {
@@ -242,7 +251,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
       }
     }
     fetchVenues()
-  }, [])
+  }, [loadOptions])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -1285,11 +1294,13 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
       </Card>
 
       {/* Add Venue Modal */}
-      <AddVenueModal
-        isOpen={showAddVenueModal}
-        onClose={() => setShowAddVenueModal(false)}
-        onSubmit={handleAddVenue}
-      />
+      {showAddVenueModal && (
+        <AddVenueModal
+          isOpen={showAddVenueModal}
+          onClose={() => setShowAddVenueModal(false)}
+          onSubmit={handleAddVenue}
+        />
+      )}
 
       {/* Cancel Event Confirmation Modal */}
       {showCancelConfirm && (

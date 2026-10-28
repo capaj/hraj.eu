@@ -110,6 +110,7 @@ For every new user-visible UI feature, add or update a route scenario that rende
 - [Attendee phone numbers](http://localhost:5173/scenarios/phone-numbers): `web-app/src/routes/scenarios.phone-numbers.tsx`
 - [Fio event payments](http://localhost:5173/scenarios/fio-payments): `web-app/src/routes/scenarios.fio-payments.tsx`
 - [Fio profile connection](http://localhost:5173/scenarios/fio-profile): `web-app/src/routes/scenarios.fio-profile.tsx`
+- [New-event payment modes](http://localhost:5173/scenarios/event-payment-modes): `web-app/src/routes/scenarios.event-payment-modes.tsx`
 
 Follow their fixture-data and callback patterns, and keep the development-only guard. Existing screenshot artifacts are in `web-app/artifacts/screenshots/`.
 
