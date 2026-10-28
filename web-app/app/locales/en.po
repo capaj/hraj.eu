@@ -510,11 +510,11 @@ msgstr ""
 msgid "Administrator access required"
 msgstr ""
 
-#: src/components/events/EventPaymentSettings.tsx:67
+#: src/components/events/EventPaymentSettings.tsx:261
 msgid "Advance payment on trust"
 msgstr "Advance payment on trust"
 
-#: src/components/events/EventPaymentSettings.tsx:89
+#: src/components/events/EventPaymentSettings.tsx:252
 msgid "Advance payment verified by Fio banka"
 msgstr "Advance payment verified by Fio banka"
 
@@ -631,7 +631,7 @@ msgstr ""
 msgid "Attendance bans"
 msgstr ""
 
-#: src/components/events/EventPaymentSettings.tsx:48
+#: src/components/events/EventPaymentSettings.tsx:122
 msgid "Attendance is confirmed when the player joins. Payment can be arranged later."
 msgstr "Attendance is confirmed when the player joins. Payment can be arranged later."
 
@@ -710,7 +710,7 @@ msgstr ""
 msgid "Bank account updated!"
 msgstr ""
 
-#: src/components/events/EventPaymentSettings.tsx:130
+#: src/components/events/EventPaymentSettings.tsx:211
 msgid "Based on total price and ideal player count (or maximum). Payment settings are locked after the first registration."
 msgstr "Based on total price and ideal player count (or maximum). Payment settings are locked after the first registration."
 
@@ -817,6 +817,7 @@ msgid "Call {name} at {phone}"
 msgstr ""
 
 #: src/components/events/EventComments.tsx:219
+#: src/components/events/EventPaymentSettings.tsx:222
 #: src/components/user/FioConnectionCard.tsx:198
 #: src/components/user/PaymentInformationCard.tsx:225
 #: src/components/user/PaymentInformationCard.tsx:285
@@ -896,6 +897,7 @@ msgstr ""
 msgid "Challenging conditions"
 msgstr ""
 
+#: src/components/events/EventPaymentSettings.tsx:71
 #: src/pages/UserProfilePage.tsx:709
 msgid "Change"
 msgstr ""
@@ -903,6 +905,10 @@ msgstr ""
 #: src/pages/UserProfilePage.tsx:849
 msgid "Change Password"
 msgstr ""
+
+#: src/components/events/EventPaymentSettings.tsx:92
+msgid "Change payment mode"
+msgstr "Change payment mode"
 
 #: src/pages/TOSPage.tsx:444
 msgid "Changes to Terms"
@@ -1025,6 +1031,7 @@ msgstr ""
 
 #: src/components/events/CreateEventForm.tsx:1285
 #: src/components/events/EditableEventCard.tsx:259
+#: src/components/events/EventPaymentSettings.tsx:97
 msgid "Close"
 msgstr ""
 
@@ -1127,7 +1134,7 @@ msgstr "Connect a Czech Fio account in CZK."
 msgid "Connect Fio account"
 msgstr "Connect Fio account"
 
-#: src/components/events/EventPaymentSettings.tsx:118
+#: src/components/events/EventPaymentSettings.tsx:198
 msgid "Connect Fio in your profile"
 msgstr "Connect Fio in your profile"
 
@@ -1531,7 +1538,7 @@ msgstr ""
 msgid "Each picture must be nonempty and no larger than 10 MB."
 msgstr "Each picture must be nonempty and no larger than 10 MB."
 
-#: src/components/events/EventPaymentSettings.tsx:92
+#: src/components/events/EventPaymentSettings.tsx:164
 msgid "Each player gets a personal QR code. Attendance is confirmed only after the bank verifies payment."
 msgstr "Each player gets a personal QR code. Attendance is confirmed only after the bank verifies payment."
 
@@ -2126,7 +2133,7 @@ msgid "Fio payments require CZK"
 msgstr "Fio payments require CZK"
 
 #: src/components/events/EventPaymentCard.tsx:49
-#: src/components/events/EventPaymentSettings.tsx:124
+#: src/components/events/EventPaymentSettings.tsx:204
 msgid "Fixed price per player:"
 msgstr "Fixed price per player:"
 
@@ -2856,7 +2863,7 @@ msgstr ""
 msgid "Manage Core Groups"
 msgstr ""
 
-#: src/components/events/EventPaymentSettings.tsx:107
+#: src/components/events/EventPaymentSettings.tsx:183
 msgid "Manage Fio connection"
 msgstr "Manage Fio connection"
 
@@ -3088,7 +3095,7 @@ msgstr ""
 msgid "Newest First"
 msgstr ""
 
-#: src/components/events/EventPaymentSettings.tsx:45
+#: src/components/events/EventPaymentSettings.tsx:269
 msgid "No advance payment"
 msgstr "No advance payment"
 
@@ -3505,7 +3512,8 @@ msgstr "Payment is required to confirm your attendance."
 msgid "Payment marked as complete."
 msgstr ""
 
-#: src/components/events/EventPaymentSettings.tsx:29
+#: src/components/events/EventPaymentSettings.tsx:53
+#: src/components/events/EventPaymentSettings.tsx:104
 msgid "Payment mode"
 msgstr "Payment mode"
 
@@ -4215,6 +4223,7 @@ msgid "Rugby Union"
 msgstr ""
 
 #: src/components/events/EventComments.tsx:234
+#: src/components/events/EventPaymentSettings.tsx:235
 #: src/components/user/PaymentInformationCard.tsx:233
 #: src/components/user/PaymentInformationCard.tsx:293
 #: src/pages/EventDetailsPage.tsx:854
@@ -4223,7 +4232,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: src/components/events/EventPaymentSettings.tsx:113
+#: src/components/events/EventPaymentSettings.tsx:189
 msgid "Save a read-only Fio API token with your bank account in your profile to enable bank verification."
 msgstr "Save a read-only Fio API token with your bank account in your profile to enable bank verification."
 
@@ -4677,7 +4686,7 @@ msgstr ""
 msgid "The page you're looking for doesn't exist or has been moved."
 msgstr ""
 
-#: src/components/events/EventPaymentSettings.tsx:70
+#: src/components/events/EventPaymentSettings.tsx:143
 msgid "The player checks “I have paid” after sending payment. This immediately confirms their attendance."
 msgstr "The player checks “I have paid” after sending payment. This immediately confirms their attendance."
 
@@ -5022,7 +5031,7 @@ msgstr ""
 msgid "Users participate in sports activities at their own risk and are responsible for:"
 msgstr ""
 
-#: src/components/events/EventPaymentSettings.tsx:102
+#: src/components/events/EventPaymentSettings.tsx:174
 msgid "Uses the Fio account saved in your profile. You do not need to enter the token again."
 msgstr "Uses the Fio account saved in your profile. You do not need to enter the token again."
 

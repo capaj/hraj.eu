@@ -11,9 +11,19 @@ test('Fio event: saved account, QR payment, and confirmation', async ({
   ).toBeVisible()
   await expect(page.locator('#fio-token')).toHaveCount(0)
   await expect(page.getByRole('checkbox', { name: /^Zaplatil/ })).toHaveCount(0)
+  await page
+    .getByTestId('event-payment-settings')
+    .getByRole('button', { name: 'Změnit', exact: true })
+    .click()
+  const dialog = page.getByRole('dialog', {
+    name: 'Změnit režim placení',
+    exact: true
+  })
   await expect(
-    page.getByRole('link', { name: 'Spravovat propojení s Fio' })
+    dialog.getByRole('link', { name: 'Spravovat propojení s Fio' })
   ).toHaveAttribute('href', '/user-profile')
+  await page.keyboard.press('Escape')
+  await expect(dialog).toHaveCount(0)
   await expect(page.getByRole('img', { name: 'QR platba' })).toBeVisible()
   await expect(
     page.getByText('Čekáme na platbu — místo máte rezervované', { exact: true })
@@ -39,8 +49,16 @@ test('Trusted advance payment: player checkbox immediately confirms attendance',
   await page.goto('/scenarios/fio-payments')
   await expect(page.locator('html')).toHaveAttribute('data-hydrated', 'true')
   await page
+    .getByTestId('event-payment-settings')
+    .getByRole('button', { name: 'Změnit', exact: true })
+    .click()
+  await page
     .getByRole('radio', { name: /^Platba předem na dobré slovo/ })
     .check()
+  await page
+    .getByRole('dialog')
+    .getByRole('button', { name: 'Uložit', exact: true })
+    .click()
   await expect(page.getByRole('img', { name: 'QR platba' })).toHaveCount(0)
   await expect(page.locator('#fio-token')).toHaveCount(0)
   const anna = page.getByRole('row').filter({ hasText: 'Anna Dvořáková' })
@@ -68,7 +86,15 @@ test('No advance payment: attendance is confirmed before declaring payment', asy
 }) => {
   await page.goto('/scenarios/fio-payments')
   await expect(page.locator('html')).toHaveAttribute('data-hydrated', 'true')
+  await page
+    .getByTestId('event-payment-settings')
+    .getByRole('button', { name: 'Změnit', exact: true })
+    .click()
   await page.getByRole('radio', { name: /^Bez placení předem/ }).check()
+  await page
+    .getByRole('dialog')
+    .getByRole('button', { name: 'Uložit', exact: true })
+    .click()
   await expect(
     page.getByText('Jste přihlášen(a)', { exact: true })
   ).toBeVisible()

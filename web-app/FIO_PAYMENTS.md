@@ -15,7 +15,7 @@ Do not change the encryption key without first re-encrypting saved tokens with t
 
 ## Event behavior
 
-- The event form offers exactly three payment modes:
+- The event form shows only the current payment mode in a compact row. **Change** opens a modal with the three choices below; **Save** applies a choice and **Cancel** or Escape discards it. Locked payment settings disable the change button.
   1. **No advance payment** (default): joining confirms attendance immediately. Payment can be arranged later.
   2. **Advance payment on trust**: joining reserves a pending place. The player checks **I have paid** after sending payment for themselves and their guests, which immediately confirms attendance. Clearing the checkbox returns their booking to pending without releasing capacity. Organizers can correct manual payment status; other players cannot change it.
   3. **Advance payment verified by Fio banka**: attendance is confirmed only after bank verification. This option is greyed out until the organizer saves a read-only API token with their Fio bank account in their profile. The server also rejects creation without a saved token, and Fio mode always requires payment before confirmation.

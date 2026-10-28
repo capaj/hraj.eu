@@ -66,6 +66,7 @@ function EventPaymentModesScenario() {
     return client
   })
   const [connected, setConnected] = useState(true)
+  const [locked, setLocked] = useState(false)
   const [submitted, setSubmitted] = useState('')
 
   return (
@@ -87,12 +88,21 @@ function EventPaymentModesScenario() {
             />
             Saved Fio token
           </label>
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={locked}
+              onChange={(change) => setLocked(change.target.checked)}
+            />
+            Payment settings locked
+          </label>
           <output aria-label="Submitted payment settings">{submitted}</output>
         </div>
         <QueryClientProvider client={queryClient}>
           <CreateEventForm
             key={String(connected)}
             isEdit={false}
+            paymentSettingsLocked={locked}
             initialData={initialData}
             loadOptions={loadOptions}
             onSubmit={(data) =>
