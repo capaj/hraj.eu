@@ -96,6 +96,11 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    // Browser automation can wait for hydration before interacting with SSR controls.
+    document.documentElement.setAttribute('data-hydrated', 'true')
+  }, [])
+
   return (
     <html lang="cs">
       <head>

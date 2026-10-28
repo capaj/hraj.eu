@@ -1,6 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
 import { z } from 'zod'
+import { eventCommentContentSchema } from './eventCommentValidation'
 import { db } from '../../drizzle/db'
 import { eventCommentT, user as userTable } from '../../drizzle/schema'
 import { auth } from '~/lib/auth'
@@ -9,11 +10,7 @@ import { EventComment } from '../types'
 
 const EditEventCommentSchema = z.object({
   commentId: z.string().min(1, 'Comment ID is required'),
-  content: z
-    .string()
-    .trim()
-    .min(1, 'Comment cannot be empty')
-    .max(1000, 'Comment is too long')
+  content: eventCommentContentSchema
 })
 
 export const editEventComment = createServerFn({ method: 'POST' })

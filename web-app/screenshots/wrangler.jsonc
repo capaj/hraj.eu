@@ -1,0 +1,16 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "hraj-eu-screenshots",
+  "main": "@tanstack/react-start/server-entry",
+  "compatibility_date": "2025-11-14",
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "NODE_ENV": "development",
+    "TURSO_DATABASE_URL": "http://127.0.0.1:1",
+    "TURSO_AUTH_TOKEN": "screenshot-fixture-only",
+    "BETTER_AUTH_SECRET": "screenshot-fixture-secret-not-for-authentication",
+    "BETTER_AUTH_URL": "http://127.0.0.1:5174",
+    "RESEND_API_KEY": "re_screenshot_fixture_only",
+    "SENDER_EMAIL": "screenshots@example.test"
+  }
+}
