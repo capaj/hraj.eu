@@ -18,9 +18,9 @@ export function EventPaymentCard({ event, bankAccount, className }: {
 
   const people = Math.max(1, event.minParticipants, getTotalReservedAwareHeadcount(event))
   // Round once so the visible amount and the encoded payment always agree.
-  const amount = event.price && event.price > 0
-    ? Number((event.price / people).toFixed(2))
-    : undefined
+  let amount: number | undefined
+  if (event.price && event.price > 0) amount = Number((event.price / people).toFixed(2))
+  if (event.pricePerPersonCents) amount = event.pricePerPersonCents / 100
   const currency = event.currency ?? 'CZK'
   const qrPayment = generateQrPaymentString({
     accountNumber: bankAccount,
@@ -46,7 +46,7 @@ export function EventPaymentCard({ event, bankAccount, className }: {
               <span className="text-xl font-bold text-primary-600">{event.price} {currency}</span>
             </div>
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="text-gray-700"><Trans>Price per person ({people} people):</Trans></span>
+              <span className="text-gray-700">{event.pricePerPersonCents ? <Trans>Fixed price per player:</Trans> : <Trans>Price per person ({people} people):</Trans>}</span>
               <span className="text-2xl font-bold text-primary-600">
                 {amount.toLocaleString(i18n.locale, { maximumFractionDigits: 2 })} {currency}
               </span>

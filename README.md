@@ -64,7 +64,7 @@ pnpm --dir web-app dev
 
 Open [http://localhost:5173](http://localhost:5173). The Vite Cloudflare plugin runs the server in the Workers development runtime. Installation generates Worker binding types through the web app's `postinstall` script.
 
-There is no fully configured offline bootstrap or seed command. UI scenarios supply fixture data for individual screens, but the shared app shell still includes authentication providers; do not assume scenarios remove every service dependency.
+There is no database seed command. For offline UI previews, the [screenshot runner](web-app/screenshots/README.md) starts an isolated fixture server and mocks the shell's anonymous auth session. Normal `dev` mode still uses your configured services.
 
 ## Everyday commands
 
@@ -74,6 +74,8 @@ There is no fully configured offline bootstrap or seed command. UI scenarios sup
 | `pnpm lint` | Run Oxlint across the repository |
 | `pnpm typecheck` | Run workspace typecheck tasks through Turbo; currently only the web app defines one |
 | `pnpm --dir web-app test` | Run web app unit/handler tests |
+| `pnpm --dir web-app screenshots` | Capture desktop/mobile Fio scenarios using local headless Chromium |
+| `pnpm --dir web-app screenshot /scenarios/onboarding` | Capture another fixture page |
 | `pnpm --dir web-app exec tsx --test tests/eventParticipantLimits.test.mjs` | Run one web app test file |
 | `pnpm --dir web-app build` | Extract/compile translations and build the app, without applying migrations |
 | `pnpm lingui` | Extract and compile translation catalogs |
@@ -106,8 +108,14 @@ For every new user-visible UI feature, add or update a route scenario that rende
 - [Sport preferences](http://localhost:5173/scenarios/profile-sports-preferences): `web-app/src/routes/scenarios.profile-sports-preferences.tsx`
 - [Participant capacity](http://localhost:5173/scenarios/participant-capacity): `web-app/src/routes/scenarios.participant-capacity.tsx`
 - [Attendee phone numbers](http://localhost:5173/scenarios/phone-numbers): `web-app/src/routes/scenarios.phone-numbers.tsx`
+- [Fio event payments](http://localhost:5173/scenarios/fio-payments): `web-app/src/routes/scenarios.fio-payments.tsx`
+- [Fio profile connection](http://localhost:5173/scenarios/fio-profile): `web-app/src/routes/scenarios.fio-profile.tsx`
+- [New-event payment modes](http://localhost:5173/scenarios/event-payment-modes): `web-app/src/routes/scenarios.event-payment-modes.tsx`
+- [Pending booking and uploaded payment QR](http://localhost:5173/scenarios/pending-payments): `web-app/src/routes/scenarios.pending-payments.tsx`
 
 Follow their fixture-data and callback patterns, and keep the development-only guard. Existing screenshot artifacts are in `web-app/artifacts/screenshots/`.
+
+Use the checked-in [Playwright screenshot runner](web-app/screenshots/README.md) from a terminal, CI, or any coding agent. It manages its own isolated server and captures real rendered pages without relying on an agent's internal browser. Install Chromium once with `pnpm --dir web-app exec playwright install chromium`, then run `pnpm --dir web-app screenshots` or select a page with `pnpm --dir web-app screenshot /scenarios/<name>`.
 
 Scenarios should look like the real page state they represent: preserve the production page shell, layout, surrounding controls, and realistic fixture content instead of arranging isolated components in a UI-lab composition.
 
@@ -151,3 +159,7 @@ Deployment targets Cloudflare Workers, configured separately in [web-app/wrangle
 - `pnpm --dir cron deploy` deploys the scheduled worker separately.
 
 Deployment migration tooling needs `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` in its process environment (or `.dev.vars`); deployed Worker secrets alone do not configure the local Drizzle CLI. Treat migration/deployment scripts as maintainer operations, not local setup or routine verification commands.
+
+### Fio banka integration
+
+See [Fio payment setup and behavior](web-app/FIO_PAYMENTS.md) for secrets, the generated migration, payment matching, and the development scenario.

@@ -44,6 +44,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
   const isMinimumReached = confirmedHeadcount >= event.minParticipants;
   const isBelowMinimum = confirmedHeadcount < event.minParticipants;
   const isParticipant = currentUserId ? event.participants.includes(currentUserId) : false;
+  const isPendingPayment = currentUserId ? event.pendingPayment?.includes(currentUserId) : false;
   const isWaitlisted = currentUserId ? event.waitlist?.includes(currentUserId) : false;
 
   const getParticipantStatus = () => {
@@ -168,13 +169,28 @@ export const EventCard: React.FC<EventCardProps> = ({ event, venues, onJoin, onV
           {event.price && (
             <div className="flex items-center text-sm text-gray-600">
               <BadgeDollarSign size={16} className="mr-2" />
-              {Math.ceil(event.price / (event.idealParticipants || event.maxParticipants))} {event.currency || 'CZK'} {t`per person`}
+              {event.pricePerPersonCents ? event.pricePerPersonCents / 100 : Math.ceil(event.price / (event.idealParticipants || event.maxParticipants))} {event.currency || 'CZK'} {t`per person`}
             </div>
           )}
         </div>
 
+        {isPendingPayment && !isPastEvent && !isCancelled && (
+          <p role="status" className="mb-3 text-sm font-medium text-amber-800">
+            <Trans>Waiting for payment — your place is held</Trans>
+          </p>
+        )}
         <div className="flex items-center space-x-3 mt-auto">
-          {!isPastEvent && !isCancelled && (
+          {!isPastEvent && !isCancelled && isPendingPayment && (
+            <Link
+              to="/events/$eventId"
+              params={{ eventId: event.id }}
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex flex-1 items-center justify-center rounded-lg bg-primary-600 px-3 py-1.5 text-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+            >
+              <Trans>Pay to confirm attendance</Trans>
+            </Link>
+          )}
+          {!isPastEvent && !isCancelled && !isPendingPayment && (
             <Button
               variant="primary"
               size="sm"

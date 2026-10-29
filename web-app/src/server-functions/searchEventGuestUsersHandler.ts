@@ -10,7 +10,7 @@ export type EventGuestUserSearchResult = {
   image: string | null
 }
 
-const ACTIVE_PARTICIPANT_STATUSES = new Set(['confirmed', 'waitlisted'])
+const ACTIVE_PARTICIPANT_STATUSES = new Set(['confirmed', 'pending_payment', 'waitlisted'])
 
 export async function searchEventGuestUsersHandler(
   db: any,

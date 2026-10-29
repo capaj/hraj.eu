@@ -47,7 +47,7 @@ export async function getEventsHandler(
       data?.includeOwnPrivateEvents && viewerId
         ? or(
             eq(eventT.organizerId, viewerId),
-            sql`exists (select 1 from ${participantT} where ${participantT.eventId} = ${eventT.id} and ${participantT.userId} = ${viewerId} and ${participantT.status} in ('confirmed', 'waitlisted', 'invited'))`
+            sql`exists (select 1 from ${participantT} where ${participantT.eventId} = ${eventT.id} and ${participantT.userId} = ${viewerId} and ${participantT.status} in ('confirmed', 'pending_payment', 'waitlisted', 'invited'))`
           )
         : undefined
     )
@@ -140,6 +140,11 @@ export async function getEventsHandler(
           ? Math.floor(event.cancellationDeadlineMinutes / 60)
           : undefined,
         price: event.price || undefined,
+        currency: event.currency,
+        paymentMode: event.paymentMode,
+        requirePayment: event.requirePayment,
+        pricePerPersonCents: event.pricePerPersonCents ?? undefined,
+        pendingPayment: participants.filter((p: any) => p.status === 'pending_payment').map((p: any) => p.userId),
         paymentDetails: event.paymentDetails || undefined,
         gameRules: event.gameRules || undefined,
         cutoffTime: new Date(

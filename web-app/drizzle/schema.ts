@@ -44,7 +44,12 @@ export const userSkillRelations = relations(userSkillT, ({ one }) => ({
   })
 }))
 
-export const eventStatuses = ['open', 'confirmed', 'cancelled', 'completed'] as const
+export const eventStatuses = [
+  'open',
+  'confirmed',
+  'cancelled',
+  'completed'
+] as const
 
 export const eventT = sqliteTable(
   'event',
@@ -73,6 +78,17 @@ export const eventT = sqliteTable(
     price: real('price'),
     currency: text('currency').default('CZK').notNull(),
     paymentDetails: text('payment_details'),
+    paymentMode: text('payment_mode', { enum: ['manual', 'fio'] })
+      .notNull()
+      .default('manual'),
+    requirePayment: integer('require_payment', { mode: 'boolean' })
+      .notNull()
+      .default(false),
+    // Fixed at creation so joining/leaving never changes an issued payment request.
+    pricePerPersonCents: integer('price_per_person_cents'),
+    fioConnectionId: text('fio_connection_id').references(
+      () => fioConnectionT.userId
+    ),
     gameRules: text('game_rules'),
     isPublic: integer('is_public', { mode: 'boolean' }).default(true).notNull(),
     coreGroupId: text('core_group_id').references(() => coreGroupT.id, {
@@ -138,7 +154,6 @@ export const eventT = sqliteTable(
   })
 )
 
-
 export const cityEventSubscriptionT = sqliteTable(
   'city_event_subscription',
   {
@@ -167,7 +182,9 @@ export const cityEventSubscriptionT = sqliteTable(
       table.userId,
       table.citySlug
     ),
-    citySlugIdx: index('city_event_subscription_city_slug_idx').on(table.citySlug)
+    citySlugIdx: index('city_event_subscription_city_slug_idx').on(
+      table.citySlug
+    )
   })
 )
 
@@ -306,9 +323,9 @@ export const eventCommentNotificationDeliveryT = sqliteTable(
     commentRecipientUniqueIdx: uniqueIndex(
       'event_comment_notification_delivery_comment_recipient_idx'
     ).on(table.commentId, table.recipientUserId),
-    recipientIdx: index(
-      'event_comment_notification_delivery_recipient_idx'
-    ).on(table.recipientUserId)
+    recipientIdx: index('event_comment_notification_delivery_recipient_idx').on(
+      table.recipientUserId
+    )
   })
 )
 
@@ -339,16 +356,19 @@ export const coreGroupRelations = relations(coreGroupT, ({ one, many }) => ({
   events: many(eventT)
 }))
 
-export const coreGroupMemberRelations = relations(coreGroupMemberT, ({ one }) => ({
-  coreGroup: one(coreGroupT, {
-    fields: [coreGroupMemberT.coreGroupId],
-    references: [coreGroupT.id]
-  }),
-  user: one(user, {
-    fields: [coreGroupMemberT.userId],
-    references: [user.id]
+export const coreGroupMemberRelations = relations(
+  coreGroupMemberT,
+  ({ one }) => ({
+    coreGroup: one(coreGroupT, {
+      fields: [coreGroupMemberT.coreGroupId],
+      references: [coreGroupT.id]
+    }),
+    user: one(user, {
+      fields: [coreGroupMemberT.userId],
+      references: [user.id]
+    })
   })
-}))
+)
 
 export const participantT = sqliteTable(
   'participant',
@@ -365,14 +385,23 @@ export const participantT = sqliteTable(
       .notNull()
       .default(sql`'[]'`),
     status: text('status', {
-      enum: ['confirmed', 'cancelled', 'waitlisted', 'invited', 'declined']
+      enum: [
+        'confirmed',
+        'pending_payment',
+        'cancelled',
+        'waitlisted',
+        'invited',
+        'declined'
+      ]
     })
       .default('invited')
       .notNull(),
     confirmedParticipantOrdinal: integer(
       'confirmed_participant_ordinal'
     ).notNull(), // 1 based index. We multiply karma points by event participation count - this. The first user who confirms gets 100% of the karma points.
-    paymentIntentRecordedAt: integer('payment_intent_recorded_at', { mode: 'timestamp' }),
+    paymentIntentRecordedAt: integer('payment_intent_recorded_at', {
+      mode: 'timestamp'
+    }),
     // users typically mark themselves as paid
     markedAsPaidAt: integer('marked_as_paid_at', { mode: 'timestamp' }),
     createdAt: integer('created_at', { mode: 'timestamp' })
@@ -394,6 +423,79 @@ export const participantRelations = relations(participantT, ({ one }) => ({
     references: [user.id]
   })
 }))
+
+// Kept outside the public user/auth schema: tokens never leave the server.
+export const fioConnectionT = sqliteTable('fio_connection', {
+  userId: text('user_id')
+    .primaryKey()
+    .references(() => user.id, { onDelete: 'cascade' }),
+  encryptedToken: text('encrypted_token'),
+  tokenFingerprint: text('token_fingerprint').unique(),
+  iban: text('iban').notNull(),
+  accountNumber: text('account_number').notNull(),
+  currency: text('currency').notNull(),
+  lastSyncedAt: integer('last_synced_at', { mode: 'timestamp' }),
+  nextSyncAt: integer('next_sync_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`unixepoch()`),
+  syncError: text('sync_error'),
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`unixepoch()`)
+})
+
+export const paymentRequestT = sqliteTable(
+  'payment_request',
+  {
+    // AUTOINCREMENT prevents reuse, even after account/event deletion.
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    participantId: integer('participant_id')
+      .notNull()
+      .references(() => participantT.id, { onDelete: 'cascade' }),
+    connectionId: text('connection_id')
+      .notNull()
+      .references(() => fioConnectionT.userId),
+    slot: integer('slot').notNull(), // 0 = player, 1/2 = their named guests
+    playerName: text('player_name').notNull(),
+    amountCents: integer('amount_cents').notNull(),
+    currency: text('currency').notNull(),
+    paidAt: integer('paid_at', { mode: 'timestamp' }),
+    cancelledAt: integer('cancelled_at', { mode: 'timestamp' }),
+    createdAt: integer('created_at', { mode: 'timestamp' })
+      .notNull()
+      .default(sql`unixepoch()`)
+  },
+  (table) => ({
+    activeSlot: uniqueIndex('payment_request_active_slot')
+      .on(table.participantId, table.slot)
+      .where(sql`${table.cancelledAt} is null`),
+    connectionIdx: index('payment_request_connection_idx').on(
+      table.connectionId
+    )
+  })
+)
+
+// Only matching credits are retained; no balances or unrelated bank activity.
+export const fioReceiptT = sqliteTable(
+  'fio_receipt',
+  {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    iban: text('iban').notNull(),
+    transactionId: text('transaction_id').notNull(),
+    paymentRequestId: integer('payment_request_id')
+      .notNull()
+      .references(() => paymentRequestT.id, { onDelete: 'cascade' }),
+    amountCents: integer('amount_cents').notNull(),
+    bookedOn: text('booked_on').notNull()
+  },
+  (table) => ({
+    transactionIdx: uniqueIndex('fio_receipt_transaction_idx').on(
+      table.iban,
+      table.transactionId
+    ),
+    requestIdx: index('fio_receipt_request_idx').on(table.paymentRequestId)
+  })
+)
 
 export const venueT = sqliteTable(
   'venue',

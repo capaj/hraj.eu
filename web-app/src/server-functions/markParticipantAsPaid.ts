@@ -2,12 +2,12 @@ import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
 import { z } from 'zod'
 import { db } from '../../drizzle/db'
-import { participantT } from '../../drizzle/schema'
 import { auth } from '~/lib/auth'
-import { and, eq } from 'drizzle-orm'
+import { setManualPaymentHandler } from './setManualPaymentHandler'
 
 const MarkParticipantAsPaidSchema = z.object({
-  eventId: z.string().min(1, 'Event ID is required')
+  eventId: z.string().min(1, 'Event ID is required'),
+  targetUserId: z.string().min(1).optional()
 })
 
 export const markParticipantAsPaid = createServerFn({ method: 'POST' })
@@ -29,26 +29,10 @@ export const markParticipantAsPaid = createServerFn({ method: 'POST' })
       throw new Error('You must be signed in to mark payment')
     }
 
-    const participant = await db.query.participantT.findFirst({
-      where: and(
-        eq(participantT.eventId, data.eventId),
-        eq(participantT.userId, session.user.id)
-      )
+    return setManualPaymentHandler(db, {
+      eventId: data.eventId,
+      actorId: session.user.id,
+      targetUserId: data.targetUserId,
+      paid: true
     })
-
-    if (!participant) {
-      throw new Error('You must join this event to mark payment')
-    }
-
-    const now = new Date()
-
-    await db
-      .update(participantT)
-      .set({
-        markedAsPaidAt: now,
-        paymentIntentRecordedAt: participant.paymentIntentRecordedAt ?? now
-      })
-      .where(eq(participantT.id, participant.id))
-
-    return { success: true, markedAsPaidAt: now }
   })

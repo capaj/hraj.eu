@@ -42,6 +42,9 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
     price: event.price,
     currency: event.currency || 'CZK',
     paymentDetails: event.paymentDetails,
+    pricePerPersonCents: event.pricePerPersonCents,
+    paymentMode: event.paymentMode,
+    requirePayment: event.requirePayment,
     gameRules: event.gameRules,
     isPublic: event.isPublic,
     allowedSkillLevels: (event.allowedSkillLevels as SkillLevel[]) || undefined,
@@ -74,6 +77,8 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
           price: eventData.price,
           currency: eventData.currency,
           paymentDetails: eventData.paymentDetails,
+          paymentMode: eventData.paymentMode,
+          requirePayment: eventData.requirePayment,
           gameRules: eventData.gameRules,
           isPublic: Boolean(eventData.isPublic),
           allowedSkillLevels: eventData.allowedSkillLevels,
@@ -121,6 +126,10 @@ export const EditEventPage: React.FC<EditEventPageProps> = ({ event }) => {
     <div className="min-h-screen bg-gradient-to-br from-primary-600 to-secondary-600 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <CreateEventForm
+          paymentSettingsLocked={
+            (event.paymentMode === 'fio' || !!event.requirePayment) &&
+            (event.participants.length + event.waitlist.length + (event.pendingPayment?.length ?? 0) + (event.formerParticipants?.length ?? 0) > 0)
+          }
           onSubmit={handleSubmit}
           onCancel={handleCancel}
           initialData={initialData}

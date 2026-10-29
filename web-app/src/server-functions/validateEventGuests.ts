@@ -12,7 +12,7 @@ type EventParticipantWithGuests = {
   plusAttendees: StoredEventGuest[] | null
 }
 
-const ACTIVE_PARTICIPANT_STATUSES = new Set(['confirmed', 'waitlisted'])
+const ACTIVE_PARTICIPANT_STATUSES = new Set(['confirmed', 'pending_payment', 'waitlisted'])
 
 export async function validateEventGuests(
   db: any,

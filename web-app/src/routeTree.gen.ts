@@ -33,9 +33,13 @@ import { Route as EventsEventIdRouteImport } from './routes/events/$eventId'
 import { Route as ScenariosAboutStatsRouteImport } from './routes/scenarios.about-stats'
 import { Route as ScenariosEventCommentImagesRouteImport } from './routes/scenarios.event-comment-images'
 import { Route as ScenariosEventMapRouteImport } from './routes/scenarios.event-map'
+import { Route as ScenariosEventPaymentModesRouteImport } from './routes/scenarios.event-payment-modes'
+import { Route as ScenariosFioPaymentsRouteImport } from './routes/scenarios.fio-payments'
+import { Route as ScenariosFioProfileRouteImport } from './routes/scenarios.fio-profile'
 import { Route as ScenariosLocalizationRouteImport } from './routes/scenarios.localization'
 import { Route as ScenariosOnboardingRouteImport } from './routes/scenarios.onboarding'
 import { Route as ScenariosParticipantCapacityRouteImport } from './routes/scenarios.participant-capacity'
+import { Route as ScenariosPendingPaymentsRouteImport } from './routes/scenarios.pending-payments'
 import { Route as ScenariosPhoneNumbersRouteImport } from './routes/scenarios.phone-numbers'
 import { Route as ScenariosPresskitRouteImport } from './routes/scenarios.presskit'
 import { Route as ScenariosProfilePaymentInfoRouteImport } from './routes/scenarios.profile-payment-info'
@@ -166,6 +170,22 @@ const ScenariosEventMapRoute = ScenariosEventMapRouteImport.update({
   path: '/scenarios/event-map',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScenariosEventPaymentModesRoute =
+  ScenariosEventPaymentModesRouteImport.update({
+    id: '/scenarios/event-payment-modes',
+    path: '/scenarios/event-payment-modes',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ScenariosFioPaymentsRoute = ScenariosFioPaymentsRouteImport.update({
+  id: '/scenarios/fio-payments',
+  path: '/scenarios/fio-payments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScenariosFioProfileRoute = ScenariosFioProfileRouteImport.update({
+  id: '/scenarios/fio-profile',
+  path: '/scenarios/fio-profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ScenariosLocalizationRoute = ScenariosLocalizationRouteImport.update({
   id: '/scenarios/localization',
   path: '/scenarios/localization',
@@ -180,6 +200,12 @@ const ScenariosParticipantCapacityRoute =
   ScenariosParticipantCapacityRouteImport.update({
     id: '/scenarios/participant-capacity',
     path: '/scenarios/participant-capacity',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ScenariosPendingPaymentsRoute =
+  ScenariosPendingPaymentsRouteImport.update({
+    id: '/scenarios/pending-payments',
+    path: '/scenarios/pending-payments',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ScenariosPhoneNumbersRoute = ScenariosPhoneNumbersRouteImport.update({
@@ -250,9 +276,13 @@ export interface FileRoutesByFullPath {
   '/scenarios/about-stats': typeof ScenariosAboutStatsRoute
   '/scenarios/event-comment-images': typeof ScenariosEventCommentImagesRoute
   '/scenarios/event-map': typeof ScenariosEventMapRoute
+  '/scenarios/event-payment-modes': typeof ScenariosEventPaymentModesRoute
+  '/scenarios/fio-payments': typeof ScenariosFioPaymentsRoute
+  '/scenarios/fio-profile': typeof ScenariosFioProfileRoute
   '/scenarios/localization': typeof ScenariosLocalizationRoute
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
+  '/scenarios/pending-payments': typeof ScenariosPendingPaymentsRoute
   '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
   '/scenarios/presskit': typeof ScenariosPresskitRoute
   '/scenarios/profile-payment-info': typeof ScenariosProfilePaymentInfoRoute
@@ -287,9 +317,13 @@ export interface FileRoutesByTo {
   '/scenarios/about-stats': typeof ScenariosAboutStatsRoute
   '/scenarios/event-comment-images': typeof ScenariosEventCommentImagesRoute
   '/scenarios/event-map': typeof ScenariosEventMapRoute
+  '/scenarios/event-payment-modes': typeof ScenariosEventPaymentModesRoute
+  '/scenarios/fio-payments': typeof ScenariosFioPaymentsRoute
+  '/scenarios/fio-profile': typeof ScenariosFioProfileRoute
   '/scenarios/localization': typeof ScenariosLocalizationRoute
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
+  '/scenarios/pending-payments': typeof ScenariosPendingPaymentsRoute
   '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
   '/scenarios/presskit': typeof ScenariosPresskitRoute
   '/scenarios/profile-payment-info': typeof ScenariosProfilePaymentInfoRoute
@@ -325,9 +359,13 @@ export interface FileRoutesById {
   '/scenarios/about-stats': typeof ScenariosAboutStatsRoute
   '/scenarios/event-comment-images': typeof ScenariosEventCommentImagesRoute
   '/scenarios/event-map': typeof ScenariosEventMapRoute
+  '/scenarios/event-payment-modes': typeof ScenariosEventPaymentModesRoute
+  '/scenarios/fio-payments': typeof ScenariosFioPaymentsRoute
+  '/scenarios/fio-profile': typeof ScenariosFioProfileRoute
   '/scenarios/localization': typeof ScenariosLocalizationRoute
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
+  '/scenarios/pending-payments': typeof ScenariosPendingPaymentsRoute
   '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
   '/scenarios/presskit': typeof ScenariosPresskitRoute
   '/scenarios/profile-payment-info': typeof ScenariosProfilePaymentInfoRoute
@@ -364,9 +402,13 @@ export interface FileRouteTypes {
     | '/scenarios/about-stats'
     | '/scenarios/event-comment-images'
     | '/scenarios/event-map'
+    | '/scenarios/event-payment-modes'
+    | '/scenarios/fio-payments'
+    | '/scenarios/fio-profile'
     | '/scenarios/localization'
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
+    | '/scenarios/pending-payments'
     | '/scenarios/phone-numbers'
     | '/scenarios/presskit'
     | '/scenarios/profile-payment-info'
@@ -401,9 +443,13 @@ export interface FileRouteTypes {
     | '/scenarios/about-stats'
     | '/scenarios/event-comment-images'
     | '/scenarios/event-map'
+    | '/scenarios/event-payment-modes'
+    | '/scenarios/fio-payments'
+    | '/scenarios/fio-profile'
     | '/scenarios/localization'
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
+    | '/scenarios/pending-payments'
     | '/scenarios/phone-numbers'
     | '/scenarios/presskit'
     | '/scenarios/profile-payment-info'
@@ -438,9 +484,13 @@ export interface FileRouteTypes {
     | '/scenarios/about-stats'
     | '/scenarios/event-comment-images'
     | '/scenarios/event-map'
+    | '/scenarios/event-payment-modes'
+    | '/scenarios/fio-payments'
+    | '/scenarios/fio-profile'
     | '/scenarios/localization'
     | '/scenarios/onboarding'
     | '/scenarios/participant-capacity'
+    | '/scenarios/pending-payments'
     | '/scenarios/phone-numbers'
     | '/scenarios/presskit'
     | '/scenarios/profile-payment-info'
@@ -476,9 +526,13 @@ export interface RootRouteChildren {
   ScenariosAboutStatsRoute: typeof ScenariosAboutStatsRoute
   ScenariosEventCommentImagesRoute: typeof ScenariosEventCommentImagesRoute
   ScenariosEventMapRoute: typeof ScenariosEventMapRoute
+  ScenariosEventPaymentModesRoute: typeof ScenariosEventPaymentModesRoute
+  ScenariosFioPaymentsRoute: typeof ScenariosFioPaymentsRoute
+  ScenariosFioProfileRoute: typeof ScenariosFioProfileRoute
   ScenariosLocalizationRoute: typeof ScenariosLocalizationRoute
   ScenariosOnboardingRoute: typeof ScenariosOnboardingRoute
   ScenariosParticipantCapacityRoute: typeof ScenariosParticipantCapacityRoute
+  ScenariosPendingPaymentsRoute: typeof ScenariosPendingPaymentsRoute
   ScenariosPhoneNumbersRoute: typeof ScenariosPhoneNumbersRoute
   ScenariosPresskitRoute: typeof ScenariosPresskitRoute
   ScenariosProfilePaymentInfoRoute: typeof ScenariosProfilePaymentInfoRoute
@@ -659,6 +713,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScenariosEventMapRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scenarios/event-payment-modes': {
+      id: '/scenarios/event-payment-modes'
+      path: '/scenarios/event-payment-modes'
+      fullPath: '/scenarios/event-payment-modes'
+      preLoaderRoute: typeof ScenariosEventPaymentModesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scenarios/fio-payments': {
+      id: '/scenarios/fio-payments'
+      path: '/scenarios/fio-payments'
+      fullPath: '/scenarios/fio-payments'
+      preLoaderRoute: typeof ScenariosFioPaymentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scenarios/fio-profile': {
+      id: '/scenarios/fio-profile'
+      path: '/scenarios/fio-profile'
+      fullPath: '/scenarios/fio-profile'
+      preLoaderRoute: typeof ScenariosFioProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scenarios/localization': {
       id: '/scenarios/localization'
       path: '/scenarios/localization'
@@ -678,6 +753,13 @@ declare module '@tanstack/react-router' {
       path: '/scenarios/participant-capacity'
       fullPath: '/scenarios/participant-capacity'
       preLoaderRoute: typeof ScenariosParticipantCapacityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scenarios/pending-payments': {
+      id: '/scenarios/pending-payments'
+      path: '/scenarios/pending-payments'
+      fullPath: '/scenarios/pending-payments'
+      preLoaderRoute: typeof ScenariosPendingPaymentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/scenarios/phone-numbers': {
@@ -764,9 +846,13 @@ const rootRouteChildren: RootRouteChildren = {
   ScenariosAboutStatsRoute: ScenariosAboutStatsRoute,
   ScenariosEventCommentImagesRoute: ScenariosEventCommentImagesRoute,
   ScenariosEventMapRoute: ScenariosEventMapRoute,
+  ScenariosEventPaymentModesRoute: ScenariosEventPaymentModesRoute,
+  ScenariosFioPaymentsRoute: ScenariosFioPaymentsRoute,
+  ScenariosFioProfileRoute: ScenariosFioProfileRoute,
   ScenariosLocalizationRoute: ScenariosLocalizationRoute,
   ScenariosOnboardingRoute: ScenariosOnboardingRoute,
   ScenariosParticipantCapacityRoute: ScenariosParticipantCapacityRoute,
+  ScenariosPendingPaymentsRoute: ScenariosPendingPaymentsRoute,
   ScenariosPhoneNumbersRoute: ScenariosPhoneNumbersRoute,
   ScenariosPresskitRoute: ScenariosPresskitRoute,
   ScenariosProfilePaymentInfoRoute: ScenariosProfilePaymentInfoRoute,

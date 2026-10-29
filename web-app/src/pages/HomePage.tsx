@@ -14,6 +14,7 @@ import { i18n } from '~/lib/i18n'
 import { toast } from 'sonner'
 import { AboutStats } from '../components/about/AboutStats'
 import { AboutPresskit } from '../components/about/AboutPresskit'
+import { applyEventParticipantsUpdate } from '../utils/participants'
 
 export const AboutPage: React.FC = () => {
   useLingui()
@@ -86,11 +87,7 @@ export const AboutPage: React.FC = () => {
         setUpcomingEvents((prevEvents) =>
           prevEvents.map((event) =>
             event.id === eventId
-              ? {
-                ...event,
-                participants: response.participants.confirmed,
-                waitlist: response.participants.waitlisted
-              }
+              ? applyEventParticipantsUpdate(event, response.participants)
               : event
           )
         )

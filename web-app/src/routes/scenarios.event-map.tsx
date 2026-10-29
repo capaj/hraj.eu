@@ -17,6 +17,7 @@ const venues: Venue[] = [
   { id: 'ideal', name: 'Karlín', lat: 50.089, lng: 14.45 },
   { id: 'full', name: 'Vinohrady', lat: 50.073, lng: 14.445 },
   { id: 'empty', name: 'Smíchov', lat: 50.069, lng: 14.407 },
+  { id: 'pending', name: 'Dejvice', lat: 50.099, lng: 14.395 },
   { id: 'group', name: 'Holešovice', lat: 50.106, lng: 14.441 }
 ].map((venue) => ({
   ...venue,
@@ -63,6 +64,10 @@ const events: Event[] = [
   updatedAt: date
 }))
 events.push({ ...events[0], id: 'second-game', venueId: 'group', startTime: '20:00' })
+events.push({
+  ...events[0], id: 'pending-payment', venueId: 'pending', title: 'Payment pending',
+  paymentMode: 'manual', requirePayment: true, pendingPayment: ['pending-player']
+})
 
 function EventMapScenario() {
   return (
@@ -73,8 +78,8 @@ function EventMapScenario() {
         <br />
         Hover over the info button to see the legend, or focus it with the keyboard.
       </p>
-      <div className="h-[640px] overflow-hidden rounded-2xl border border-gray-200 shadow-sm">
-        <EventMap events={events} venues={venues} />
+      <div data-testid="event-map-preview" className="h-[640px] overflow-hidden rounded-2xl border border-gray-200 shadow-sm">
+        <EventMap events={events} venues={venues} currentUserId="pending-player" />
       </div>
     </main>
   )

@@ -6,6 +6,7 @@ import { coreGroupT, eventT as eventTable } from '../../drizzle/schema'
 import { db } from '../../drizzle/db'
 import { and, eq } from 'drizzle-orm'
 import { auth } from './auth'
+import { resolveEventPayment } from './fio/payments'
 import { assertNoVenueEventConflict } from '../server-functions/eventVenueConflicts'
 
 const ClientEventSchema = z.object({
@@ -24,6 +25,8 @@ const ClientEventSchema = z.object({
   price: z.union([z.number(), z.string()]).optional(),
   currency: z.string().default('CZK'),
   paymentDetails: z.string().optional(),
+  paymentMode: z.enum(['manual', 'fio']).default('manual'),
+  requirePayment: z.boolean().default(false),
   gameRules: z.string().optional(),
   isPublic: z.boolean().default(true),
   allowedSkillLevels: z
@@ -106,7 +109,10 @@ export const createEvent = createServerFn({ method: 'POST' })
       duration: data.duration
     })
 
+    const payment = await resolveEventPayment(db, organizerId, { ...data, price: numericPrice })
+
     const insertData: Partial<InsertedEvent> = {
+      ...payment,
       title: data.title,
       sport: data.sport,
       venueId: data.venueId,

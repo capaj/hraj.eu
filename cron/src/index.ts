@@ -1,6 +1,7 @@
 import { db } from '../../web-app/drizzle/db'
 import { runScheduledJob } from './scheduled'
 import type { Env } from './types'
+import { syncFioPayments } from '../../web-app/src/lib/fio/sync'
 
 export default {
 	async fetch(req) {
@@ -13,6 +14,13 @@ export default {
 	},
 
 	async scheduled(event, env, _ctx): Promise<void> {
-		await runScheduledJob({ event, env, database: db })
+		if (env.FIO_TOKEN_ENCRYPTION_KEY) {
+			try {
+				await syncFioPayments(db, env.FIO_TOKEN_ENCRYPTION_KEY)
+			} catch {
+				console.error('Fio payment checks could not run')
+			}
+		}
+		if (event.cron === '0 * * * *') await runScheduledJob({ event, env, database: db })
 	}
 } satisfies ExportedHandler<Env>

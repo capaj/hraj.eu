@@ -11,11 +11,13 @@ pnpm --dir web-app exec playwright install chromium
 
 On a fresh Linux CI image, use `playwright install --with-deps chromium` to install system libraries as well. Browser installation may need network access and system package installation may need elevated privileges. This is a setup step, not part of each capture.
 
-Capture event comment picture attachments at desktop and mobile sizes:
+Capture feature scenarios at desktop and mobile sizes, including Fio payments and event comment pictures:
 
 ```sh
 pnpm --dir web-app screenshots
 # One viewport or feature only:
+pnpm --dir web-app screenshots fio.spec.ts --project=desktop
+pnpm --dir web-app screenshots event-payment-modes.spec.ts --project=desktop
 pnpm --dir web-app screenshots event-comment-images.spec.ts --project=desktop
 ```
 
@@ -23,6 +25,7 @@ Capture another fixture page without writing a spec:
 
 ```sh
 pnpm --dir web-app screenshot /scenarios/onboarding
+pnpm --dir web-app screenshot /scenarios/fio-profile --project=mobile
 pnpm --dir web-app screenshot /scenarios/event-comment-images --project=mobile
 ```
 
@@ -43,10 +46,10 @@ pnpm --dir web-app screenshot /scenarios/onboarding --list
 
 1. Add or update a development-only `/scenarios/<feature>` route using the real page/components with realistic fixture data and local callbacks. Preserve the production layout and page shell.
 2. Add `<feature>.spec.ts` here, importing `test` and `expect` from `./fixtures`. Navigate to the scenario and wait for `html[data-hydrated="true"]` before interacting with server-rendered controls.
-3. Assert the visible state before `await capture('feature-state')`. Use explicit UI assertions after each interaction so a screenshot cannot silently capture the wrong state.
+3. Assert the visible state before `await capture('feature-state')`. Pass a locator as the second argument to capture just a section of a rendered page. Use explicit UI assertions after each interaction so a screenshot cannot silently capture the wrong state.
 4. Run the command and inspect both viewport images. Do not present a discovery-only check as a completed capture.
 
-The shared fixture sets Czech locale, UTC timezone, fixed time, reduced motion, and a fresh browser context. It mocks the shell's anonymous auth session, rejects browser requests to live services and server functions, waits for hydration/fonts/images, and fails on browser exceptions. Add service stubs explicitly in a spec when needed; do not enable live upload or database access for screenshots.
+The shared fixture sets Czech locale, UTC timezone, fixed time, reduced motion, and a fresh browser context. It mocks the shell's anonymous auth session, rejects browser requests to live services and server functions, waits for hydration/fonts/images, and fails on browser exceptions. Add service stubs explicitly in a spec when needed; do not enable live bank, upload, or database access for screenshots.
 
 ## Isolation and CI
 

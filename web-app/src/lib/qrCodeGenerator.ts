@@ -36,12 +36,14 @@ export function generateQrPaymentString({
   accountNumber,
   amount,
   currency = 'CZK',
-  message
+  message,
+  variableSymbol
 }: {
   accountNumber: string | null | undefined
   amount?: number
   currency?: string
   message?: string
+  variableSymbol?: string
 }): string | null {
   const account = normalizeAccountNumberForQrPayment(accountNumber)
   if (!account || !/^[A-Z]{3}$/.test(currency)) return null
@@ -51,6 +53,10 @@ export function generateQrPaymentString({
     fields.push(`AM:${amount.toFixed(2)}`)
   }
   fields.push(`CC:${currency}`)
+  if (variableSymbol !== undefined) {
+    if (!/^\d{1,10}$/.test(variableSymbol)) return null
+    fields.push(`X-VS:${variableSymbol}`)
+  }
   // Keep messages bank-friendly and prevent event titles from injecting fields.
   const safeMessage = message?.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .toUpperCase().replace(/[^A-Z0-9 $+\-./:]/g, ' ').replace(/\s+/g, ' ')

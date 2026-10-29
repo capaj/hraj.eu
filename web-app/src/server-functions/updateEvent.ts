@@ -20,6 +20,10 @@ import {
   type EventTiming
 } from '~/lib/email/sendEventTimeChangeEmail'
 import type { EmailLocale } from '~/lib/email/sendCancellationEmail'
+import {
+  prepareEventPaymentUpdate,
+  promotePaymentWaitlist
+} from '../lib/fio/payments'
 import { getWaitlistParticipantIdsToPromote } from './waitlistPromotion'
 
 const LOCATION_FALLBACK = 'Location TBD'
@@ -30,7 +34,10 @@ const UpdateEventSchema = z.object({
   title: z.string().min(1).optional(),
   sport: z.string().min(1).optional(),
   venueId: z.string().min(1).optional(),
-  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
   startTime: z.string().min(1).optional(),
   duration: z.number().int().positive().optional(),
   minParticipants: z.number().int().positive().optional(),
@@ -42,6 +49,8 @@ const UpdateEventSchema = z.object({
   price: z.union([z.number(), z.string()]).optional(),
   currency: z.string().optional(),
   paymentDetails: z.string().optional(),
+  paymentMode: z.enum(['manual', 'fio']).optional(),
+  requirePayment: z.boolean().optional(),
   gameRules: z.string().optional(),
   isPublic: z.boolean().optional(),
   allowedSkillLevels: z
@@ -50,7 +59,12 @@ const UpdateEventSchema = z.object({
   requireSkillLevel: z.boolean().optional(),
   qrCodeImages: z.array(z.string()).optional(),
   coreGroupId: z.string().min(1).optional(),
-  coreGroupExclusiveHours: z.number().int().min(2).max(24 * 14).optional(),
+  coreGroupExclusiveHours: z
+    .number()
+    .int()
+    .min(2)
+    .max(24 * 14)
+    .optional(),
   clearCoreGroup: z.boolean().optional()
 })
 
@@ -97,9 +111,12 @@ export const updateEvent = createServerFn({ method: 'POST' })
       data.maxParticipants !== undefined &&
       data.maxParticipants > event.maxParticipants
 
-    const previousVenue = venueChanged && event.venueId
-      ? await db.query.venueT.findFirst({ where: eq(venueT.id, event.venueId) })
-      : null
+    const previousVenue =
+      venueChanged && event.venueId
+        ? await db.query.venueT.findFirst({
+            where: eq(venueT.id, event.venueId)
+          })
+        : null
 
     const organizerId = session.user.id
     const updates: Partial<typeof eventT.$inferInsert> = {}
@@ -195,7 +212,48 @@ export const updateEvent = createServerFn({ method: 'POST' })
 
     let waitlistParticipantsPromoted = 0
     await db.transaction(async (tx) => {
+      const [currentEvent] = await tx
+        .select()
+        .from(eventT)
+        .where(eq(eventT.id, data.id))
+      if (!currentEvent) throw new Error('Event not found')
+      if (data.paymentMode !== undefined) updates.paymentMode = data.paymentMode
+      if (data.requirePayment !== undefined)
+        updates.requirePayment = data.requirePayment
+      Object.assign(
+        updates,
+        await prepareEventPaymentUpdate(tx, currentEvent, updates)
+      )
+      const usesFixedPayments =
+        currentEvent.paymentMode === 'fio' ||
+        currentEvent.requirePayment ||
+        updates.paymentMode === 'fio' ||
+        updates.requirePayment
       await tx.update(eventT).set(updates).where(eq(eventT.id, data.id))
+      if (usesFixedPayments) {
+        const occupied = await tx
+          .select({
+            status: participantT.status,
+            guests: participantT.plusAttendees
+          })
+          .from(participantT)
+          .where(eq(participantT.eventId, event.id))
+        const occupiedCount = occupied
+          .filter((p) => ['confirmed', 'pending_payment'].includes(p.status))
+          .reduce((sum, p) => sum + 1 + p.guests.length, 0)
+        if (
+          occupiedCount +
+            (updates.reservedParticipants ??
+              currentEvent.reservedParticipants) >
+          (updates.maxParticipants ?? currentEvent.maxParticipants)
+        )
+          throw new Error('Capacity cannot be lower than existing bookings')
+        waitlistParticipantsPromoted = await promotePaymentWaitlist(tx, {
+          ...currentEvent,
+          ...updates
+        } as typeof currentEvent)
+        return
+      }
 
       if (!capacityIncreased || data.maxParticipants === undefined) {
         return
@@ -295,7 +353,12 @@ async function notifyAttendeesAboutVenueChange({
     .where(
       and(
         eq(participantT.eventId, event.id),
-        inArray(participantT.status, ['confirmed', 'waitlisted', 'invited']),
+        inArray(participantT.status, [
+          'confirmed',
+          'pending_payment',
+          'waitlisted',
+          'invited'
+        ]),
         eq(user.emailNotificationsDisabled, false)
       )
     )
@@ -360,7 +423,12 @@ async function notifyAttendeesAboutTimeChange({
     .where(
       and(
         eq(participantT.eventId, event.id),
-        inArray(participantT.status, ['confirmed', 'waitlisted', 'invited']),
+        inArray(participantT.status, [
+          'confirmed',
+          'pending_payment',
+          'waitlisted',
+          'invited'
+        ]),
         eq(user.emailNotificationsDisabled, false)
       )
     )
@@ -403,8 +471,8 @@ function formatLocation(
   name: string | null | undefined,
   address: string | null | undefined
 ): string {
-  const parts = [name?.trim(), address?.trim()].filter(
-    (part): part is string => Boolean(part)
+  const parts = [name?.trim(), address?.trim()].filter((part): part is string =>
+    Boolean(part)
   )
   return parts.length ? parts.join(', ') : LOCATION_FALLBACK
 }

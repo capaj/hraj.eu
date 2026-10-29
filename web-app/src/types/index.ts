@@ -71,6 +71,10 @@ export interface Event {
   cancellationDeadlineHours?: number
   price?: number
   currency?: string
+  paymentMode?: 'manual' | 'fio'
+  requirePayment?: boolean
+  pricePerPersonCents?: number
+  pendingPayment?: string[]
   paymentDetails?: string
   gameRules?: string
   cutoffTime: Date
