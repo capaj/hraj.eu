@@ -45,7 +45,9 @@ import { Route as ScenariosPresskitRouteImport } from './routes/scenarios.pressk
 import { Route as ScenariosProfilePaymentInfoRouteImport } from './routes/scenarios.profile-payment-info'
 import { Route as ScenariosProfileSportsPreferencesRouteImport } from './routes/scenarios.profile-sports-preferences'
 import { Route as ScenariosQrPaymentRouteImport } from './routes/scenarios.qr-payment'
+import { Route as ScenariosVenueDetailsRouteImport } from './routes/scenarios.venue-details'
 import { Route as ScenariosVenuesRouteImport } from './routes/scenarios.venues'
+import { Route as VenuesVenueIdRouteImport } from './routes/venues_.$venueId'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiOgEventEventIdRouteImport } from './routes/api/og/event/$eventId'
 
@@ -235,9 +237,19 @@ const ScenariosQrPaymentRoute = ScenariosQrPaymentRouteImport.update({
   path: '/scenarios/qr-payment',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScenariosVenueDetailsRoute = ScenariosVenueDetailsRouteImport.update({
+  id: '/scenarios/venue-details',
+  path: '/scenarios/venue-details',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ScenariosVenuesRoute = ScenariosVenuesRouteImport.update({
   id: '/scenarios/venues',
   path: '/scenarios/venues',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VenuesVenueIdRoute = VenuesVenueIdRouteImport.update({
+  id: '/venues_/$venueId',
+  path: '/venues/$venueId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -288,7 +300,9 @@ export interface FileRoutesByFullPath {
   '/scenarios/profile-payment-info': typeof ScenariosProfilePaymentInfoRoute
   '/scenarios/profile-sports-preferences': typeof ScenariosProfileSportsPreferencesRoute
   '/scenarios/qr-payment': typeof ScenariosQrPaymentRoute
+  '/scenarios/venue-details': typeof ScenariosVenueDetailsRoute
   '/scenarios/venues': typeof ScenariosVenuesRoute
+  '/venues/$venueId': typeof VenuesVenueIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/og/event/$eventId': typeof ApiOgEventEventIdRoute
 }
@@ -329,7 +343,9 @@ export interface FileRoutesByTo {
   '/scenarios/profile-payment-info': typeof ScenariosProfilePaymentInfoRoute
   '/scenarios/profile-sports-preferences': typeof ScenariosProfileSportsPreferencesRoute
   '/scenarios/qr-payment': typeof ScenariosQrPaymentRoute
+  '/scenarios/venue-details': typeof ScenariosVenueDetailsRoute
   '/scenarios/venues': typeof ScenariosVenuesRoute
+  '/venues/$venueId': typeof VenuesVenueIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/og/event/$eventId': typeof ApiOgEventEventIdRoute
 }
@@ -371,7 +387,9 @@ export interface FileRoutesById {
   '/scenarios/profile-payment-info': typeof ScenariosProfilePaymentInfoRoute
   '/scenarios/profile-sports-preferences': typeof ScenariosProfileSportsPreferencesRoute
   '/scenarios/qr-payment': typeof ScenariosQrPaymentRoute
+  '/scenarios/venue-details': typeof ScenariosVenueDetailsRoute
   '/scenarios/venues': typeof ScenariosVenuesRoute
+  '/venues_/$venueId': typeof VenuesVenueIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/og/event/$eventId': typeof ApiOgEventEventIdRoute
 }
@@ -414,7 +432,9 @@ export interface FileRouteTypes {
     | '/scenarios/profile-payment-info'
     | '/scenarios/profile-sports-preferences'
     | '/scenarios/qr-payment'
+    | '/scenarios/venue-details'
     | '/scenarios/venues'
+    | '/venues/$venueId'
     | '/api/auth/$'
     | '/api/og/event/$eventId'
   fileRoutesByTo: FileRoutesByTo
@@ -455,7 +475,9 @@ export interface FileRouteTypes {
     | '/scenarios/profile-payment-info'
     | '/scenarios/profile-sports-preferences'
     | '/scenarios/qr-payment'
+    | '/scenarios/venue-details'
     | '/scenarios/venues'
+    | '/venues/$venueId'
     | '/api/auth/$'
     | '/api/og/event/$eventId'
   id:
@@ -496,7 +518,9 @@ export interface FileRouteTypes {
     | '/scenarios/profile-payment-info'
     | '/scenarios/profile-sports-preferences'
     | '/scenarios/qr-payment'
+    | '/scenarios/venue-details'
     | '/scenarios/venues'
+    | '/venues_/$venueId'
     | '/api/auth/$'
     | '/api/og/event/$eventId'
   fileRoutesById: FileRoutesById
@@ -538,7 +562,9 @@ export interface RootRouteChildren {
   ScenariosProfilePaymentInfoRoute: typeof ScenariosProfilePaymentInfoRoute
   ScenariosProfileSportsPreferencesRoute: typeof ScenariosProfileSportsPreferencesRoute
   ScenariosQrPaymentRoute: typeof ScenariosQrPaymentRoute
+  ScenariosVenueDetailsRoute: typeof ScenariosVenueDetailsRoute
   ScenariosVenuesRoute: typeof ScenariosVenuesRoute
+  VenuesVenueIdRoute: typeof VenuesVenueIdRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiOgEventEventIdRoute: typeof ApiOgEventEventIdRoute
 }
@@ -797,11 +823,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScenariosQrPaymentRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scenarios/venue-details': {
+      id: '/scenarios/venue-details'
+      path: '/scenarios/venue-details'
+      fullPath: '/scenarios/venue-details'
+      preLoaderRoute: typeof ScenariosVenueDetailsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scenarios/venues': {
       id: '/scenarios/venues'
       path: '/scenarios/venues'
       fullPath: '/scenarios/venues'
       preLoaderRoute: typeof ScenariosVenuesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/venues_/$venueId': {
+      id: '/venues_/$venueId'
+      path: '/venues/$venueId'
+      fullPath: '/venues/$venueId'
+      preLoaderRoute: typeof VenuesVenueIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
@@ -859,7 +899,9 @@ const rootRouteChildren: RootRouteChildren = {
   ScenariosProfileSportsPreferencesRoute:
     ScenariosProfileSportsPreferencesRoute,
   ScenariosQrPaymentRoute: ScenariosQrPaymentRoute,
+  ScenariosVenueDetailsRoute: ScenariosVenueDetailsRoute,
   ScenariosVenuesRoute: ScenariosVenuesRoute,
+  VenuesVenueIdRoute: VenuesVenueIdRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiOgEventEventIdRoute: ApiOgEventEventIdRoute,
 }

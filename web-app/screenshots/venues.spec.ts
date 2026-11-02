@@ -19,6 +19,8 @@ test('Venue cards display available phone numbers as call links', async ({
 
   const cards = page.getByRole('article')
   await expect(cards).toHaveCount(6)
+  await expect(cards.first().getByRole('link', { name: 'Beachklub Pankrác', exact: true }))
+    .toHaveAttribute('href', '/venues/venue-stromovka?page=1')
   for (const [name, phone] of [
     ['Beachklub Pankrác', '+420 777 123 456'],
     ['Sportovní areál Hagibor', '+420 222 345 678'],

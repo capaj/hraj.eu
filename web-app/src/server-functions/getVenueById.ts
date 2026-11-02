@@ -3,6 +3,7 @@ import { Venue } from '../types'
 import { db } from '../../drizzle/db'
 import { venueT } from '../../drizzle/schema'
 import { eq } from 'drizzle-orm'
+import { notFound } from '@tanstack/react-router'
 
 export const getVenueById = createServerFn({ method: 'GET' })
   .inputValidator((venueId: string) => venueId)
@@ -14,7 +15,7 @@ export const getVenueById = createServerFn({ method: 'GET' })
       .limit(1)
 
     if (!venues || venues.length === 0) {
-      throw new Error(`Venue with id ${venueId} not found`)
+      throw notFound()
     }
 
     const venue = venues[0]
@@ -50,6 +51,13 @@ export const getVenueById = createServerFn({ method: 'GET' })
         : undefined,
       price: venue.priceRangeMin || 0,
       currency: venue.priceRangeCurrency || 'CZK',
+      priceRange: venue.priceRangeMin != null || venue.priceRangeMax != null
+        ? {
+            min: venue.priceRangeMin ?? venue.priceRangeMax ?? 0,
+            max: venue.priceRangeMax ?? venue.priceRangeMin ?? 0,
+            currency: venue.priceRangeCurrency || 'CZK'
+          }
+        : undefined,
       contactInfo: {
         phone: venue.contactPhone || undefined,
         email: venue.contactEmail || undefined,
@@ -59,7 +67,7 @@ export const getVenueById = createServerFn({ method: 'GET' })
       totalRatings: venue.totalRatings || undefined,
       createdBy: venue.createdBy || '',
       isVerified: venue.isVerified || false,
-      createdAt: new Date(),
-      updatedAt: new Date()
+      createdAt: new Date(venue.createdAt),
+      updatedAt: new Date(venue.updatedAt)
     } as Venue
   })

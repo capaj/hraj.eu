@@ -50,7 +50,7 @@ msgid "{0} ({1} reviews)"
 msgstr ""
 
 #. placeholder {0}: cities.length
-#: src/pages/VenuesPage.tsx:167
+#: src/pages/VenuesPage.tsx:168
 msgid "{0} cities"
 msgstr ""
 
@@ -80,6 +80,11 @@ msgstr ""
 msgid "{0} new game alerts"
 msgstr ""
 
+#. placeholder {0}: history.total
+#: src/pages/VenueDetailsPage.tsx:340
+msgid "{0} public events at this venue"
+msgstr "{0} public events at this venue"
+
 #. placeholder {0}: selectedSports.length
 #: src/components/user/OnboardingPreferencesScreen.tsx:167
 msgid "{0} sports selected — you're ready to go."
@@ -91,7 +96,7 @@ msgid "{0} to ideal"
 msgstr ""
 
 #. placeholder {0}: venues.length
-#: src/pages/VenuesPage.tsx:163
+#: src/pages/VenuesPage.tsx:164
 msgid "{0} venues"
 msgstr ""
 
@@ -382,6 +387,10 @@ msgstr ""
 msgid "About me"
 msgstr "About me"
 
+#: src/pages/VenueDetailsPage.tsx:178
+msgid "About the venue"
+msgstr "About the venue"
+
 #: src/pages/EventDetailsPage.tsx:1039
 #: src/routes/scenarios.phone-numbers.tsx:263
 msgid "About this event"
@@ -401,6 +410,7 @@ msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:808
 #: src/pages/EventDetailsPage.tsx:1606
+#: src/pages/VenueDetailsPage.tsx:216
 msgid "Access Instructions"
 msgstr ""
 
@@ -524,7 +534,7 @@ msgstr "Advance payment verified by Fio banka"
 msgid "Advanced"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:224
+#: src/pages/VenuesPage.tsx:225
 msgid "All cities"
 msgstr ""
 
@@ -548,7 +558,7 @@ msgstr ""
 msgid "All skill levels welcome"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:246
+#: src/pages/VenuesPage.tsx:247
 msgid "All sports"
 msgstr ""
 
@@ -557,7 +567,8 @@ msgstr ""
 msgid "All Sports"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:264
+#: src/pages/VenueDetailsPage.tsx:124
+#: src/pages/VenuesPage.tsx:265
 msgid "All venues"
 msgstr ""
 
@@ -1035,6 +1046,10 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+#: src/pages/VenueDetailsPage.tsx:319
+msgid "Closed"
+msgstr "Closed"
+
 #: src/components/weather/WeatherWidget.tsx:100
 msgid "Cold with snow"
 msgstr ""
@@ -1162,6 +1177,10 @@ msgstr ""
 msgid "Consider sun protection"
 msgstr ""
 
+#: src/pages/VenueDetailsPage.tsx:260
+msgid "Contact"
+msgstr "Contact"
+
 #: src/pages/TOSPage.tsx:419
 msgid "Contact Information"
 msgstr ""
@@ -1260,7 +1279,7 @@ msgstr ""
 msgid "Could not update the attendance ban."
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:130
+#: src/pages/VenuesPage.tsx:131
 msgid "Could not update the venue subscription."
 msgstr ""
 
@@ -1599,7 +1618,7 @@ msgstr ""
 msgid "Email address is required"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:171
+#: src/pages/VenuesPage.tsx:172
 msgid "Email alerts for new events"
 msgstr ""
 
@@ -1774,6 +1793,10 @@ msgstr ""
 msgid "Event emails enabled"
 msgstr ""
 
+#: src/pages/VenueDetailsPage.tsx:385
+msgid "Event history pages"
+msgstr "Event history pages"
+
 #: src/lib/errorMessages.ts:21
 #: src/pages/EventDetailsPage.tsx:319
 msgid "Event not found"
@@ -1868,7 +1891,7 @@ msgstr ""
 msgid "Experienced competitive players"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:153
+#: src/pages/VenuesPage.tsx:154
 msgid "Explore sports venues, see where they are, and get an email when someone creates a new event at your favorite place."
 msgstr ""
 
@@ -1877,6 +1900,7 @@ msgid "Export your data in a readable format"
 msgstr ""
 
 #: src/pages/EventDetailsPage.tsx:1667
+#: src/pages/VenueDetailsPage.tsx:191
 msgid "Facilities"
 msgstr ""
 
@@ -2055,11 +2079,11 @@ msgstr ""
 msgid "Fill in the details to organize your next game"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:217
+#: src/pages/VenuesPage.tsx:218
 msgid "Filter by city"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:239
+#: src/pages/VenuesPage.tsx:240
 msgid "Filter by sport"
 msgstr ""
 
@@ -2096,7 +2120,7 @@ msgstr "Find amateur team sports games near you. Join local football, volleyball
 msgid "Find Local Games"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:150
+#: src/pages/VenuesPage.tsx:151
 msgid "Find your next venue"
 msgstr ""
 
@@ -2232,6 +2256,10 @@ msgstr ""
 #: src/components/user/PaymentInformationCard.tsx:42
 msgid "Germany"
 msgstr ""
+
+#: src/pages/VenueDetailsPage.tsx:234
+msgid "Get directions"
+msgstr "Get directions"
 
 #: src/components/user/SportsPreferencesCards.tsx:292
 msgid "Get notified when a new game is added for a sport."
@@ -2505,11 +2533,11 @@ msgstr "In Fio Internetbanking, open Settings → API and create a token with �
 
 #: src/components/venues/AddVenueModal.tsx:522
 #: src/lib/localizedNames.ts:46
-#: src/pages/VenuesPage.tsx:38
+#: src/pages/VenuesPage.tsx:39
 msgid "Indoor"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:40
+#: src/pages/VenuesPage.tsx:41
 msgid "Indoor & outdoor"
 msgstr ""
 
@@ -2802,6 +2830,10 @@ msgstr ""
 msgid "Location"
 msgstr ""
 
+#: src/pages/VenueDetailsPage.tsx:211
+msgid "Location & access"
+msgstr "Location & access"
+
 #: src/pages/PrivacyPage.tsx:58
 msgid "Location data when you use location-based features"
 msgstr ""
@@ -2949,6 +2981,10 @@ msgstr ""
 msgid "Messages and communications within the platform"
 msgstr ""
 
+#: src/pages/VenueDetailsPage.tsx:377
+msgid "min"
+msgstr "min"
+
 #: src/pages/EventDetailsPage.tsx:1138
 msgid "Minimum"
 msgstr ""
@@ -3036,7 +3072,7 @@ msgstr ""
 msgid "Netherlands"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:381
+#: src/pages/VenuesPage.tsx:389
 msgid "New event emails"
 msgstr ""
 
@@ -3095,6 +3131,10 @@ msgstr ""
 msgid "Newest First"
 msgstr ""
 
+#: src/pages/VenueDetailsPage.tsx:399
+msgid "Next"
+msgstr "Next"
+
 #: src/components/events/EventPaymentSettings.tsx:269
 msgid "No advance payment"
 msgstr "No advance payment"
@@ -3102,6 +3142,14 @@ msgstr "No advance payment"
 #: src/pages/UserProfilePage.tsx:670
 msgid "No bio provided"
 msgstr ""
+
+#: src/pages/VenueDetailsPage.tsx:297
+msgid "No contact details available."
+msgstr "No contact details available."
+
+#: src/pages/VenueDetailsPage.tsx:185
+msgid "No description available."
+msgstr "No description available."
 
 #: src/components/events/EventComments.tsx:333
 msgid "No email will be sent. The comment will still be visible in the event discussion."
@@ -3138,6 +3186,10 @@ msgstr ""
 #: src/pages/PublicProfilePage.tsx:242
 msgid "No past events"
 msgstr ""
+
+#: src/pages/VenueDetailsPage.tsx:346
+msgid "No past events to show."
+msgstr "No past events to show."
 
 #: src/pages/EventDetailsPage.tsx:1628
 msgid "No phone number"
@@ -3208,7 +3260,7 @@ msgstr ""
 msgid "No venues match \"{searchTerm}\" for {sportName}"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:422
+#: src/pages/VenuesPage.tsx:430
 msgid "No venues match your filters"
 msgstr ""
 
@@ -3235,7 +3287,7 @@ msgstr ""
 msgid "Not specified"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:396
+#: src/pages/VenuesPage.tsx:404
 msgid "Not subscribed"
 msgstr ""
 
@@ -3326,6 +3378,10 @@ msgstr ""
 msgid "Open to All Skill Levels"
 msgstr ""
 
+#: src/pages/VenueDetailsPage.tsx:307
+msgid "Opening hours"
+msgstr "Opening hours"
+
 #: src/lib/authLocalization.ts:49
 msgid "Or continue with"
 msgstr ""
@@ -3351,6 +3407,8 @@ msgid "Organizing successful events (+10 points)"
 msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:773
+#: src/pages/VenueDetailsPage.tsx:241
+#: src/pages/VenueDetailsPage.tsx:250
 msgid "Orientation plan"
 msgstr ""
 
@@ -3380,7 +3438,7 @@ msgstr ""
 
 #: src/components/venues/AddVenueModal.tsx:521
 #: src/lib/localizedNames.ts:47
-#: src/pages/VenuesPage.tsx:42
+#: src/pages/VenuesPage.tsx:43
 msgid "Outdoor"
 msgstr ""
 
@@ -3395,6 +3453,11 @@ msgstr ""
 #: src/components/weather/WeatherWidget.tsx:94
 msgid "Overcast with clouds"
 msgstr ""
+
+#. placeholder {0}: history.page
+#: src/pages/VenueDetailsPage.tsx:394
+msgid "Page {0} of {pages}"
+msgstr "Page {0} of {pages}"
 
 #: src/components/ui/NotFound.tsx:8
 msgid "Page Not Found"
@@ -3453,6 +3516,10 @@ msgstr ""
 #: src/lib/authLocalization.ts:51
 msgid "Passwords do not match"
 msgstr ""
+
+#: src/pages/VenueDetailsPage.tsx:337
+msgid "Past events"
+msgstr "Past events"
 
 #: src/pages/DiscoverPage.tsx:367
 #: src/pages/PublicProfilePage.tsx:183
@@ -3611,7 +3678,7 @@ msgid "Pictures could not be uploaded. Please try again."
 msgstr "Pictures could not be uploaded. Please try again."
 
 #: src/pages/SeoLandingPage.tsx:123
-#: src/pages/VenuesPage.tsx:147
+#: src/pages/VenuesPage.tsx:148
 msgid "Places to play"
 msgstr ""
 
@@ -3854,6 +3921,10 @@ msgstr "Presskit & brand assets | {SITE_NAME}"
 msgid "Preview"
 msgstr ""
 
+#: src/pages/VenueDetailsPage.tsx:389
+msgid "Previous"
+msgstr "Previous"
+
 #: src/lib/email/sendEventTimeChangeEmail.ts:42
 msgid "Previous time"
 msgstr ""
@@ -3870,6 +3941,10 @@ msgstr ""
 msgid "Previous venue: {previousVenue}"
 msgstr ""
 
+#: src/pages/VenueDetailsPage.tsx:83
+msgid "Price not listed"
+msgstr "Price not listed"
+
 #: src/components/venues/AddVenueModal.tsx:883
 msgid "Price per Hour"
 msgstr ""
@@ -3885,6 +3960,10 @@ msgstr ""
 #: src/pages/EventDetailsPage.tsx:491
 msgid "Price: €{price} per person"
 msgstr ""
+
+#: src/pages/VenueDetailsPage.tsx:302
+msgid "Pricing"
+msgstr "Pricing"
 
 #: src/components/venues/AddVenueModal.tsx:874
 msgid "Pricing (Optional)"
@@ -4291,7 +4370,7 @@ msgstr ""
 msgid "Search by name or email"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:210
+#: src/pages/VenuesPage.tsx:211
 msgid "Search by name, address, or city"
 msgstr ""
 
@@ -4303,7 +4382,7 @@ msgstr ""
 msgid "Search users"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:201
+#: src/pages/VenuesPage.tsx:202
 msgid "Search venues"
 msgstr ""
 
@@ -4331,7 +4410,7 @@ msgstr ""
 msgid "Select a core group"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:185
+#: src/pages/VenuesPage.tsx:186
 msgid "Select a marker to find the venue in the list."
 msgstr ""
 
@@ -4438,7 +4517,7 @@ msgstr ""
 
 #. placeholder {0}: filteredVenues.length
 #. placeholder {1}: venues.length
-#: src/pages/VenuesPage.tsx:267
+#: src/pages/VenuesPage.tsx:268
 msgid "Showing {0} of {1} venues"
 msgstr ""
 
@@ -4605,7 +4684,7 @@ msgstr ""
 msgid "Submitting..."
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:282
+#: src/pages/VenuesPage.tsx:283
 msgid "Subscribe"
 msgstr ""
 
@@ -4613,7 +4692,7 @@ msgstr ""
 msgid "Subscribe to new city events by email"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:391
+#: src/pages/VenuesPage.tsx:399
 msgid "Subscribed"
 msgstr ""
 
@@ -4833,7 +4912,7 @@ msgstr ""
 msgid "Try Again"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:425
+#: src/pages/VenuesPage.tsx:433
 msgid "Try another search, city, or sport."
 msgstr ""
 
@@ -4861,7 +4940,7 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:292
+#: src/pages/VenuesPage.tsx:293
 msgid "Unsubscribe"
 msgstr ""
 
@@ -4918,7 +4997,7 @@ msgstr ""
 msgid "Updating Venue..."
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:288
+#: src/pages/VenuesPage.tsx:289
 msgid "Updating…"
 msgstr ""
 
@@ -5065,7 +5144,7 @@ msgstr ""
 msgid "Venue database and location services"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:126
+#: src/pages/VenuesPage.tsx:127
 msgid "Venue emails have been turned off."
 msgstr ""
 
@@ -5077,7 +5156,7 @@ msgstr ""
 msgid "Venue location set."
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:182
+#: src/pages/VenuesPage.tsx:183
 msgid "Venue map"
 msgstr ""
 
@@ -5092,6 +5171,10 @@ msgstr ""
 #: src/lib/errorMessages.ts:38
 msgid "Venue not found or you do not have permission to update it"
 msgstr ""
+
+#: src/pages/VenueDetailsPage.tsx:156
+msgid "Venue photos"
+msgstr "Venue photos"
 
 #: src/components/events/CreateEventForm.tsx:635
 msgid "Venue Selection"
@@ -5111,7 +5194,8 @@ msgstr ""
 msgid "Verified"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:349
+#: src/pages/VenueDetailsPage.tsx:132
+#: src/pages/VenuesPage.tsx:357
 msgid "Verified venue"
 msgstr ""
 
@@ -5603,7 +5687,7 @@ msgstr ""
 msgid "You will be removed from all events and waitlists"
 msgstr ""
 
-#: src/pages/VenuesPage.tsx:125
+#: src/pages/VenuesPage.tsx:126
 msgid "You will receive emails about new events at this venue."
 msgstr ""
 

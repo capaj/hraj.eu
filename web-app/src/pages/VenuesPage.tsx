@@ -1,4 +1,5 @@
 import { useLingui } from '@lingui/react'
+import { Link } from '@tanstack/react-router'
 import { getSportName } from '~/lib/localizedNames'
 import { useMemo, useRef, useState } from 'react'
 import { Trans } from '@lingui/react/macro'
@@ -324,7 +325,14 @@ export function VenuesPage({
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
                             <h3 className="text-lg font-semibold text-gray-900">
-                              {venue.name}
+                              <Link
+                                to="/venues/$venueId"
+                                params={{ venueId: venue.id }}
+                                search={{ page: 1 }}
+                                className="hover:text-primary-700 hover:underline"
+                              >
+                                {venue.name}
+                              </Link>
                             </h3>
                             {location && (
                               <p className="mt-1 flex items-start gap-1.5 text-sm text-gray-600">

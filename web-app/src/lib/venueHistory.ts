@@ -1,0 +1,1 @@
+export const VENUE_HISTORY_PAGE_SIZE = 20
