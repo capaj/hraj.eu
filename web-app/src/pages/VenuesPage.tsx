@@ -11,6 +11,7 @@ import {
   LoaderCircle,
   Mail,
   MapPin,
+  Phone,
   Search,
   SlidersHorizontal
 } from 'lucide-react'
@@ -330,6 +331,15 @@ export function VenuesPage({
                                 <MapPin size={15} className="mt-0.5 shrink-0" />
                                 <span>{location}</span>
                               </p>
+                            )}
+                            {venue.contactInfo?.phone && (
+                              <a
+                                href={`tel:${venue.contactInfo.phone}`}
+                                className="mt-2 flex items-center gap-1.5 text-sm text-primary-700 hover:underline"
+                              >
+                                <Phone size={15} className="shrink-0" aria-hidden="true" />
+                                <span>{venue.contactInfo.phone}</span>
+                              </a>
                             )}
                           </div>
                           {venue.isVerified && (

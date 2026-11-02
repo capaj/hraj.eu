@@ -6,6 +6,7 @@ const scenarioVenues: Venue[] = [
   {
     id: 'venue-stromovka',
     name: 'Beachklub Pankrác',
+    contactInfo: { phone: '+420 777 123 456' },
     address: 'Horáčkova 1100',
     city: 'Praha',
     country: 'Česko',
@@ -27,6 +28,7 @@ const scenarioVenues: Venue[] = [
   {
     id: 'venue-hagibor',
     name: 'Sportovní areál Hagibor',
+    contactInfo: { phone: '+420 222 345 678' },
     address: 'Izraelská 6',
     city: 'Praha',
     country: 'Česko',
@@ -69,6 +71,7 @@ const scenarioVenues: Venue[] = [
   {
     id: 'venue-kralovka',
     name: 'Sportovní hala Královka',
+    contactInfo: { phone: '+420 233 456 789' },
     address: 'Nad Královskou oborou 51',
     city: 'Praha',
     country: 'Česko',
@@ -88,6 +91,7 @@ const scenarioVenues: Venue[] = [
   {
     id: 'venue-cukrovar',
     name: 'Sportcentrum Cukrovar',
+    contactInfo: { phone: '' },
     address: 'Dobrovského 29',
     city: 'Kladno',
     country: 'Česko',
@@ -107,6 +111,7 @@ const scenarioVenues: Venue[] = [
   {
     id: 'venue-ladvi',
     name: 'Beach Ládví',
+    contactInfo: { phone: '+420 777 987 654' },
     address: 'Chabařovická 4',
     city: 'Praha',
     country: 'Česko',
