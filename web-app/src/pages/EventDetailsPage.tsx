@@ -1,5 +1,6 @@
 import { EventComments } from '../components/events/EventComments'
-import { ConnectedBlockPlayerButton } from '../components/user/ConnectedOrganizerBlocks'
+import { ConnectedEventBlockPlayerButton } from '../components/user/ConnectedOrganizerBlocks'
+import { EventPlayersHeader } from '../components/events/EventPlayersHeader'
 import { OrganizerBlockedPage } from '../components/events/OrganizerBlockedPage'
 import { EventPaymentsPanel } from '../components/events/EventPaymentsPanel'
 import { PendingPaymentParticipants } from '../components/events/PendingPaymentParticipants'
@@ -54,7 +55,6 @@ import {
   Send,
   Edit,
   XCircle,
-  ChevronDown,
   Copy,
   MoreHorizontal
 } from 'lucide-react'
@@ -187,6 +187,14 @@ const EventDetailsContent = ({ data }: { data: {
     : false
 
   const participantsMap = new Map(participants.map((user) => [user.id, user]))
+  const blockablePlayerIds = new Set([
+    ...event.participants,
+    ...(event.waitlist ?? []),
+    ...(event.pendingPayment ?? [])
+  ])
+  const blockablePlayers = participants.filter((player) =>
+    player.id !== event.organizerId && blockablePlayerIds.has(player.id)
+  )
 
   const getJoinedAtTime = (userId: string) => {
     const joinedAt = event.participantJoinedAt?.[userId]
@@ -1224,27 +1232,14 @@ const EventDetailsContent = ({ data }: { data: {
 
           <div>
             <Card>
-              <CardHeader
-                className="cursor-pointer lg:cursor-default"
-                onClick={() => setIsParticipantsExpanded(!isParticipantsExpanded)}
-              >
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-                    <UserIcon size={18} className="mr-2" />
-                    <Trans>Who's Playing</Trans>
-                    <ChevronDown
-                      size={20}
-                      className={`ml-2 lg:hidden transition-transform duration-200 ${isParticipantsExpanded ? 'rotate-180' : ''
-                        }`}
-                    />
-                  </h3>
-                  {hasEventEnded && isParticipant && (
-                    <Badge variant="info" size="sm">
-                      <Trans>Rate Players</Trans>
-                    </Badge>
-                  )}
-                </div>
-              </CardHeader>
+              <EventPlayersHeader
+                expanded={isParticipantsExpanded}
+                onToggle={() => setIsParticipantsExpanded(!isParticipantsExpanded)}
+                showRating={hasEventEnded && isParticipant}
+                blockAction={currentUserId === event.organizerId && (
+                  <ConnectedEventBlockPlayerButton players={blockablePlayers} />
+                )}
+              />
               <CardContent
 
                 className={`p-6  max-h-266 overflow-y-scroll ${!isParticipantsExpanded ? 'hidden lg:block' : ''
@@ -1349,9 +1344,6 @@ const EventDetailsContent = ({ data }: { data: {
                         )}
 
                       {/* Remove button for organizer (removing someone else) */}
-                      {currentUserId === event.organizerId && user?.id && user.id !== currentUserId && (
-                        <ConnectedBlockPlayerButton player={user} />
-                      )}
                       {!hasEventEnded &&
                         currentUserId === event.organizerId &&
                         user?.id &&
@@ -1498,9 +1490,6 @@ const EventDetailsContent = ({ data }: { data: {
                           )}
 
                           {/* Remove button for organizer (removing waitlisted user) */}
-                          {currentUserId === event.organizerId && user && !isMe && (
-                            <ConnectedBlockPlayerButton player={user} />
-                          )}
                           {!hasEventEnded &&
                             currentUserId === event.organizerId &&
                             !isMe && (

@@ -33,7 +33,7 @@ export function ConnectedOrganizerBlocksCard() {
     searchUsers={searchUsers} onChange={onChange} loading={blocks.isPending} loadFailed={blocks.isError} />
 }
 
-export function ConnectedBlockPlayerButton({ player }: { player: BlockableUser }) {
+export function ConnectedEventBlockPlayerButton({ players }: { players: BlockableUser[] }) {
   const onChange = useChangeBlock()
-  return <BlockPlayerButton player={player} onBlock={(id) => onChange(id, true)} />
+  return <BlockPlayerButton players={players} onBlock={(id) => onChange(id, true)} />
 }
