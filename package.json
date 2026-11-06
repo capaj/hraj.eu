@@ -13,6 +13,7 @@
   "devDependencies": {
     "eslint-plugin-lingui": "^0.16.0",
     "husky": "^9.1.7",
+    "npm-check-updates": "^23.1.1",
     "oxlint": "^1.60.0",
     "turbo": "^2.9.6"
   }
