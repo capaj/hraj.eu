@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/react/macro'
 import { Button } from '../ui/Button'
 import { Card, CardContent, CardHeader } from '../ui/Card'
+import { ConnectedBlockPlayerButton } from '../user/ConnectedOrganizerBlocks'
 
 export function PendingPaymentParticipants({
   players,
@@ -30,6 +31,7 @@ export function PendingPaymentParticipants({
             className="flex items-center justify-between gap-3"
           >
             <span>{player.name}</span>
+            {currentUserId === organizerId && player.id !== currentUserId && <ConnectedBlockPlayerButton player={player} />}
             {(player.id === currentUserId || currentUserId === organizerId) && (
               <Button
                 variant="outline"

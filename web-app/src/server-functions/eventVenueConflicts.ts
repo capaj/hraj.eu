@@ -1,5 +1,6 @@
 import { and, eq, not, sql } from 'drizzle-orm'
 import { eventT } from '../../drizzle/schema'
+import { eventsVisibleToUser } from './organizerBlockPolicy'
 
 type VenueEventConflictInput = {
   venueId: string | null | undefined
@@ -7,6 +8,7 @@ type VenueEventConflictInput = {
   startTime: string
   duration: number
   excludeEventId?: string
+  viewerId?: string
 }
 
 type ConflictingEvent = {
@@ -15,6 +17,7 @@ type ConflictingEvent = {
   date: string
   startTime: string
   duration: number
+  visible: boolean
 }
 
 export async function assertNoVenueEventConflict(
@@ -24,7 +27,8 @@ export async function assertNoVenueEventConflict(
     date,
     startTime,
     duration,
-    excludeEventId
+    excludeEventId,
+    viewerId
   }: VenueEventConflictInput
 ): Promise<void> {
   if (!venueId) {
@@ -59,13 +63,17 @@ export async function assertNoVenueEventConflict(
       title: eventT.title,
       date: eventT.date,
       startTime: eventT.startTime,
-      duration: eventT.duration
+      duration: eventT.duration,
+      visible: sql<boolean>`${eventsVisibleToUser(viewerId) ?? sql`1`}`.mapWith(Boolean)
     })
     .from(eventT)
     .where(and(...whereClauses))
     .limit(1)
 
   if (conflict) {
+    if (!conflict.visible) {
+      throw new Error('This venue already has an event at that time.')
+    }
     const conflictDescription = `${conflict.title} on ${conflict.date} at ${conflict.startTime} (${conflict.duration} min).`
 
     throw new Error(

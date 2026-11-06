@@ -141,6 +141,13 @@
       "when": 1792694803890,
       "tag": "0019_fio_payments",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "6",
+      "when": 1793976600270,
+      "tag": "0020_organizer_blocks",
+      "breakpoints": true
     }
   ]
 }

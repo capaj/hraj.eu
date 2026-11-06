@@ -7,6 +7,7 @@ import {
   fioConnectionT,
   fioReceiptT,
   participantT,
+  organizerBlockT,
   paymentRequestT,
   user
 } from '../drizzle/schema.ts'
@@ -14,12 +15,20 @@ import {
 // Exercise the production SQLite Drizzle queries in an ephemeral PGlite
 // database. Only placeholder/default syntax is translated; no service or file
 // database is opened, and transactions/constraints are real.
-export async function createPaymentTestDatabase(t) {
+export async function createPaymentTestDatabase(t, additionalTables = []) {
   const pg = await PGlite.create()
   t.after(() => pg.close())
   await pg.exec(
     'CREATE FUNCTION unixepoch() RETURNS integer LANGUAGE SQL AS $$ SELECT extract(epoch from now())::integer $$;'
   )
+  await pg.exec(`
+    CREATE FUNCTION instr(value text, needle text) RETURNS integer LANGUAGE SQL AS $$ SELECT strpos(value, needle) $$;
+    CREATE FUNCTION datetime(value text, modifier text DEFAULT NULL) RETURNS text LANGUAGE SQL AS $$
+      SELECT to_char((CASE WHEN value = 'now' THEN current_timestamp::timestamp ELSE value::timestamp END)
+        + coalesce(modifier::interval, interval '0 seconds'), 'YYYY-MM-DD HH24:MI:SS')
+    $$;
+    CREATE FUNCTION json_array_length(value text) RETURNS integer LANGUAGE SQL AS $$ SELECT json_array_length(value::json) $$;
+  `)
   const dialect = new SQLiteSyncDialect()
   for (const table of [
     user,
@@ -27,7 +36,9 @@ export async function createPaymentTestDatabase(t) {
     participantT,
     fioConnectionT,
     paymentRequestT,
-    fioReceiptT
+    fioReceiptT,
+    organizerBlockT,
+    ...additionalTables
   ]) {
     const columns = Object.values(getTableColumns(table)).map((column) => {
       let type = column.getSQLType()
@@ -48,6 +59,7 @@ export async function createPaymentTestDatabase(t) {
   await pg.exec(`CREATE UNIQUE INDEX event_user_idx ON participant(event_id, user_id);
     CREATE UNIQUE INDEX payment_request_active_slot ON payment_request(participant_id, slot) WHERE cancelled_at IS NULL;
     CREATE UNIQUE INDEX fio_receipt_transaction_idx ON fio_receipt(iban, transaction_id);`)
+  await pg.exec('CREATE UNIQUE INDEX organizer_block_pair_idx ON organizer_block(organizer_id, user_id)')
   function wrap(connection) {
     const database = drizzle(async (sql, params, method) => {
       let index = 0

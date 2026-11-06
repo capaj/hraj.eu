@@ -1,18 +1,16 @@
 import { createServerFn } from '@tanstack/react-start'
-import { getRequest } from '@tanstack/react-start/server'
 import { Event } from '../types'
 import { db } from '../../drizzle/db'
 import { coreGroupMemberT, eventT, participantT } from '../../drizzle/schema'
 import { and, eq, gte, inArray, isNull, lte, not, or } from 'drizzle-orm'
-import { auth } from '~/lib/auth'
+import { getEventViewerId } from './eventViewer'
 import { getEventGuestNames } from '~/lib/eventGuests'
+import { eventsVisibleToUser } from './organizerBlockPolicy'
 
 export const getUpcomingEvents = createServerFn({ method: 'GET' })
   .inputValidator((limit?: number) => limit || 3)
   .handler(async ({ data: limit }) => {
-    const request = getRequest()
-    const session = await auth.api.getSession({ headers: request.headers })
-    const viewerId = session?.user?.id
+    const viewerId = await getEventViewerId()
 
     const today = new Date().toISOString().split('T')[0]
     const now = new Date()
@@ -41,6 +39,7 @@ export const getUpcomingEvents = createServerFn({ method: 'GET' })
       .from(eventT)
       .where(
         and(
+          eventsVisibleToUser(viewerId),
           gte(eventT.date, today),
           eq(eventT.isPublic, true),
           not(eq(eventT.status, 'cancelled')),

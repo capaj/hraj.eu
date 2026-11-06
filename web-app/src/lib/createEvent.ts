@@ -103,6 +103,7 @@ export const createEvent = createServerFn({ method: 'POST' })
         : undefined
 
     await assertNoVenueEventConflict(db, {
+      viewerId: organizerId,
       venueId: data.venueId,
       date: data.date,
       startTime: data.startTime,

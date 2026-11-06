@@ -38,6 +38,7 @@ import { Route as ScenariosFioPaymentsRouteImport } from './routes/scenarios.fio
 import { Route as ScenariosFioProfileRouteImport } from './routes/scenarios.fio-profile'
 import { Route as ScenariosLocalizationRouteImport } from './routes/scenarios.localization'
 import { Route as ScenariosOnboardingRouteImport } from './routes/scenarios.onboarding'
+import { Route as ScenariosOrganizerBlocksRouteImport } from './routes/scenarios.organizer-blocks'
 import { Route as ScenariosParticipantCapacityRouteImport } from './routes/scenarios.participant-capacity'
 import { Route as ScenariosPendingPaymentsRouteImport } from './routes/scenarios.pending-payments'
 import { Route as ScenariosPhoneNumbersRouteImport } from './routes/scenarios.phone-numbers'
@@ -198,6 +199,12 @@ const ScenariosOnboardingRoute = ScenariosOnboardingRouteImport.update({
   path: '/scenarios/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScenariosOrganizerBlocksRoute =
+  ScenariosOrganizerBlocksRouteImport.update({
+    id: '/scenarios/organizer-blocks',
+    path: '/scenarios/organizer-blocks',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ScenariosParticipantCapacityRoute =
   ScenariosParticipantCapacityRouteImport.update({
     id: '/scenarios/participant-capacity',
@@ -293,6 +300,7 @@ export interface FileRoutesByFullPath {
   '/scenarios/fio-profile': typeof ScenariosFioProfileRoute
   '/scenarios/localization': typeof ScenariosLocalizationRoute
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
+  '/scenarios/organizer-blocks': typeof ScenariosOrganizerBlocksRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
   '/scenarios/pending-payments': typeof ScenariosPendingPaymentsRoute
   '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
@@ -336,6 +344,7 @@ export interface FileRoutesByTo {
   '/scenarios/fio-profile': typeof ScenariosFioProfileRoute
   '/scenarios/localization': typeof ScenariosLocalizationRoute
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
+  '/scenarios/organizer-blocks': typeof ScenariosOrganizerBlocksRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
   '/scenarios/pending-payments': typeof ScenariosPendingPaymentsRoute
   '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
@@ -380,6 +389,7 @@ export interface FileRoutesById {
   '/scenarios/fio-profile': typeof ScenariosFioProfileRoute
   '/scenarios/localization': typeof ScenariosLocalizationRoute
   '/scenarios/onboarding': typeof ScenariosOnboardingRoute
+  '/scenarios/organizer-blocks': typeof ScenariosOrganizerBlocksRoute
   '/scenarios/participant-capacity': typeof ScenariosParticipantCapacityRoute
   '/scenarios/pending-payments': typeof ScenariosPendingPaymentsRoute
   '/scenarios/phone-numbers': typeof ScenariosPhoneNumbersRoute
@@ -425,6 +435,7 @@ export interface FileRouteTypes {
     | '/scenarios/fio-profile'
     | '/scenarios/localization'
     | '/scenarios/onboarding'
+    | '/scenarios/organizer-blocks'
     | '/scenarios/participant-capacity'
     | '/scenarios/pending-payments'
     | '/scenarios/phone-numbers'
@@ -468,6 +479,7 @@ export interface FileRouteTypes {
     | '/scenarios/fio-profile'
     | '/scenarios/localization'
     | '/scenarios/onboarding'
+    | '/scenarios/organizer-blocks'
     | '/scenarios/participant-capacity'
     | '/scenarios/pending-payments'
     | '/scenarios/phone-numbers'
@@ -511,6 +523,7 @@ export interface FileRouteTypes {
     | '/scenarios/fio-profile'
     | '/scenarios/localization'
     | '/scenarios/onboarding'
+    | '/scenarios/organizer-blocks'
     | '/scenarios/participant-capacity'
     | '/scenarios/pending-payments'
     | '/scenarios/phone-numbers'
@@ -555,6 +568,7 @@ export interface RootRouteChildren {
   ScenariosFioProfileRoute: typeof ScenariosFioProfileRoute
   ScenariosLocalizationRoute: typeof ScenariosLocalizationRoute
   ScenariosOnboardingRoute: typeof ScenariosOnboardingRoute
+  ScenariosOrganizerBlocksRoute: typeof ScenariosOrganizerBlocksRoute
   ScenariosParticipantCapacityRoute: typeof ScenariosParticipantCapacityRoute
   ScenariosPendingPaymentsRoute: typeof ScenariosPendingPaymentsRoute
   ScenariosPhoneNumbersRoute: typeof ScenariosPhoneNumbersRoute
@@ -774,6 +788,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScenariosOnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scenarios/organizer-blocks': {
+      id: '/scenarios/organizer-blocks'
+      path: '/scenarios/organizer-blocks'
+      fullPath: '/scenarios/organizer-blocks'
+      preLoaderRoute: typeof ScenariosOrganizerBlocksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scenarios/participant-capacity': {
       id: '/scenarios/participant-capacity'
       path: '/scenarios/participant-capacity'
@@ -891,6 +912,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScenariosFioProfileRoute: ScenariosFioProfileRoute,
   ScenariosLocalizationRoute: ScenariosLocalizationRoute,
   ScenariosOnboardingRoute: ScenariosOnboardingRoute,
+  ScenariosOrganizerBlocksRoute: ScenariosOrganizerBlocksRoute,
   ScenariosParticipantCapacityRoute: ScenariosParticipantCapacityRoute,
   ScenariosPendingPaymentsRoute: ScenariosPendingPaymentsRoute,
   ScenariosPhoneNumbersRoute: ScenariosPhoneNumbersRoute,

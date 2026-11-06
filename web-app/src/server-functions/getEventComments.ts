@@ -3,10 +3,13 @@ import { db } from '../../drizzle/db'
 import { eventCommentT, user as userTable } from '../../drizzle/schema'
 import { asc, eq, inArray } from 'drizzle-orm'
 import { EventComment } from '../types'
+import { getEventViewerId } from './eventViewer'
+import { assertEventAccess } from './organizerBlockPolicy'
 
 export const getEventComments = createServerFn({ method: 'GET' })
   .inputValidator((eventId: string) => eventId)
   .handler(async ({ data: eventId }) => {
+    await assertEventAccess(db, eventId, await getEventViewerId())
     const comments = await db
       .select()
       .from(eventCommentT)

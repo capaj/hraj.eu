@@ -3,6 +3,9 @@ import { i18n } from './i18n'
 
 // Server errors stay independent of the browser locale; translate them when shown.
 const errorMessages = {
+  'This venue already has an event at that time.': msg`This venue already has an event at that time.`,
+  'The organizer has blocked you.': msg`The organizer has blocked you.`,
+  'A selected guest is blocked from this organizer’s events.': msg`A selected guest is blocked from this organizer’s events.`,
   "You are already registered as another player's guest": msg`You are already registered as another player's guest`,
   'This event is no longer accepting players': msg`This event is no longer accepting players`,
   'For events with fixed payments, guests must join separately after booking': msg`For events with fixed payments, guests must join separately after booking`,

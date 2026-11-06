@@ -1,6 +1,7 @@
 import { coreGroupMemberT, eventStatuses, eventT, participantT } from '../../drizzle/schema'
 import { and, eq, inArray, isNull, lte, not, or, sql } from 'drizzle-orm'
 import { getEventGuestNames } from '../lib/eventGuests'
+import { eventsVisibleToUser } from './organizerBlockPolicy'
 
 export type GetEventsInput = {
   statuses?: Array<(typeof eventStatuses)[number]>
@@ -39,6 +40,7 @@ export async function getEventsHandler(
         )
 
   const baseWhereClause = and(
+    eventsVisibleToUser(viewerId),
     statuses && statuses.length > 0
       ? inArray(eventT.status, statuses)
       : not(eq(eventT.status, 'cancelled')),

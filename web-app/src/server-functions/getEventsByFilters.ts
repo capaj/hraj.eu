@@ -1,11 +1,11 @@
 import { createServerFn } from '@tanstack/react-start'
-import { getRequest } from '@tanstack/react-start/server'
 import { Event } from '../types'
 import { db } from '../../drizzle/db'
 import { coreGroupMemberT, eventT, participantT } from '../../drizzle/schema'
 import { and, eq, inArray, isNull, lte, or } from 'drizzle-orm'
-import { auth } from '~/lib/auth'
+import { getEventViewerId } from './eventViewer'
 import { getEventGuestNames } from '~/lib/eventGuests'
+import { eventsVisibleToUser } from './organizerBlockPolicy'
 
 export const getEventsByFilters = createServerFn({ method: 'GET' })
   .inputValidator(
@@ -13,9 +13,7 @@ export const getEventsByFilters = createServerFn({ method: 'GET' })
       filters
   )
   .handler(async ({ data: filters }) => {
-    const request = getRequest()
-    const session = await auth.api.getSession({ headers: request.headers })
-    const viewerId = session?.user?.id
+    const viewerId = await getEventViewerId()
 
     const memberCoreGroupIds = viewerId
       ? (
@@ -38,7 +36,7 @@ export const getEventsByFilters = createServerFn({ method: 'GET' })
             lte(eventT.coreGroupExclusiveUntil, new Date())
           )
 
-    const whereConditions = [eq(eventT.isPublic, true), visibilityClause]
+    const whereConditions = [eq(eventT.isPublic, true), visibilityClause, eventsVisibleToUser(viewerId)]
 
     if (filters.sport) {
       whereConditions.push(eq(eventT.sport, filters.sport))

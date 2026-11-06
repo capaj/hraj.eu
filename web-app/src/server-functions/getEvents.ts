@@ -1,10 +1,9 @@
 import { createServerFn } from '@tanstack/react-start'
-import { getRequest } from '@tanstack/react-start/server'
 import { db } from '../../drizzle/db'
 import { eventStatuses } from '../../drizzle/schema'
 import { z } from 'zod'
 import { getEventsHandler } from './getEventsHandler'
-import { auth } from '~/lib/auth'
+import { getEventViewerId } from './eventViewer'
 
 export const getEvents = createServerFn({ method: 'GET' })
   .inputValidator((data: unknown) =>
@@ -20,7 +19,6 @@ export const getEvents = createServerFn({ method: 'GET' })
       .parse(data)
   )
   .handler(async ({ data }) => {
-    const request = getRequest()
-    const session = await auth.api.getSession({ headers: request.headers })
-    return getEventsHandler(db, data, session?.user?.id)
+    const viewerId = await getEventViewerId()
+    return getEventsHandler(db, data, viewerId)
   })

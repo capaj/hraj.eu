@@ -1,5 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
 import { Event, Venue } from '../types'
+import { getEventViewerId } from './eventViewer'
 
 type LandingPageInput = {
   citySlug: string
@@ -34,5 +35,5 @@ export const getSeoLandingPageData = createServerFn({ method: 'GET' })
   .inputValidator((input: LandingPageInput) => input)
   .handler(async ({ data }) => {
     const { querySeoLandingPageData } = await import('./seoLandingPageQueries')
-    return querySeoLandingPageData(data)
+    return querySeoLandingPageData(data, await getEventViewerId())
   })

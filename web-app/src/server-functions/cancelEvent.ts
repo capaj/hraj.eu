@@ -1,3 +1,4 @@
+import { eventsVisibleToUser } from './organizerBlockPolicy'
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
 import { z } from 'zod'
@@ -96,11 +97,13 @@ export const cancelEvent = createServerFn({ method: 'POST' })
       .select({ email: user.email, name: user.name })
       .from(participantT)
       .innerJoin(user, eq(user.id, participantT.userId))
+    .innerJoin(eventT, eq(eventT.id, participantT.eventId))
       .where(
         and(
           eq(participantT.eventId, event.id),
           inArray(participantT.status, ['confirmed', 'pending_payment']),
-          eq(user.emailNotificationsDisabled, false)
+          eq(user.emailNotificationsDisabled, false),
+        eventsVisibleToUser(user.id)
         )
       )
 

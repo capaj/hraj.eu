@@ -1,3 +1,4 @@
+import { assertEventAccess } from './organizerBlockPolicy'
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
 import { z } from 'zod'
@@ -28,6 +29,8 @@ export const recordPaymentIntent = createServerFn({ method: 'POST' })
     if (!session?.user?.id) {
       throw new Error('You must be signed in to record payment intent')
     }
+
+    await assertEventAccess(db, data.eventId, session.user.id)
 
     const participant = await db.query.participantT.findFirst({
       where: and(

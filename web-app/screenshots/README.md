@@ -19,6 +19,7 @@ pnpm --dir web-app screenshots
 pnpm --dir web-app screenshots fio.spec.ts --project=desktop
 pnpm --dir web-app screenshots event-payment-modes.spec.ts --project=desktop
 pnpm --dir web-app screenshots event-comment-images.spec.ts --project=desktop
+pnpm --dir web-app screenshots organizer-blocks.spec.ts
 ```
 
 Capture another fixture page without writing a spec:

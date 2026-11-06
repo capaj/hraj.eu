@@ -1,3 +1,4 @@
+import { eventsVisibleToUser } from '../../web-app/src/server-functions/organizerBlockPolicy'
 import { and, asc, eq, inArray, isNull, lt } from 'drizzle-orm'
 import type { Resend } from 'resend'
 import {
@@ -114,10 +115,12 @@ async function sendEventCommentDigests({
 		})
 		.from(participantT)
 		.innerJoin(user, eq(user.id, participantT.userId))
+		.innerJoin(eventT, eq(eventT.id, participantT.eventId))
 		.where(
 			and(
 				eq(participantT.eventId, eventId),
 				eq(participantT.status, 'confirmed'),
+				eventsVisibleToUser(user.id),
 				eq(user.emailNotificationsDisabled, false)
 			)
 		)) as DigestRecipient[]

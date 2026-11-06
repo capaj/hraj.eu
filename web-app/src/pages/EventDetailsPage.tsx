@@ -1,4 +1,6 @@
 import { EventComments } from '../components/events/EventComments'
+import { ConnectedBlockPlayerButton } from '../components/user/ConnectedOrganizerBlocks'
+import { OrganizerBlockedPage } from '../components/events/OrganizerBlockedPage'
 import { EventPaymentsPanel } from '../components/events/EventPaymentsPanel'
 import { PendingPaymentParticipants } from '../components/events/PendingPaymentParticipants'
 import { getLocalizedErrorMessage } from '~/lib/errorMessages'
@@ -87,7 +89,7 @@ import { recordPaymentIntent } from '~/server-functions/recordPaymentIntent'
 import { markParticipantAsPaid } from '~/server-functions/markParticipantAsPaid'
 import { unmarkParticipantAsPaid } from '~/server-functions/unmarkParticipantAsPaid'
 import { cancelEvent } from '~/server-functions/cancelEvent'
-import { User } from '../types'
+import { User, type Event, type EventComment, type Venue } from '../types'
 import { getEventDateTime } from '../utils/eventDateTime'
 import {
   applyEventParticipantsUpdate,
@@ -130,6 +132,18 @@ const TwitterIcon = ({ className = '' }: { className?: string }) => (
 
 
 export const EventDetailsPage: React.FC = () => {
+  const data = useLoaderData({ from: '/events/$eventId' })
+  if (data.blocked) return <OrganizerBlockedPage />
+  return <EventDetailsContent key={data.event.id} data={data} />
+}
+
+const EventDetailsContent = ({ data }: { data: {
+  event: Event
+  venue?: Venue
+  organizer: User
+  participants: User[]
+  comments: EventComment[]
+} }) => {
   useLingui()
 
   const {
@@ -138,7 +152,7 @@ export const EventDetailsPage: React.FC = () => {
     organizer,
     participants: participantUsers,
     comments: initialComments
-  } = useLoaderData({ from: '/events/$eventId' })
+  } = data
   const navigate = useNavigate()
   const router = useRouter()
   const session = useAuthSession()
@@ -1335,6 +1349,9 @@ export const EventDetailsPage: React.FC = () => {
                         )}
 
                       {/* Remove button for organizer (removing someone else) */}
+                      {currentUserId === event.organizerId && user?.id && user.id !== currentUserId && (
+                        <ConnectedBlockPlayerButton player={user} />
+                      )}
                       {!hasEventEnded &&
                         currentUserId === event.organizerId &&
                         user?.id &&
@@ -1481,6 +1498,9 @@ export const EventDetailsPage: React.FC = () => {
                           )}
 
                           {/* Remove button for organizer (removing waitlisted user) */}
+                          {currentUserId === event.organizerId && user && !isMe && (
+                            <ConnectedBlockPlayerButton player={user} />
+                          )}
                           {!hasEventEnded &&
                             currentUserId === event.organizerId &&
                             !isMe && (

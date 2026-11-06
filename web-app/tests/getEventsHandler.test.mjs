@@ -25,7 +25,7 @@ test('discovery requires public events even for signed-in core-group members', a
     const query = await captureEventQuery(undefined, viewerId, [{ coreGroupId: 'group' }])
     assert.match(query.sql, /"event"\."is_public" = \? and/)
     assert.ok(query.params.includes(1))
-    assert.doesNotMatch(query.sql, /exists|"organizer_id"/)
+    assert.doesNotMatch(query.sql, /or exists|"event"\."organizer_id" = \?/)
   }
 })
 
@@ -41,8 +41,8 @@ test('profile private-event access is restricted to the session user', async () 
   assert.match(query.sql, /or \("event"\."organizer_id" = \? or exists/)
   assert.match(query.sql, /"participant"\."event_id" = "event"\."id"/)
   assert.match(query.sql, /"participant"\."user_id" = \?/)
-  assert.match(query.sql, /in \('confirmed', 'waitlisted', 'invited'\)/)
-  assert.equal(query.params.filter(value => value === 'viewer').length, 2)
+  assert.match(query.sql, /in \('confirmed', 'pending_payment', 'waitlisted', 'invited'\)/)
+  assert.equal(query.params.filter(value => value === 'viewer').length, 3)
 })
 
 test('getEventsHandler applies SQL ordering and max limit 50', async () => {

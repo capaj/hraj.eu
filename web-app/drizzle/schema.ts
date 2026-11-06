@@ -13,6 +13,26 @@ export * from './auth-schema'
 import { user } from './auth-schema'
 import { SPORTS } from '../src/lib/constants'
 
+export const organizerBlockT = sqliteTable(
+  'organizer_block',
+  {
+    id: integer('id').primaryKey().notNull(),
+    organizerId: text('organizer_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    createdAt: integer('created_at', { mode: 'timestamp' })
+      .default(sql`unixepoch()`)
+      .notNull()
+  },
+  (table) => [
+    uniqueIndex('organizer_block_pair_idx').on(table.organizerId, table.userId),
+    index('organizer_block_user_idx').on(table.userId)
+  ]
+)
+
 export const userSkillT = sqliteTable(
   'user_skill',
   {

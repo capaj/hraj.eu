@@ -1,3 +1,4 @@
+import { eventsVisibleToUser } from './organizerBlockPolicy'
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
 import { z } from 'zod'
@@ -203,6 +204,7 @@ export const updateEvent = createServerFn({ method: 'POST' })
     }
 
     await assertNoVenueEventConflict(db, {
+      viewerId: session.user.id,
       venueId: data.venueId ?? event.venueId,
       date: data.date ?? event.date,
       startTime: data.startTime ?? event.startTime,
@@ -350,6 +352,7 @@ async function notifyAttendeesAboutVenueChange({
     .select({ email: user.email, name: user.name })
     .from(participantT)
     .innerJoin(user, eq(user.id, participantT.userId))
+    .innerJoin(eventT, eq(eventT.id, participantT.eventId))
     .where(
       and(
         eq(participantT.eventId, event.id),
@@ -359,7 +362,8 @@ async function notifyAttendeesAboutVenueChange({
           'waitlisted',
           'invited'
         ]),
-        eq(user.emailNotificationsDisabled, false)
+        eq(user.emailNotificationsDisabled, false),
+        eventsVisibleToUser(user.id)
       )
     )
 
@@ -420,6 +424,7 @@ async function notifyAttendeesAboutTimeChange({
     .select({ email: user.email, name: user.name })
     .from(participantT)
     .innerJoin(user, eq(user.id, participantT.userId))
+    .innerJoin(eventT, eq(eventT.id, participantT.eventId))
     .where(
       and(
         eq(participantT.eventId, event.id),
@@ -429,7 +434,8 @@ async function notifyAttendeesAboutTimeChange({
           'waitlisted',
           'invited'
         ]),
-        eq(user.emailNotificationsDisabled, false)
+        eq(user.emailNotificationsDisabled, false),
+        eventsVisibleToUser(user.id)
       )
     )
 

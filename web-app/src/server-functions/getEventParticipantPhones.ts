@@ -1,10 +1,10 @@
 import { createServerFn } from '@tanstack/react-start'
-import { getRequest } from '@tanstack/react-start/server'
 import { eq, inArray } from 'drizzle-orm'
 import { z } from 'zod'
 import { db } from '../../drizzle/db'
 import { eventT, participantT, user } from '../../drizzle/schema'
-import { auth } from '~/lib/auth'
+import { getEventViewerId } from './eventViewer'
+import { assertOrganizerHasNotBlocked } from './organizerBlockPolicy'
 import {
   canViewEventParticipantPhones,
   getConfirmedParticipantIds
@@ -15,8 +15,7 @@ export const getEventParticipantPhones = createServerFn({ method: 'GET' })
     z.object({ eventId: z.string().min(1) }).parse(input)
   )
   .handler(async ({ data }) => {
-    const request = getRequest()
-    const session = await auth.api.getSession({ headers: request.headers })
+    const viewerId = await getEventViewerId()
 
     const [event] = await db
       .select({ organizerId: eventT.organizerId })
@@ -27,6 +26,7 @@ export const getEventParticipantPhones = createServerFn({ method: 'GET' })
     if (!event) {
       throw new Error(`Event with id ${data.eventId} not found`)
     }
+    await assertOrganizerHasNotBlocked(db, event.organizerId, viewerId)
 
     const participants = await db
       .select({
@@ -38,7 +38,7 @@ export const getEventParticipantPhones = createServerFn({ method: 'GET' })
 
     if (
       !canViewEventParticipantPhones(
-        session?.user?.id,
+        viewerId,
         event.organizerId,
         participants
       )

@@ -2,13 +2,15 @@ import { and, count, desc, eq, inArray, isNull, lt, lte, or } from 'drizzle-orm'
 import { eventT } from '../../drizzle/schema'
 import type { db as database } from '../../drizzle/db'
 import { VENUE_HISTORY_PAGE_SIZE } from '../lib/venueHistory'
+import { eventsVisibleToUser } from './organizerBlockPolicy'
 
 // Public summaries do not need participant or payment data.
 export async function queryVenueHistory(
   db: Pick<typeof database, 'select'>,
   venueId: string,
   page: number,
-  now = new Date()
+  now = new Date(),
+  viewerId?: string
 ) {
   const local = new Intl.DateTimeFormat('sv-SE', {
     timeZone: 'Europe/Prague',
@@ -21,6 +23,7 @@ export async function queryVenueHistory(
   }).format(now)
   const [date, time] = local.split(' ')
   const visibleHistory = and(
+    eventsVisibleToUser(viewerId),
     eq(eventT.venueId, venueId),
     eq(eventT.isPublic, true),
     inArray(eventT.status, ['open', 'confirmed', 'completed', 'cancelled']),

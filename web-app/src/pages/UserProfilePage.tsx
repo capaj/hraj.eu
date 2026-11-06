@@ -1,4 +1,5 @@
 import { ConnectedFioCard } from '../components/user/FioConnectionCard'
+import { ConnectedOrganizerBlocksCard } from '../components/user/ConnectedOrganizerBlocks'
 import { getLocalizedErrorMessage } from '~/lib/errorMessages'
 import { useLingui } from '@lingui/react'
 import React, { useState } from 'react'
@@ -966,6 +967,7 @@ export const UserProfile: React.FC = () => {
 
           {/* Right Column */}
           <div className="space-y-8">
+            <ConnectedOrganizerBlocksCard />
             <ConnectedFioCard />
             <PaymentInformationCard
               preferredCurrency={editedUser.preferredCurrency}

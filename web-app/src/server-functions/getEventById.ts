@@ -4,10 +4,13 @@ import { db } from '../../drizzle/db'
 import { coreGroupMemberT, coreGroupT, eventT, participantT } from '../../drizzle/schema'
 import { eq } from 'drizzle-orm'
 import { getEventGuestNames, normalizeEventGuests } from '~/lib/eventGuests'
+import { getEventViewerId } from './eventViewer'
+import { assertEventAccess } from './organizerBlockPolicy'
 
 export const getEventById = createServerFn({ method: 'GET' })
   .inputValidator((eventId: string) => eventId)
   .handler(async ({ data: eventId }) => {
+    await assertEventAccess(db, eventId, await getEventViewerId())
     const events = await db
       .select()
       .from(eventT)

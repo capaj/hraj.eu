@@ -1,9 +1,9 @@
 import { createServerFn } from '@tanstack/react-start'
-import { getRequest } from '@tanstack/react-start/server'
 import { z } from 'zod'
 import { db } from '../../drizzle/db'
-import { auth } from '~/lib/auth'
+import { getEventViewerId } from './eventViewer'
 import { searchEventGuestUsersHandler } from './searchEventGuestUsersHandler'
+import { assertEventAccess } from './organizerBlockPolicy'
 
 const SearchEventGuestUsersSchema = z.object({
   eventId: z.string().min(1, 'Event ID is required'),
@@ -13,8 +13,8 @@ const SearchEventGuestUsersSchema = z.object({
 export const searchEventGuestUsers = createServerFn({ method: 'GET' })
   .inputValidator((payload: unknown) => SearchEventGuestUsersSchema.parse(payload))
   .handler(async ({ data }) => {
-    const request = getRequest()
-    const session = await auth.api.getSession({ headers: request.headers })
+    const viewerId = await getEventViewerId()
 
-    return searchEventGuestUsersHandler(db, data, session?.user?.id)
+    await assertEventAccess(db, data.eventId, viewerId)
+    return searchEventGuestUsersHandler(db, data, viewerId)
   })

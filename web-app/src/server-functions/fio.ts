@@ -1,5 +1,5 @@
+import { assertOrganizerHasNotBlocked } from './organizerBlockPolicy'
 import { createServerFn } from '@tanstack/react-start'
-import { getRequest } from '@tanstack/react-start/server'
 import { env } from 'cloudflare:workers'
 import { and, eq, isNull, sql } from 'drizzle-orm'
 import { z } from 'zod'
@@ -12,17 +12,17 @@ import {
   paymentRequestT,
   user
 } from '../../drizzle/schema'
-import { auth } from '../lib/auth'
+import { getEventViewerId } from './eventViewer'
 import { encryptFioToken, fingerprintFioToken } from '../lib/fio/crypto'
 import { fetchFioStatement, FioError, pragueDate } from '../lib/fio/api'
 import { paymentVariableSymbol } from '../lib/fio/paymentPolicy'
 import { syncFioConnection } from '../lib/fio/sync'
 
 async function requireUserId() {
-  const session = await auth.api.getSession({ headers: getRequest().headers })
-  if (!session?.user?.id)
+  const userId = await getEventViewerId()
+  if (!userId)
     throw new Error('You must be signed in to access this page')
-  return session.user.id
+  return userId
 }
 
 export const getFioConnection = createServerFn({ method: 'GET' }).handler(
@@ -139,6 +139,7 @@ export const getEventPayments = createServerFn({ method: 'GET' })
       .from(eventT)
       .where(eq(eventT.id, data.eventId))
     if (!event) throw new Error('Event not found')
+    await assertOrganizerHasNotBlocked(db, event.organizerId, userId)
     const isOrganizer = event.organizerId === userId
     const participants = await db
       .select({

@@ -1,5 +1,5 @@
 import { and, asc, eq, notInArray, sql } from 'drizzle-orm'
-import { participantT, user } from '../../drizzle/schema'
+import { eventT, organizerBlockT, participantT, user } from '../../drizzle/schema'
 import { normalizeEventGuests } from '../lib/eventGuests'
 
 export const EVENT_GUEST_USER_SEARCH_LIMIT = 20
@@ -47,9 +47,13 @@ export async function searchEventGuestUsersHandler(
 
   const normalizedQuery = query.toLowerCase()
   const nameMatches = sql`instr(lower(${user.name}), ${normalizedQuery}) > 0`
-  const whereClause = excludedUserIds.size
-    ? and(nameMatches, notInArray(user.id, [...excludedUserIds]))
-    : nameMatches
+  const whereClause = and(
+    nameMatches,
+    excludedUserIds.size ? notInArray(user.id, [...excludedUserIds]) : undefined,
+    sql`not exists (select 1 from ${organizerBlockT}
+      inner join ${eventT} on ${eventT.organizerId} = ${organizerBlockT.organizerId}
+      where ${eventT.id} = ${input.eventId} and ${organizerBlockT.userId} = ${user.id})`
+  )
 
   return db
     .select({

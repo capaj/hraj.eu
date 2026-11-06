@@ -3,10 +3,11 @@ import { getRequest } from '@tanstack/react-start/server'
 import { z } from 'zod'
 import { eventCommentContentSchema } from './eventCommentValidation'
 import { db } from '../../drizzle/db'
-import { eventCommentT, eventT, user as userTable } from '../../drizzle/schema'
+import { eventCommentT, user as userTable } from '../../drizzle/schema'
 import { auth } from '~/lib/auth'
 import { eq } from 'drizzle-orm'
 import { EventComment } from '../types'
+import { assertEventAccess } from './organizerBlockPolicy'
 
 const AddEventCommentSchema = z.object({
   eventId: z.string().min(1, 'Event ID is required'),
@@ -33,15 +34,7 @@ export const addEventComment = createServerFn({ method: 'POST' })
       throw new Error('You must be signed in to comment on an event')
     }
 
-    const [event] = await db
-      .select({ id: eventT.id })
-      .from(eventT)
-      .where(eq(eventT.id, data.eventId))
-      .limit(1)
-
-    if (!event) {
-      throw new Error('Event not found')
-    }
+    await assertEventAccess(db, data.eventId, session.user.id)
 
     const [inserted] = await db
       .insert(eventCommentT)

@@ -1,11 +1,12 @@
 import { eq } from 'drizzle-orm'
 import type { db } from '../../drizzle/db'
-import { eventT, participantT, user } from '../../drizzle/schema'
+import { eventT, organizerBlockT, participantT, user } from '../../drizzle/schema'
 import { normalizeEventGuests, type StoredEventGuest } from '../lib/eventGuests'
 import { ensurePaymentRequests } from '../lib/fio/payments'
 import { occupiesSpot } from '../lib/fio/paymentPolicy'
 import { pragueDate } from '../lib/fio/api'
 import { validateEventGuests } from './validateEventGuests'
+import { assertOrganizerHasNotBlocked } from './organizerBlockPolicy'
 
 export async function joinEventHandler(
   database: typeof db,
@@ -22,6 +23,7 @@ export async function joinEventHandler(
       .from(eventT)
       .where(eq(eventT.id, input.eventId))
     if (!event) throw new Error('Event not found')
+    await assertOrganizerHasNotBlocked(tx, event.organizerId, input.userId)
     if (
       !['open', 'confirmed'].includes(event.status) ||
       event.date < pragueDate(new Date())
@@ -72,6 +74,12 @@ export async function joinEventHandler(
       participants,
       input.userId
     )
+    const blockedUsers = await tx.select({ userId: organizerBlockT.userId })
+      .from(organizerBlockT).where(eq(organizerBlockT.organizerId, event.organizerId))
+    const blockedIds = new Set(blockedUsers.map((block) => block.userId))
+    if (guests.some((guest) => guest.userId && blockedIds.has(guest.userId))) {
+      throw new Error('A selected guest is blocked from this organizer’s events.')
+    }
     if (
       active &&
       (event.paymentMode === 'fio' || event.requirePayment) &&

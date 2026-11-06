@@ -1,3 +1,4 @@
+import { eventsVisibleToUser } from '../../web-app/src/server-functions/organizerBlockPolicy'
 import { Resend } from 'resend'
 import { and, eq, inArray, gt, gte, isNull, lte, or, sql } from 'drizzle-orm'
 import {
@@ -208,6 +209,7 @@ export async function runScheduledJob({
 			.innerJoin(venueT, eq(venueT.id, eventT.venueId))
 			.where(and(
 				eq(venueT.city, subscription.cityName),
+				eventsVisibleToUser(subscription.userId),
 				eq(eventT.isPublic, true),
 				gte(eventT.date, today),
 				sql`${eventT.status} in ('open','confirmed')`,
@@ -249,6 +251,7 @@ export async function runScheduledJob({
 	const venueSubscriptions = await database
 		.select({
 			id: venueEventSubscriptionT.id,
+			userId: venueEventSubscriptionT.userId,
 			venueId: venueEventSubscriptionT.venueId,
 			venueName: venueT.name,
 			lastNotifiedEventCreatedAt:
@@ -275,6 +278,7 @@ export async function runScheduledJob({
 			.where(
 				and(
 					eq(eventT.venueId, subscription.venueId),
+					eventsVisibleToUser(subscription.userId),
 					eq(eventT.isPublic, true),
 					gte(eventT.date, today),
 					sql`${eventT.status} in ('open','confirmed')`,
@@ -402,10 +406,12 @@ async function getConfirmedParticipants(
 		.select({ email: user.email, name: user.name, timezone: user.timezone })
 		.from(participantT)
 		.innerJoin(user, eq(user.id, participantT.userId))
+		.innerJoin(eventT, eq(eventT.id, participantT.eventId))
 		.where(
 			and(
 				eq(participantT.eventId, eventId),
 				inArray(participantT.status, includePending ? ['confirmed', 'pending_payment'] : ['confirmed']),
+				eventsVisibleToUser(user.id),
 				eq(user.emailNotificationsDisabled, false)
 			)
 		)

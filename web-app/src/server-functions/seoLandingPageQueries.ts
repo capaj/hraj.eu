@@ -1,3 +1,4 @@
+import { eventsVisibleToUser } from './organizerBlockPolicy'
 import { and, eq, inArray, isNull, lte, or, sql } from 'drizzle-orm'
 import { db } from '../../drizzle/db'
 import { eventT, participantT, venueT } from '../../drizzle/schema'
@@ -121,7 +122,7 @@ async function mapEvent(event: EventRow): Promise<Event> {
   }
 }
 
-async function getPublicUpcomingEvents() {
+async function getPublicUpcomingEvents(viewerId?: string) {
   const eventDateTimeSql = sql`datetime(${eventT.date} || ' ' || ${eventT.startTime})`
 
   return db
@@ -129,6 +130,7 @@ async function getPublicUpcomingEvents() {
     .from(eventT)
     .where(
       and(
+        eventsVisibleToUser(viewerId),
         eq(eventT.isPublic, true),
         inArray(eventT.status, PUBLIC_EVENT_STATUSES),
         sql`${eventDateTimeSql} >= datetime('now')`,
@@ -141,10 +143,10 @@ async function getPublicUpcomingEvents() {
     .orderBy(eventDateTimeSql)
 }
 
-async function getLandingInventory() {
+async function getLandingInventory(viewerId?: string) {
   const [venuesFromDb, eventsFromDb] = await Promise.all([
     db.select().from(venueT),
-    getPublicUpcomingEvents()
+    getPublicUpcomingEvents(viewerId)
   ])
 
   const venues = venuesFromDb.map(mapVenue)
@@ -163,8 +165,8 @@ function getCityCountry(venues: Venue[]) {
   return venues.find((venue) => venue.country)?.country
 }
 
-export async function querySeoLandingPageLinks(): Promise<SeoLandingPageLink[]> {
-  const { venues, venueById, events } = await getLandingInventory()
+export async function querySeoLandingPageLinks(viewerId?: string): Promise<SeoLandingPageLink[]> {
+  const { venues, venueById, events } = await getLandingInventory(viewerId)
   const links = new Map<string, SeoLandingPageLink>()
 
   for (const venue of venues) {
@@ -251,11 +253,11 @@ export async function querySeoLandingPageData({
 }: {
   citySlug: string
   sportSlug?: string
-}): Promise<SeoLandingPageData | null> {
+}, viewerId?: string): Promise<SeoLandingPageData | null> {
   const sport = sportSlug ? getSportBySlug(sportSlug) : undefined
   if (sportSlug && !sport) return null
 
-  const { venues, venueById, events } = await getLandingInventory()
+  const { venues, venueById, events } = await getLandingInventory(viewerId)
   const cityVenues = venues.filter(
     (venue) => slugifyLandingSegment(venue.city) === citySlug
   )
@@ -279,7 +281,7 @@ export async function querySeoLandingPageData({
   const city = cityVenues[0]?.city || venueById.get(cityEvents[0]?.venueId || '')?.city
   if (!city) return null
 
-  const allLinks = await querySeoLandingPageLinks()
+  const allLinks = await querySeoLandingPageLinks(viewerId)
   const cityLinks = allLinks
     .filter((link) => !link.sportId)
     .sort((a, b) => b.eventCount - a.eventCount || a.city.localeCompare(b.city))

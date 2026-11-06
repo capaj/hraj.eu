@@ -11,39 +11,62 @@ import { getEventParticipantPhones } from '~/server-functions/getEventParticipan
 import { getRequestOrigin } from '~/server-functions/getRequestOrigin'
 import { getEventComments } from '~/server-functions/getEventComments'
 import { getMentionableParticipantIds } from '~/utils/participants'
+import { ORGANIZER_BLOCKED_MESSAGE } from '~/lib/organizerBlocks'
+import { OrganizerBlockedPage } from '~/components/events/OrganizerBlockedPage'
+import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
 
 export const Route = createFileRoute('/events/$eventId')({
   ssr: true,
+  staleTime: 0,
+  preloadStaleTime: 0,
+  errorComponent: (props) => props.error.message === ORGANIZER_BLOCKED_MESSAGE
+    ? <OrganizerBlockedPage />
+    : <DefaultCatchBoundary {...props} />,
   loader: async ({ params }) => {
-    const event = await getEventById({ data: params.eventId })
-    const venues = await getVenues()
-    const venue = venues.find((v: any) => v.id === event.venueId)
-    const organizer = await getUserById({ data: event.organizerId })
-    const origin = await getRequestOrigin()
+    try {
+      const event = await getEventById({ data: params.eventId })
+      const venues = await getVenues()
+      const venue = venues.find((v: any) => v.id === event.venueId)
+      const organizer = await getUserById({ data: event.organizerId })
+      const origin = await getRequestOrigin()
 
-    const participantIds = getMentionableParticipantIds(event)
-    const [participantUsers, participantPhones] = await Promise.all([
-      participantIds.length > 0
-        ? getUsersByIds({ data: participantIds })
-        : Promise.resolve([]),
-      getEventParticipantPhones({ data: { eventId: event.id } })
-    ])
-    const participants = participantUsers.map((participant) => ({
-      ...participant,
-      phone: participantPhones[participant.id]
-    }))
-    const comments = await getEventComments({ data: event.id })
+      const participantIds = getMentionableParticipantIds(event)
+      const [participantUsers, participantPhones] = await Promise.all([
+        participantIds.length > 0
+          ? getUsersByIds({ data: participantIds })
+          : Promise.resolve([]),
+        getEventParticipantPhones({ data: { eventId: event.id } })
+      ])
+      const participants = participantUsers.map((participant) => ({
+        ...participant,
+        phone: participantPhones[participant.id]
+      }))
+      const comments = await getEventComments({ data: event.id })
 
-    return {
-      event,
-      venue,
-      organizer,
-      participants,
-      origin,
-      comments
+      return {
+        blocked: false as const,
+        event,
+        venue,
+        organizer,
+        participants,
+        origin,
+        comments
+      }
+    } catch (error) {
+      if (error instanceof Error && error.message === ORGANIZER_BLOCKED_MESSAGE) {
+        // Return no event data, including when replacing a previously cached page.
+        return { blocked: true as const }
+      }
+      throw error
     }
   },
   head: ({ loaderData }) => {
+    if (loaderData?.blocked) {
+      return { meta: [
+        { title: t`The organizer has blocked you.` },
+        { name: 'robots', content: 'noindex' }
+      ] }
+    }
     const event = loaderData?.event
     const venue = loaderData?.venue
     const origin = loaderData?.origin || 'https://hraj.eu'

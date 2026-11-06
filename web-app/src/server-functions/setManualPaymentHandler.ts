@@ -1,3 +1,4 @@
+import { assertOrganizerHasNotBlocked } from './organizerBlockPolicy'
 import { and, eq } from 'drizzle-orm'
 import type { db } from '../../drizzle/db'
 import { eventT, participantT } from '../../drizzle/schema'
@@ -17,6 +18,7 @@ export async function setManualPaymentHandler(
       .from(eventT)
       .where(eq(eventT.id, input.eventId))
     if (!event) throw new Error('Event not found')
+    await assertOrganizerHasNotBlocked(tx, event.organizerId, input.actorId)
     if (event.paymentMode === 'fio')
       throw new Error('Fio payments can only be confirmed by the bank')
     const targetUserId = input.targetUserId ?? input.actorId

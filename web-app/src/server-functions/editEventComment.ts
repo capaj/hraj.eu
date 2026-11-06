@@ -7,6 +7,7 @@ import { eventCommentT, user as userTable } from '../../drizzle/schema'
 import { auth } from '~/lib/auth'
 import { and, eq } from 'drizzle-orm'
 import { EventComment } from '../types'
+import { assertEventAccess } from './organizerBlockPolicy'
 
 const EditEventCommentSchema = z.object({
   commentId: z.string().min(1, 'Comment ID is required'),
@@ -49,6 +50,7 @@ export const editEventComment = createServerFn({ method: 'POST' })
     if (comment.userId !== session.user.id) {
       throw new Error('You can only edit your own comments')
     }
+    await assertEventAccess(db, comment.eventId, session.user.id)
 
     const [updated] = await db
       .update(eventCommentT)

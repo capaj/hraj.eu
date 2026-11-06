@@ -1,9 +1,11 @@
+import { getEventViewerId } from '~/server-functions/eventViewer'
+import { eventsVisibleToUser } from '~/server-functions/organizerBlockPolicy'
 import { createFileRoute } from '@tanstack/react-router'
 import { and, eq, inArray, isNull, lte, or, sql } from 'drizzle-orm'
 import { db } from '../../drizzle/db'
 import { eventT } from '../../drizzle/schema'
 
-const CACHE_CONTROL = 'public, max-age=3600, s-maxage=3600'
+const CACHE_CONTROL = 'private, no-store'
 
 type SitemapUrl = {
   loc: string
@@ -55,7 +57,7 @@ function renderSitemap(urls: SitemapUrl[]) {
   ].join('\n')
 }
 
-async function getPublicUpcomingEventUrls(origin: string): Promise<SitemapUrl[]> {
+async function getPublicUpcomingEventUrls(origin: string, viewerId?: string): Promise<SitemapUrl[]> {
   const eventDateTimeSql = sql`datetime(${eventT.date} || ' ' || ${eventT.startTime})`
 
   const events = await db
@@ -67,6 +69,7 @@ async function getPublicUpcomingEventUrls(origin: string): Promise<SitemapUrl[]>
     .where(
       and(
         eq(eventT.isPublic, true),
+        eventsVisibleToUser(viewerId),
         inArray(eventT.status, ['open', 'confirmed']),
         sql`${eventDateTimeSql} >= datetime('now')`,
         or(
@@ -97,6 +100,7 @@ export const Route = createFileRoute('/sitemap.xml')({
           }
         }),
       GET: async ({ request }) => {
+        const viewerId = await getEventViewerId()
         const origin = new URL(request.url).origin
         const today = new Date()
         const { querySeoLandingPageLinks } = await import(
@@ -130,7 +134,7 @@ export const Route = createFileRoute('/sitemap.xml')({
             changefreq: 'weekly',
             priority: 0.7
           },
-          ...(await querySeoLandingPageLinks()).map((link) => ({
+          ...(await querySeoLandingPageLinks(viewerId)).map((link) => ({
             loc: buildUrl(
               origin,
               link.sportId
@@ -140,7 +144,7 @@ export const Route = createFileRoute('/sitemap.xml')({
             changefreq: link.eventCount > 0 ? ('daily' as const) : ('weekly' as const),
             priority: link.sportId ? 0.7 : 0.6
           })),
-          ...(await getPublicUpcomingEventUrls(origin))
+          ...(await getPublicUpcomingEventUrls(origin, viewerId))
         ]
 
         return new Response(renderSitemap(urls), {

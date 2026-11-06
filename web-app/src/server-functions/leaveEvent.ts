@@ -8,6 +8,7 @@ import { auth } from '~/lib/auth'
 import { eq } from 'drizzle-orm'
 import { getEventGuestNames } from '~/lib/eventGuests'
 import { leaveEventHandler } from './leaveEventHandler'
+import { assertEventAccess } from './organizerBlockPolicy'
 
 const LeaveEventSchema = z.object({
   eventId: z.string().min(1, 'Event ID is required'),
@@ -31,6 +32,7 @@ export const leaveEvent = createServerFn({ method: 'POST' })
     }
 
     const userIdToRemove = data.targetUserId ?? session.user.id
+    await assertEventAccess(db, data.eventId, session.user.id)
     const isRemovingOther = userIdToRemove !== session.user.id
 
     if (isRemovingOther) {

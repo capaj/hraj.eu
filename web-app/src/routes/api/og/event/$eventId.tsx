@@ -1,3 +1,4 @@
+import { ORGANIZER_BLOCKED_MESSAGE } from '~/lib/organizerBlocks'
 import { createFileRoute } from '@tanstack/react-router'
 import { ImageResponse, loadGoogleFont } from 'workers-og'
 import { getEventById } from '~/server-functions/getEventById'
@@ -10,7 +11,7 @@ import { messages as csMessages } from '../../../../../app/locales/cs.mjs'
 import { messages as enMessages } from '../../../../../app/locales/en.mjs'
 import { env } from 'cloudflare:workers'
 
-const CACHE_CONTROL = 'public, max-age=3600, s-maxage=86400'
+const CACHE_CONTROL = 'private, no-store'
 
 let inter400: Promise<ArrayBuffer> | undefined
 let inter700: Promise<ArrayBuffer> | undefined
@@ -351,6 +352,9 @@ export const Route = createFileRoute('/api/og/event/$eventId')({
           imageResponse.headers.set('Cache-Control', CACHE_CONTROL)
           return imageResponse
         } catch (error: any) {
+          if (error?.message === ORGANIZER_BLOCKED_MESSAGE) {
+            return new Response(ORGANIZER_BLOCKED_MESSAGE, { status: 403, headers: { 'Cache-Control': CACHE_CONTROL } })
+          }
           console.error('Error generating OG image:', error)
           return new Response(
             `Error generating image: ${error.message}\n${error.stack}`,

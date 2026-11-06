@@ -1,11 +1,10 @@
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
-import { eq } from 'drizzle-orm'
 import { db } from '../../drizzle/db'
-import { eventT } from '../../drizzle/schema'
 import { auth } from '~/lib/auth'
 import { uploadFileToR2 } from './utils'
 import { uploadEventCommentImagesHandler } from './uploadEventCommentImagesHandler'
+import { assertEventAccess } from './organizerBlockPolicy'
 
 export const uploadEventCommentImages = createServerFn({ method: 'POST' })
   .inputValidator((formData: FormData) => formData)
@@ -15,12 +14,8 @@ export const uploadEventCommentImages = createServerFn({ method: 'POST' })
       formData: data,
       userId: session?.user?.id,
       eventExists: async (eventId) => {
-        const [event] = await db
-          .select({ id: eventT.id })
-          .from(eventT)
-          .where(eq(eventT.id, eventId))
-          .limit(1)
-        return !!event
+        await assertEventAccess(db, eventId, session?.user?.id)
+        return true
       },
       upload: uploadFileToR2
     })
