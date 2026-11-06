@@ -250,15 +250,15 @@ msgstr "Žebříček: {title}"
 msgid "{totalMinutes, plural, one {# minute} other {# minutes}}"
 msgstr "{totalMinutes, plural, one {# minuta} few {# minuty} other {# minut}}"
 
-#: src/pages/UserProfilePage.tsx:1055
+#: src/pages/UserProfilePage.tsx:1058
 msgid "• Image will be cropped to a square"
 msgstr "• Obrázek se ořízne na čtverec"
 
-#: src/pages/UserProfilePage.tsx:1056
+#: src/pages/UserProfilePage.tsx:1059
 msgid "• Recommended size: 400x400 pixels"
 msgstr "• Doporučená velikost: 400 × 400 pixelů"
 
-#: src/pages/UserProfilePage.tsx:1057
+#: src/pages/UserProfilePage.tsx:1060
 msgid "• Supported formats: JPG, PNG, GIF"
 msgstr "• Podporované formáty: JPG, PNG, GIF"
 
@@ -1004,7 +1004,7 @@ msgstr "Zvolte kontrastní pozadí. Pro šířku pod 120 px použijte samostatn�
 msgid "Choose a GIF"
 msgstr "Vybrat GIF"
 
-#: src/pages/UserProfilePage.tsx:1023
+#: src/pages/UserProfilePage.tsx:1026
 msgid "Choose a profile picture"
 msgstr "Vyberte profilový obrázek"
 
@@ -2720,7 +2720,7 @@ msgstr "Připojil se {timeAgo}"
 msgid "Joining..."
 msgstr "Přihlašuji…"
 
-#: src/pages/UserProfilePage.tsx:1024
+#: src/pages/UserProfilePage.tsx:1027
 msgid "JPG, PNG or GIF up to 5MB"
 msgstr "JPG, PNG nebo GIF do 5 MB"
 
@@ -4504,7 +4504,7 @@ msgstr "Vyberte veškeré vybavení dostupné na tomto místě"
 msgid "Select at least one sport. You can add more later."
 msgstr "Vyberte alespoň jeden sport. Další můžete přidat později."
 
-#: src/pages/UserProfilePage.tsx:1048
+#: src/pages/UserProfilePage.tsx:1051
 msgid "Select Image"
 msgstr "Vybrat obrázek"
 
@@ -5126,7 +5126,7 @@ msgstr "Nahrát profilový obrázek"
 msgid "Upload Orientation Plan"
 msgstr "Nahrát orientační plán"
 
-#: src/pages/UserProfilePage.tsx:1008
+#: src/pages/UserProfilePage.tsx:1011
 msgid "Upload Profile Picture"
 msgstr "Nahrát profilový obrázek"
 
@@ -5146,7 +5146,7 @@ msgstr "Nahrávání obrázků…"
 #: src/components/events/CreateEventForm.tsx:741
 #: src/components/venues/AddVenueModal.tsx:697
 #: src/components/venues/AddVenueModal.tsx:759
-#: src/pages/UserProfilePage.tsx:1043
+#: src/pages/UserProfilePage.tsx:1046
 msgid "Uploading..."
 msgstr "Nahrávám..."
 

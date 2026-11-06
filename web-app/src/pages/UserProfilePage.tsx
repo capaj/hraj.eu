@@ -967,7 +967,6 @@ export const UserProfile: React.FC = () => {
 
           {/* Right Column */}
           <div className="space-y-8">
-            <ConnectedOrganizerBlocksCard />
             <ConnectedFioCard />
             <PaymentInformationCard
               preferredCurrency={editedUser.preferredCurrency}
@@ -996,6 +995,10 @@ export const UserProfile: React.FC = () => {
           onSportChange={handleNotificationChange}
           onEmailChange={handleEmailNotificationsChange}
         />
+
+        <div className="mt-8">
+          <ConnectedOrganizerBlocksCard />
+        </div>
       </div>
 
       {/* Avatar Upload Modal */}

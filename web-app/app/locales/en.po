@@ -250,15 +250,15 @@ msgstr ""
 msgid "{totalMinutes, plural, one {# minute} other {# minutes}}"
 msgstr "{totalMinutes, plural, one {# minute} other {# minutes}}"
 
-#: src/pages/UserProfilePage.tsx:1055
+#: src/pages/UserProfilePage.tsx:1058
 msgid "• Image will be cropped to a square"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:1056
+#: src/pages/UserProfilePage.tsx:1059
 msgid "• Recommended size: 400x400 pixels"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:1057
+#: src/pages/UserProfilePage.tsx:1060
 msgid "• Supported formats: JPG, PNG, GIF"
 msgstr ""
 
@@ -1004,7 +1004,7 @@ msgstr ""
 msgid "Choose a GIF"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:1023
+#: src/pages/UserProfilePage.tsx:1026
 msgid "Choose a profile picture"
 msgstr ""
 
@@ -2720,7 +2720,7 @@ msgstr ""
 msgid "Joining..."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:1024
+#: src/pages/UserProfilePage.tsx:1027
 msgid "JPG, PNG or GIF up to 5MB"
 msgstr ""
 
@@ -4504,7 +4504,7 @@ msgstr ""
 msgid "Select at least one sport. You can add more later."
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:1048
+#: src/pages/UserProfilePage.tsx:1051
 msgid "Select Image"
 msgstr ""
 
@@ -5126,7 +5126,7 @@ msgstr ""
 msgid "Upload Orientation Plan"
 msgstr ""
 
-#: src/pages/UserProfilePage.tsx:1008
+#: src/pages/UserProfilePage.tsx:1011
 msgid "Upload Profile Picture"
 msgstr ""
 
@@ -5146,7 +5146,7 @@ msgstr "Uploading pictures..."
 #: src/components/events/CreateEventForm.tsx:741
 #: src/components/venues/AddVenueModal.tsx:697
 #: src/components/venues/AddVenueModal.tsx:759
-#: src/pages/UserProfilePage.tsx:1043
+#: src/pages/UserProfilePage.tsx:1046
 msgid "Uploading..."
 msgstr ""
 

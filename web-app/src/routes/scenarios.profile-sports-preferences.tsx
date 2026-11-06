@@ -4,6 +4,8 @@ import {
   NotificationSettingsCard,
   SkillLevelSettingsCard
 } from '~/components/user/SportsPreferencesCards'
+import { OrganizerBlocksCard } from '~/components/user/OrganizerBlocksCard'
+import type { BlockableUser } from '~/lib/organizerBlocks'
 import { SPORTS } from '~/lib/constants'
 import type { SkillLevel } from '~/types'
 
@@ -31,25 +33,21 @@ function ProfileSportsPreferencesScenario() {
   })
   const [emailNotificationsEnabled, setEmailNotificationsEnabled] =
     useState(true)
+  const [blockedUsers, setBlockedUsers] = useState<BlockableUser[]>([
+    { id: 'petr', name: 'Petr Novák' }
+  ])
 
   return (
-    <main className="min-h-[calc(100vh-4rem)] bg-gray-50 px-4 py-8 sm:px-6">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-8">
-          <p className="text-sm font-medium text-primary-700">UI scenario</p>
-          <h1 className="mt-1 text-3xl font-bold text-gray-900">
-            Profile sports preferences
-          </h1>
-          <p className="mt-2 text-gray-600">
-            Skill levels and notifications now live in separate cards.
-          </p>
+    <main className="min-h-screen bg-gradient-to-br from-primary-600 to-secondary-600 py-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-8 text-white">
+          <h1 className="text-3xl font-bold">Můj profil</h1>
         </div>
 
-        <div className="grid items-start gap-6 lg:grid-cols-2">
+        <div className="space-y-8">
           <SkillLevelSettingsCard
             skillLevels={skillLevels}
             sports={scenarioSports}
-            columns={1}
             onChange={(sportId, level) => {
               setSkillLevels((current) => {
                 const next = { ...current }
@@ -64,7 +62,6 @@ function ProfileSportsPreferencesScenario() {
             notificationPreferences={notificationPreferences}
             emailNotificationsEnabled={emailNotificationsEnabled}
             sports={scenarioSports}
-            columns={1}
             onSportChange={(sportId, enabled) =>
               setNotificationPreferences((current) => ({
                 ...current,
@@ -72,6 +69,14 @@ function ProfileSportsPreferencesScenario() {
               }))
             }
             onEmailChange={setEmailNotificationsEnabled}
+          />
+
+          <OrganizerBlocksCard
+            blockedUsers={blockedUsers}
+            searchUsers={async () => []}
+            onChange={async (userId) => {
+              setBlockedUsers((current) => current.filter((user) => user.id !== userId))
+            }}
           />
         </div>
       </div>
