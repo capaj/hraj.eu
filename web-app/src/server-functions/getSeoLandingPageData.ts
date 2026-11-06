@@ -32,7 +32,7 @@ export type SeoLandingPageData = {
 }
 
 export const getSeoLandingPageData = createServerFn({ method: 'GET' })
-  .inputValidator((input: LandingPageInput) => input)
+  .validator((input: LandingPageInput) => input)
   .handler(async ({ data }) => {
     const { querySeoLandingPageData } = await import('./seoLandingPageQueries')
     return querySeoLandingPageData(data, await getEventViewerId())

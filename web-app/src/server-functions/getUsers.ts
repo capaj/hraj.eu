@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { getUsersHandler } from './getUsersHandler'
 
 export const getUsers = createServerFn({ method: 'GET' })
-  .inputValidator((data: unknown) =>
+  .validator((data: unknown) =>
     z
       .object({
         limit: z.number().int().positive().max(100).optional(),

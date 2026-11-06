@@ -12,7 +12,7 @@ const SubscribeSchema = z.object({
 })
 
 export const subscribeToCityEvents = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => SubscribeSchema.parse(payload))
+  .validator((payload: unknown) => SubscribeSchema.parse(payload))
   .handler(async ({ data }) => {
     const request = getRequest()
     const session = await auth.api.getSession({ headers: request.headers })

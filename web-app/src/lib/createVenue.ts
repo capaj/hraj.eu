@@ -115,7 +115,7 @@ const transformVenueData = (
 })
 
 export const createVenue = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => {
+  .validator((payload: unknown) => {
     const parsed = ClientVenueSchema.safeParse(payload)
     if (!parsed.success) {
       const issues = parsed.error.issues

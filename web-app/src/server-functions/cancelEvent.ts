@@ -26,7 +26,7 @@ const CancelEventSchema = z.object({
 })
 
 export const cancelEvent = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => {
+  .validator((payload: unknown) => {
     return CancelEventSchema.parse(payload)
   })
   .handler(async ({ data }) => {

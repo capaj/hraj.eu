@@ -19,7 +19,7 @@ export const Route = createFileRoute('/events/$eventId')({
   ssr: true,
   staleTime: 0,
   preloadStaleTime: 0,
-  errorComponent: (props) => props.error.message === ORGANIZER_BLOCKED_MESSAGE
+  errorComponent: (props) => props.error instanceof Error && props.error.message === ORGANIZER_BLOCKED_MESSAGE
     ? <OrganizerBlockedPage />
     : <DefaultCatchBoundary {...props} />,
   loader: async ({ params }) => {

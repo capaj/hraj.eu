@@ -23,7 +23,7 @@ const UpdatePlusAttendeesSchema = z.object({
 })
 
 export const updatePlusAttendees = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => {
+  .validator((payload: unknown) => {
     const parsed = UpdatePlusAttendeesSchema.safeParse(payload)
     if (!parsed.success) {
       const issues = parsed.error.issues

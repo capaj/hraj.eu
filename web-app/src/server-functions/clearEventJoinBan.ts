@@ -8,7 +8,7 @@ import { requireAdmin } from './adminPermissions'
 const ClearEventJoinBanSchema = z.object({ userId: z.string().min(1) })
 
 export const clearEventJoinBan = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => ClearEventJoinBanSchema.parse(payload))
+  .validator((payload: unknown) => ClearEventJoinBanSchema.parse(payload))
   .handler(async ({ data }) => {
     await requireAdmin()
 

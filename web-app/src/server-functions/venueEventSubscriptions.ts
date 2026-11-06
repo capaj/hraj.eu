@@ -38,7 +38,7 @@ export const getVenueEventSubscriptions = createServerFn({
 })
 
 export const updateVenueEventSubscription = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) =>
+  .validator((payload: unknown) =>
     UpdateVenueEventSubscriptionSchema.parse(payload)
   )
   .handler(async ({ data }) => {

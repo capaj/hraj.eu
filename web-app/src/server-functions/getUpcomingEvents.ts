@@ -8,7 +8,7 @@ import { getEventGuestNames } from '~/lib/eventGuests'
 import { eventsVisibleToUser } from './organizerBlockPolicy'
 
 export const getUpcomingEvents = createServerFn({ method: 'GET' })
-  .inputValidator((limit?: number) => limit || 3)
+  .validator((limit?: number) => limit || 3)
   .handler(async ({ data: limit }) => {
     const viewerId = await getEventViewerId()
 

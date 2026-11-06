@@ -8,7 +8,7 @@ const ALLOWED_MIME_TYPES = new Set(['image/png', 'image/jpeg', 'image/jpg', 'ima
 const ALLOWED_EXTENSIONS = new Set(['png', 'jpg', 'jpeg', 'webp'])
 
 export const uploadEventQrImages = createServerFn({ method: 'POST' })
-  .inputValidator((formData: FormData) => formData)
+  .validator((formData: FormData) => formData)
   .handler(async ({ data: formData }) => {
     const entries = formData.getAll('images')
     const nonEmptyFiles: File[] = []

@@ -20,7 +20,7 @@ const UpdateUserTimezoneSchema = z.object({
 })
 
 export const updateUserTimezone = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => {
+  .validator((payload: unknown) => {
     return UpdateUserTimezoneSchema.parse(payload)
   })
   .handler(async ({ data }) => {

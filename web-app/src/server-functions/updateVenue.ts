@@ -106,7 +106,7 @@ const transformVenueData = (
 })
 
 export const updateVenue = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => {
+  .validator((payload: unknown) => {
     const parsed = ClientVenueSchema.extend({
       id: z.string().min(1, 'Venue ID is required')
     }).safeParse(payload)

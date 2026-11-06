@@ -47,7 +47,7 @@ export const getFioConnection = createServerFn({ method: 'GET' }).handler(
 )
 
 export const saveFioConnection = createServerFn({ method: 'POST' })
-  .inputValidator(
+  .validator(
     z.object({
       token: z
         .string()
@@ -131,7 +131,7 @@ export const refreshFioPayments = createServerFn({ method: 'POST' }).handler(
 )
 
 export const getEventPayments = createServerFn({ method: 'GET' })
-  .inputValidator(z.object({ eventId: z.string().min(1) }))
+  .validator(z.object({ eventId: z.string().min(1) }))
   .handler(async ({ data }) => {
     const userId = await requireUserId()
     const [event] = await db

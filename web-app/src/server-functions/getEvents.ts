@@ -6,7 +6,7 @@ import { getEventsHandler } from './getEventsHandler'
 import { getEventViewerId } from './eventViewer'
 
 export const getEvents = createServerFn({ method: 'GET' })
-  .inputValidator((data: unknown) =>
+  .validator((data: unknown) =>
     z
       .object({
         statuses: z

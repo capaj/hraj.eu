@@ -2,7 +2,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { uploadFileToR2 } from './utils'
 
 export const uploadVenueImages = createServerFn({ method: 'POST' })
-  .inputValidator((formData: FormData) => formData)
+  .validator((formData: FormData) => formData)
   .handler(async ({ data: formData, context }) => {
     const files = formData.getAll('images') as File[]
 

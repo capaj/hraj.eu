@@ -23,7 +23,7 @@ const JoinEventSchema = z.object({
 })
 
 export const joinEvent = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => {
+  .validator((payload: unknown) => {
     const parsed = JoinEventSchema.safeParse(payload)
     if (!parsed.success) {
       const issues = parsed.error.issues

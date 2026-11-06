@@ -12,7 +12,7 @@ const RecordPaymentIntentSchema = z.object({
 })
 
 export const recordPaymentIntent = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => {
+  .validator((payload: unknown) => {
     const parsed = RecordPaymentIntentSchema.safeParse(payload)
     if (!parsed.success) {
       const issues = parsed.error.issues

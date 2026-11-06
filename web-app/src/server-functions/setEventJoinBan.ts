@@ -41,7 +41,7 @@ function getBanExpiry(duration: number, unit: EventJoinBanUnit) {
 }
 
 export const setEventJoinBan = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => SetEventJoinBanSchema.parse(payload))
+  .validator((payload: unknown) => SetEventJoinBanSchema.parse(payload))
   .handler(async ({ data }) => {
     await requireAdmin()
 

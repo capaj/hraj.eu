@@ -11,7 +11,7 @@ const DeleteEventCommentSchema = z.object({
 })
 
 export const deleteEventComment = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => {
+  .validator((payload: unknown) => {
     const parsed = DeleteEventCommentSchema.safeParse(payload)
     if (!parsed.success) {
       const issues = parsed.error.issues

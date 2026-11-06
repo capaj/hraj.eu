@@ -72,7 +72,7 @@ const UpdateEventSchema = z.object({
 export type UpdateEventData = z.infer<typeof UpdateEventSchema>
 
 export const updateEvent = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => {
+  .validator((payload: unknown) => {
     const parsed = UpdateEventSchema.safeParse(payload)
     if (!parsed.success) {
       const issues = parsed.error.issues

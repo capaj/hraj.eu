@@ -5,7 +5,7 @@ import { queryVenueHistory } from './venueHistory'
 import { getEventViewerId } from './eventViewer'
 
 export const getVenueHistory = createServerFn({ method: 'GET' })
-  .inputValidator(
+  .validator(
     z.object({
       venueId: z.string().min(1),
       page: z.number().int().min(1).max(100000).default(1)

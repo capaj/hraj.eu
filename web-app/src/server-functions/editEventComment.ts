@@ -15,7 +15,7 @@ const EditEventCommentSchema = z.object({
 })
 
 export const editEventComment = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => {
+  .validator((payload: unknown) => {
     const parsed = EditEventCommentSchema.safeParse(payload)
     if (!parsed.success) {
       const issues = parsed.error.issues

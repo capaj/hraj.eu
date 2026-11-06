@@ -7,7 +7,7 @@ import { uploadEventCommentImagesHandler } from './uploadEventCommentImagesHandl
 import { assertEventAccess } from './organizerBlockPolicy'
 
 export const uploadEventCommentImages = createServerFn({ method: 'POST' })
-  .inputValidator((formData: FormData) => formData)
+  .validator((formData: FormData) => formData)
   .handler(async ({ data }) => {
     const session = await auth.api.getSession({ headers: getRequest().headers })
     return uploadEventCommentImagesHandler({

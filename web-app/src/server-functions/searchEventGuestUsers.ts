@@ -11,7 +11,7 @@ const SearchEventGuestUsersSchema = z.object({
 })
 
 export const searchEventGuestUsers = createServerFn({ method: 'GET' })
-  .inputValidator((payload: unknown) => SearchEventGuestUsersSchema.parse(payload))
+  .validator((payload: unknown) => SearchEventGuestUsersSchema.parse(payload))
   .handler(async ({ data }) => {
     const viewerId = await getEventViewerId()
 

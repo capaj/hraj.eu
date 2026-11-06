@@ -15,7 +15,7 @@ const UpdateUserSkillSchema = z.object({
 })
 
 export const updateUserSkill = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => {
+  .validator((payload: unknown) => {
     const parsed = UpdateUserSkillSchema.safeParse(payload)
     if (!parsed.success) {
       throw new Error('Invalid payload')

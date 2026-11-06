@@ -9,7 +9,7 @@ import { auth } from '~/lib/auth'
 const DeleteCoreGroupSchema = z.object({ id: z.string().min(1) })
 
 export const deleteCoreGroup = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => DeleteCoreGroupSchema.parse(payload))
+  .validator((payload: unknown) => DeleteCoreGroupSchema.parse(payload))
   .handler(async ({ data }) => {
     const request = getRequest()
     const session = await auth.api.getSession({ headers: request.headers })

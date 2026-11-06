@@ -7,7 +7,7 @@ import { getEventViewerId } from './eventViewer'
 import { assertEventAccess } from './organizerBlockPolicy'
 
 export const getEventComments = createServerFn({ method: 'GET' })
-  .inputValidator((eventId: string) => eventId)
+  .validator((eventId: string) => eventId)
   .handler(async ({ data: eventId }) => {
     await assertEventAccess(db, eventId, await getEventViewerId())
     const comments = await db

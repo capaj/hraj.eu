@@ -13,7 +13,7 @@ const UpdateCoreGroupSchema = z.object({
 })
 
 export const updateCoreGroup = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => UpdateCoreGroupSchema.parse(payload))
+  .validator((payload: unknown) => UpdateCoreGroupSchema.parse(payload))
   .handler(async ({ data }) => {
     const request = getRequest()
     const session = await auth.api.getSession({ headers: request.headers })

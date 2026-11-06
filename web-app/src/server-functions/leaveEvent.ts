@@ -16,7 +16,7 @@ const LeaveEventSchema = z.object({
 })
 
 export const leaveEvent = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => {
+  .validator((payload: unknown) => {
     const parsed = LeaveEventSchema.safeParse(payload)
     if (!parsed.success) {
       throw new Error('Invalid leave payload')

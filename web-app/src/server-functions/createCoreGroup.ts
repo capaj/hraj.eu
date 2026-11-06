@@ -12,7 +12,7 @@ const CreateCoreGroupSchema = z.object({
 })
 
 export const createCoreGroup = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => CreateCoreGroupSchema.parse(payload))
+  .validator((payload: unknown) => CreateCoreGroupSchema.parse(payload))
   .handler(async ({ data }) => {
     const request = getRequest()
     const session = await auth.api.getSession({ headers: request.headers })

@@ -6,7 +6,7 @@ import { eq } from 'drizzle-orm'
 import { notFound } from '@tanstack/react-router'
 
 export const getVenueById = createServerFn({ method: 'GET' })
-  .inputValidator((venueId: string) => venueId)
+  .validator((venueId: string) => venueId)
   .handler(async ({ data: venueId }) => {
     const venues = await db
       .select()

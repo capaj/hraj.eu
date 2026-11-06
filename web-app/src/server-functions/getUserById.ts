@@ -5,7 +5,7 @@ import { eventT, user as userTable } from '../../drizzle/schema'
 import { count, eq } from 'drizzle-orm'
 
 export const getUserById = createServerFn({ method: 'GET' })
-  .inputValidator((userId: string) => userId)
+  .validator((userId: string) => userId)
   .handler(async ({ data: userId }) => {
     const user = await db.query.user.findFirst({
       where: eq(userTable.id, userId),

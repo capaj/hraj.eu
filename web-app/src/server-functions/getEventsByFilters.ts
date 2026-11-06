@@ -8,7 +8,7 @@ import { getEventGuestNames } from '~/lib/eventGuests'
 import { eventsVisibleToUser } from './organizerBlockPolicy'
 
 export const getEventsByFilters = createServerFn({ method: 'GET' })
-  .inputValidator(
+  .validator(
     (filters: { sport?: string; skillLevel?: string; location?: string }) =>
       filters
   )

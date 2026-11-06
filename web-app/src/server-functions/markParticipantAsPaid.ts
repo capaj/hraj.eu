@@ -11,7 +11,7 @@ const MarkParticipantAsPaidSchema = z.object({
 })
 
 export const markParticipantAsPaid = createServerFn({ method: 'POST' })
-  .inputValidator((payload: unknown) => {
+  .validator((payload: unknown) => {
     const parsed = MarkParticipantAsPaidSchema.safeParse(payload)
     if (!parsed.success) {
       const issues = parsed.error.issues

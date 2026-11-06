@@ -24,7 +24,7 @@ export const getOrganizerBlocks = createServerFn({ method: 'GET' })
   })
 
 export const searchBlockableUsers = createServerFn({ method: 'GET' })
-  .inputValidator(z.object({ query: z.string().trim().min(2).max(100) }))
+  .validator(z.object({ query: z.string().trim().min(2).max(100) }))
   .handler(async ({ data }) => {
     const organizerId = await requireOrganizerId()
     return db.select({ id: user.id, name: user.name, image: user.image })
@@ -38,7 +38,7 @@ export const searchBlockableUsers = createServerFn({ method: 'GET' })
   })
 
 export const setOrganizerBlock = createServerFn({ method: 'POST' })
-  .inputValidator(z.object({ userId: z.string().min(1), blocked: z.boolean() }))
+  .validator(z.object({ userId: z.string().min(1), blocked: z.boolean() }))
   .handler(async ({ data }) => {
     // The organizer always comes from the session, never from the payload.
     const organizerId = await requireOrganizerId()

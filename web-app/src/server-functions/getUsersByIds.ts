@@ -5,7 +5,7 @@ import { eventT, user as userTable } from '../../drizzle/schema'
 import { count, inArray } from 'drizzle-orm'
 
 export const getUsersByIds = createServerFn({ method: 'GET' })
-  .inputValidator((userIds: string[]) => userIds)
+  .validator((userIds: string[]) => userIds)
   .handler(async ({ data: userIds }) => {
     if (!userIds || userIds.length === 0) {
       return []
